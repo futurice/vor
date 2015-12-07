@@ -86,7 +86,7 @@ public abstract class BaseCard extends Origin implements ICard {
     /**
      * An existing View is being recycled by the list model
      *
-     * @param view           view whose contents to update
+     * @param view view whose contents to update
      */
     @Override
     public void updateView(@NonNull final View view) {
@@ -94,17 +94,17 @@ public abstract class BaseCard extends Origin implements ICard {
         try {
             if (FlavorUtils.isSuperuserBuild && this.flagged) {
                 // Show delete button in red for flagged cards
-                ImageView cardDeleteButton = (ImageView) view.findViewById(R.id.card_delete_button);
+                final ImageView cardDeleteButton = (ImageView) view.findViewById(R.id.card_delete_button);
                 cardDeleteButton.setColorFilter(Color.rgb(255, 0, 0));
             }
 
-            LinearLayout cardBase = (LinearLayout) view.findViewById(R.id.card_base);
-            LinearLayout topicButtonBar = (LinearLayout) view.findViewById(R.id.topic_button_bar);
-            ImageView cardLikeButton = (ImageView) view.findViewById(R.id.card_like_button);
-            ImageView cardCommentButton = (ImageView) view.findViewById(R.id.card_comment_button);
-            ImageView cardUserButton = (ImageView) view.findViewById(R.id.card_user_button);
-            ImageView cardDeleteButton = (ImageView) view.findViewById(R.id.card_delete_button);
-            ImageView cardFlagButton = (ImageView) view.findViewById(R.id.card_flag_button);
+            final LinearLayout cardBase = (LinearLayout) view.findViewById(R.id.card_base);
+            final LinearLayout topicButtonBar = (LinearLayout) view.findViewById(R.id.topic_button_bar);
+            final ImageView cardLikeButton = (ImageView) view.findViewById(R.id.card_like_button);
+            final ImageView cardCommentButton = (ImageView) view.findViewById(R.id.card_comment_button);
+            final ImageView cardUserButton = (ImageView) view.findViewById(R.id.card_user_button);
+            final ImageView cardDeleteButton = (ImageView) view.findViewById(R.id.card_delete_button);
+            final ImageView cardFlagButton = (ImageView) view.findViewById(R.id.card_flag_button);
 
             cardLikeButton.setOnClickListener(v -> likeButtonClicked(v));
             cardCommentButton.setOnClickListener(this::commentButtonClicked);
@@ -170,7 +170,7 @@ public abstract class BaseCard extends Origin implements ICard {
         builder.create().show();
     }
 
-    private void addLocalUserComment(final String commentString) {
+    private void addLocalUserComment(@NonNull final String commentString) {
         if (TextUtils.isEmpty(commentString)) {
             return;
         }
@@ -191,11 +191,7 @@ public abstract class BaseCard extends Origin implements ICard {
                 .fork();
     }
 
-    protected void deleteLocalUserComment(Comment comment) {
-        if (comment == null) {
-            return;
-        }
-
+    protected void deleteLocalUserComment(@NonNull final Comment comment) {
         ServiceSingleton.instance().peerDiscoveryService()
                 .localUserRemovesCommentAsync(comment.toJSONString())
                 .then(() -> {
@@ -285,11 +281,12 @@ public abstract class BaseCard extends Origin implements ICard {
             }
         }
 
-        String userNotFound = context.getResources().getString(R.string.people_user_not_found);
+        final String userNotFound = context.getResources().getString(R.string.people_user_not_found);
         Toast.makeText(context, String.format(userNotFound, author), Toast.LENGTH_LONG).show();
     }
 
-    public void displayAuthorDialog(String name, String aboutMe) {
+    public void displayAuthorDialog(@NonNull final String name,
+                                    @NonNull final String aboutMe) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View authorLayout = inflater.inflate(R.layout.peer_card_layout, null);
         ((TextView) authorLayout.findViewById(R.id.peer_tag_text)).setText(name);
@@ -309,10 +306,11 @@ public abstract class BaseCard extends Origin implements ICard {
      * @param toastDuration
      */
     @NonNull
-
-    protected Toast makeToast(final int layoutResource, final int toastDuration) {
+    protected Toast makeToast(final int layoutResource,
+                              final int toastDuration) {
         final View view = inflater.inflate(layoutResource, null);
         final Toast toast = new Toast(context);
+
         toast.setView(view);
         toast.setDuration(toastDuration);
 
@@ -320,8 +318,8 @@ public abstract class BaseCard extends Origin implements ICard {
     }
 
     @NonNull
-
-    protected View inflateView(final int resource, @NonNull final ViewGroup parentView) {
+    protected View inflateView(final int resource,
+                               @NonNull final ViewGroup parentView) {
         return this.inflater.inflate(resource, parentView, false);
     }
 
@@ -332,13 +330,11 @@ public abstract class BaseCard extends Origin implements ICard {
 
     @Override // INamed
     @NonNull
-
     public String getName() {
         return this.name;
     }
 
     @NonNull
-
     public String getAuthor() {
         if (author == null) {
             return context.getResources().getString(R.string.people_tag_anonymous);
@@ -353,7 +349,6 @@ public abstract class BaseCard extends Origin implements ICard {
     }
 
     @NonNull
-
     public Date getDate() {
         if (date == null) {
             //FIXME set date=newDate() ?

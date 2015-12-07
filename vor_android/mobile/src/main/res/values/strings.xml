@@ -122,4 +122,5 @@
     <string name="title_activity_people">People Nearby</string>
     <string name="title_activity_beacons">Beacons (Temporary)</string>
     <string name="add_as_favourite">Add as Favourite</string>
+    <string name="beacons_listviewadapter_beacons_found">Beacon Found!</string>
 </resources>

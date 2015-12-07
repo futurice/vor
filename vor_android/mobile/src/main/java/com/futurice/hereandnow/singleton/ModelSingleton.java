@@ -321,14 +321,14 @@ public class ModelSingleton extends Origin {
         for (final Peer peer : getPeers(false)) {
             for (final String commentJSON : peer.comments.get()) {
                 final Comment comment = Comment.fromJSONString(commentJSON);
-                if (comment != null && comment.getCardId() == card.getUid()) {
+                if (comment != null && comment.cardId == card.getUid()) {
                     comments.add(comment);
                 }
             }
         }
         for (final String commentString : myComments.get()) {
             final Comment comment = Comment.fromJSONString(commentString);
-            if (comment != null && comment.getCardId() == card.getUid()) {
+            if (comment != null && comment.cardId == card.getUid()) {
                 comments.add(comment);
             }
         }
@@ -348,7 +348,6 @@ public class ModelSingleton extends Origin {
         return comments;
     }
 
-
     // Need to add ourselves if still missing
     @NonNull
     @SuppressWarnings("unchecked")
@@ -359,7 +358,7 @@ public class ModelSingleton extends Origin {
         if (removeSelf) {
             while (i.hasNext()) {
                 final Peer peer = i.next();
-                if (peer.tag.equals(myTag.get())) {
+                if (peer.tag.get().equals(myTag.get())) {
                     i.remove();
                     break;
                 }
