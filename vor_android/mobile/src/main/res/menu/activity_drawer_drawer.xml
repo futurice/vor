@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/menu_top"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_my_cards"
+            android:icon="@drawable/ic_cards_white_48dp"
+            android:title="@string/nav_my_cards" />
+        <item
+            android:id="@+id/nav_people"
+            android:icon="@drawable/ic_people_white_48dp"
+            android:title="@string/nav_people" />
+        <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/ic_map_black_24dp"
+            android:title="@string/nav_map" />
+        <item
+            android:id="@+id/nav_beacons"
+            android:icon="@drawable/ic_bluetooth_searching_black_24dp"
+            android:title="@string/nav_beacons" />
+        <item
+            android:id="@+id/nav_space"
+            android:icon="@drawable/ic_place_24dp"
+            android:title="@string/nav_space" />
+        <item
+            android:id="@+id/nav_toilets"
+            android:icon="@drawable/ic_wc_black_48dp"
+            android:title="@string/nav_toilets" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_24dp"
+            android:title="@string/nav_settings" />
+    </group>
+
+    <group
+        android:id="@+id/menu_bottom"
+        android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/nav_logout"
+            android:title="@string/nav_logout" />
+    </group>
+
+</menu>

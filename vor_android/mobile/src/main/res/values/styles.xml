@@ -1,0 +1,171 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:actionBarSize">48dp</item>
+        <item name="actionBarSize">48dp</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="colorControlNormal">@color/light_grey_text</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+        <!--<item name="android:buttonStyle">@style/SubcardBottomButton</item>-->
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="ActionBarTabStyle">
+        <item name="android:height">48dp</item>
+    </style>
+
+    <style name="BaseText"
+           parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:alpha">1.0</item>
+    </style>
+
+    <style name="BaseTextFillWidth"
+           parent="BaseText">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="NotificationText"
+           parent="BaseText">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="ChatText"
+           parent="BaseTextFillWidth">
+        <item name="android:typeface">serif</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="TopicText"
+           parent="BaseTextFillWidth">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TopicTitle"
+           parent="BaseTextFillWidth">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:maxWidth">200dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="CardText">
+        <item name="android:layout_height">wrap_content</item>
+        parent="BaseTextFillWidth">
+    </style>
+
+    <style name="CardTitle"
+           parent="BaseTextFillWidth">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="ToastText"
+           parent="BaseTextFillWidth">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- Buttons -->
+
+    <!-- Ricardo, these are examples. None of the buttons on screen use these at the moment -->
+    <!--style aboutMe="SortOrderButton" parent="@android:style/Widget.Button">
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:shadowColor">@color/trending</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">-1</item>
+        <item name="android:shadowRadius">0.2</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/button_check</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="SearchButton" parent="@android:style/Widget.Button">
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:shadowColor">@color/trending</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">-1</item>
+        <item name="android:shadowRadius">0.2</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/me_search_icon</item>
+        <item name="android:focusable">false</item>
+        <item name="android:clickable">true</item>
+    </style-->
+
+    <style name="SubcardBottomButton" style="?android:attr/buttonStyleSmall"
+           parent="@android:style/Widget.Button"
+        >
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:background">@android:color/black</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <!-- TOILET VIEW -->
+
+    <style name="toiletTableLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingLeft">@dimen/toilet_layout_out_margin</item>
+        <item name="android:paddingRight">@dimen/toilet_layout_out_margin</item>
+        <item name="android:paddingTop">@dimen/toilet_layout_out_margin</item>
+    </style>
+
+    <style name="toiletSquare">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/toilet_free_bg</item>
+        <item name="android:layout_marginBottom">@dimen/toilet_layout_out_margin</item>
+    </style>
+
+    <style name="toiletSquareLeft" parent="toiletSquare">
+        <item name="android:layout_marginRight">@dimen/toilet_layout_in_margin</item>
+        <item name="android:layout_marginEnd" tools:targetApi="jelly_bean_mr1">4dp</item>
+    </style>
+
+    <style name="toiletSquareRight" parent="toiletSquare">
+        <item name="android:layout_marginLeft">@dimen/toilet_layout_in_margin</item>
+        <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">4dp</item>
+    </style>
+
+    <style name="toiletLabelImageView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+
+    <style name="toiletGenderImageView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/toilet_label_gender_margin</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#12262D</color>
+    <color name="colorPrimaryDark">#13252d</color>
+    <color name="colorAccent">#2E9D46</color>
+
+    <color name="grey">#303030</color>
+    <color name="light_grey">#eeeeee</color>
+
+    <color name="background_grey">#D8D8D8</color>
+    <color name="light_grey_space">#DFDFDF</color>
+    <color name="light_grey_text">#AFAFAF</color>
+
+    <color name="transparent">#00000000</color>
+
+    <!-- TEMPORARY -->
+    <color name="light_green">#ecffe8</color>
+    <color name="light_red">#ffd0d0</color>
+
+    <color name="selectedTabText">#B0B0B0</color>
+</resources>
