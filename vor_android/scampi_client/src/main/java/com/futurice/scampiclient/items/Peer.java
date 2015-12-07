@@ -3,6 +3,7 @@ package com.futurice.scampiclient.items;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.futurice.cascade.i.IReactiveValue;
 import com.futurice.scampiclient.HereAndNowService;
 import com.futurice.scampiclient.utils.ArrayUtils;
 
@@ -15,21 +16,22 @@ public final class Peer extends ScampiItem {
     // TODO:
     // - Need a way to distinguish users with same aboutMe.
 
-    public final String tag;
-    public final String idTag;
-    public final String aboutMe;
-    public final long[] cardLikeUniqueIds;
-    public final long[] cardDeletionUniqueIds;
-    public final long[] cardFlagUniqueIds;
-    public final String[] comments;
+    public final IReactiveValue<String> tag;
+    public final IReactiveValue<String> idTag;
+    public final IReactiveValue<String> aboutMe;
+    public final IReactiveValue<long[]> cardLikeUniqueIds;
+    public final IReactiveValue<long[]> cardDeletionUniqueIds;
+    public final IReactiveValue<long[]> cardFlagUniqueIds;
+    public final IReactiveValue<String[]> comments;
     public long timestamp;
 
-    public Peer(@NonNull final String tag, @NonNull final String idTag,
-                @NonNull final String aboutMe,
-                final long[] cardLikeUniqueIds,
-                final long[] cardDeletionUniqueIds,
-                final long[] cardFlagUniqueIds,
-                final String[] comments,
+    public Peer(@NonNull final IReactiveValue<String> tag,
+                @NonNull final IReactiveValue<String> idTag,
+                @NonNull final IReactiveValue<String> aboutMe,
+                @NonNull final IReactiveValue<long[]> cardLikeUniqueIds,
+                @NonNull final IReactiveValue<long[]> cardDeletionUniqueIds,
+                @NonNull final IReactiveValue<long[]> cardFlagUniqueIds,
+                @NonNull final IReactiveValue<String[]> comments,
                 final long timestamp) {
         this.tag = tag;
         this.idTag = idTag;
@@ -49,12 +51,16 @@ public final class Peer extends ScampiItem {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Peer peer = (Peer) o;
 
         // if (!tag.equals(peer.tag)) return false;
-        if (!idTag.equals(peer.idTag)) return false;
+        if (!idTag.equals(peer.idTag)) {
+            return false;
+        }
         return true;
     }
 
@@ -65,9 +71,14 @@ public final class Peer extends ScampiItem {
     //=================================================================//
 
     @NonNull
-
     @Override
     public String toString() {
-        return "Peer(aboutMe:" + aboutMe + " tag:" + tag + " idTag:" + idTag + " uid:" + uid + " likes:" + ArrayUtils.asString(cardLikeUniqueIds) + " comments:" + ArrayUtils.asString(comments);
+        return "Peer(aboutMe:" +
+                aboutMe.safeGet() +
+                " tag:" + tag.safeGet() +
+                " idTag:" + idTag.safeGet() +
+                " uid:" + uid + " likes:" +
+                ArrayUtils.asString(cardLikeUniqueIds.get()) +
+                " comments:" + ArrayUtils.asString(comments.get());
     }
 }

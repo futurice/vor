@@ -1,6 +1,5 @@
 package com.futurice.hereandnow.fragment;
 
-import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,6 @@ import com.futurice.cascade.functional.ImmutableValue;
 import com.futurice.cascade.i.IAsyncOrigin;
 import com.futurice.cascade.util.AssertUtil;
 import com.futurice.cascade.util.RCLog;
-import com.futurice.hereandnow.activity.DrawerActivity;
 import com.futurice.hereandnow.adapter.TopicListAdapter;
 import com.futurice.hereandnow.card.ITopic;
 import com.futurice.hereandnow.singleton.ModelSingleton;
@@ -32,7 +30,6 @@ public class BaseHereAndNowFragment extends Fragment implements TextWatcher, IAs
     @NonNull
     protected static final ModelSingleton modelSingleton = ModelSingleton.instance();
     private final List<ITopic> sourceTopicModel = new ArrayList<>();
-    @Nullable
     private ExpandableListView expandableListView;
     @Nullable
     private TopicListAdapter topicListAdapter; // View Model, sorted and filtered from the Model

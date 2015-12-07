@@ -169,8 +169,8 @@ public final class ImageUtils {
      * @return Bitmap, or null on failures
      */
     @Nullable
-
-    public static Bitmap createImageThumbnail(@NonNull final String filePath, final int size) {
+    public static Bitmap createImageThumbnail(@NonNull final String filePath,
+                                              final int size) {
         int targetSize = getTargetSize(size);
         int maxPixels = getMaxPixels(targetSize);
 
@@ -186,8 +186,9 @@ public final class ImageUtils {
             FileInputStream stream = null;
             try {
                 stream = new FileInputStream(filePath);
-                FileDescriptor fd = stream.getFD();
-                BitmapFactory.Options options = new BitmapFactory.Options();
+                final FileDescriptor fd = stream.getFD();
+                final BitmapFactory.Options options = new BitmapFactory.Options();
+
                 options.inSampleSize = 1;
                 options.inJustDecodeBounds = true;
                 BitmapFactory.decodeFileDescriptor(fd, null, options);
@@ -224,6 +225,7 @@ public final class ImageUtils {
                     TARGET_SIZE_MICRO,
                     TARGET_SIZE_MICRO, OPTIONS_RECYCLE_INPUT);
         }
+
         return bitmap;
     }
 

@@ -280,7 +280,7 @@ public abstract class BaseCard extends Origin implements ICard {
         for (final Peer p : peerModel) {
             Log.d("BaseCard", "authorId=" + authorId + ", idTag=" + p.idTag);
             if (authorId != null && authorId.equals(p.idTag)) {
-                displayAuthorDialog(p.tag, p.aboutMe);
+                displayAuthorDialog(p.tag.get(), p.aboutMe.get());
                 return;
             }
         }

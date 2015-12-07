@@ -6,6 +6,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.futurice.cascade.i.IAltFuture;
+import com.futurice.cascade.i.IReactiveValue;
+import com.futurice.cascade.reactive.ReactiveString;
+import com.futurice.cascade.reactive.ReactiveValue;
 import com.futurice.cascade.util.RCLog;
 import com.futurice.scampiclient.items.Peer;
 import com.futurice.scampiclient.utils.ArrayUtils;
@@ -93,7 +96,7 @@ public final class ScampiPeerDiscoveryService extends HereAndNowService<Peer> {
      */
     @NonNull
     public long[] getLocalUserLikes() {
-        return localUser.cardLikeUniqueIds;
+        return localUser.cardLikeUniqueIds.get();
     }
 
     /**
@@ -103,7 +106,7 @@ public final class ScampiPeerDiscoveryService extends HereAndNowService<Peer> {
      */
     @NonNull
     public String[] getLocalUserComments() {
-        return localUser.comments;
+        return localUser.comments.get();
     }
 
     /**
@@ -113,7 +116,7 @@ public final class ScampiPeerDiscoveryService extends HereAndNowService<Peer> {
      */
     @NonNull
     public long[] getLocalUserDeletions() {
-        return localUser.cardDeletionUniqueIds;
+        return localUser.cardDeletionUniqueIds.get();
     }
 
     /**
@@ -123,7 +126,7 @@ public final class ScampiPeerDiscoveryService extends HereAndNowService<Peer> {
      */
     @NonNull
     public long[] getLocalUserFlags() {
-        return localUser.cardDeletionUniqueIds;
+        return localUser.cardDeletionUniqueIds.get();
     }
 
     /**
@@ -135,14 +138,13 @@ public final class ScampiPeerDiscoveryService extends HereAndNowService<Peer> {
     @NonNull
     @CheckResult(suggest = "IAltFuture#fork()")
     public IAltFuture<?, SCAMPIMessage> localUserLikesACardAsync(final long cardUniqueId) {
-        final Peer user = localUser;
+        long[] likes;
+        long[] newLikes;
 
-        localUser = new Peer(user.tag, user.idTag, user.aboutMe,
-                ArrayUtils.prepend(user.cardLikeUniqueIds, cardUniqueId),
-                user.cardDeletionUniqueIds,
-                user.cardFlagUniqueIds,
-                user.comments,
-                System.currentTimeMillis());
+        do {
+            likes = localUser.cardLikeUniqueIds.get();
+            newLikes = ArrayUtils.prepend(likes, cardUniqueId);
+        } while (!localUser.cardLikeUniqueIds.compareAndSet(likes, newLikes));
 
         return broadcastUserAdvertAsync();
     }
@@ -156,16 +158,13 @@ public final class ScampiPeerDiscoveryService extends HereAndNowService<Peer> {
     @NonNull
     @CheckResult(suggest = "IAltFuture#fork()")
     public IAltFuture<?, SCAMPIMessage> localUserUnlikesACardAsync(final long cardUniqueId) {
-        final Peer user = localUser;
+        long[] likes;
+        long[] newLikes;
 
-        localUser = new Peer(user.tag,
-                user.idTag,
-                user.aboutMe,
-                ArrayUtils.remove(user.cardLikeUniqueIds, cardUniqueId),
-                user.cardDeletionUniqueIds,
-                user.cardFlagUniqueIds,
-                user.comments,
-                System.currentTimeMillis());
+        do {
+            likes = localUser.cardLikeUniqueIds.get();
+            newLikes = ArrayUtils.remove(likes, cardUniqueId);
+        } while (!localUser.cardLikeUniqueIds.compareAndSet(likes, newLikes));
 
         return broadcastUserAdvertAsync();
     }
@@ -178,17 +177,14 @@ public final class ScampiPeerDiscoveryService extends HereAndNowService<Peer> {
      */
     @NonNull
     @CheckResult(suggest = "IAltFuture#fork()")
-    public IAltFuture<?, SCAMPIMessage> localUserCommentsACardAsync(String commentJSON) {
-        final Peer user = localUser;
+    public IAltFuture<?, SCAMPIMessage> localUserCommentsACardAsync(@NonNull final String commentJSON) {
+        String[] comments;
+        String[] newComments;
 
-        localUser = new Peer(user.tag,
-                user.idTag,
-                user.aboutMe,
-                user.cardLikeUniqueIds,
-                user.cardDeletionUniqueIds,
-                user.cardFlagUniqueIds,
-                ArrayUtils.prepend(user.comments, commentJSON),
-                System.currentTimeMillis());
+        do {
+            comments = localUser.comments.get();
+            newComments = ArrayUtils.prepend(comments, commentJSON);
+        } while (!localUser.comments.compareAndSet(comments, newComments));
 
         return broadcastUserAdvertAsync();
     }
@@ -202,16 +198,13 @@ public final class ScampiPeerDiscoveryService extends HereAndNowService<Peer> {
     @NonNull
     @CheckResult(suggest = "IAltFuture#fork()")
     public IAltFuture<?, SCAMPIMessage> localUserRemovesCommentAsync(@NonNull final String commentJSON) {
-        final Peer user = localUser;
+        String[] comments;
+        String[] newComments;
 
-        localUser = new Peer(user.tag,
-                user.idTag,
-                user.aboutMe,
-                user.cardLikeUniqueIds,
-                user.cardDeletionUniqueIds,
-                user.cardFlagUniqueIds,
-                ArrayUtils.remove(user.comments, commentJSON),
-                System.currentTimeMillis());
+        do {
+            comments = localUser.comments.get();
+            newComments = ArrayUtils.remove(comments, commentJSON);
+        } while (!localUser.comments.compareAndSet(comments, newComments));
 
         return broadcastUserAdvertAsync();
     }
@@ -225,14 +218,13 @@ public final class ScampiPeerDiscoveryService extends HereAndNowService<Peer> {
     @NonNull
     @CheckResult(suggest = "IAltFuture#fork()")
     public IAltFuture<?, SCAMPIMessage> localUserDeletesACardAsync(final long cardUniqueId) {
-        final Peer user = localUser;
+        long[] cardDeletes;
+        long[] newCardDeletes;
 
-        localUser = new Peer(user.tag, user.idTag, user.aboutMe,
-                user.cardLikeUniqueIds,
-                ArrayUtils.prepend(user.cardDeletionUniqueIds, cardUniqueId),
-                user.cardFlagUniqueIds,
-                user.comments,
-                System.currentTimeMillis());
+        do {
+            cardDeletes = localUser.cardLikeUniqueIds.get();
+            newCardDeletes = ArrayUtils.prepend(cardDeletes, cardUniqueId);
+        } while (!localUser.cardDeletionUniqueIds.compareAndSet(cardDeletes, newCardDeletes));
 
         return broadcastUserAdvertAsync();
     }
@@ -246,14 +238,13 @@ public final class ScampiPeerDiscoveryService extends HereAndNowService<Peer> {
     @NonNull
     @CheckResult(suggest = "IAltFuture#fork()")
     public IAltFuture<?, SCAMPIMessage> localUserFlagsACardAsync(final long cardUniqueId) {
-        final Peer user = localUser;
+        long[] cardFlags;
+        long[] newCardFlags;
 
-        localUser = new Peer(user.tag, user.idTag, user.aboutMe,
-                user.cardLikeUniqueIds,
-                user.cardDeletionUniqueIds,
-                ArrayUtils.prepend(user.cardFlagUniqueIds, cardUniqueId),
-                user.comments,
-                System.currentTimeMillis());
+        do {
+            cardFlags = localUser.cardFlagUniqueIds.get();
+            newCardFlags = ArrayUtils.prepend(cardFlags, cardUniqueId);
+        } while (!localUser.cardFlagUniqueIds.compareAndSet(cardFlags, newCardFlags));
 
         return broadcastUserAdvertAsync();
     }
@@ -312,18 +303,18 @@ public final class ScampiPeerDiscoveryService extends HereAndNowService<Peer> {
             throw new IOException("No id tag in incoming peer advert.");
         }
 
-        final String name = scampiMessage.getString(ABOUT_ME_FIELD_LABEL);
-        final String tag = this.getStringOrNull(scampiMessage, TAG_FIELD_LABEL);
-        final String idTag = this.getStringOrNull(scampiMessage, ID_TAG_FIELD_LABEL);
-        final String l = this.getStringOrNull(scampiMessage, TAG_FIELD_LIKES);
-        final long[] likes = l != null ? ArrayUtils.parseArray(l) : EMPTY_LONG_ARRAY;
+        final IReactiveValue<String> name = new ReactiveString("name", scampiMessage.getString(ABOUT_ME_FIELD_LABEL));
+        final IReactiveValue<String> tag = new ReactiveString("tag", scampiMessage.getString(TAG_FIELD_LABEL));
+        final IReactiveValue<String> idTag = new ReactiveString("idTag", scampiMessage.getString(ID_TAG_FIELD_LABEL));
+        final String l = scampiMessage.getString(TAG_FIELD_LIKES);
+        final IReactiveValue<long[]> likes = new ReactiveValue<>("likes", ArrayUtils.parseArray(l));
+        final String d = scampiMessage.getString(TAG_FIELD_DELETIONS);
+        final IReactiveValue<long[]> deletions = new ReactiveValue<>("deletions", ArrayUtils.parseArray(d));
+        final String f = scampiMessage.getString(TAG_FIELD_FLAGS);
+        final IReactiveValue<long[]> flags = new ReactiveValue<long[]>("flags", ArrayUtils.parseArray(f));
+        final String c = scampiMessage.getString(TAG_FIELD_COMMENTS);
+        final IReactiveValue<String[]> comments = new ReactiveValue<String[]>("comments", ArrayUtils.parseStringArray(c));
         final long timestamp = scampiMessage.getInteger(TIMESTAMP_FIELD_LABEL);
-        final String d = this.getStringOrNull(scampiMessage, TAG_FIELD_DELETIONS);
-        final long[] deletions = d != null ? ArrayUtils.parseArray(d) : EMPTY_LONG_ARRAY;
-        final String f = this.getStringOrNull(scampiMessage, TAG_FIELD_FLAGS);
-        final long[] flags = f != null ? ArrayUtils.parseArray(f) : EMPTY_LONG_ARRAY;
-        final String c = this.getStringOrNull(scampiMessage, TAG_FIELD_COMMENTS);
-        final String[] comments = c != null ? ArrayUtils.parseStringArray(c) : EMPTY_STRING_ARRAY;
 
         return new Peer(tag, idTag, name, likes, deletions, flags, comments, timestamp);
     }
@@ -333,14 +324,14 @@ public final class ScampiPeerDiscoveryService extends HereAndNowService<Peer> {
             @NonNull final SCAMPIMessage scampiMessage,
             @NonNull final Peer value) {
         Log.d("ScampiPeerDiscovery", "outgoing tag=" + value.tag);
-        scampiMessage.putString(ID_TAG_FIELD_LABEL, value.idTag);
-        scampiMessage.putString(ABOUT_ME_FIELD_LABEL, value.aboutMe);
+        scampiMessage.putString(ID_TAG_FIELD_LABEL, value.idTag.get());
+        scampiMessage.putString(ABOUT_ME_FIELD_LABEL, value.aboutMe.get());
         scampiMessage.putInteger(TIMESTAMP_FIELD_LABEL, System.currentTimeMillis());
-        scampiMessage.putString(TAG_FIELD_LIKES, ArrayUtils.musterArray(value.cardLikeUniqueIds));
-        scampiMessage.putString(TAG_FIELD_DELETIONS, ArrayUtils.musterArray(value.cardDeletionUniqueIds));
-        scampiMessage.putString(TAG_FIELD_FLAGS, ArrayUtils.musterArray(value.cardFlagUniqueIds));
-        scampiMessage.putString(TAG_FIELD_COMMENTS, ArrayUtils.musterArray(value.comments));
-        this.putStringIfNotNull(scampiMessage, TAG_FIELD_LABEL, value.tag);
+        scampiMessage.putString(TAG_FIELD_LIKES, ArrayUtils.musterArray(value.cardLikeUniqueIds.get()));
+        scampiMessage.putString(TAG_FIELD_DELETIONS, ArrayUtils.musterArray(value.cardDeletionUniqueIds.get()));
+        scampiMessage.putString(TAG_FIELD_FLAGS, ArrayUtils.musterArray(value.cardFlagUniqueIds.get()));
+        scampiMessage.putString(TAG_FIELD_COMMENTS, ArrayUtils.musterArray(value.comments.get()));
+        this.putStringIfNotNull(scampiMessage, TAG_FIELD_LABEL, value.tag.get());
     }
 
     @Override

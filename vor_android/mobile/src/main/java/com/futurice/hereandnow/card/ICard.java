@@ -1,9 +1,10 @@
 package com.futurice.hereandnow.card;
 
 import android.support.annotation.NonNull;
-import android.view.*;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.futurice.cascade.i.*;
+import com.futurice.cascade.i.INamed;
 
 /**
  * Interface for cards.
@@ -19,16 +20,15 @@ public interface ICard extends INamed {
      * @return newly created view of the card.
      */
     @NonNull
-
-    View getView(@NonNull  ViewGroup parentView);
+    View getView(@NonNull ViewGroup parentView);
 
     /**
      * Updates the view contents with the card's data. The passed view will have
      * been previously created by calling {@link #getView};
      *
-     * @param view           view whose contents to update
+     * @param view view whose contents to update
      */
-    void updateView(@NonNull  View view);
+    void updateView(@NonNull View view);
 
     /**
      * Returns a uid identifier for this card.
@@ -51,5 +51,5 @@ public interface ICard extends INamed {
      * @param search
      * @return
      */
-    boolean matchesSearch(@NonNull  String search);
+    boolean matchesSearch(@NonNull String search);
 }

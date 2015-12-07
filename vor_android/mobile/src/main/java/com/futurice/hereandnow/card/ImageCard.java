@@ -45,13 +45,10 @@ public class ImageCard extends BaseCard {
     public static final int CARD_TYPE = 0;    // Needed for ListView recycling
     public static final String TAG = ImageCard.class.getName();
     @NonNull
-
     private String text = "";
     @NonNull
-
     private Uri imageUri = Uri.EMPTY;
     @NonNull
-
     private Uri thumbnailUri = Uri.EMPTY;
 
     public ImageCard(@NonNull final String name, @NonNull final Context context) {
@@ -69,7 +66,6 @@ public class ImageCard extends BaseCard {
      * @return
      */
     @NonNull
-
     public static Uri createThumbnail(@NonNull final Uri imageFile) {
         // For resource content we'll just use the main image as thumbnail
         if (imageFile.toString().startsWith("android.resource")) {
@@ -77,32 +73,36 @@ public class ImageCard extends BaseCard {
         }
 
         try {
-            String filePath = FileUtils.getPath(HereAndNowApplication.getStaticContext(), imageFile);
+            final String filePath = FileUtils.getPath(HereAndNowApplication.getStaticContext(), imageFile);
             if (filePath == null) {
                 throw new IllegalArgumentException("Can not find path to file: " + imageFile);
             }
 
-            File localImageFile = new File(filePath);
-            Bitmap bmThumbnail = ImageUtils.createImageThumbnail(filePath, MediaStore.Video.Thumbnails.MICRO_KIND);
+            final File localImageFile = new File(filePath);
+            final Bitmap bmThumbnail = ImageUtils.createImageThumbnail(filePath, MediaStore.Video.Thumbnails.MICRO_KIND);
 
-            File directory = new File(Environment.getExternalStorageDirectory() + "/image_thumbnails/");
-            if (!directory.exists()) {
-                directory.mkdirs();
+            if (bmThumbnail != null) {
+                final File directory = new File(Environment.getExternalStorageDirectory() + "/image_thumbnails/");
+                if (!directory.exists() && !directory.mkdirs()) {
+                    throw new IllegalStateException("Can not create external storage directory for thumbnails: " + imageFile);
+                }
+
+                final File file = new File(directory.getAbsolutePath() + "/" + localImageFile.getName() + ".jpg");
+                final OutputStream outStream = new FileOutputStream(file);
+
+                try {
+                    bmThumbnail.compress(Bitmap.CompressFormat.JPEG, 90, outStream);
+                    outStream.flush();
+                } catch (NullPointerException e) {
+                    RCLog.e(ImageCard.class.getSimpleName(), "Can not compress thumbnail", e);
+                } finally {
+                    outStream.close();
+                }
+
+                return Uri.fromFile(file);
+            } else {
+                RCLog.i(TAG, "Can not create bitmap: " + imageFile);
             }
-
-            final File file = new File(directory.getAbsolutePath() + "/" + localImageFile.getName() + ".jpg");
-            final OutputStream outStream = new FileOutputStream(file);
-
-            try {
-                bmThumbnail.compress(Bitmap.CompressFormat.JPEG, 90, outStream);
-                outStream.flush();
-            } catch (NullPointerException e) {
-                RCLog.e(ImageCard.class.getSimpleName(), "Can not compress thumbnail", e);
-            } finally {
-                outStream.close();
-            }
-
-            return Uri.fromFile(file);
         } catch (IOException e) {
             RCLog.e(BaseCard.class.getSimpleName(), "Problem writing thumbnail", e);
         }

@@ -60,8 +60,8 @@ public class DrawerActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ServiceSingleton.create(this.getApplication());
-        ModelSingleton.create(this.getApplication());
+        ServiceSingleton.create(this.getApplicationContext());
+        ModelSingleton.create(this.getApplicationContext());
 
         initReactiveValues();
         setContentView(R.layout.activity_drawer);

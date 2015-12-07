@@ -98,24 +98,24 @@ public class HereAndNowApplication extends Application implements ScampiService.
 //        mSocket.connect();
     }
 
-    public void updateToSharedPreferences(JSONArray jsonArray) {
-        try {
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject obj = jsonArray.getJSONObject(i);
-                String type = obj.getString(Constants.TYPE_KEY);
-                if (type.equals(Constants.TOILET_KEY)) {
-                    String toiletId = Constants.TOILET_KEY + obj.getString(Constants.ID_KEY);
-                    SharedPreferences toilets = getSharedPreferences(toiletId, Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = toilets.edit();
-                    editor.putBoolean(Constants.RESERVED_KEY, obj.getBoolean(Constants.RESERVED_KEY));
-                    editor.putInt(Constants.METHANE_KEY, obj.getInt(Constants.METHANE_KEY));
-                    editor.apply();
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void updateToSharedPreferences(JSONArray jsonArray) {
+//        try {
+//            for (int i = 0; i < jsonArray.length(); i++) {
+//                JSONObject obj = jsonArray.getJSONObject(i);
+//                String type = obj.getString(Constants.TYPE_KEY);
+//                if (type.equals(Constants.TOILET_KEY)) {
+//                    String toiletId = Constants.TOILET_KEY + obj.getString(Constants.ID_KEY);
+//                    SharedPreferences toilets = getSharedPreferences(toiletId, Context.MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = toilets.edit();
+//                    editor.putBoolean(Constants.RESERVED_KEY, obj.getBoolean(Constants.RESERVED_KEY));
+//                    editor.putInt(Constants.METHANE_KEY, obj.getInt(Constants.METHANE_KEY));
+//                    editor.apply();
+//                }
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public void stateChanged(@NonNull final ScampiService.RouterState routerState) {
