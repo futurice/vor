@@ -1,0 +1,82 @@
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragment.Floor7Fragment"
+    tools:ignore="IncludeLayoutParam"
+    style="@style/toiletTableLayout">
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/toilet7AM"
+            style="@style/toiletSquareLeft">
+
+            <ImageView
+                android:id="@+id/toilet7AMenImageView"
+                android:src="@drawable/ic_man_wc_white_48dp"
+                style="@style/toiletGenderImageView"/>
+
+            <include
+                layout="@layout/toilet_a_label"
+                android:layout_above="@id/toilet7AMenImageView"
+                style="@style/toiletLabelImageView"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/toilet7AW"
+            style="@style/toiletSquareRight">
+
+            <ImageView
+                android:id="@+id/toilet7AWomenImageView"
+                android:src="@drawable/ic_woman_wc_white_48dp"
+                style="@style/toiletGenderImageView"/>
+
+            <include
+                layout="@layout/toilet_a_label"
+                android:layout_above="@id/toilet7AWomenImageView"
+                style="@style/toiletLabelImageView"/>
+        </RelativeLayout>
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/toilet7BM"
+            style="@style/toiletSquareLeft">
+
+            <ImageView
+                android:id="@+id/toilet7BMenImageView"
+                android:src="@drawable/ic_man_wc_white_48dp"
+                style="@style/toiletGenderImageView"/>
+
+            <include
+                layout="@layout/toilet_b_label"
+                android:layout_above="@id/toilet7BMenImageView"
+                style="@style/toiletLabelImageView"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/toilet7BW"
+            style="@style/toiletSquareRight">
+
+            <ImageView
+                android:id="@+id/toilet7BWomenImageView"
+                android:src="@drawable/ic_woman_wc_white_48dp"
+                style="@style/toiletGenderImageView"/>
+
+            <include
+                layout="@layout/toilet_b_label"
+                android:layout_above="@id/toilet7BWomenImageView"
+                style="@style/toiletLabelImageView"/>
+        </RelativeLayout>
+
+    </TableRow>
+
+</TableLayout>

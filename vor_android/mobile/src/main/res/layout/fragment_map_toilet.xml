@@ -1,0 +1,16 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.Floor8Fragment"
+    android:background="@color/background_grey"
+    android:padding="@dimen/margin_small">
+
+    <com.futurice.hereandnow.view.MapView
+        android:id="@+id/toiletMap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/futurice_map"/>
+
+</RelativeLayout>

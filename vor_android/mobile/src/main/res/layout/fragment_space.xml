@@ -1,0 +1,18 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".activity.SpaceActivity$PlaceholderFragment"
+                android:background="@color/background_grey"
+                android:padding="@dimen/margin_small">
+
+    <ImageView
+        android:id="@+id/space_map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:layout_centerInParent="true"
+        android:src="@drawable/map_space_7th_floor"/>
+
+</RelativeLayout>

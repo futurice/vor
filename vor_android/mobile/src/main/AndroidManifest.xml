@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    package="com.futurice.hereandnow"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false"/>
+
+    <application
+        android:name=".HereAndNowApplication"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon, android:allowBackup">
+        <activity android:name="net.hockeyapp.android.UpdateActivity" />
+        <activity
+            android:name=".activity.DrawerActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
+        <activity android:name=".activity.NewTopicActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.DrawerActivity"/>
+        </activity>
+        <activity android:name=".activity.NewCardActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.DrawerActivity"/>
+        </activity>
+        <activity android:name=".activity.ImageViewActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.DrawerActivity"/>
+        </activity>
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/title_activity_settings">
+        </activity>
+        <activity
+            android:name=".activity.MapActivity"
+            android:label="@string/title_activity_map"
+            android:parentActivityName=".activity.DrawerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
+        </activity>
+        <activity
+            android:name=".activity.ToiletActivity"
+            android:label="@string/title_activity_toilet"
+            android:parentActivityName=".activity.DrawerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
+        </activity>
+        <activity
+            android:name=".activity.SpaceActivity"
+            android:label="@string/title_activity_space"
+            android:parentActivityName=".activity.DrawerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
+        </activity>
+        <activity
+            android:name=".activity.CardsActivity"
+            android:label="@string/title_activity_cards"
+            android:parentActivityName=".activity.DrawerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
+        </activity>
+        <activity
+            android:name=".activity.PeopleActivity"
+            android:label="@string/title_activity_people"
+            android:parentActivityName=".activity.DrawerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
+        </activity>
+        <activity
+            android:name=".activity.BeaconsActivity"
+            android:label="@string/title_activity_beacons"
+            android:parentActivityName=".activity.DrawerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
+        </activity>
+    </application>
+
+</manifest>

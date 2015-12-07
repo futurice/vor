@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="persist_about_me" translatable="false">persist_about_me</string>
+    <string name="persist_my_tag" translatable="false">persist_my_tag</string>
+    <string name="persist_my_id_tag" translatable="false">persist_my_id_tag</string>
+    <string name="persist_my_likes" translatable="false">persist_my_likes_tag</string>
+    <string name="persist_my_comments" translatable="false">persist_my_comments_tag</string>
+    <string name="persist_deleted_cards" translatable="false">persist_hidden_cards</string>
+    <string name="persist_flagged_cards" translatable="false">persist_flagged_cards</string>
+    <string name="persist_event_id" translatable="false">persist_event_id</string>
+    <string name="persist_event_start" translatable="false">persist_event_start</string>
+</resources>
