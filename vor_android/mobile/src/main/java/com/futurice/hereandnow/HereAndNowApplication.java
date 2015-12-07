@@ -16,6 +16,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URISyntaxException;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
+
 /**
  * Main application
  */
@@ -24,7 +29,7 @@ public class HereAndNowApplication extends Application implements ScampiService.
     public static String TAG = HereAndNowApplication.class.getCanonicalName();
     private static Context context;
 
-//    private Socket mSocket;
+    private Socket mSocket;
 
     /**
      * Reference to the service.
@@ -83,39 +88,39 @@ public class HereAndNowApplication extends Application implements ScampiService.
                 .setStrictMode(false) //TODO Fix strict mode on startup for performance and testing
                 .build();
 
-//        try {
-//            mSocket = IO.socket(Constants.SERVER_URL);
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        }
-//
-//        mSocket
-//                .on(Socket.EVENT_CONNECT, args -> Log.d(TAG, "EVENT_CONNECT"))
-//                .on(Socket.EVENT_CONNECT_ERROR, args -> Log.d(TAG, "EVENT_CONNECT_ERROR"))
-//                .on(Constants.LOCATION_KEY, args -> Log.d(TAG, "LOCATION RECEIVED"))
-//                .on(Constants.STREAM_KEY, args -> updateToSharedPreferences((JSONArray) args[0]))
-//                .on(Socket.EVENT_DISCONNECT, args -> Log.d(TAG, "EVENT_DISCONNECT"));
-//        mSocket.connect();
+        try {
+            mSocket = IO.socket(Constants.SERVER_URL);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        mSocket
+                .on(Socket.EVENT_CONNECT, args -> Log.d(TAG, "EVENT_CONNECT"))
+                .on(Socket.EVENT_CONNECT_ERROR, args -> Log.d(TAG, "EVENT_CONNECT_ERROR"))
+                .on(Constants.LOCATION_KEY, args -> Log.d(TAG, "LOCATION RECEIVED"))
+                .on(Constants.STREAM_KEY, args -> updateToSharedPreferences((JSONArray) args[0]))
+                .on(Socket.EVENT_DISCONNECT, args -> Log.d(TAG, "EVENT_DISCONNECT"));
+        mSocket.connect();
     }
 
-//    public void updateToSharedPreferences(JSONArray jsonArray) {
-//        try {
-//            for (int i = 0; i < jsonArray.length(); i++) {
-//                JSONObject obj = jsonArray.getJSONObject(i);
-//                String type = obj.getString(Constants.TYPE_KEY);
-//                if (type.equals(Constants.TOILET_KEY)) {
-//                    String toiletId = Constants.TOILET_KEY + obj.getString(Constants.ID_KEY);
-//                    SharedPreferences toilets = getSharedPreferences(toiletId, Context.MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = toilets.edit();
-//                    editor.putBoolean(Constants.RESERVED_KEY, obj.getBoolean(Constants.RESERVED_KEY));
-//                    editor.putInt(Constants.METHANE_KEY, obj.getInt(Constants.METHANE_KEY));
-//                    editor.apply();
-//                }
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public void updateToSharedPreferences(JSONArray jsonArray) {
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+                String type = obj.getString(Constants.TYPE_KEY);
+                if (type.equals(Constants.TOILET_KEY)) {
+                    String toiletId = Constants.TOILET_KEY + obj.getString(Constants.ID_KEY);
+                    SharedPreferences toilets = getSharedPreferences(toiletId, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = toilets.edit();
+                    editor.putBoolean(Constants.RESERVED_KEY, obj.getBoolean(Constants.RESERVED_KEY));
+                    editor.putInt(Constants.METHANE_KEY, obj.getInt(Constants.METHANE_KEY));
+                    editor.apply();
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void stateChanged(@NonNull final ScampiService.RouterState routerState) {
