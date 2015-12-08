@@ -1,15 +1,16 @@
 package com.futurice.hereandnow;
 
 import android.app.Application;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat.Builder;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.futurice.cascade.AsyncBuilder;
-import com.futurice.hereandnow.singleton.ModelSingleton;
-import com.futurice.hereandnow.singleton.ServiceSingleton;
 import com.spacetimenetworks.scampiandroidlib.ScampiService;
 
 import org.json.JSONArray;
@@ -29,7 +30,7 @@ public class HereAndNowApplication extends Application implements ScampiService.
     public static String TAG = HereAndNowApplication.class.getCanonicalName();
     private static Context context;
 
-    private Socket mSocket;
+    private static Socket mSocket;
 
     /**
      * Reference to the service.
@@ -106,20 +107,41 @@ public class HereAndNowApplication extends Application implements ScampiService.
     public void updateToSharedPreferences(JSONArray jsonArray) {
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject obj = jsonArray.getJSONObject(i);
-                String type = obj.getString(Constants.TYPE_KEY);
-                if (type.equals(Constants.TOILET_KEY)) {
-                    String toiletId = Constants.TOILET_KEY + obj.getString(Constants.ID_KEY);
-                    SharedPreferences toilets = getSharedPreferences(toiletId, Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = toilets.edit();
-                    editor.putBoolean(Constants.RESERVED_KEY, obj.getBoolean(Constants.RESERVED_KEY));
-                    editor.putInt(Constants.METHANE_KEY, obj.getInt(Constants.METHANE_KEY));
-                    editor.apply();
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                switch (jsonObject.getString(Constants.TYPE_KEY)) {
+                    case Constants.TOILET_KEY:
+                        saveToiletToSharedPreferences(jsonObject);
+                        break;
+                    case Constants.SAUNA_KEY: // Example
+                        Log.d(TAG, jsonObject.toString());
+                        testSaunaNotification(jsonObject.getString("status"));
+                        break;
+                    default:
+                        break;
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void testSaunaNotification(String status) {
+        Builder mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.tribe_icon)
+                .setContentTitle("Sauna")
+                .setContentText("Sauna is " + status);
+        NotificationManager mNotifyMgr =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNotifyMgr.notify(001, mBuilder.build());
+    }
+
+    private void saveToiletToSharedPreferences(JSONObject jsonObject) throws JSONException {
+        String toiletId = Constants.TOILET_KEY + jsonObject.getString(Constants.ID_KEY);
+        SharedPreferences toilets = getSharedPreferences(toiletId, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = toilets.edit();
+        editor.putBoolean(Constants.RESERVED_KEY, jsonObject.getBoolean(Constants.RESERVED_KEY));
+        editor.putInt(Constants.METHANE_KEY, jsonObject.getInt(Constants.METHANE_KEY));
+        editor.apply();
     }
 
     @Override
@@ -190,5 +212,9 @@ public class HereAndNowApplication extends Application implements ScampiService.
 //            HereAndNowApplication.this.service.removeStateChangeCallback(HereAndNowApplication.this);
 //            HereAndNowApplication.this.service = null;
 //        }
+    }
+
+    public static Socket getSocket() {
+        return mSocket;
     }
 }
