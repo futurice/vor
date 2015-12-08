@@ -105,6 +105,10 @@ public class MapActivityFragment extends Fragment {
         beaconLocationManager.setOnLocationUpdateListener(new BeaconLocationManager.OnLocationUpdateListener() {
             @Override
             public void onLocationUpdate(String position) {
+                if (getActivity() == null) {
+                    return;
+                }
+
                 try {
                     JSONObject jsonObject = new JSONObject(position);
                     String email = jsonObject.getString("email"); //TODO update only with the correct email.
@@ -128,6 +132,10 @@ public class MapActivityFragment extends Fragment {
 
             @Override
             public void onConnectionError() {
+                if (getActivity() == null) {
+                    return;
+                }
+
                 getActivity().runOnUiThread(() -> {
                     Toast.makeText(getContext(), R.string.error_connect, Toast.LENGTH_SHORT).show();
                 });
