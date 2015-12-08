@@ -1,12 +1,16 @@
 package com.futurice.hereandnow.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 import com.estimote.sdk.Utils;
 import com.futurice.hereandnow.Constants;
+import com.futurice.hereandnow.R;
+import com.futurice.hereandnow.activity.SettingsActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,9 +61,11 @@ public class BeaconLocationManager {
     private Socket mSocket;
 
     Context context;
+    SharedPreferences preferences;
 
     public BeaconLocationManager(Context c) {
         this.context = c;
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public void initialize() {
@@ -154,11 +160,11 @@ public class BeaconLocationManager {
             mLocationCallback.onLocationUpdate(o.toString());
         }};
 
-        /**
-         * http://developer.estimote.com/android/tutorial/part-2-background-monitoring/
-         * There’s no way to keep track of “interim” beacons’ “enters” and “exits”
-         * other than creating a single region per each beacon of course.
-         */
+    /**
+     * http://developer.estimote.com/android/tutorial/part-2-background-monitoring/
+     * There’s no way to keep track of “interim” beacons’ “enters” and “exits”
+     * other than creating a single region per each beacon of course.
+     */
     private void keepTrackOfBeacons() {
         UUID proximityUUID = UUID.fromString("B9407F30-F5F8-466E-AFF9-25556B57FE6D");
 
@@ -180,7 +186,8 @@ public class BeaconLocationManager {
         try {
             jo.put(BEACON_KEY_ID, beacon.identifier + "-" + beacon.major + "-" + beacon.minor);
             jo.put(BEACON_KEY_DISTANCE, accuracy);
-            jo.put(BEACON_KEY_USER_IDENTIFIER, "luis.ramalho@futurice.com");
+            jo.put(BEACON_KEY_USER_IDENTIFIER, preferences.getString(SettingsActivity.EMAIL_KEY,
+                    context.getString(R.string.pref_my_email_default)));
             jo.put(BEACON_KEY_FLOOR, beacon.floor);
         } catch (JSONException e) {
             e.printStackTrace();

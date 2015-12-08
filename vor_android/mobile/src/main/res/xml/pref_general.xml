@@ -22,4 +22,13 @@
         android:singleLine="true"
         android:maxLines="1" />
 
+    <EditTextPreference
+        android:key="settings_my_email"
+        android:title="@string/pref_my_email_title"
+        android:defaultValue="@string/pref_my_email_default"
+        android:selectAllOnFocus="true"
+        android:inputType="textEmailAddress"
+        android:singleLine="true"
+        android:maxLines="1" />
+
 </PreferenceScreen>

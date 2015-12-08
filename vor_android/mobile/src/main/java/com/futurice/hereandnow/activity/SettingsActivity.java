@@ -41,6 +41,7 @@ public class SettingsActivity extends PreferenceActivity {
     public static String TAG_KEY = "settings_my_tag";
     public static String ID_TAG_KEY = "settings_my_id_tag";
     public static String ABOUT_KEY = "settings_about_me";
+    public static String EMAIL_KEY = "settings_my_email";
     private static Intent resultIntent;
     /**
      * A preference value change listener that updates the preference's summary
@@ -141,6 +142,7 @@ public class SettingsActivity extends PreferenceActivity {
         // to reflect the new value, per the Android Design guidelines.
         bindPreferenceSummaryToValue(findPreference(TAG_KEY));
         bindPreferenceSummaryToValue(findPreference(ABOUT_KEY));
+        bindPreferenceSummaryToValue(findPreference(EMAIL_KEY));
     }
 
     /**
@@ -186,6 +188,7 @@ public class SettingsActivity extends PreferenceActivity {
 
             bindPreferenceSummaryToValue(findPreference(TAG_KEY));
             bindPreferenceSummaryToValue(findPreference(ABOUT_KEY));
+            bindPreferenceSummaryToValue(findPreference(EMAIL_KEY));
         }
     }
 }
