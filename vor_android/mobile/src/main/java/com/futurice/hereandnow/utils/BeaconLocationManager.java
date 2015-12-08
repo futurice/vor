@@ -2,12 +2,11 @@ package com.futurice.hereandnow.utils;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 import com.estimote.sdk.Utils;
-import com.futurice.hereandnow.R;
+import com.futurice.hereandnow.Constants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,11 +20,6 @@ import io.socket.emitter.Emitter;
 
 public class BeaconLocationManager {
     private static final String TAG = "BeaconLocation";
-
-    private static final int REQUEST_ACCESS_COARSE_LOCATION = 71;
-    private static final int REQUEST_ACCESS_FINE_LOCATION = 72;
-
-    public static final String SERVER_URL = "http://futu2.herokuapp.com/";
 
     public static final String IDENTIFIER_B1 = "futu-b1";
     public static final String IDENTIFIER_B2 = "futu-b2";
@@ -74,7 +68,7 @@ public class BeaconLocationManager {
         mB3Manager = new BeaconManager(context);
 
         try {
-            mSocket = IO.socket(SERVER_URL);
+            mSocket = IO.socket(Constants.SERVER_URL);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -150,7 +144,9 @@ public class BeaconLocationManager {
         for (Object arg : args) {
             Log.d(TAG, arg.toString());
         }
-        Toast.makeText(context, R.string.error_connect, Toast.LENGTH_LONG).show();
+        if (mLocationCallback != null) {
+            mLocationCallback.onConnectionError();
+        }
     };
 
     private Emitter.Listener onLocation = args -> {
@@ -212,6 +208,8 @@ public class BeaconLocationManager {
      */
     public interface OnLocationUpdateListener {
         void onLocationUpdate(String position);
+
+        void onConnectionError();
     }
 
     public void setOnLocationUpdateListener(OnLocationUpdateListener listener) {
