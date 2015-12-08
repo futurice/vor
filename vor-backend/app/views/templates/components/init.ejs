@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-md-4">
+    <button id="get-init" class="btn btn-primary">Send "init" event</button>
+    <a id="clear-init" href="#">Clear</a>
+  </div>
+  <div class="col-md-4">
+    <ul id="init-data" class="list-unstyled">No data</ul>
+  </div>
+</div>
+<script>
+  (function ($, FUTU2) {
+    var utils = FUTU2.utils;
+    var socket = FUTU2.getSocket();
+
+    $('#get-init').on('click', function (event) {
+      event.preventDefault();
+      socket.emit('init');
+    });
+
+    $('#clear-init').on('click', function (event) {
+      event.preventDefault();
+      clearInit();
+    });
+
+    function clearInit (){
+      $('#init-data').html('');
+    }
+
+    socket.on('init', function(rows){
+      clearInit();
+      if(!rows) {
+        return;
+      }
+      $.each(rows, function(index, row){
+        var rowEl = $('<li/>');
+        var elWithJson = utils.renderJson(rowEl, row);
+        $('#init-data').append(rowEl)
+      });
+    });
+
+  })(jQuery, window.FUTU2);
+</script>

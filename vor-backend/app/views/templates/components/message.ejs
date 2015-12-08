@@ -1,0 +1,158 @@
+<div class="row">
+  <div class="col-md-4">
+    <form class="form" id="message-form">
+          <div class="input-group">
+            <span class="input-group-addon">Type</span>
+            <input id="property-type"
+                   type="text"
+                   class="form-control"
+                   placeholder="Type is required for identifying">
+          </div>
+          <span id="property-type-error" class="help-block text-danger hidden">Type is required for identifying</span>
+          <div id="property-fields"class="form-inline">
+              <br/>
+              <div class="input-group">
+                <button class="btn btn-success JS-add-property">Add property</button>
+              </div>
+              <br/>
+          </div>
+          <div class="input-group">
+            <label>Image</label>
+          <input type="file" id="message-image">
+          <input type="hidden" id="message-image-stream">
+
+          <div id="message-image-preview" class="hidden">
+            <img id="message-image-preview-image" src="" alt="no image" style="width: 50px;" class="img-preview img-rounded">
+            <br/>
+            <a id="remove-message-image" href="#">Remove image</a>
+          </div>
+        </div>
+      <button id="send-message" class="btn btn-primary" type="submit">Send a message</button>
+    </form>
+  </div>
+  <div class="col-md-4">
+    <% include response-holder.ejs %>
+  </div>
+</div>
+<script>
+  (function ($, FUTU2) {
+    function getCommonTmpl(id) {
+      return (
+        ` <div id="${id}" class="form-group JS-property-field">
+            <div class="input-group">
+              <label>Key</label>
+              <input class="form-control JS-key-input" type="text">
+            </div>
+            <div class="input-group">
+              <label>Value</label>
+              <input class="form-control JS-value-input" type="text">
+            </div>
+            <div><button data-remove-id="${id}" class="btn btn-warning JS-delete-property">Remove Property</button></div>
+            <hr/>
+          </div>
+        `);
+    }
+
+    const $responseHolder = $('#<%= responseType%>-holder');
+    const $properties = $('#property-fields');
+    const idForProperty = function(){
+      var index = -1;
+      return function(){
+        const current = ++index;
+        return (`property-${current}`);
+      };
+    }();
+
+    $properties.append(getCommonTmpl(idForProperty()));
+
+    $('.JS-add-property').on('click', function(event){
+      event.preventDefault();
+      $properties.append(getCommonTmpl(idForProperty()))
+    });
+
+    $('body').on('click', '.JS-delete-property', function(event){
+      event.preventDefault();
+      const holderId = $(this).data('remove-id');
+      if($('.JS-property-field').length === 1) {
+        return;
+      }
+      $(`#${holderId}`).remove();
+    });
+
+    const utils = FUTU2.utils;
+    const socket = FUTU2.getSocket();
+    const $imageInput = $('#message-image');
+    const $imageStreamInput = $('#message-image-stream');
+    const $imagePreview = $('#message-image-preview');
+    const $imagePreviewImage = $('#message-image-preview-image');
+
+    $('#send-message').on('click', function (event) {
+      event.preventDefault();
+      const $typeField = $('#property-type');
+      const $error = $('#property-type-error');
+      const typeValue = $typeField.val();
+      if(typeValue === ""){
+        $typeField.parent('.input-group').addClass('has-error');
+        $error.removeClass('hidden');
+        return
+      }
+
+      $typeField.parent('.input-group').removeClass('has-error');
+      $error.addClass('hidden');
+      const defaultProp = { type: typeValue };
+      const imageStream = $imageStreamInput.val();
+      const imageProp = imageStream ? { file: imageStream } : {};
+
+      $('.JS-property-field').each(function(i, element){
+        const key = $(element).find('.JS-key-input').val();
+        const value = $(element).find('.JS-value-input').val();
+        if(key === "" || value === ""){
+          return;
+        }
+        defaultProp[key] = value;
+      });
+      socket.emit('message', $.extend(defaultProp, imageProp));
+    });
+
+    $imageInput.on('change', function (event) {
+      const files = event.target.files;
+      const file = files[0];
+
+      if (files && file) {
+        const reader = new FileReader();
+        reader.onload = function (readerEvt) {
+          const binaryString = readerEvt.target.result;
+          const val = btoa(binaryString);
+          toggleImage(val)
+        };
+        reader.readAsBinaryString(file);
+      }
+    });
+
+    $('#remove-message-image').on('click', function (event) {
+      event.preventDefault();
+      toggleImage();
+    });
+
+
+    function toggleImage(image) {
+      if (!!image) {
+        $imageStreamInput.val(image);
+        $imagePreview.removeClass('hidden');
+        $imagePreviewImage.attr('src', 'data:image/png;base64,' + image);
+      } else {
+        $imageInput.val('');
+        $imageStreamInput.val('');
+        $imagePreview.addClass('hidden');
+        $imagePreviewImage.attr('src', '');
+      }
+    }
+
+    socket.on('stream', function(streamMessages){
+        if (streamMessages.length) {
+          utils.renderJson($responseHolder, streamMessages[0])
+        }
+      });
+
+  })(jQuery, window.FUTU2);
+</script>

@@ -1,0 +1,112 @@
+<% var responseType = ''; %>
+<head>
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <style type="text/css">
+    h3 {
+      margin: 3rem 0 2rem;
+    }
+
+    .json-response pre {
+      border: 0 none;
+    }
+
+    .form {
+      border-bottom: 1px dashed #ccc;
+      margin-bottom: 1rem;
+      padding-bottom: 3rem;
+    }
+
+    input[type=number] {
+      width: 50px;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+  </style>
+  <script>
+    (function(window) {
+
+      function getSocket(socket){
+        return function(){
+          return socket;
+        };
+      }
+
+      function formatNumberInput(input) {
+        return parseInt(input, 10);
+      }
+
+      function renderJson($el, json) {
+        $el.html(`<pre>${stringify(json)}</pre>`);
+      }
+
+      function stringify(o) {
+        var str =
+          $.map(o, function (val, key) {
+            if( typeof val === 'object') {
+              return `  ${key}: ${ stringify(val)}`;
+            }
+            var formatted = typeof val === 'string' ? `"${truncate(val)}"` : val;
+            return `  ${key}: ${formatted}`;
+          });
+        return `{\n${str.join(',\n')}\n}`;
+      }
+
+      function truncate(str) {
+        var LIMIT = 35;
+        return str.length > LIMIT ? (str.substr(0, (LIMIT - 2)) + '..') : str;
+      }
+
+      function messagesByType(messageTypes, messages) {
+        if (!messages[0]) {
+          return [];
+        }
+        return matchMessageType(messages[0].type, messageTypes) && messages;
+      }
+
+      function matchMessageType(messageType, messageTypes){
+        return messageTypes.findIndex(function(type){ return messageType === type; }) !== -1;
+      }
+
+      window.FUTU2 = {
+        getSocket: getSocket(io.connect(window.location.protocol + '//' + window.location.host)),
+        utils: {
+          messagesByType: messagesByType,
+          formatNumberInput: formatNumberInput,
+          renderJson: renderJson
+        }
+      };
+    })(window);
+  </script>
+</head>
+<body>
+<div class="container-fluid">
+  <div class="page-header">
+    <h1><%= title %></h1>
+  </div>
+  <div class="container-fluid">
+    <h3>Init data</h3>
+    <% include components/init.ejs %>
+
+    <h3>Location</h3>
+    <% responseType = 'location'; %>
+    <% include components/location.ejs %>
+
+    <h3>Message with optional image</h3>
+    <% responseType = 'message'; %>
+    <% include components/message.ejs %>
+
+    <h3>Toilet info</h3>
+    <% responseType = 'toilet'; %>
+    <% include components/toilet.ejs %>
+
+    <h3>Room info</h3>
+    <% responseType = 'room'; %>
+    <% include components/room.ejs %>
+  </div>
+</div>
+</body>

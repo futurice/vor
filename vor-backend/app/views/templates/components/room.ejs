@@ -1,0 +1,90 @@
+<div class="row">
+  <div class="col-md-4">
+    <form class="form" id="room-message-form">
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-addon">id</span>
+          <input id="room-id"
+                 class="form-control"
+                 type="text"
+                 placeholder="Room id">
+        </div>
+        <div class="input-group">
+          <label>
+            <input id="room-reserved" type="checkbox"> Reserved
+          </label>
+        </div>
+        <div class="input-group">
+          <span class="input-group-addon">Temperature (C°)</span>
+          <input id="room-temperature"
+                 class="form-control"
+                 type="number"
+                 step="any">
+        </div>
+        <div class="input-group">
+          <span class="input-group-addon">Light (lumen)</span>
+          <input id="room-light"
+                 class="form-control"
+                 type="number"
+                 step="any">
+        </div>
+        <div class="input-group">
+          <span class="input-group-addon">CO&sup2; (%)</span>
+          <input id="room-dioxide"
+                 class="form-control"
+                 type="number"
+                 step="any">
+        </div>
+        <div class="input-group">
+          <span class="input-group-addon">Noise (dB)</span>
+          <input id="room-noise"
+                 class="form-control"
+                 type="number"
+                 step="any">
+        </div>
+      </div>
+      <button id="send-room-message" class="btn btn-primary" type="submit">Send a room message</button>
+    </form>
+  </div>
+  <div class="col-md-4">
+    <% var responseType = 'room'; %>
+    <% var responseHolder='response-room'; %>
+    <% include response-holder.ejs %>
+  </div>
+</div>
+<script>
+  (function ($, FUTU2) {
+    var responseType = '<%= responseType %>';
+    var $responseHolder = $('#<%= responseType%>-holder');
+
+    var utils = FUTU2.utils;
+    var socket = FUTU2.getSocket();
+
+    $('#send-room-message').on('click', function (event) {
+      event.preventDefault();
+      var id = $('#room-id').val();
+      var isReserved = $('#room-reserved').is(':checked');
+      var temperature = $('#room-temperature').val();
+      var light = $('#room-light').val();
+      var dioxide = $('#room-dioxide').val();
+      var noise = $('#room-noise').val();
+      socket.emit('message', {
+        id: id,
+        type: 'room',
+        reserved: isReserved,
+        temperature: utils.formatNumberInput(temperature),
+        light: utils.formatNumberInput(light),
+        dioxide: utils.formatNumberInput(dioxide),
+        noise: utils.formatNumberInput(noise)
+      });
+    });
+
+    socket.on('stream', function(messages){
+      var roomMessages = utils.messagesByType([responseType], messages);
+      if (roomMessages.length) {
+        utils.renderJson($responseHolder, roomMessages[0])
+      }
+    });
+
+  })(jQuery, window.FUTU2);
+</script>

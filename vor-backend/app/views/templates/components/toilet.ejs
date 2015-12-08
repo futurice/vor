@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="col-md-4">
+    <form class="form" id="toilet-message-form">
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-addon">id</span>
+          <input id="toilet-id"
+                 class="form-control"
+                 type="text"
+                 placeholder="Toilet id">
+        </div>
+        <div class="input-group">
+          <label>
+            <input id="toilet-reserved" type="checkbox"> Reserved
+          </label>
+        </div>
+        <div class="input-group">
+          <span class="input-group-addon">Methane</span>
+          <input id="toilet-methane"
+                 class="form-control"
+                 type="number"
+                 placeholder="percent"
+                 step="any">
+        </div>
+      </div>
+      <button id="send-toilet-message" class="btn btn-primary" type="submit">Send a toilet message</button>
+    </form>
+  </div>
+  <div class="col-md-4">
+    <% var responseType = 'toilet'; %>
+    <% var responseHolder='response-toilet'; %>
+    <% include response-holder.ejs %>
+  </div>
+ </div>
+<script>
+  (function ($, FUTU2) {
+    var responseType = '<%= responseType %>';
+    var $responseHolder = $('#<%= responseType%>-holder');
+
+    var utils = FUTU2.utils;
+    var socket = FUTU2.getSocket();
+
+    $('#send-toilet-message').on('click', function (event) {
+      event.preventDefault();
+      var toiletId = $('#toilet-id').val();
+      var isToiletReserved = $('#toilet-reserved').is(':checked');
+      var methane = $('#toilet-methane').val();
+      socket.emit('message', {
+        id: toiletId,
+        type: 'toilet',
+        reserved: isToiletReserved,
+        methane: utils.formatNumberInput(methane)
+      });
+    });
+
+    socket.on('stream', function(messages){
+      var toiletMessages = utils.messagesByType([responseType], messages);
+      if (toiletMessages.length) {
+        utils.renderJson($responseHolder, toiletMessages[0])
+      }
+    });
+
+  })(jQuery, window.FUTU2);
+</script>
