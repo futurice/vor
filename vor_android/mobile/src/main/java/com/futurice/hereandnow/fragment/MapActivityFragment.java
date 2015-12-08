@@ -16,18 +16,21 @@ import android.widget.Toast;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.utils.BeaconLocationManager;
 import com.futurice.hereandnow.utils.HereAndNowUtils;
+import com.futurice.hereandnow.utils.PeopleManager;
 import com.futurice.hereandnow.view.MapView;
 import com.futurice.hereandnow.Constants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class MapActivityFragment extends Fragment {
-    private static final int DELAY = 8000;
+    private static final int DELAY = 5000;
 
     //TODO Measure real dimensions for the 8th floor.
     // Real life dimensions for the map in meters.
@@ -42,6 +45,7 @@ public class MapActivityFragment extends Fragment {
     @Bind(R.id.futumap) MapView mImageView;
     PhotoViewAttacher mAttacher;
     BeaconLocationManager beaconLocationManager;
+    PeopleManager peopleManager;
 
     public MapActivityFragment() {}
 
@@ -94,6 +98,8 @@ public class MapActivityFragment extends Fragment {
         beaconLocationManager = new BeaconLocationManager(getContext());
         beaconLocationManager.initialize();
 
+        peopleManager = new PeopleManager();
+
         return view;
     }
 
@@ -111,18 +117,31 @@ public class MapActivityFragment extends Fragment {
 
                 try {
                     JSONObject jsonObject = new JSONObject(position);
-                    String email = jsonObject.getString("email"); //TODO update only with the correct email.
+                    String email = jsonObject.getString("email");
+
+                    // Check if this is a new person not initialized yet.
+                    if (!peopleManager.exists(email)) {
+                        peopleManager.addPerson(email);
+                    }
+                    PeopleManager.Person selectedPerson = peopleManager.getPerson(email);
+
+                    // Calculate a new location for the person.
                     float location[] = convertToMapLocation(
                             Float.valueOf(jsonObject.getString("x")),
                             Float.valueOf(jsonObject.getString("y")));
 
+                    float scaleFactor = mAttacher.getScale();
+                    RectF rect = mAttacher.getDisplayRect();
+
+                    // Set the new location for the person.
+                    selectedPerson.setLocation((location[0] * scaleFactor), (location[1] * scaleFactor));
+
                     getActivity().runOnUiThread(() -> {
                         // Invalidate the picture to make it draw the canvas again.
                         mImageView.invalidate();
-                        float scaleFactor = mAttacher.getScale();
-                        mImageView.setLocation((location[0] * scaleFactor), (location[1] * scaleFactor));
-                        RectF rect = mAttacher.getDisplayRect();
-                        mImageView.setDisplayedLocation((location[0] * scaleFactor) + rect.left, (location[1] * scaleFactor) + rect.top, false);
+                        for (PeopleManager.Person person : peopleManager.getPeople()) {
+                            person.setDisplayedLocation(person.getMapLocationX() + rect.left, person.getMapLocationY()+ rect.top, false);
+                        }
                     });
 
                 } catch (JSONException e) {
@@ -139,6 +158,13 @@ public class MapActivityFragment extends Fragment {
                 getActivity().runOnUiThread(() -> {
                     Toast.makeText(getContext(), R.string.error_connect, Toast.LENGTH_SHORT).show();
                 });
+            }
+        });
+
+        mImageView.setOnMapDrawListener(new MapView.OnMapDrawListener() {
+            @Override
+            public ArrayList<PeopleManager.Person> getPersons() {
+                return peopleManager.getPeople();
             }
         });
 
@@ -172,10 +198,13 @@ public class MapActivityFragment extends Fragment {
         // Redefine the position for the marker after the user scales the image.
         @Override
         public void onScaleChange(float scaleFactor, float focusX, float focusY) {
-            float oldX = mImageView.getMapLocationX();
-            float oldY = mImageView.getMapLocationY();
-            mImageView.setLocation((oldX * scaleFactor), (oldY * scaleFactor));
             mImageView.scaleRadius(scaleFactor);
+
+            for (PeopleManager.Person person : peopleManager.getPeople()) {
+                float oldX = person.getMapLocationX();
+                float oldY = person.getMapLocationY();
+                person.setLocation((oldX * scaleFactor), (oldY * scaleFactor));
+            }
         }
     }
 
@@ -184,9 +213,12 @@ public class MapActivityFragment extends Fragment {
         // Calculate a new location on the display for the marker when the user moves the map.
         @Override
         public void onMatrixChanged(RectF rect) {
-            float newX = mImageView.getMapLocationX() + rect.left;
-            float newY = mImageView.getMapLocationY() + rect.top;
-            mImageView.setDisplayedLocation(newX, newY, true);
+
+            for (PeopleManager.Person person : peopleManager.getPeople()) {
+                float newX = person.getMapLocationX() + rect.left;
+                float newY = person.getMapLocationY() + rect.top;
+                person.setDisplayedLocation(newX, newY, true);
+            }
         }
     }
 

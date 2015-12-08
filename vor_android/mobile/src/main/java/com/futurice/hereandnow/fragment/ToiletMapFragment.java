@@ -44,7 +44,6 @@ public class ToiletMapFragment extends Fragment {
 
         Drawable drawable = ContextCompat.getDrawable(getContext(), FLOOR_7_DRAWABLE);
         mToiletMapImageView.setImageDrawable(drawable);
-        mToiletMapImageView.setLocation(300f, 300f);
         return view;
     }
 
