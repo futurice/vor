@@ -30,7 +30,10 @@ public class Constants {
     public static final String FLOOR_KEY = "floor";
     public static final String STREAM_KEY = "stream";
 
+    public static final String EVENT_INIT = "init";
+
     public static final String TOILET_KEY = "toilet";
+    public static final String SAUNA_KEY = "sauna";
     public static final String RESERVED_KEY = "reserved";
     public static final String METHANE_KEY = "methane";
 

@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.UUID;
 
 import fi.tkk.netlab.dtn.scampi.applib.SCAMPIMessage;
+import io.socket.client.Socket;
 
 public class DrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, IAsyncOrigin {
@@ -92,41 +93,6 @@ public class DrawerActivity extends BaseActivity
 
     private void disconnectScampiServices() {
         ServiceSingleton.instance().scampiHandler().cancelReconnect();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        HereAndNowApplication.startServiceIf(this);
-        connectScampiServices();
-    }
-
-    private void connectScampiServices() {
-        ServiceSingleton.instance().scampiHandler().scheduleReconnect();
-        ServiceSingleton.instance().peerDiscoveryService().startAdvertisingLocalUser();
-    }
-
-    @Override
-    protected void onPause() {
-        // disconnectScampiServices();
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        // We should be OK without the unsubscribeSource, but it doesn't hurt and may help we we work out the kinks
-//        chatReactiveValue.unsubscribeSource((ReactiveTextView) findViewById(R.id.chat_text_view));
-    }
-
-    @Override
-    protected void onDestroy() {
-        HereAndNowApplication.stopServiceDelayed(this);
-        super.onDestroy();
-
-        //TODO Persist unpublished messages to the bundle (in onPause insted?) if they have not yet expired while waiting to publish
-//        List<SCAMPIMessage> unpublishedSCAMPIMessages = serviceSingleton.scampiHandler().stopServiceScan(SCAMPI_HANDLER_STOP_TIMEOUT);
     }
 
     @Override
@@ -198,17 +164,6 @@ public class DrawerActivity extends BaseActivity
         drawer.closeDrawer(GravityCompat.START);
 
         return true;
-    }
-
-    public void fireSelectContentIntent(
-            @NonNull final IActionOne<Uri> action,
-            @NonNull final String mediaType,
-            final int result) {
-        DrawerActivity.actionAfterSelectVideo = action;
-
-        final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType(mediaType);
-        startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.gen_select_media)), result);
     }
 
     @Override

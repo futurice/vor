@@ -56,19 +56,19 @@
             tools:text="Placeholder"
             style="@style/TopicTitle"/>
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_favorite_border_white_24dp"
-            android:contentDescription="@string/add_as_favourite"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:paddingBottom="25dp"
-            android:paddingRight="20dp"
-            android:paddingTop="20dp"
-            android:paddingLeft="20dp"/>
+        <!--<ImageView-->
+            <!--android:id="@+id/imageView2"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/ic_favorite_border_white_24dp"-->
+            <!--android:contentDescription="@string/add_as_favourite"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:paddingBottom="25dp"-->
+            <!--android:paddingRight="20dp"-->
+            <!--android:paddingTop="20dp"-->
+            <!--android:paddingLeft="20dp"/>-->
 
     </RelativeLayout>
 
