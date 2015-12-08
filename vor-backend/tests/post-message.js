@@ -34,7 +34,7 @@ describe('App: On message post', function () {
           should(message[0]).deepEqual(TEST_MESSAGE);
           clientA.disconnect();
           clientB.disconnect();
-
+          done();
         });
       });
 

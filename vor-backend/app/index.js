@@ -1,6 +1,8 @@
 'use strict';
 const path = require('path');
 const express = require('express');
+const bodyParser = require('body-parser');
+const logger = require('morgan');
 const socketIO = require('socket.io');
 const Rx = require('rx');
 const redis = require('redis');
@@ -15,6 +17,9 @@ const utils = require('app/utils');
 // init app setup
 const app = express();
 const router = express.Router();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(logger('dev'));
 
 
 // init cache storage
@@ -62,13 +67,12 @@ app.io.on('connection', socket => {
 
 
 // TODO: At the moment Arduinos' have limited websocket support. Remove this route if changes.
-const messageRouteSource = message => Rx.Observable.from([message]);
+const messageRouteSource = message => Rx.Observable.from(message);
 const messageRoute = router.post('/messages', (req, res) => {
-  console.log('console', req.body);
-  messageSource$(messageRouteSource(req.body))
+  messageSource$(messageRouteSource([req.body]))
     .subscribe(
       success => res.send('OK'),
-      error => res.error(`Error: ${error}`)
+      error => res.status(500).send(`Error: ${error}`)
     );
 });
 app.use('/messages', messageRoute);
