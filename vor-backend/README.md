@@ -1,4 +1,4 @@
-# Futu_2 Node.js app
+# Vör app
 
 ## Backend for sensors and clients
 - Uses websockets for communication
