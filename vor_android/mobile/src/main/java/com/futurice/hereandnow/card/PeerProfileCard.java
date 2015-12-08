@@ -49,7 +49,6 @@ public class PeerProfileCard extends BaseCard {
     }
 
     @NonNull
-
     public String getPeerIdTag() {
         return peerIdTag;
     }
@@ -59,7 +58,6 @@ public class PeerProfileCard extends BaseCard {
     }
 
     @NonNull
-
     public String getPeerTag() {
         return peerTag;
     }
@@ -69,7 +67,6 @@ public class PeerProfileCard extends BaseCard {
     }
 
     @NonNull
-
     public String getPeerAboutMe() {
         return peerAboutMe;
     }
@@ -79,7 +76,6 @@ public class PeerProfileCard extends BaseCard {
     }
 
     @NonNull
-
     public String getPeerLikes() {
         return peerLikes;
     }

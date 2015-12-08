@@ -45,13 +45,10 @@ public class ImageCard extends BaseCard {
     public static final int CARD_TYPE = 0;    // Needed for ListView recycling
     public static final String TAG = ImageCard.class.getName();
     @NonNull
-
     private String text = "";
     @NonNull
-
     private Uri imageUri = Uri.EMPTY;
     @NonNull
-
     private Uri thumbnailUri = Uri.EMPTY;
 
     public ImageCard(@NonNull final String name, @NonNull final Context context) {
@@ -69,7 +66,6 @@ public class ImageCard extends BaseCard {
      * @return
      */
     @NonNull
-
     public static Uri createThumbnail(@NonNull final Uri imageFile) {
         // For resource content we'll just use the main image as thumbnail
         if (imageFile.toString().startsWith("android.resource")) {
@@ -77,32 +73,36 @@ public class ImageCard extends BaseCard {
         }
 
         try {
-            String filePath = FileUtils.getPath(HereAndNowApplication.getStaticContext(), imageFile);
+            final String filePath = FileUtils.getPath(HereAndNowApplication.getStaticContext(), imageFile);
             if (filePath == null) {
                 throw new IllegalArgumentException("Can not find path to file: " + imageFile);
             }
 
-            File localImageFile = new File(filePath);
-            Bitmap bmThumbnail = ImageUtils.createImageThumbnail(filePath, MediaStore.Video.Thumbnails.MICRO_KIND);
+            final File localImageFile = new File(filePath);
+            final Bitmap bmThumbnail = ImageUtils.createImageThumbnail(filePath, MediaStore.Video.Thumbnails.MICRO_KIND);
 
-            File directory = new File(Environment.getExternalStorageDirectory() + "/image_thumbnails/");
-            if (!directory.exists()) {
-                directory.mkdirs();
+            if (bmThumbnail != null) {
+                final File directory = new File(Environment.getExternalStorageDirectory() + "/image_thumbnails/");
+                if (!directory.exists() && !directory.mkdirs()) {
+                    throw new IllegalStateException("Can not create external storage directory for thumbnails: " + imageFile);
+                }
+
+                final File file = new File(directory.getAbsolutePath() + "/" + localImageFile.getName() + ".jpg");
+                final OutputStream outStream = new FileOutputStream(file);
+
+                try {
+                    bmThumbnail.compress(Bitmap.CompressFormat.JPEG, 90, outStream);
+                    outStream.flush();
+                } catch (NullPointerException e) {
+                    RCLog.e(ImageCard.class.getSimpleName(), "Can not compress thumbnail", e);
+                } finally {
+                    outStream.close();
+                }
+
+                return Uri.fromFile(file);
+            } else {
+                RCLog.i(TAG, "Can not create bitmap: " + imageFile);
             }
-
-            final File file = new File(directory.getAbsolutePath() + "/" + localImageFile.getName() + ".jpg");
-            final OutputStream outStream = new FileOutputStream(file);
-
-            try {
-                bmThumbnail.compress(Bitmap.CompressFormat.JPEG, 90, outStream);
-                outStream.flush();
-            } catch (NullPointerException e) {
-                RCLog.e(ImageCard.class.getSimpleName(), "Can not compress thumbnail", e);
-            } finally {
-                outStream.close();
-            }
-
-            return Uri.fromFile(file);
         } catch (IOException e) {
             RCLog.e(BaseCard.class.getSimpleName(), "Problem writing thumbnail", e);
         }
@@ -114,16 +114,14 @@ public class ImageCard extends BaseCard {
     public void updateView(@NonNull View view) {
         super.updateView(view);
 
-        Resources resources = context.getResources();
-
-        TextView cardTextView = (TextView) view.findViewById(R.id.card_text);
-        TextView cardAuthorTextView = (TextView) view.findViewById(R.id.card_author);
-        LinearLayout likesBarLinearLayout = (LinearLayout) view.findViewById(R.id.likes_bar);
-        TextView likesTextView = (TextView) view.findViewById(R.id.likes_text);
-        ImageView cardLikeButton = (ImageView) view.findViewById(R.id.card_like_button);
-        LinearLayout commentsBar = (LinearLayout) view.findViewById(R.id.comments_bar);
-        ImageView cardImageView = (ImageView) view.findViewById(R.id.card_image);
-
+        final Resources resources = context.getResources();
+        final TextView cardTextView = (TextView) view.findViewById(R.id.card_text);
+        final TextView cardAuthorTextView = (TextView) view.findViewById(R.id.card_author);
+        final LinearLayout likesBarLinearLayout = (LinearLayout) view.findViewById(R.id.likes_bar);
+        final TextView likesTextView = (TextView) view.findViewById(R.id.likes_text);
+        final ImageView cardLikeButton = (ImageView) view.findViewById(R.id.card_like_button);
+        final LinearLayout commentsBar = (LinearLayout) view.findViewById(R.id.comments_bar);
+        final ImageView cardImageView = (ImageView) view.findViewById(R.id.card_image);
         final String date = DateUtils.getRelativeDateTimeString(context,
                 this.getDate().getTime(),
                 DateUtils.MINUTE_IN_MILLIS,
@@ -142,7 +140,7 @@ public class ImageCard extends BaseCard {
         String authorAndDate = resources.getString(R.string.card_author, this.getAuthor(), date);
         cardAuthorTextView.setText(authorAndDate);
 
-        int likes = ModelSingleton.instance().getLikes(this);
+        final int likes = ModelSingleton.instance().getLikes(this);
         final List<Comment> comments = ModelSingleton.instance().getCommentsList(this);
         if (likes > 0) {
             likesBarLinearLayout.setVisibility(View.VISIBLE);
@@ -154,8 +152,8 @@ public class ImageCard extends BaseCard {
         }
 
         // Set like button
-        int like = userAlreadyLikes() ? R.drawable.card_navbar_liked : R.drawable.card_navbar_like;
-        Drawable drawable = ContextCompat.getDrawable(context, like);
+        final int like = userAlreadyLikes() ? R.drawable.card_navbar_liked : R.drawable.card_navbar_like;
+        final Drawable drawable = ContextCompat.getDrawable(context, like);
         cardLikeButton.setImageDrawable(drawable);
 
         if (comments != null && !comments.isEmpty()) {
@@ -183,7 +181,6 @@ public class ImageCard extends BaseCard {
     }
 
     @NonNull
-
     public String getText() {
         return text;
     }
@@ -193,7 +190,6 @@ public class ImageCard extends BaseCard {
     }
 
     @NonNull
-
     public Uri getImageUri() {
         return imageUri;
     }
@@ -204,7 +200,6 @@ public class ImageCard extends BaseCard {
     }
 
     @NonNull
-
     public Uri getThumbnailUri() {
         return thumbnailUri;
     }
@@ -213,31 +208,32 @@ public class ImageCard extends BaseCard {
         this.thumbnailUri = thumbnailUri;
     }
 
-    public void populateCommentsBar(List<Comment> comments, LinearLayout commentsBar) {
+    public void populateCommentsBar(@NonNull final List<Comment> comments,
+                                    @NonNull LinearLayout commentsBar) {
         Log.d(TAG, "Populating the comment bar: " + comments.size());
-        if (comments != null && !comments.isEmpty() && commentsBar != null) {
-            commentsBar.removeAllViews();
-            for (Comment comment : comments) {
-                final LinearLayout commentItem = (LinearLayout) this.inflateView(R.layout.comment_item, null);
-                commentItem.setTag(comment);
-                TextView name = (TextView) commentItem.findViewById(R.id.comment_name);
-                TextView date = (TextView) commentItem.findViewById(R.id.comment_date);
-                TextView text = (TextView) commentItem.findViewById(R.id.comment_text);
-                ImageView deleteButton = (ImageView) commentItem.findViewById(R.id.delete_button);
-                if (ModelSingleton.instance().myIdTag.get().equalsIgnoreCase(comment.getUserIdTag())) {
-                    deleteButton.setVisibility(View.VISIBLE);
-                    deleteButton.setOnClickListener(v -> {
-                        commentItem.setVisibility(View.GONE);
-                        deleteLocalUserComment(comment);
-                    });
-                } else {
-                    deleteButton.setVisibility(View.GONE);
-                }
-                name.setText(comment.getUserTag());
-                Date timestamp = new Date();
-                timestamp.setTime(comment.getTimestamp());
-                date.setText(new SimpleDateFormat("dd.MM H.mm").format(timestamp));
-                text.setText(comment.getText());
+        commentsBar.removeAllViews();
+        for (final Comment comment : comments) {
+            final LinearLayout commentItem = (LinearLayout) this.inflateView(R.layout.comment_item, null);
+
+            commentItem.setTag(comment);
+            TextView name = (TextView) commentItem.findViewById(R.id.comment_name);
+            TextView date = (TextView) commentItem.findViewById(R.id.comment_date);
+            TextView text = (TextView) commentItem.findViewById(R.id.comment_text);
+            ImageView deleteButton = (ImageView) commentItem.findViewById(R.id.delete_button);
+            if (ModelSingleton.instance().myIdTag.get().equalsIgnoreCase(comment.userIdTag)) {
+                deleteButton.setVisibility(View.VISIBLE);
+                deleteButton.setOnClickListener(v -> {
+                    commentItem.setVisibility(View.GONE);
+                    deleteLocalUserComment(comment);
+                });
+            } else {
+                deleteButton.setVisibility(View.GONE);
+            }
+            name.setText(comment.userTag);
+            Date timestamp = new Date();
+            timestamp.setTime(comment.getTimestamp());
+            date.setText(new SimpleDateFormat("dd.MM H.mm").format(timestamp));
+            text.setText(comment.getText());
                 /*
                 commentItem.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -245,9 +241,7 @@ public class ImageCard extends BaseCard {
                     }
                 });*/
 
-                commentsBar.addView(commentItem);
-            }
+            commentsBar.addView(commentItem);
         }
     }
-
 }

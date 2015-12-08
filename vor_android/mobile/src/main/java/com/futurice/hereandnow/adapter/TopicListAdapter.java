@@ -258,7 +258,8 @@ public class TopicListAdapter extends BaseExpandableListAdapter implements IName
         return filter;
     }
 
-    public boolean filter(@NonNull final ITopic topic, @Nullable final CharSequence constraint) {
+    public boolean filter(@NonNull final ITopic topic,
+                          @Nullable final CharSequence constraint) {
         boolean result = true;
 
         if (constraint != null && constraint.length() > 0) {

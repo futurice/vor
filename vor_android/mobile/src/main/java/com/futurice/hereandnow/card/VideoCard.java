@@ -34,7 +34,6 @@ public class VideoCard extends ImageCard {
     private static final String TAG = VideoCard.class.getSimpleName();
 
     @NonNull
-
     private Uri videoUri = Uri.EMPTY;
     @Nullable
 
@@ -52,7 +51,6 @@ public class VideoCard extends ImageCard {
      * @return
      */
     @NonNull
-
     public static Uri createThumbnail(@NonNull final Uri videoFile) {
         try {
             final String filePath = AssertUtil.assertNotNull(FileUtils.getPath(HereAndNowApplication.getStaticContext(), videoFile));

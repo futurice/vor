@@ -1,17 +1,21 @@
 package com.futurice.hereandnow.fragment;
 
+import android.Manifest;
 import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.utils.BeaconLocationManager;
+import com.futurice.hereandnow.utils.HereAndNowUtils;
 import com.futurice.hereandnow.view.MapView;
 import com.futurice.hereandnow.Constants;
 
@@ -32,6 +36,9 @@ public class MapActivityFragment extends Fragment {
     private static final float FLOOR7_WIDTH = 16.2423255f;
     private static final float FLOOR7_HEIGHT = 28.4685258f;
 
+    private static final int REQUEST_ACCESS_COARSE_LOCATION = 71;
+    private static final int REQUEST_ACCESS_FINE_LOCATION = 72;
+
     @Bind(R.id.futumap) MapView mImageView;
     PhotoViewAttacher mAttacher;
     BeaconLocationManager beaconLocationManager;
@@ -51,6 +58,20 @@ public class MapActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.bind(this, view);
+
+        String accessCoarseLocation = Manifest.permission.ACCESS_COARSE_LOCATION;
+        if (HereAndNowUtils.hasPermission(getActivity(), accessCoarseLocation)) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    REQUEST_ACCESS_COARSE_LOCATION);
+        }
+
+        String accessFineLocation = Manifest.permission.ACCESS_FINE_LOCATION;
+        if (HereAndNowUtils.hasPermission(getActivity(), accessFineLocation)) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_ACCESS_FINE_LOCATION);
+        }
 
         switch (getArguments().getInt(Constants.FLOOR_KEY, 0)) {
             case Constants.MAP_7TH_FLOOR:
@@ -81,26 +102,35 @@ public class MapActivityFragment extends Fragment {
         super.onResume();
 
         beaconLocationManager.resume();
+        beaconLocationManager.setOnLocationUpdateListener(new BeaconLocationManager.OnLocationUpdateListener() {
+            @Override
+            public void onLocationUpdate(String position) {
+                try {
+                    JSONObject jsonObject = new JSONObject(position);
+                    String email = jsonObject.getString("email"); //TODO update only with the correct email.
+                    float location[] = convertToMapLocation(
+                            Float.valueOf(jsonObject.getString("x")),
+                            Float.valueOf(jsonObject.getString("y")));
 
-        beaconLocationManager.setOnLocationUpdateListener((position) -> {
-            try {
-                JSONObject jsonObject = new JSONObject(position);
-                String email = jsonObject.getString("email"); //TODO update only with the correct email.
-                float location[] = convertToMapLocation(
-                        Float.valueOf(jsonObject.getString("x")),
-                        Float.valueOf(jsonObject.getString("y")));
+                    getActivity().runOnUiThread(() -> {
+                        // Invalidate the picture to make it draw the canvas again.
+                        mImageView.invalidate();
+                        float scaleFactor = mAttacher.getScale();
+                        mImageView.setLocation((location[0] * scaleFactor), (location[1] * scaleFactor));
+                        RectF rect = mAttacher.getDisplayRect();
+                        mImageView.setDisplayedLocation((location[0] * scaleFactor) + rect.left, (location[1] * scaleFactor) + rect.top, false);
+                    });
 
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onConnectionError() {
                 getActivity().runOnUiThread(() -> {
-                    // Invalidate the picture to make it draw the canvas again.
-                    mImageView.invalidate();
-                    float scaleFactor = mAttacher.getScale();
-                    mImageView.setLocation((location[0] * scaleFactor), (location[1] * scaleFactor));
-                    RectF rect = mAttacher.getDisplayRect();
-                    mImageView.setDisplayedLocation((location[0] * scaleFactor) + rect.left, (location[1] * scaleFactor) + rect.top, false);
+                    Toast.makeText(getContext(), R.string.error_connect, Toast.LENGTH_SHORT).show();
                 });
-
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
         });
 

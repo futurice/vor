@@ -1,0 +1,77 @@
+<div class="row">
+  <div class="col-md-4">
+    <form class="form" id="location-form">
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-addon">User</span>
+          <input id="location-user"
+                 type="text"
+                 class="form-control"
+                 placeholder="User email or name or avatar">
+        </div>
+        <div class="input-group">
+          <span class="input-group-addon">Floor</span>
+          <input id="location-floor"
+                 type="number"
+                 class="form-control"
+                 placeholder="Default 7"
+                 value=7>
+        </div>
+        <div class="input-group">
+          <span class="input-group-addon">Beacon 1</span>
+          <input class="form-control new-distance"
+                 data-id="futu-b1-32095-19454"
+                 type="number"
+                 placeholder="Distance meters">
+        </div>
+        <div class="input-group">
+          <span class="input-group-addon">Beacon 2</span>
+          <input class="form-control new-distance"
+                 data-id="futu-b2-23964-38945"
+                 type="number"
+                 placeholder="Distance meters">
+        </div>
+        <div class="input-group">
+          <span class="input-group-addon">Beacon 3</span>
+          <input class="form-control new-distance"
+                 data-id="futu-b3-21061-29133"
+                 type="number"
+                 placeholder="Distance meters">
+        </div>
+      </div>
+      <button id="send-location" class="btn btn-primary" type="submit">Send data of beacons</button>
+    </form>
+  </div>
+  <div class="col-md-4">
+    <% include response-holder.ejs %>
+  </div>
+</div>
+<script>
+  (function ($, FUTU2) {
+    var $responseHolder = $('#<%= responseType%>-holder');
+
+    var utils = FUTU2.utils;
+    var socket = FUTU2.getSocket();
+
+    $('#send-location').on('click', function (event) {
+      event.preventDefault();
+      var user = $('#location-user').val();
+      var floor = $('#location-floor').val();
+      var $distances = $('.new-distance');
+      $distances.each(function (i, el) {
+        var id = $(el).data('id');
+        var val = $(el).val();
+        socket.emit('beacon', {
+          id: id,
+          email: user,
+          floor: parseInt(floor, 10),
+          distance: val === "" ? 0 : parseFloat(val)
+        });
+      });
+    });
+
+    socket.on('location', function(location){
+      utils.renderJson($responseHolder, location);
+    });
+  })(jQuery, window.FUTU2);
+</script>

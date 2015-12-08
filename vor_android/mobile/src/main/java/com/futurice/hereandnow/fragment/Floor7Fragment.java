@@ -9,17 +9,21 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.futurice.hereandnow.Constants;
 import com.futurice.hereandnow.R;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class Floor7Fragment extends Fragment {
+    private static final String TAG = Floor7Fragment.class.getSimpleName();
+
     @Bind(R.id.toilet7AM) RelativeLayout mToilet7AM;
     @Bind(R.id.toilet7AW) RelativeLayout mToilet7AW;
     @Bind(R.id.toilet7BM) RelativeLayout mToilet7BM;
@@ -32,23 +36,20 @@ public class Floor7Fragment extends Fragment {
     SharedPreferences mToilet7bmSP;
     SharedPreferences mToilet7bwSP;
 
-    Drawable mFreeBg;
-    Drawable mTakenBg;
-
     OnSharedPreferenceChangeListener toilet7amListener = (sharedPreferences, key) -> {
-        mToilet7AM.setBackground(sharedPreferences.getBoolean(key, false) ? mTakenBg : mFreeBg);
+        updateToiletView(sharedPreferences, key, mToilet7AM);
     };
 
     OnSharedPreferenceChangeListener toilet7awListener = (sharedPreferences, key) -> {
-        mToilet7AW.setBackground(sharedPreferences.getBoolean(key, false) ? mTakenBg : mFreeBg);
+        updateToiletView(sharedPreferences, key, mToilet7AW);
     };
 
     OnSharedPreferenceChangeListener toilet7bmListener = (sharedPreferences, key) -> {
-        mToilet7BM.setBackground(sharedPreferences.getBoolean(key, false) ? mTakenBg : mFreeBg);
+        updateToiletView(sharedPreferences, key, mToilet7BM);
     };
 
     OnSharedPreferenceChangeListener toilet7bwListener = (sharedPreferences, key) -> {
-        mToilet7BW.setBackground(sharedPreferences.getBoolean(key, false) ? mTakenBg : mFreeBg);
+        updateToiletView(sharedPreferences, key, mToilet7BW);
     };
 
     public Floor7Fragment() {
@@ -63,9 +64,6 @@ public class Floor7Fragment extends Fragment {
         mToilet7awSP = mActivity.getSharedPreferences("toilet7aw", Context.MODE_PRIVATE);
         mToilet7bmSP = mActivity.getSharedPreferences("toilet7bm", Context.MODE_PRIVATE);
         mToilet7bwSP = mActivity.getSharedPreferences("toilet7bw", Context.MODE_PRIVATE);
-
-        mFreeBg = ContextCompat.getDrawable(getContext(), R.drawable.toilet_free_bg);
-        mTakenBg = ContextCompat.getDrawable(getContext(), R.drawable.toilet_taken_bg);
     }
 
     @Override
@@ -100,9 +98,28 @@ public class Floor7Fragment extends Fragment {
     }
 
     public void updateView() {
-        mToilet7AM.setBackground(mToilet7amSP.getBoolean("reserved", false) ? mTakenBg : mFreeBg);
-        mToilet7AW.setBackground(mToilet7awSP.getBoolean("reserved", false) ? mTakenBg : mFreeBg);
-        mToilet7BM.setBackground(mToilet7bmSP.getBoolean("reserved", false) ? mTakenBg : mFreeBg);
-        mToilet7BW.setBackground(mToilet7bwSP.getBoolean("reserved", false) ? mTakenBg : mFreeBg);
+        updateToiletBackground(mToilet7AM, mToilet7amSP.getBoolean(Constants.RESERVED_KEY, false));
+        updateToiletBackground(mToilet7AW, mToilet7awSP.getBoolean(Constants.RESERVED_KEY, false));
+        updateToiletBackground(mToilet7BM, mToilet7bmSP.getBoolean(Constants.RESERVED_KEY, false));
+        updateToiletBackground(mToilet7BW, mToilet7bwSP.getBoolean(Constants.RESERVED_KEY, false));
+    }
+
+    private void updateToiletView(SharedPreferences sharedPreferences, String key, View view) {
+        switch (key) {
+            case Constants.RESERVED_KEY:
+                updateToiletBackground(view, sharedPreferences.getBoolean(key, false));
+                break;
+            case Constants.METHANE_KEY:
+                Log.d(TAG, "Methane level: " + Integer.toString(sharedPreferences.getInt(key, 0)));
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void updateToiletBackground(View view, Boolean reserved) {
+        Drawable freeBg = ContextCompat.getDrawable(getContext(), R.drawable.toilet_free_bg);
+        Drawable takenBg = ContextCompat.getDrawable(getContext(), R.drawable.toilet_taken_bg);
+        view.setBackground(reserved ? takenBg : freeBg);
     }
 }

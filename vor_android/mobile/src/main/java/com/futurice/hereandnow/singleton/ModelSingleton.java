@@ -266,7 +266,7 @@ public class ModelSingleton extends Origin {
         final List<Peer> likes = new ArrayList<>();
 
         for (final Peer peer : getPeers(true)) {
-            for (final long id : peer.cardLikeUniqueIds) {
+            for (final long id : peer.cardLikeUniqueIds.get()) {
                 if (id == card.getUid()) {
                     likes.add(peer);
                     break;
@@ -291,7 +291,7 @@ public class ModelSingleton extends Origin {
         final StringBuilder likesBuffer = new StringBuilder();
 
         for (final Peer peer : getPeers(true)) {
-            for (final long id : peer.cardLikeUniqueIds) {
+            for (final long id : peer.cardLikeUniqueIds.get()) {
                 if (id == card.getUid()) {
                     likesBuffer.append(peer.tag);
                     likesBuffer.append(",");
@@ -319,16 +319,16 @@ public class ModelSingleton extends Origin {
         comments = new ArrayList<Comment>();
 
         for (final Peer peer : getPeers(false)) {
-            for (final String commentJSON : peer.comments) {
+            for (final String commentJSON : peer.comments.get()) {
                 final Comment comment = Comment.fromJSONString(commentJSON);
-                if (comment != null && comment.getCardId() == card.getUid()) {
+                if (comment != null && comment.cardId == card.getUid()) {
                     comments.add(comment);
                 }
             }
         }
         for (final String commentString : myComments.get()) {
             final Comment comment = Comment.fromJSONString(commentString);
-            if (comment != null && comment.getCardId() == card.getUid()) {
+            if (comment != null && comment.cardId == card.getUid()) {
                 comments.add(comment);
             }
         }
@@ -348,7 +348,6 @@ public class ModelSingleton extends Origin {
         return comments;
     }
 
-
     // Need to add ourselves if still missing
     @NonNull
     @SuppressWarnings("unchecked")
@@ -359,7 +358,7 @@ public class ModelSingleton extends Origin {
         if (removeSelf) {
             while (i.hasNext()) {
                 final Peer peer = i.next();
-                if (peer.tag.equals(myTag.get())) {
+                if (peer.tag.get().equals(myTag.get())) {
                     i.remove();
                     break;
                 }
@@ -583,7 +582,7 @@ public class ModelSingleton extends Origin {
 
         @NonNull
         private List<Long> likedCards() {
-            return ArrayUtils.asList(this.item.cardLikeUniqueIds);
+            return ArrayUtils.asList(this.item.cardLikeUniqueIds.get());
         }
 
         @NonNull
@@ -591,7 +590,7 @@ public class ModelSingleton extends Origin {
             List<Long> flags = ArrayUtils.asList(flaggedCards.get());
             List<Long> newFlags = new ArrayList<>();
 
-            for (long uid : this.item.cardFlagUniqueIds) {
+            for (long uid : this.item.cardFlagUniqueIds.get()) {
                 if (!flags.contains(uid)) {
                     newFlags.add(uid);
                 }
@@ -607,7 +606,7 @@ public class ModelSingleton extends Origin {
             List<Long> deletes = ArrayUtils.asList(deletedCards.get());
             List<Long> newDeletes = new ArrayList<>();
 
-            for (long uid : this.item.cardDeletionUniqueIds) {
+            for (long uid : this.item.cardDeletionUniqueIds.get()) {
                 if (!deletes.contains(uid)) {
                     newDeletes.add(uid);
                 }

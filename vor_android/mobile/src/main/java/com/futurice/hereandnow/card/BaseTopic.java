@@ -65,7 +65,6 @@ public abstract class BaseTopic extends Origin implements ITopic {
     }
 
     @NonNull
-
     @Override // Topic
     public List<ICard> getCards() {
         return Collections.unmodifiableList(this.cards);
@@ -140,7 +139,6 @@ public abstract class BaseTopic extends Origin implements ITopic {
 
     @Override // INamed
     @NonNull
-
     public String getName() {
         return this.name;
     }
@@ -175,7 +173,6 @@ public abstract class BaseTopic extends Origin implements ITopic {
     }
 
     @NonNull
-
     private View inflateView(final int resource, final ViewGroup parentView) {
         return this.inflater.inflate(resource, parentView, false);
     }

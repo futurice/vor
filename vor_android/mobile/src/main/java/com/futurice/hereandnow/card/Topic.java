@@ -19,18 +19,19 @@ import com.squareup.picasso.Picasso;
 public final class Topic extends BaseTopic {
 
     @NonNull
-
     private String text = "";
     @NonNull
-
     private Uri imageUri = Uri.EMPTY;
     //   private int likes = 0;
 
-    public Topic(@NonNull final String name, @NonNull final Context context) {
+    public Topic(@NonNull final String name,
+                 @NonNull final Context context) {
         this(name, HereAndNowService.generateUid(), context);
     }
 
-    public Topic(@NonNull final String name, final long topicUid, final Context context) {
+    public Topic(@NonNull final String name,
+                 final long topicUid,
+                 final Context context) {
         super(name, topicUid, context, R.layout.topic_layout);
     }
 
@@ -45,7 +46,8 @@ public final class Topic extends BaseTopic {
     }
 
     @Override
-    public void updateView(@NonNull final View view, final boolean isExpanded) {
+    public void updateView(@NonNull final View view,
+                           final boolean isExpanded) {
         super.setLikes(getLikes());
         super.updateView(view, isExpanded);
 
@@ -76,7 +78,6 @@ public final class Topic extends BaseTopic {
     }
 
     @NonNull
-
     public String getText() {
         return text;
     }
@@ -86,7 +87,6 @@ public final class Topic extends BaseTopic {
     }
 
     @NonNull
-
     public Uri getImageUri() {
         return imageUri;
     }

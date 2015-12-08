@@ -141,20 +141,22 @@ public class PeopleFragment extends BaseHereAndNowFragment {
             // Create a new topic if necessary
             if (topic == null) {
                 // New topic
-                topic = new Topic(peer.idTag, this.getActivity());
+                final String idTagValue = peer.idTag.get();
+
+                topic = new Topic(idTagValue, this.getActivity());
                 topic.setTimestamp(peer.timestamp);
-                topic.setText(peer.tag);
+                topic.setText(idTagValue);
                 topic.setImageUri(HereAndNowUtils.getResourceUri(R.drawable.group_small_icon)); //TODO Different icons based on tag match- in tribe looks better
 
                 // New profile card
                 profileCard = new PeerProfileCard(peer.aboutMe + "-profile", this.getActivity());
                 addToModel = true;
             }
-            topic.setText(peer.tag);
+            topic.setText(peer.tag.get());
             // Set the profile data
-            profileCard.setPeerAboutMe(peer.aboutMe);
-            profileCard.setPeerTag(peer.tag);
-            profileCard.setPeerIdTag(peer.idTag);
+            profileCard.setPeerAboutMe(peer.aboutMe.get());
+            profileCard.setPeerTag(peer.tag.get());
+            profileCard.setPeerIdTag(peer.idTag.get());
 
             // Update view
             // XXX: Do these need to be done from the main thread? Doing for safety.

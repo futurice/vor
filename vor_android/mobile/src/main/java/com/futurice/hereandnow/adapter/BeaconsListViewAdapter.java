@@ -1,6 +1,8 @@
 package com.futurice.hereandnow.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,17 +21,20 @@ import java.util.List;
  */
 public class BeaconsListViewAdapter extends ArrayAdapter<Beacon> {
 
-    public BeaconsListViewAdapter(Context context, List<Beacon> beacons) {
+    public BeaconsListViewAdapter(@NonNull final Context context,
+                                  @NonNull final List<Beacon> beacons) {
         super(context, R.layout.listview_beacon, beacons);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+    public View getView(final int position,
+                        @Nullable View convertView,
+                        @NonNull final ViewGroup parent) {
+        final ViewHolder viewHolder;
 
-        if(convertView == null) {
+        if (convertView == null) {
             // inflate the GridView item layout
-            LayoutInflater inflater = LayoutInflater.from(getContext());
+            final LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.listview_beacon, parent, false);
 
             // initialize the view holder
@@ -44,9 +49,9 @@ public class BeaconsListViewAdapter extends ArrayAdapter<Beacon> {
         }
 
         // update the item view
-        Beacon beacon = getItem(position);
+        final Beacon beacon = getItem(position);
 //        viewHolder.ivIcon.setImageDrawable(beacon.icon);
-        viewHolder.tvTitle.setText("Beacon Found!");
+        viewHolder.tvTitle.setText(R.string.beacons_listviewadapter_beacons_found);
         viewHolder.tvDescription.setText(beacon.getProximityUUID().toString());
 
         return convertView;

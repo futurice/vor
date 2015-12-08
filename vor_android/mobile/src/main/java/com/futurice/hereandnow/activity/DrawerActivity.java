@@ -9,17 +9,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.SearchView;
-import android.text.TextWatcher;
-import android.util.SparseArray;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextWatcher;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -49,38 +48,38 @@ public class DrawerActivity extends BaseActivity
     private static final String TAG = DrawerActivity.class.getSimpleName();
     private static final int REQUEST_VIDEO_CAPTURE = 1;
     private static IActionOne<Uri> actionAfterSelectVideo;
+
     private final SparseArray<TextWatcher> mSearchWatchers = new SparseArray<>();
     //    private static IActionOne<Uri> actionAfterCaptureVideo;
     // A View Model object, we will bind the ReactiveTextView to this and similar objects
     ReactiveValue<String> chatReactiveValue;
-    private ViewPager mViewPager;
     private final ImmutableValue<String> origin = RCLog.originAsync();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ServiceSingleton.create(this.getApplication());
-        ModelSingleton.create(this.getApplication());
+        ServiceSingleton.create(this.getApplicationContext());
+        ModelSingleton.create(this.getApplicationContext());
 
         initReactiveValues();
         setContentView(R.layout.activity_drawer);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ActionBar actionBar = getSupportActionBar();
+        final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -145,15 +144,16 @@ public class DrawerActivity extends BaseActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.options_menu, menu);
 
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         // Set cursor color to match the text color
-        EditText mSearchTextView = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        final EditText mSearchTextView = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         try {
-            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+            final Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
             mCursorDrawableRes.setAccessible(true);
             mCursorDrawableRes.set(mSearchTextView, 0);
         } catch (Exception e) {
@@ -166,6 +166,7 @@ public class DrawerActivity extends BaseActivity
         }
 
         super.onCreateOptionsMenu(menu);
+
         return true;
     }
 
@@ -173,34 +174,29 @@ public class DrawerActivity extends BaseActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        final int id = item.getItemId();
 
         if (id == R.id.nav_my_cards) {
-            Intent intent = new Intent(this, CardsActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, CardsActivity.class));
         } else if (id == R.id.nav_people) {
-            Intent intent = new Intent(this, PeopleActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, PeopleActivity.class));
         } else if (id == R.id.nav_map) {
-            Intent intent = new Intent(this, MapActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, MapActivity.class));
         } else if (id == R.id.nav_beacons) {
-            Intent intent = new Intent(this, BeaconsActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, BeaconsActivity.class));
         } else if (id == R.id.nav_space) {
-            Intent intent = new Intent(this, SpaceActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, SpaceActivity.class));
         } else if (id == R.id.nav_toilets) {
-            Intent intent = new Intent(this, ToiletActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, ToiletActivity.class));
         } else if (id == R.id.nav_settings) {
             startActivityForResult(new Intent(this, SettingsActivity.class), SETTINGS_INTENT_RESULT);
         } else if (id == R.id.nav_logout) {
-            // Handle logout
+            // TODO Handle logout
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
@@ -209,7 +205,8 @@ public class DrawerActivity extends BaseActivity
             @NonNull final String mediaType,
             final int result) {
         DrawerActivity.actionAfterSelectVideo = action;
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+
+        final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType(mediaType);
         startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.gen_select_media)), result);
     }
@@ -234,6 +231,7 @@ public class DrawerActivity extends BaseActivity
             HereAndNowApplication app = (HereAndNowApplication) getApplication();
             app.removeCallback();
             finish();
+
             return true;
         }
 

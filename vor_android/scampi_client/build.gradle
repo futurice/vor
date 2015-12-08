@@ -31,6 +31,10 @@ android {
         disable 'InvalidPackage' // For scampi library which includes standard Java libs not on Android
         abortOnError false   // For RetroLambda, remove when possible
     }
+
+    dexOptions {
+        incremental false
+    }
 }
 
 dependencies {

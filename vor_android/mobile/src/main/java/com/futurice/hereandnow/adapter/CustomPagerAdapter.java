@@ -14,7 +14,8 @@ public class CustomPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(@NonNull final View view, @NonNull final Object object) {
+    public boolean isViewFromObject(@NonNull final View view,
+                                    @NonNull final Object object) {
         //FIXME Do we need this to work?
         return false;
     }

@@ -52,6 +52,7 @@ public class ServiceSingleton {
         if (instance != null) {
             return instance;
         }
+
         return instance = new ServiceSingleton(context);
     }
 
@@ -66,17 +67,17 @@ public class ServiceSingleton {
     }
 
     @NonNull
-    public ScampiPeerDiscoveryService peerDiscoveryService() {
+    public synchronized ScampiPeerDiscoveryService peerDiscoveryService() {
         if (peerDiscoveryService == null) {
             peerDiscoveryService = new ScampiPeerDiscoveryService(
                     scampiHandler,
-                    new Peer(ModelSingleton.instance().myTag.get(),
-                            ModelSingleton.instance().myIdTag.get(),
-                            ModelSingleton.instance().myAboutMe.get(),
-                            ModelSingleton.instance().myLikes.get(),
-                            ModelSingleton.instance().deletedCards.get(),
-                            ModelSingleton.instance().flaggedCards.get(),
-                            ModelSingleton.instance().myComments.get(),
+                    new Peer(ModelSingleton.instance().myTag,
+                            ModelSingleton.instance().myIdTag,
+                            ModelSingleton.instance().myAboutMe,
+                            ModelSingleton.instance().myLikes,
+                            ModelSingleton.instance().deletedCards,
+                            ModelSingleton.instance().flaggedCards,
+                            ModelSingleton.instance().myComments,
                             System.currentTimeMillis())
             );
         }

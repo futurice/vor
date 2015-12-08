@@ -25,7 +25,6 @@ package com.futurice.scampiclient;
 
 import android.support.annotation.NonNull;
 
-import com.futurice.cascade.functional.ImmutableValue;
 import com.futurice.cascade.i.IAltFuture;
 import com.futurice.cascade.i.IAsyncOrigin;
 import com.futurice.cascade.i.INamed;
@@ -44,6 +43,7 @@ public interface IScampiService<T> extends INamed, IAsyncOrigin {
     @Override
     @NonNull
     String getName();
+
     /**
      * This is called automatically during ScampiHandler shutdown. It may happen multiple times
      * in response to application lifecycle changes. Do not call this directly, call ScampinHandler.stop()

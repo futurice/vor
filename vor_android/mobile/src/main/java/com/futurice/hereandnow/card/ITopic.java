@@ -20,7 +20,6 @@ public interface ITopic extends INamed {
      * @return list of all cards of this topic.
      */
     @NonNull
-
     List<ICard> getCards();
 
     /**
@@ -44,7 +43,6 @@ public interface ITopic extends INamed {
      * @return view of this topic
      */
     @NonNull
-
     View getView(@NonNull  ViewGroup parentView, boolean isExpanded);
 
     /**

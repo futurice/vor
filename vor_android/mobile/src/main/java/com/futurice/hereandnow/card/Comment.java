@@ -1,7 +1,10 @@
 package com.futurice.hereandnow.card;
 
-import android.util.Log;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import com.futurice.cascade.util.Origin;
+import com.futurice.cascade.util.RCLog;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -11,23 +14,18 @@ import java.util.Date;
 /**
  * Created by vizr on 02/10/15.
  */
-public class Comment implements Serializable {
+public class Comment extends Origin implements Serializable {
 
-    private long cardId;
-    private String userTag;
-    private String userIdTag;
-    private String text;
-    private long timestamp;
+    public final long cardId;
+    public final String userTag;
+    public final String userIdTag;
+    private volatile String text;
+    private volatile long timestamp;
 
-    private static final String TAG = Comment.class.getName();
-
-    public Comment(long cardId, String userTag, String userIdTag, String text) {
-        if (userTag == null)
-            userTag = "";
-        if (userIdTag == null)
-            userIdTag = "";
-        if (text == null)
-            text = "";
+    public Comment(final long cardId,
+                   @NonNull final String userTag,
+                   @NonNull final String userIdTag,
+                   @NonNull final String text) {
         this.cardId = cardId;
         this.userTag = userTag;
         this.userIdTag = userIdTag;
@@ -35,60 +33,37 @@ public class Comment implements Serializable {
         this.timestamp = new Date().getTime();
     }
 
-
-    public long getCardId() {
-        return cardId;
-    }
-
-    public void setCardId(long cardId) {
-        this.cardId = cardId;
-    }
-
-    public String getUserTag() {
-        return userTag;
-    }
-
-    public void setUserTag(String userTag) {
-        this.userTag = userTag;
-    }
-
-    public String getUserIdTag() {
-        return userIdTag;
-    }
-
-    public void setUserIdTag(String userIdTag) {
-        this.userIdTag = userIdTag;
-    }
-
     public String getText() {
-        return text;
+        return this.text;
     }
 
-    public void setText(String text) {
+    public void setText(@NonNull final String text) {
+        this.timestamp = new Date().getTime();
         this.text = text;
     }
 
     public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+        return this.timestamp;
     }
 
     public String toJSONString() {
         return (new Gson()).toJson(this);
     }
 
-    public static Comment fromJSONString(String jsonString) {
-        Gson gson = new Gson();
-        Comment comment;
+    @Nullable
+    public static Comment fromJSONString(@NonNull final String jsonString) {
+        final Gson gson = new Gson();
+        final Comment comment;
+
         try {
             comment = gson.fromJson(jsonString, Comment.class);
+            RCLog.v(comment, "Parse comment: " + jsonString);
         } catch (JsonSyntaxException e) {
-            Log.d(TAG, "Could not parse the comment: " + jsonString);
+            RCLog.d(Comment.class.getSimpleName(), "Could not parse the comment: " + jsonString);
+
             return null;
         }
+
         return comment;
     }
 }
