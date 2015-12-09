@@ -186,7 +186,7 @@
 }
 ```
 
-<h4 name="toilet-example"Example:</h4>
+<h4 name="toilet-example">Example:</h4>
 
 ```
 {
