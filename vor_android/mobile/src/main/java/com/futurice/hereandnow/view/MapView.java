@@ -51,7 +51,7 @@ public class MapView extends PhotoView {
         super.onDraw(canvas);
 
         for (PeopleManager.Person person : onMapDrawListener.getPersons()) {
-            person.updateCurrentLocation(animationSpeed, updateRadius);
+            person.updateCurrentLocation(animationSpeed, updateRadius); // Animate the markers.
 
             if (person.getLocationOnScreenX() >= 0 && person.getLocationOnScreenY() >= 0) {
                 canvas.drawCircle(person.getCurrentLocationX(),
