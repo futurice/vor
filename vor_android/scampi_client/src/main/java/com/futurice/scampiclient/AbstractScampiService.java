@@ -25,8 +25,8 @@ package com.futurice.scampiclient;
 
 import android.support.annotation.NonNull;
 
-import com.futurice.cascade.functional.ImmutableValue;
 import com.futurice.cascade.i.CallOrigin;
+import com.futurice.cascade.util.Origin;
 import com.futurice.cascade.util.RCLog;
 
 import java.util.ArrayList;
@@ -34,9 +34,8 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @CallOrigin
-public abstract class AbstractScampiService<T> implements IScampiService<T> {
+public abstract class AbstractScampiService<T> extends Origin implements IScampiService<T> {
     protected final ScampiHandler scampiHandler;
-    protected final ImmutableValue<String> origin = RCLog.originAsync();
     private final String serviceName;
     private final List<MessageReceivedListener<T>> messageReceivedListeners = new CopyOnWriteArrayList<>();
     protected boolean stopped = false;
@@ -69,7 +68,7 @@ public abstract class AbstractScampiService<T> implements IScampiService<T> {
 
     @Override
     public void removeMessageReceivedListener(@NonNull final MessageReceivedListener<T> messageReceivedListener) {
-        RCLog.d(origin, "Stopping " + getName());
+        RCLog.d(this, "Stopping " + getName());
         messageReceivedListeners.remove(messageReceivedListener);
     }
 
@@ -82,11 +81,5 @@ public abstract class AbstractScampiService<T> implements IScampiService<T> {
         for (MessageReceivedListener<T> messageReceivedListener : listeners) {
             messageReceivedListener.messageReceived(key, value);
         }
-    }
-
-    @Override // IAsyncOrigin
-    @NonNull
-    public ImmutableValue<String> getOrigin() {
-        return origin;
     }
 }

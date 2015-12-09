@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.futurice.cascade.i.IAltFuture;
-import com.futurice.cascade.util.RCLog;
 import com.futurice.scampiclient.items.VideoCardVO;
 import com.futurice.scampiclient.utils.UriUtils;
 
@@ -56,10 +55,10 @@ public class VideoService extends HereAndNowService<VideoCardVO> {
 
         // Make sure storageDir exists
         if (!storageDir.exists()) {
-            if (!storageDir.mkdirs()) {
-                RCLog.d(this, "Failed to create storage directory.");
-                throw new IllegalArgumentException("Storage directory doesn't exit and cannot be created.");
-            }
+            final boolean createdSomething = storageDir.mkdirs();
+        }
+        if (!storageDir.isDirectory()) {
+//TODO FIXME                RCLog.e(this, "Failed to create video storage directory", new IllegalArgumentException("Storage directory doesn't exist and cannot be created"));
         }
     }
 

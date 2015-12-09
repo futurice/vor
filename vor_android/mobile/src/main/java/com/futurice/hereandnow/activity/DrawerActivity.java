@@ -225,7 +225,7 @@ public class DrawerActivity extends BaseActivity
         if (requestCode == SETTINGS_INTENT_RESULT) {
             RCLog.d(this, "Copying over local reactive persistent settings with the latest values from the SettingsActivity");
             final String preexistingIdTag = PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.ID_TAG_KEY, UUID.randomUUID().toString());
-            final SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+//            final SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
 //            editor.putString(SettingsActivity.ID_TAG_KEY, preexistingIdTag);
 //            editor.apply();
 //            ModelSingleton.instance().myTag.set(data.getStringExtra(SettingsActivity.TAG_KEY));

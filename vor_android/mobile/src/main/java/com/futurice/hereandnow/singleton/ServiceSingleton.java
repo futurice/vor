@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresPermission;
 
 import com.futurice.cascade.util.AssertUtil;
 import com.futurice.scampiclient.BigScreenControllerService;
@@ -85,6 +86,7 @@ public class ServiceSingleton {
         return peerDiscoveryService;
     }
 
+    @RequiresPermission(allOf = {"READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE"})
     @NonNull
     public PictureCardService pictureCardService() {
         if (pictureCardService == null) {
@@ -97,6 +99,7 @@ public class ServiceSingleton {
         return pictureCardService;
     }
 
+    @RequiresPermission(allOf = {"READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE"})
     @NonNull
     public VideoService videoService() {
         if (videoService == null) {

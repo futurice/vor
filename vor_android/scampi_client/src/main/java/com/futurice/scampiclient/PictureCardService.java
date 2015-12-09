@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresPermission;
 
 import com.futurice.cascade.i.IAltFuture;
 import com.futurice.cascade.util.RCLog;
@@ -76,28 +77,16 @@ public final class PictureCardService extends HereAndNowService<PictureCardVO> {
      * Lifetime for the generated ScampiMessages.
      */
     private static final int MESSAGE_LIFETIME_MINUTES = 2 * 24 * 60;
-
     private static final int SCALE_TO_WIDTH_TARGET = 640;
     private static final int SCALE_TO_HEIGHT_TARGET = 480;
     //======================================================================//
 
-    //======================================================================//
-    // Configuration
-    //======================================================================//
+    @NonNull
     private final File imageStorageDir;
+    @NonNull
     private final Context context;
-    //======================================================================//
-
-    //======================================================================//
-    // Instance vars
-    //======================================================================//
     private final Random rng = new Random();
-    //======================================================================//
 
-
-    //======================================================================//
-    // Instantiation
-    //======================================================================//
 
     /**
      * Create a new picture card service
@@ -105,6 +94,7 @@ public final class PictureCardService extends HereAndNowService<PictureCardVO> {
      * @param scampiHandler handler to Scampi, used to sendEventMessage and receive messages
      * @param storageDir    directory where incoming images are stored
      */
+    @RequiresPermission(allOf = {"READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE"})
     public PictureCardService(
             @NonNull final ScampiHandler scampiHandler,
             @NonNull final File storageDir,
@@ -116,9 +106,10 @@ public final class PictureCardService extends HereAndNowService<PictureCardVO> {
 
         // Make sure storageDir exists
         if (!storageDir.exists()) {
-            if (!storageDir.mkdirs()) {
-                RCLog.e(this, "Failed to create storage directory", new IllegalArgumentException("Storage directory doesn't exist and cannot be created"));
-            }
+            final boolean createdSomething = storageDir.mkdirs();
+        }
+        if (!storageDir.isDirectory()) {
+//TODO FIXME                RCLog.e(this, "Failed to create picture storage directory", new IllegalArgumentException("Storage directory doesn't exist and cannot be created"));
         }
     }
     //======================================================================//
@@ -128,7 +119,6 @@ public final class PictureCardService extends HereAndNowService<PictureCardVO> {
     // HereAndNowService
     //======================================================================//
     @NonNull
-
     @Override
     protected PictureCardVO getValueFieldFromIncomingMessage(@NonNull final SCAMPIMessage scampiMessage)
             throws Exception {
@@ -195,7 +185,6 @@ public final class PictureCardService extends HereAndNowService<PictureCardVO> {
     }
 
     @NonNull
-
     public IAltFuture<?, SCAMPIMessage> sendMessageAsync(
             @NonNull final Uri image,
             @NonNull final String topic,
@@ -240,7 +229,6 @@ public final class PictureCardService extends HereAndNowService<PictureCardVO> {
     // IScampiService
     //======================================================================//
     @NonNull
-
     @Override
     @CheckResult(suggest = "IAltFuture#fork()")
     public IAltFuture<?, SCAMPIMessage> sendMessageAsync(@NonNull final PictureCardVO val) {
