@@ -59,7 +59,7 @@ public class Cards {
     public static ITopic test(String message, Context context) {
         final Topic topic = new Topic("Test", 1450, context);
         topic.setText(message);
-        topic.setColor(R.color.light_grey);
+        topic.setColor(R.color.green);
         topic.setIsPrebuiltTopic(true);
 
         ImageCard card = new ImageCard("__", 1750, context);

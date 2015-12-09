@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.futurice.cascade.i.CallOrigin;
 import com.futurice.hereandnow.Cards;
@@ -44,7 +43,7 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
 
     SharedPreferences mTestSP;
 
-    OnSharedPreferenceChangeListener testCardListener = this::addTestCard;
+    OnSharedPreferenceChangeListener mTestCardListener = this::addTestCard;
 
     public CardsNowFragment() {
         // Required empty public constructor
@@ -71,10 +70,9 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
         FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.now_cards_list);
         frameLayout.addView(getExpandableListView());
 
-        TextView textView = (TextView) view.findViewById(R.id.sampleInit);
         mSocket.on(Constants.EVENT_INIT, args -> {
             JSONArray jsonArray = (JSONArray) args[0];
-            setupInitialView(textView, jsonArray);
+            setupInitialView(jsonArray);
         });
 
         initTopicsAndCards(
@@ -89,13 +87,13 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mTestSP.registerOnSharedPreferenceChangeListener(testCardListener);
+        mTestSP.registerOnSharedPreferenceChangeListener(mTestCardListener);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mTestSP.unregisterOnSharedPreferenceChangeListener(testCardListener);
+        mTestSP.unregisterOnSharedPreferenceChangeListener(mTestCardListener);
     }
 
     protected void initViewsAndAdapters() {
@@ -108,7 +106,7 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
         setTopicListAdapter(tla);
     }
 
-    private void setupInitialView(TextView textView, JSONArray jsonArray) {
+    private void setupInitialView(JSONArray jsonArray) {
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -130,10 +128,7 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
             e.printStackTrace();
         }
 
-        UI.execute(() -> {
-            textView.setText(jsonArray.toString());
-            filterModel();
-        });
+        UI.execute(this::filterModel);
     }
 
     @CallOrigin
