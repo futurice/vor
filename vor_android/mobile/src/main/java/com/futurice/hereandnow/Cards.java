@@ -1,12 +1,14 @@
 package com.futurice.hereandnow;
 
 import android.content.Context;
+import android.graphics.Color;
 
 import com.futurice.hereandnow.card.ITopic;
 import com.futurice.hereandnow.card.ImageCard;
 import com.futurice.hereandnow.card.Topic;
 
 import java.util.Date;
+import java.util.Random;
 
 public class Cards {
 
@@ -59,7 +61,7 @@ public class Cards {
     public static ITopic test(String message, Context context) {
         final Topic topic = new Topic("Test", 1450, context);
         topic.setText(message);
-        topic.setColor(R.color.green);
+        topic.setColor(getRandomColor());
         topic.setIsPrebuiltTopic(true);
 
         ImageCard card = new ImageCard("__", 1750, context);
@@ -69,5 +71,10 @@ public class Cards {
 
         topic.addCard(card);
         return topic;
+    }
+
+    private static int getRandomColor() {
+        Random rnd = new Random();
+        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
 }
