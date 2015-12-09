@@ -97,7 +97,12 @@ public class HereAndNowApplication extends Application implements ScampiService.
 
         mSocket
                 .on(Socket.EVENT_CONNECT, args -> Log.d(TAG, "EVENT_CONNECT"))
-                .on(Socket.EVENT_CONNECT_ERROR, args -> Log.d(TAG, "EVENT_CONNECT_ERROR"))
+                .on(Socket.EVENT_CONNECT_ERROR, args -> {
+                    Log.d(TAG, "EVENT_CONNECT_ERROR");
+                    for (Object arg : args) {
+                        Log.d(TAG, arg.toString());
+                    }
+                })
                 .on(Constants.LOCATION_KEY, args -> Log.d(TAG, "LOCATION RECEIVED"))
                 .on(Constants.STREAM_KEY, args -> updateToSharedPreferences((JSONArray) args[0]))
                 .on(Socket.EVENT_DISCONNECT, args -> Log.d(TAG, "EVENT_DISCONNECT"));

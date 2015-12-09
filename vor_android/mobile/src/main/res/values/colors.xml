@@ -18,4 +18,7 @@
     <color name="light_red">#ffd0d0</color>
 
     <color name="selectedTabText">#B0B0B0</color>
+
+    <color name="blueDark">#12262D</color>
+    <color name="green">#3A9D2C</color>
 </resources>

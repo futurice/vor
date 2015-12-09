@@ -13,8 +13,7 @@
         android:layout_height="match_parent"
         android:background="@color/transparent"
         android:contentDescription="@string/topic_background"
-        android:scaleType="centerInside"
-        android:src="@drawable/card_food"/>
+        android:scaleType="centerInside"/>
 
     <RelativeLayout
         android:id="@+id/topic_linear_layout"

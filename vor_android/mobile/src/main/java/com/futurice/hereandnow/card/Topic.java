@@ -23,6 +23,8 @@ public final class Topic extends BaseTopic {
     @NonNull
     private Uri imageUri = Uri.EMPTY;
     //   private int likes = 0;
+    @NonNull
+    private int mColor;
 
     public Topic(@NonNull final String name,
                  @NonNull final Context context) {
@@ -53,6 +55,7 @@ public final class Topic extends BaseTopic {
 
         ((ImageView) view.findViewById(R.id.topic_icon)).setScaleType(ImageView.ScaleType.CENTER_CROP);
         ((TextView) view.findViewById(R.id.topic_title)).setText(this.text);
+        (view.findViewById(R.id.topic_linear_layout)).setBackgroundColor(mColor);
 
         //TODO Show number of likes on top of the image
         Picasso.with(context)
@@ -84,6 +87,14 @@ public final class Topic extends BaseTopic {
 
     public void setText(@NonNull final String text) {
         this.text = text;
+    }
+
+    public int getColor() {
+        return mColor;
+    }
+
+    public void setColor(@NonNull final int color) {
+        mColor = color;
     }
 
     @NonNull

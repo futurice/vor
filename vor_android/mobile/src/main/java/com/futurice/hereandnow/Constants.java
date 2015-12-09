@@ -34,6 +34,7 @@ public class Constants {
 
     public static final String TOILET_KEY = "toilet";
     public static final String SAUNA_KEY = "sauna";
+    public static final String TRACK_ITEM_KEY = "track";
     public static final String RESERVED_KEY = "reserved";
     public static final String METHANE_KEY = "methane";
 

@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.futurice.cascade.i.CallOrigin;
+import com.futurice.hereandnow.Cards;
 import com.futurice.hereandnow.Constants;
 import com.futurice.hereandnow.HereAndNowApplication;
 import com.futurice.hereandnow.R;
@@ -65,7 +66,10 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
             setupInitialView(textView, jsonArray);
         });
 
-        initTopicsAndCards(createPreBuiltTopics(), getSourceTopicModel(), getTopicListAdapter());
+        initTopicsAndCards(
+                createPreBuiltTopics(),
+                getSourceTopicModel(),
+                getTopicListAdapter());
         filterModel();
 
         return view;
@@ -85,11 +89,19 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
+                Log.d(TAG, jsonObject.getString(Constants.TYPE_KEY));
                 switch (jsonObject.getString(Constants.TYPE_KEY)) {
                     case Constants.SAUNA_KEY:
+                        String status = jsonObject.getString("status");
                         getSourceTopicModel().add(
                                 0, // adds to the beginning of list
-                                saunaCard(jsonObject.getString("status")));
+                                Cards.sauna(status, getContext()));
+                        break;
+                    case Constants.TRACK_ITEM_KEY:
+                        String item = jsonObject.getString("item");
+                        getSourceTopicModel().add(
+                                1, // adds in between the other cards
+                                Cards.trackItem(item, getContext()));
                         break;
                     default:
                         break;
@@ -144,26 +156,5 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
         }
 
         return list;
-    }
-
-    /**
-     * Example pre-built card
-     * @param status stauts of the sauna, ON or OFF
-     * @return the card basically
-     */
-    private ITopic saunaCard(String status) {
-        final Date creationDate = new Date();
-        final Topic topic = new Topic("Sauna", 1250, this.getActivity());
-        topic.setText("Sauna is " + status);
-        topic.setIsPrebuiltTopic(true);
-
-        ImageCard card = new ImageCard("__", 1550, this.getActivity());
-        card.setText("Sauna is " + status);
-        card.setAuthor("Futu2", "Futu2");
-        card.setDate(creationDate);
-        card.setImageUri(HereAndNowUtils.getResourceUri(R.drawable.card_sauna));
-
-        topic.addCard(card);
-        return topic;
     }
 }

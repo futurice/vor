@@ -35,7 +35,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * Card that matches the EIT demo card.
  *
@@ -73,16 +72,19 @@ public class ImageCard extends BaseCard {
         }
 
         try {
-            final String filePath = FileUtils.getPath(HereAndNowApplication.getStaticContext(), imageFile);
+            Context context = HereAndNowApplication.getStaticContext();
+            final String filePath = FileUtils.getPath(context, imageFile);
             if (filePath == null) {
                 throw new IllegalArgumentException("Can not find path to file: " + imageFile);
             }
 
             final File localImageFile = new File(filePath);
-            final Bitmap bmThumbnail = ImageUtils.createImageThumbnail(filePath, MediaStore.Video.Thumbnails.MICRO_KIND);
+            int thumbnailSize = MediaStore.Video.Thumbnails.MICRO_KIND;
+            final Bitmap bmThumbnail = ImageUtils.createImageThumbnail(filePath, thumbnailSize);
 
             if (bmThumbnail != null) {
-                final File directory = new File(Environment.getExternalStorageDirectory() + "/image_thumbnails/");
+                String path = Environment.getExternalStorageDirectory() + "/image_thumbnails/";
+                final File directory = new File(path);
                 if (!directory.exists() && !directory.mkdirs()) {
                     throw new IllegalStateException("Can not create external storage directory for thumbnails: " + imageFile);
                 }
@@ -122,6 +124,7 @@ public class ImageCard extends BaseCard {
         final ImageView cardLikeButton = (ImageView) view.findViewById(R.id.card_like_button);
         final LinearLayout commentsBar = (LinearLayout) view.findViewById(R.id.comments_bar);
         final ImageView cardImageView = (ImageView) view.findViewById(R.id.card_image);
+
         final String date = DateUtils.getRelativeDateTimeString(context,
                 this.getDate().getTime(),
                 DateUtils.MINUTE_IN_MILLIS,
@@ -133,15 +136,24 @@ public class ImageCard extends BaseCard {
                 .resize(500, 500) // Downscale huge images first
                 .onlyScaleDown()
                 .centerInside() // To keep the aspect ratio on resize
-                .into((ImageView) view.findViewById(R.id.card_image));
+                .into(cardImageView);
 
-        cardTextView.setText(this.getText());
+        cardTextView.setText(getText());
+        cardAuthorTextView.setText(resources.getString(R.string.card_author, getAuthor(), date));
+        setLikeBar(resources, likesBarLinearLayout, likesTextView);
+        setLikeButton(cardLikeButton, commentsBar);
+        cardImageView.setOnClickListener(v -> {
+            Intent viewImageIntent = new Intent(this.context, ImageViewActivity.class);
+            viewImageIntent.putExtra(ImageViewActivity.IMAGE_URI, this.getImageUri().toString());
+            this.context.startActivity(viewImageIntent);
+        });
+    }
 
-        String authorAndDate = resources.getString(R.string.card_author, this.getAuthor(), date);
-        cardAuthorTextView.setText(authorAndDate);
-
-        final int likes = ModelSingleton.instance().getLikes(this);
-        final List<Comment> comments = ModelSingleton.instance().getCommentsList(this);
+    private void setLikeBar(
+            Resources resources,
+            LinearLayout likesBarLinearLayout,
+            TextView likesTextView) {
+        int likes = ModelSingleton.instance().getLikes(this);
         if (likes > 0) {
             likesBarLinearLayout.setVisibility(View.VISIBLE);
             String likesText = resources.getQuantityString(R.plurals.number_of_likes, likes, likes);
@@ -150,24 +162,20 @@ public class ImageCard extends BaseCard {
         } else {
             likesBarLinearLayout.setVisibility(View.GONE);
         }
+    }
 
-        // Set like button
-        final int like = userAlreadyLikes() ? R.drawable.card_navbar_liked : R.drawable.card_navbar_like;
-        final Drawable drawable = ContextCompat.getDrawable(context, like);
+    private void setLikeButton(ImageView cardLikeButton, LinearLayout commentsBar) {
+        int like = userAlreadyLikes() ? R.drawable.card_navbar_liked : R.drawable.card_navbar_like;
+        Drawable drawable = ContextCompat.getDrawable(context, like);
         cardLikeButton.setImageDrawable(drawable);
 
+        List<Comment> comments = ModelSingleton.instance().getCommentsList(this);
         if (comments != null && !comments.isEmpty()) {
             commentsBar.setVisibility(View.VISIBLE);
             populateCommentsBar(comments, commentsBar);
         } else {
             commentsBar.setVisibility(View.GONE);
         }
-
-        cardImageView.setOnClickListener(v -> {
-            Intent viewImageIntent = new Intent(this.context, ImageViewActivity.class);
-            viewImageIntent.putExtra(ImageViewActivity.IMAGE_URI, this.getImageUri().toString());
-            this.context.startActivity(viewImageIntent);
-        });
     }
 
     @Override // BaseCard
@@ -213,7 +221,8 @@ public class ImageCard extends BaseCard {
         Log.d(TAG, "Populating the comment bar: " + comments.size());
         commentsBar.removeAllViews();
         for (final Comment comment : comments) {
-            final LinearLayout commentItem = (LinearLayout) this.inflateView(R.layout.comment_item, null);
+            final LinearLayout commentItem =
+                    (LinearLayout) this.inflateView(R.layout.comment_item, null);
 
             commentItem.setTag(comment);
             TextView name = (TextView) commentItem.findViewById(R.id.comment_name);
