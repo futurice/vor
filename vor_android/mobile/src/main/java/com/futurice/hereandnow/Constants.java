@@ -20,7 +20,7 @@ public class Constants {
 
     public static final String USER_AUTHOR_KEY = "author_key";
 
-    public static final String SERVER_URL = "http://futu2.herokuapp.com/";
+    public static final String SERVER_URL = "http://rubix.futurice.com/";
 
     public static final String TYPE_KEY = "type";
     public static final String ID_KEY = "id";
