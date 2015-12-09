@@ -28,18 +28,18 @@
         "type": {  
             "description": "The type of the message",  
             "constant": "beacon"  
-        }
+        },
         "floor": {  
             "description": "The floor where beacon locates",  
             "type": "integer"  
-        }
+        },
         "distance": {  
             "description": "The distance of the client from beacon",  
             "type": "float"  
         }
     },  
     "required": ["email", "id", "type", "floor", "distance"]
-}```
+```
 
 <h4 name="room-beacon-example">Example:</h4>
 
@@ -50,7 +50,8 @@
     "type": "beacon",
     "floor": 7,
     "distance": 8.132
-}```
+}
+```
 
 
 <h2 id="location-message">Location message</h2>
@@ -78,19 +79,21 @@
         "y": {  
             "description": "The calculated y-axis position of the client",  
             "type": "float"  
-        },
+        }
     },  
     "required": ["email", "type", "x", "y"]
-}```
+}
+```
 
-<h4 name="location-example"Example:</h4>
+<h4 name="location-example">Example:</h4>
 
 ```
 {
     "email": "user@mail.com",
     "x": 2.453, 
     "y": 1.224
-}```
+}
+```
 
 
 <h2 id="room-message">Room message</h2>
@@ -133,7 +136,8 @@
         },
     },  
     "required": ["id", "type", "reserved", "temperature", "light", "dioxide", "noise"]
-}```
+}
+```
 
 <h4 name="room-example">Example:</h4>
 
@@ -146,7 +150,8 @@
     "light": 1002,
     "dioxide": 20.2,
     "noise":45.2
-}```
+}
+```
 
 
 <h2 id="toilet-message">Toilet message</h2>
@@ -178,7 +183,8 @@
         }
     },  
     "required": ["id", "type", "reserved", "temperature", "light", "dioxide", "noise"]
-}```
+}
+```
 
 <h4 name="toilet-example"Example:</h4>
 
@@ -188,7 +194,8 @@
     "type": "toilet",
     "reserved": true, 
     "methane": 0.2
-}```
+}
+```
 
 
 <h2 id="cake-message">Cake message</h2>
@@ -216,7 +223,8 @@
         }
     },  
     "required": ["id", "type", "image"]
-}```
+}
+```
 
 <h4 name="cake-example">Example:</h4>
 
@@ -225,4 +233,5 @@
     "id": "cake",
     "type": "cake",
     "image": "/9j/4AAQSkZJRgABAQEASABIAAD/4QCAR.."
-}```
+}
+```
