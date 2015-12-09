@@ -19,22 +19,23 @@ describe('App: On message post', function () {
   });
 
   it('should publish message', done => {
-    const TEST_MESSAGE = helpers.TEST_MESSAGE;
+    const TEST_MESSAGE = '{"id":"1","type":"room","reserved":false,"temperature":10,"light":774,"dioxide":10,"noise":10}';
+    const expectedResponse = JSON.parse(TEST_MESSAGE);
     const clientA = helpers.createSocketConnection();
     const clientB = helpers.createSocketConnection();
-    const text_plain = JSON.stringify(JSON.stringify(TEST_MESSAGE));
     request(app)
       .post('/messages')
       .set('Content-type', 'text/plain')
-      .send(text_plain)
+      .send(TEST_MESSAGE)
       .expect(200)
       .end(function (err, res) {
-        clientA.on('stream', message => {
-          should(message[0]).deepEqual(TEST_MESSAGE);
-        });
-
         clientB.on('stream', message => {
-          should(message[0]).deepEqual(TEST_MESSAGE);
+
+          clientA.on('stream', message => {
+            should(message[0]).deepEqual(expectedResponse);
+          });
+
+          should(message[0]).deepEqual(expectedResponse);
           clientA.disconnect();
           clientB.disconnect();
           done();
