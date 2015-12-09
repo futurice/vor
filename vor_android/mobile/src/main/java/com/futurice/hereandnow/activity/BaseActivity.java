@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
 
-public class BaseActivity extends AppCompatActivity {
+abstract class BaseActivity extends AppCompatActivity {
     protected boolean hasExtra(@NonNull final String name) {
         return getIntent().getExtras() != null && getIntent().getExtras().get(name) != null;
     }

@@ -28,7 +28,7 @@ import io.socket.client.Socket;
 public class HereAndNowApplication extends Application implements ScampiService.StateChangeCallback {
 
     public static String TAG = HereAndNowApplication.class.getCanonicalName();
-    private static Context context;
+    private static Context sContext;
 
     private static Socket mSocket;
 
@@ -40,7 +40,7 @@ public class HereAndNowApplication extends Application implements ScampiService.
 //    ScampiService service;
 
     public static Context getStaticContext() {
-        return HereAndNowApplication.context;
+        return HereAndNowApplication.sContext;
     }
 
     public static void stopServiceDelayed(@NonNull final Context context) {
@@ -51,7 +51,7 @@ public class HereAndNowApplication extends Application implements ScampiService.
     }
 
     public static void stopServiceNow(@NonNull final Context context) {
-//        final HereAndNowApplication app = ((HereAndNowApplication) (context.getApplicationContext()));
+//        final HereAndNowApplication app = ((HereAndNowApplication) (sContext.getApplicationContext()));
 //        if (app.service != null) {
 //            app.service.stop();
 //            Async.exitWithErrorCode(TAG, "User shutdown", null);
@@ -67,7 +67,7 @@ public class HereAndNowApplication extends Application implements ScampiService.
     }
 
     public static void startServiceIf(@NonNull final Context context) {
-//        final HereAndNowApplication app = ((HereAndNowApplication) (context.getApplicationContext()));
+//        final HereAndNowApplication app = ((HereAndNowApplication) (sContext.getApplicationContext()));
 //
 //        if (app.service != null) {
 //            app.service.start();
@@ -77,13 +77,15 @@ public class HereAndNowApplication extends Application implements ScampiService.
     }
 
     public static String getApplicationName() {
-        return context.getString(context.getApplicationInfo().labelRes);
+        return sContext.getString(sContext.getApplicationInfo().labelRes);
     }
 
     @Override
     public final void onCreate() {
         super.onCreate();
         // LeakCanary.install(this);
+
+        sContext = getApplicationContext();
 
         new AsyncBuilder(this)
                 .setStrictMode(false) //TODO Fix strict mode on startup for performance and testing

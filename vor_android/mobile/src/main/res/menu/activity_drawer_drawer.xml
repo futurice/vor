@@ -17,10 +17,6 @@
             android:icon="@drawable/ic_map_black_24dp"
             android:title="@string/nav_map" />
         <item
-            android:id="@+id/nav_beacons"
-            android:icon="@drawable/ic_bluetooth_searching_black_24dp"
-            android:title="@string/nav_beacons" />
-        <item
             android:id="@+id/nav_space"
             android:icon="@drawable/ic_place_24dp"
             android:title="@string/nav_space" />

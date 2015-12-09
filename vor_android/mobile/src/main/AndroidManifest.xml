@@ -103,15 +103,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
         </activity>
-        <activity
-            android:name=".activity.BeaconsActivity"
-            android:label="@string/title_activity_beacons"
-            android:parentActivityName=".activity.DrawerActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
-        </activity>
     </application>
 
 </manifest>

@@ -25,7 +25,6 @@ public class Constants {
     public static final String TYPE_KEY = "type";
     public static final String ID_KEY = "id";
 
-    public static final String BEACON_KEY = "beacon";
     public static final String LOCATION_KEY = "location";
     public static final String FLOOR_KEY = "floor";
     public static final String STREAM_KEY = "stream";

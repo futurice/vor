@@ -148,8 +148,6 @@ public class DrawerActivity extends BaseActivity
             startActivity(new Intent(this, PeopleActivity.class));
         } else if (id == R.id.nav_map) {
             startActivity(new Intent(this, MapActivity.class));
-        } else if (id == R.id.nav_beacons) {
-            startActivity(new Intent(this, BeaconsActivity.class));
         } else if (id == R.id.nav_space) {
             startActivity(new Intent(this, SpaceActivity.class));
         } else if (id == R.id.nav_toilets) {
