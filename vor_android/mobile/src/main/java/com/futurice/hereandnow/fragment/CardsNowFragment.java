@@ -1,6 +1,8 @@
 package com.futurice.hereandnow.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -36,7 +38,13 @@ import io.socket.client.Socket;
 import static com.futurice.cascade.Async.UI;
 
 public class CardsNowFragment extends BaseHereAndNowFragment {
+    private static final String TAG = CardsNowFragment.class.getSimpleName();
+
     Socket mSocket;
+
+    SharedPreferences mTestSP;
+
+    OnSharedPreferenceChangeListener testCardListener = this::addTestCard;
 
     public CardsNowFragment() {
         // Required empty public constructor
@@ -48,6 +56,8 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
 
         mSocket = HereAndNowApplication.getSocket();
         mSocket.emit("init"); // Requests latest messages
+
+        mTestSP = getActivity().getSharedPreferences("test123", Context.MODE_PRIVATE);
     }
 
     @Override
@@ -74,6 +84,18 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
         filterModel();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mTestSP.registerOnSharedPreferenceChangeListener(testCardListener);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mTestSP.unregisterOnSharedPreferenceChangeListener(testCardListener);
     }
 
     protected void initViewsAndAdapters() {
@@ -153,5 +175,18 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
         }
 
         return list;
+    }
+
+    private void addTestCard(SharedPreferences sharedPreferences, String key) {
+        switch (key) {
+            case Constants.MESSAGE_KEY:
+                String message = sharedPreferences.getString(key, "Failed");
+                Log.d(TAG, "TEST MESSAGE: " + message);
+                getSourceTopicModel().add(0, Cards.test(message, this.getActivity()));
+                UI.execute(this::filterModel);
+                break;
+            default:
+                break;
+        }
     }
 }

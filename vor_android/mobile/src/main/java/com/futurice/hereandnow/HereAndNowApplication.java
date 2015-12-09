@@ -123,6 +123,9 @@ public class HereAndNowApplication extends Application implements ScampiService.
                         Log.d(TAG, jsonObject.toString());
                         testSaunaNotification(jsonObject.getString("status"));
                         break;
+                    case Constants.TEST_KEY: // Test
+                        saveTestToSharedPreferences(jsonObject.getString("message"));
+                        break;
                     default:
                         break;
                 }
@@ -148,6 +151,13 @@ public class HereAndNowApplication extends Application implements ScampiService.
         SharedPreferences.Editor editor = toilets.edit();
         editor.putBoolean(Constants.RESERVED_KEY, jsonObject.getBoolean(Constants.RESERVED_KEY));
         editor.putInt(Constants.METHANE_KEY, jsonObject.getInt(Constants.METHANE_KEY));
+        editor.apply();
+    }
+
+    private void saveTestToSharedPreferences(String message) {
+        SharedPreferences testSP = getSharedPreferences("test123", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = testSP.edit();
+        editor.putString(Constants.MESSAGE_KEY, message);
         editor.apply();
     }
 

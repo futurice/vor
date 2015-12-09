@@ -49,4 +49,25 @@ public class Cards {
         topic.addCard(card);
         return topic;
     }
+
+    /**
+     * Test card, to be removed
+     * Example JSON: { type: "test", message: "Hello World!" }
+     *
+     * @return the test topic
+     */
+    public static ITopic test(String message, Context context) {
+        final Topic topic = new Topic("Test", 1450, context);
+        topic.setText(message);
+        topic.setColor(R.color.light_grey);
+        topic.setIsPrebuiltTopic(true);
+
+        ImageCard card = new ImageCard("__", 1750, context);
+        card.setText(message);
+        card.setAuthor("Vör", "V001");
+        card.setDate(new Date());
+
+        topic.addCard(card);
+        return topic;
+    }
 }

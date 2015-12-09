@@ -35,7 +35,11 @@ public class Constants {
     public static final String SAUNA_KEY = "sauna";
     public static final String TRACK_ITEM_KEY = "track";
     public static final String RESERVED_KEY = "reserved";
+    public static final String MESSAGE_KEY = "message";
     public static final String METHANE_KEY = "methane";
 
     public static final int DELAY_IN_MINUTES = 30;
+
+    // To be removed
+    public static final String TEST_KEY = "test";
 }
