@@ -90,6 +90,7 @@
 ```
 {
     "email": "user@mail.com",
+    "type": "location",
     "x": 2.453, 
     "y": 1.224
 }
@@ -133,7 +134,7 @@
         "noise": {  
             "description": "Amount of noise(dB) in the room",  
             "type": "float"  
-        },
+        }
     },  
     "required": ["id", "type", "reserved", "temperature", "light", "dioxide", "noise"]
 }
