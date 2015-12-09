@@ -18,3 +18,9 @@
 - To lint (ESlint and JSCS): ```npm run lint```
 - To run tests: ```npm run test```
 - To run tests continuously: ```npm run test-watch```
+
+
+### Making a deploy
+1. Add remote repo
+2. If you are using Dokku, Heroku or something similar run in root folder:<br/>
+    ``` git push dokku `git subtree split --prefix vor-backend <your branch>`:master```
