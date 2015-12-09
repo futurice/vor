@@ -1,5 +1,6 @@
 package com.futurice.hereandnow.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -32,9 +33,9 @@ import java.util.List;
 
 import io.socket.client.Socket;
 
-public class CardsNowFragment extends BaseHereAndNowFragment {
-    private static final String TAG = CardsNowFragment.class.getSimpleName();
+import static com.futurice.cascade.Async.UI;
 
+public class CardsNowFragment extends BaseHereAndNowFragment {
     Socket mSocket;
 
     public CardsNowFragment() {
@@ -89,19 +90,15 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                Log.d(TAG, jsonObject.getString(Constants.TYPE_KEY));
+                Context context = HereAndNowApplication.getStaticContext();
                 switch (jsonObject.getString(Constants.TYPE_KEY)) {
                     case Constants.SAUNA_KEY:
                         String status = jsonObject.getString("status");
-                        getSourceTopicModel().add(
-                                0, // adds to the beginning of list
-                                Cards.sauna(status, getContext()));
+                        getSourceTopicModel().add(0, Cards.sauna(status, context));
                         break;
                     case Constants.TRACK_ITEM_KEY:
                         String item = jsonObject.getString("item");
-                        getSourceTopicModel().add(
-                                1, // adds in between the other cards
-                                Cards.trackItem(item, getContext()));
+                        getSourceTopicModel().add(Cards.trackItem(item, context));
                         break;
                     default:
                         break;
@@ -111,7 +108,7 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
             e.printStackTrace();
         }
 
-        getActivity().runOnUiThread(() -> {
+        UI.execute(() -> {
             textView.setText(jsonArray.toString());
             filterModel();
         });
