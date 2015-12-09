@@ -36,7 +36,13 @@
 ### Sauna
 - [Electric current](https://www.sparkfun.com/products/11005)
 
+
 ## Development
+
+### Installation
+- Download and install the [Arduino SDK](https://www.arduino.cc/en/Main/Software)
+    - You may need to install USB drivers more or less manually
+- For installing LinkIt ONE SDK (on top of the Arduino SDK) follow [this guide](http://www.seeedstudio.com/wiki/LinkIt_ONE) or [this guide](http://labs.mediatek.com/forums/posts/list/559.page)
 
 ### Setup
 - WIP
