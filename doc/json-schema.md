@@ -4,6 +4,7 @@
 - [Location message](#location-message) - [example message](#location-example)
 - [Room message](#room-message) - [example message](#room-example)
 - [Toilet message](#toilet-message) - [example message](#toilet-example)
+- [Pool message](#pool-message) - [example message](#pool-example)
 - [Cake message](#cake-message) - [example message](#cake-example)
 
 <h2 name="room-beacon-message">Room beacon message</h2>
@@ -162,7 +163,7 @@
 ```
 {
     "$schema": "http://json-schema.org/draft-04/schema#",  
-    "title": "Room message",  
+    "title": "Toilet message",  
     "description": "Information of toilet's conditions",  
     "type": "object",  
     "properties": {  
@@ -199,6 +200,44 @@
 ```
 
 
+<h2 id="pool-message">Pool message</h2>
+
+####Schema:
+
+```
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",  
+    "title": "Pool message",  
+    "description": "Information of toilet's conditions",  
+    "type": "object",  
+    "properties": {  
+         "id": {  
+            "description": "An unique identifier for a pool",  
+            "type": "string"  
+        },
+        "type": {  
+            "description": "The type of the message",  
+            "constant": "pool"  
+        },
+        "image": {  
+            "description": "Image of the cake as base64",  
+            "type": "string"  
+        }
+    },  
+    "required": ["id", "type", "image"]
+}
+```
+
+<h4 name="pool-example">Example:</h4>
+
+```
+{
+    "id": "pool",
+    "type": "pool",
+    "image": "/9j/4AAQSkZJRgABAQEASABIAAD/4QCAR.."
+}
+```
+
 <h2 id="cake-message">Cake message</h2>
 
 ####Schema:
@@ -206,7 +245,7 @@
 ```
 {
     "$schema": "http://json-schema.org/draft-04/schema#",  
-    "title": "Room message",  
+    "title": "Cake message",  
     "description": "Information of toilet's conditions",  
     "type": "object",  
     "properties": {  
@@ -236,3 +275,4 @@
     "image": "/9j/4AAQSkZJRgABAQEASABIAAD/4QCAR.."
 }
 ```
+
