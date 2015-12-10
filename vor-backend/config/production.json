@@ -7,11 +7,11 @@
   },
   "BEACONS": [
     {
-        "id": "futu-b1-32095-19454",
-        "type": "Room Beacon",
-        "floor": 7,
-        "x": 8.132,
-        "y": 18.5848
+      "id": "futu-b1-32095-19454",
+      "type": "Room Beacon",
+      "floor": 7,
+      "x": 8.132,
+      "y": 18.5848
     },
     {
       "id": "futu-b2-23964-38945",
