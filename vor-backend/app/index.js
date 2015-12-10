@@ -1,18 +1,24 @@
 'use strict';
 const path = require('path');
 const express = require('express');
+const bodyParser = require('body-parser');
+const logger = require('morgan');
 const socketIO = require('socket.io');
 const Rx = require('rx');
 const redis = require('redis');
 const { BEACONS, MESSAGE_TTL } = require('config');
 const Cache = require('app/cache');
 const Location = require('app/location');
+const viewRoute = require('app/views/routes');
 const views = require('app/views');
 const utils = require('app/utils');
 
 
 // init app setup
 const app = express();
+const router = express.Router();
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(logger('dev'));
 
 
 // init cache storage
@@ -33,41 +39,48 @@ const location = new Location(BEACONS);
 
 // set up socket.IO
 app.io = socketIO();
-app.io.on('error', error => console.log(`Socket connection error: ${error}`));
+app.io.on('error', utils.logError(error => `Socket connection error: ${error}`));
+
+// listen socket connections
 app.io.on('connection', socket => {
-  const observableFor = observableFromSocketEvent(socket);
-  publishLocation(observableFor('beacon'), app.io);
-  publishMessage(observableFor('message'), app.io);
-  sendInitData(observableFor('init'), socket);
-});
-
-const observableFromSocketEvent = socket => event => Rx.Observable.fromEvent(socket, event);
-
-const publishLocation = (source, socket) => {
-  location.fromDeviceStream(source)
+  location.fromDeviceStream(Rx.Observable.fromEvent(socket, 'beacon'))
     .subscribe(
-      location => socket.emit('location', location),
-      utils.logError(error =>`Location stream error:${error}`));
-};
+      location => app.io.emit('location', location),
+      utils.logError(error =>`Location stream error:${error}`)
+  );
 
-const publishMessage = (source, socket) => {
-  appCache.set(source)
+  Rx.Observable.fromEvent(socket, 'message')
+    .flatMap(appCache.transaction.bind(appCache))
     .subscribe(
-      value => socket.emit('stream', [value]),
-      utils.logError(error => `Stream error:${error}`)
+      message => app.io.emit('stream', [message]),
+      error => utils.logError(error => `Message error:${error}`)
     );
-};
 
-const sendInitData = (source, socket) => {
-  appCache.getInitData(source)
+  Rx.Observable.fromEvent(socket, 'init')
+    .flatMap(appCache.getAllStream.bind(appCache))
     .subscribe(
       messages => socket.emit('init', messages),
-      utils.logError(error => `Init stream error:${error}`)
+      error => utils.logError(error => `Init error:${error}`)
     );
-};
+});
 
 
-// render test page
+// TODO: At the moment Arduinos' have limited websocket support. Remove this route if changes.
+const messageRoute = router.post('/messages', (req, res) => {
+  Rx.Observable.return(JSON.parse(req.body))
+    .flatMap(appCache.transaction.bind(appCache))
+    .doOnNext(message => app.io.emit('stream', [message]))
+    .doOnError(error => utils.logError(error => `Message error:${error}`))
+    .subscribe(
+      success => res.send('OK'),
+      error => res.status(300).send(`Error: ${error}`)
+    );
+});
+app.use('/messages', bodyParser.text({type: '*/*'}), messageRoute);
+
+
+// the test page
+app.use('/', viewRoute(router));
 views.renderTestPage(app);
 
 

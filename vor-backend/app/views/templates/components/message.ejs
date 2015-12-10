@@ -101,7 +101,7 @@
       $error.addClass('hidden');
       const defaultProp = { type: typeValue };
       const imageStream = $imageStreamInput.val();
-      const imageProp = imageStream ? { file: imageStream } : {};
+      const imageProp = imageStream ? { image: imageStream } : {};
 
       $('.JS-property-field').each(function(i, element){
         const key = $(element).find('.JS-key-input').val();

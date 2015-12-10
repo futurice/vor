@@ -29,7 +29,7 @@ describe('App: On beacon event', function () {
      +---+---+---+
      */
 
-    const CLIENT_A_LOCATION = {email: 'ClientA', x: 2, y: 2};
+    const CLIENT_A_LOCATION = {email: 'ClientA', type: 'location', x: 2, y: 2};
     const clientA = helpers.createSocketConnection();
     const clientB = helpers.createSocketConnection();
 
