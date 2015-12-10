@@ -47,7 +47,7 @@
       function stringify(o) {
         var str =
           $.map(o, function (val, key) {
-            if( typeof val === 'object') {
+            if(!!val && typeof val === 'object') {
               return `  ${key}: ${ stringify(val)}`;
             }
             var formatted = typeof val === 'string' ? `"${truncate(val)}"` : val;
