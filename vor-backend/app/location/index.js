@@ -3,35 +3,38 @@ const Rx = require('rx');
 const utils = require('app/utils');
 
 class Location {
-  constructor (beacons) {
+  constructor(beacons) {
     this.beacons = beacons;
   }
 
-  fromDeviceStream (stream) {
+  fromDeviceStream(stream) {
     const beaconStreams = splitInToBeaconStreams(stream, this.beacons);
     return Rx.Observable.combineLatest(
       beaconStreams,
-      (beacon1, beacon2, beacon3, rest) => {
+      (beacon1, beacon2, beacon3) => {
+        const messageData = Object.assign ({
+          email: beacon1.email, // get email data from beacon
+          type: 'location' // constant for every message
+        }, calculatePosition(beacon1, beacon2, beacon3));
         const logBeacons = `${beacon1.id}, ${beacon2.id}, ${beacon3.id}`;
-        const log = utils.log(value => `Location.fromDeviceStream (${logBeacons}) --> x:${value.x}, y:${value.y}`);
-        return log(calculatePosition(beacon1, beacon2, beacon3));
+        const log = utils.log(value => `Location.fromDeviceStream (${logBeacons}) --> ${JSON.stringify(value)}`);
+        return log(messageData);
       });
   }
-};
+}
 
 function splitInToBeaconStreams(stream, beaconsConfiguration) {
   return beaconsConfiguration.map(beaconConfig => {
     return stream
       .filter(beaconData => beaconData.floor === beaconConfig.floor)
       .filter(beaconData => beaconData.id === beaconConfig.id)
-      .map(beaconData => mapDataWithConfig(beaconData, beaconConfig));
+      .map(beaconData => Object.assign(beaconConfig, beaconData));
   });
 }
 
 function mapDataWithConfig(data, config) {
   return {
     id: data.id,
-    email: data.email,
     distance: data.distance,
     x: config.x,
     y: config.y
@@ -52,7 +55,6 @@ function calculatePosition(obj1, obj2, obj3) {
   const y = (W - 2 * x * (obj2.x - obj1.x)) / (2 * (obj2.y - obj1.y));
 
   return {
-    email: obj1.email, // pick the email from first object
     x: isValidPosition(x) && x || 0,
     y: isValidPosition(y) && y || 0
   };
