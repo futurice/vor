@@ -124,4 +124,11 @@
     <string name="title_activity_beacons">Beacons (Temporary)</string>
     <string name="add_as_favourite">Add as Favourite</string>
     <string name="beacons_listviewadapter_beacons_found">Beacon Found!</string>
+
+    <!-- Notification -->
+    <string name="notification_bluetooth_title">Bluetooth</string>
+    <string name="notification_bluetooth_message">Your Bluetooth isn\'t enabled.\n\nIf you wish to update your location on the app, please enable it.</string>
+    <string name="notification_bluetooth_button">close</string>
+    <string name="notification_do_not_show_again">Do not show again</string>
+    <string name="preferences_notification_sate">bluetooth_notification_state</string>
 </resources>

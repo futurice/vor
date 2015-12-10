@@ -2,6 +2,7 @@ package com.futurice.hereandnow.activity;
 
 import android.app.Activity;
 import android.app.SearchManager;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,12 +16,15 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextWatcher;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -39,7 +43,6 @@ import java.util.List;
 import java.util.UUID;
 
 import fi.tkk.netlab.dtn.scampi.applib.SCAMPIMessage;
-import io.socket.client.Socket;
 
 public class DrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, IAsyncOrigin {
@@ -55,6 +58,8 @@ public class DrawerActivity extends BaseActivity
     // A View Model object, we will bind the ReactiveTextView to this and similar objects
     ReactiveValue<String> chatReactiveValue;
     private final ImmutableValue<String> origin = RCLog.originAsync();
+
+    private boolean bluetoothNotificationShowed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +87,43 @@ public class DrawerActivity extends BaseActivity
 
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        bluetoothNotificationShowed = false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Display a notification if Bluetooth isn't enabled.
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean savedNotificationState = preferences.getBoolean(
+                getString(R.string.preferences_notification_sate),
+                false);
+
+        if (bluetoothAdapter != null && !bluetoothAdapter.isEnabled() && !bluetoothNotificationShowed && !savedNotificationState) {
+            View notificationView = getLayoutInflater().inflate(R.layout.checkbox_bluetooth, null);
+            final CheckBox doNotShowAgain = (CheckBox) notificationView.findViewById(R.id.checkbox_bluetooth);
+
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setView(notificationView);
+            alert.setTitle(getString(R.string.notification_bluetooth_title));
+            alert.setMessage(getString(R.string.notification_bluetooth_message));
+            alert.setPositiveButton(getString(R.string.notification_bluetooth_button), (dialog, which) -> {
+                bluetoothNotificationShowed = true;
+
+                if (doNotShowAgain.isChecked()) {
+                    // Do not show this dialog again.
+                    preferences.edit()
+                            .putBoolean(getString(R.string.preferences_notification_sate), true)
+                            .apply();
+                }
+                dialog.dismiss();
+            });
+
+            alert.create().show();
+        }
     }
 
     private void initReactiveValues() {
