@@ -50,6 +50,10 @@ public class MapView extends PhotoView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        if (onMapDrawListener == null) {
+            return;
+        }
+
         for (PeopleManager.Person person : onMapDrawListener.getPersons()) {
             person.updateCurrentLocation(animationSpeed, updateRadius); // Animate the markers.
 

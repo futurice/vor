@@ -3,6 +3,7 @@ package com.futurice.hereandnow;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.futurice.cascade.AsyncBuilder;
+import com.futurice.hereandnow.services.LocationService;
 import com.spacetimenetworks.scampiandroidlib.ScampiService;
 
 import org.json.JSONArray;
@@ -109,6 +111,9 @@ public class HereAndNowApplication extends Application implements ScampiService.
                 .on(Constants.STREAM_KEY, args -> updateToSharedPreferences((JSONArray) args[0]))
                 .on(Socket.EVENT_DISCONNECT, args -> Log.d(TAG, "EVENT_DISCONNECT"));
         mSocket.connect();
+
+        // Start the service for updating location.
+        startService(new Intent(this, LocationService.class));
     }
 
     public void updateToSharedPreferences(JSONArray jsonArray) {

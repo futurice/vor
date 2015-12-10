@@ -103,6 +103,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
         </activity>
+        <service
+            android:name=".services.LocationService">
+        </service>
     </application>
 
 </manifest>

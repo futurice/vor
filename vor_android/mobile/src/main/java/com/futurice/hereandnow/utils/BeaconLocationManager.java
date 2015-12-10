@@ -156,9 +156,12 @@ public class BeaconLocationManager {
     };
 
     private Emitter.Listener onLocation = args -> {
-        for (Object o : args) {
-            mLocationCallback.onLocationUpdate(o.toString());
-        }};
+        if (mLocationCallback != null) {
+            for (Object o : args) {
+                mLocationCallback.onLocationUpdate(o.toString());
+            }
+        }
+    };
 
     /**
      * http://developer.estimote.com/android/tutorial/part-2-background-monitoring/

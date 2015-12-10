@@ -2,8 +2,6 @@ package com.futurice.hereandnow.fragment;
 
 import android.Manifest;
 import android.graphics.RectF;
-import android.os.AsyncTask;
-import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -30,8 +28,6 @@ import butterknife.ButterKnife;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class MapActivityFragment extends Fragment {
-    private static final int DELAY = 5000;
-
     //TODO Measure real dimensions for the 8th floor.
     // Real life dimensions for the map in meters.
     private static final float FLOOR8_WIDTH = 20f;
@@ -167,18 +163,6 @@ public class MapActivityFragment extends Fragment {
                 return peopleManager.getPeople();
             }
         });
-
-        // Set the handler for updating the location.
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                new LocationUpdateTask().execute();
-                handler.postDelayed(this, DELAY);
-            }
-
-        }, DELAY);
     }
 
     @Override
@@ -219,15 +203,6 @@ public class MapActivityFragment extends Fragment {
                 float newY = person.getMapLocationY() + rect.top;
                 person.setDisplayedLocation(newX, newY, true);
             }
-        }
-    }
-
-    private class LocationUpdateTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            beaconLocationManager.sendLocation();
-            return null;
         }
     }
 
