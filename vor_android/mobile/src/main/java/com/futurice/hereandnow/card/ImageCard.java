@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.futurice.cascade.util.RCLog;
+import com.futurice.hereandnow.Constants;
 import com.futurice.hereandnow.HereAndNowApplication;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.activity.ImageViewActivity;
@@ -45,6 +46,10 @@ public class ImageCard extends BaseCard {
     public static final String TAG = ImageCard.class.getName();
     @NonNull
     private String text = "";
+
+    @NonNull
+    private String mCardType = "";
+
     @NonNull
     private Uri imageUri = Uri.EMPTY;
     private String mImageBase64;
@@ -140,19 +145,26 @@ public class ImageCard extends BaseCard {
                     .onlyScaleDown()
                     .centerInside() // To keep the aspect ratio on resize
                     .into(cardImageView);
+            cardImageView.setOnClickListener(v -> {
+                Intent viewImageIntent = new Intent(context, ImageViewActivity.class);
+                viewImageIntent.putExtra(ImageViewActivity.IMAGE_URI, getImageUri().toString());
+                viewImageIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // FIXME Correct?
+                context.startActivity(viewImageIntent);
+            });
         } else if (mImageBase64 != null){
             cardImageView.setImageBitmap(getImageBitmap());
+            cardImageView.setOnClickListener(v -> {
+                Intent viewImageIntent = new Intent(context, ImageViewActivity.class);
+                viewImageIntent.putExtra(Constants.TYPE_KEY, getCardType());
+                viewImageIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // FIXME Correct?
+                context.startActivity(viewImageIntent);
+            });
         }
 
         cardTextView.setText(getText());
         cardAuthorTextView.setText(resources.getString(R.string.card_author, getAuthor(), date));
         setLikeBar(resources, likesBarLinearLayout, likesTextView);
         setLikeButton(cardLikeButton, commentsBar);
-        cardImageView.setOnClickListener(v -> {
-            Intent viewImageIntent = new Intent(this.context, ImageViewActivity.class);
-            viewImageIntent.putExtra(ImageViewActivity.IMAGE_URI, this.getImageUri().toString());
-            this.context.startActivity(viewImageIntent);
-        });
     }
 
     private void setLikeBar(
@@ -201,6 +213,15 @@ public class ImageCard extends BaseCard {
 
     public void setText(@NonNull final String text) {
         this.text = text;
+    }
+
+    @NonNull
+    public String getCardType() {
+        return mCardType;
+    }
+
+    public void setCardType(@NonNull final String cardType) {
+        mCardType = cardType;
     }
 
     @NonNull

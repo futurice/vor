@@ -45,6 +45,7 @@ public class Cards {
         topic.setImageUri(HereAndNowUtils.getResourceUri(R.drawable.card_food));
 
         ImageCard card = new ImageCard("__", 540, context);
+        card.setCardType(Constants.FOOD_KEY);
         card.setText("Bon Appétit!");
         card.setAuthor("Vör", "V001");
         card.setDate(new Date());

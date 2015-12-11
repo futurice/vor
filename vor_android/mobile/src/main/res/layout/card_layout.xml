@@ -24,7 +24,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
             android:scaleType="fitCenter"
-            android:background="@drawable/card_pool"/>
+            />
 
         <ImageView
             android:id="@+id/video_card_play_button_image"
