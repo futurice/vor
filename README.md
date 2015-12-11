@@ -19,11 +19,17 @@ All communication is JSON by websockets with end-to-end push. IoT nodes such as 
 
 All communication is stateless from the standpoint of the client. The client, usually a mobile phone, sends messsages and forgets about them. The server sends messages which are complete by themselves. This is different from the more standard HTTP request-response.
 
-Please have a look at the subdirectories corresponding to the different parts of this setup for additional details. The /doc director has additional information as it is available. One place to start might be the [JSON](docs/json-schema.md) describing the different message.
+Please have a look at the subdirectories corresponding to the different parts of this setup for additional details. The /doc director has additional information as it is available.
+
+Starting points depending on your interest:
+
+[JSON](/docs/json-schema.md) describing the different message.
+
+
 
 *Contact and Additional Information*
 
-Project lead [paul.houghton@futurice.com](paul.houghton@futurice.com)
+Project lead paul.houghton@futurice.com
 
 Director, Wizardry and Mobile Development, [Futurice](http://futurice.com/)
 
