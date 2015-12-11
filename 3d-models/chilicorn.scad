@@ -6,7 +6,7 @@ head_small_radius = 5;
 head_spacing = 13;
 head_angle = 30;
 
-horn_length = 15;
+horn_length = 18;
 horn_radius = 3;
 
 neck_angle = 30;
@@ -39,6 +39,12 @@ module horn() {
 }
 
 module neck() {
+    rotate([0, -neck_angle + 180, 0]) {
+        cylinder(h = neck_length + head_big_radius - .2, r1 = neck_radius, r2 = neck_radius);
+    }
+}
+
+module mane() {
     rotate([0, -neck_angle + 180, 0]) {
         cylinder(h = neck_length + head_big_radius - .2, r1 = neck_radius, r2 = neck_radius);
     }
