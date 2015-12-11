@@ -22,7 +22,11 @@ All communication is stateless from the standpoint of the client. The client, us
 Please have a look at the subdirectories corresponding to the different parts of this setup for additional details. The /doc director has additional information as it is available. One place to start might be the [JSON](docs/json-schema.md) describing the different message.
 
 *Contact and Additional Information*
+
 Project lead [paul.houghton@futurice.com](paul.houghton@futurice.com)
+
 Director, Wizardry and Mobile Development, [Futurice](http://futurice.com/)
+
 [Blog](http://futurice.com/people/paul-houghton)
+
 [@mobile_rat](https://twitter.com/mobile_rat/) and [@futurice](https://twitter.com/mobile_rat/)
