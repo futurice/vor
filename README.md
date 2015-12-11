@@ -23,7 +23,7 @@ Please have a look at the subdirectories corresponding to the different parts of
 
 Starting points depending on your interest:
 
-[JSON](/docs/json-schema.md) describing the different message.
+[JSON](/doc/json-schema.md) describing the different message.
 
 
 
