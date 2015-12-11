@@ -33,6 +33,9 @@ public class Constants {
 
     public static final String TOILET_KEY = "toilet";
     public static final String SAUNA_KEY = "sauna";
+    public static final String FOOD_KEY = "food";
+    public static final String IMAGE_KEY = "image";
+    public static final String POOL_KEY = "pool";
     public static final String TRACK_ITEM_KEY = "track";
     public static final String RESERVED_KEY = "reserved";
     public static final String MESSAGE_KEY = "message";

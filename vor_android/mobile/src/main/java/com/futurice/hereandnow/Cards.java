@@ -6,11 +6,53 @@ import android.graphics.Color;
 import com.futurice.hereandnow.card.ITopic;
 import com.futurice.hereandnow.card.ImageCard;
 import com.futurice.hereandnow.card.Topic;
+import com.futurice.hereandnow.utils.HereAndNowUtils;
 
 import java.util.Date;
 import java.util.Random;
 
 public class Cards {
+
+    /**
+     * Pool card
+     * @param message the message
+     * @return the pool topic
+     */
+    public static ITopic pool(String message, Context context) {
+        final Topic topic = new Topic("Pool", 140, context);
+        topic.setText("Are you up for a game?");
+        topic.setIsPrebuiltTopic(true);
+
+        ImageCard card = new ImageCard("__", 440, context);
+        card.setText(message);
+        card.setAuthor("Vör", "V001");
+        card.setImageUri(HereAndNowUtils.getResourceUri(R.drawable.card_pool));
+        card.setDate(new Date());
+
+        topic.addCard(card);
+        return topic;
+    }
+
+    /**
+     * Food card
+     * @param file Base64 strings
+     * @return the food topic
+     */
+    public static ITopic food(String file, Context context) {
+        final Topic topic = new Topic("Food", 240, context);
+        topic.setText("Check what's on FutuCafé table");
+        topic.setIsPrebuiltTopic(true);
+        topic.setImageUri(HereAndNowUtils.getResourceUri(R.drawable.card_food));
+
+        ImageCard card = new ImageCard("__", 540, context);
+        card.setText("Bon Appétit!");
+        card.setAuthor("Vör", "V001");
+        card.setDate(new Date());
+        card.setImageBase64(file);
+
+        topic.addCard(card);
+        return topic;
+    }
 
     /**
      * Sauna card
@@ -47,6 +89,27 @@ public class Cards {
         card.setText("You're tracking the item " + item);
         card.setAuthor("Vör", "V001");
         card.setDate(new Date());
+
+        topic.addCard(card);
+        return topic;
+    }
+
+
+    /**
+     * Workspace card
+     * @param message the message (?)
+     * @return the workspace topic
+     */
+    public static ITopic workspace(String message, Context context) {
+        final Topic topic = new Topic("Workspace", 280, context);
+        topic.setText("One of your workspaces is now free");
+        topic.setIsPrebuiltTopic(true);
+
+        ImageCard card = new ImageCard("__", 580, context);
+        card.setText("One of your workspaces is now free");
+        card.setAuthor("Futu2", "Futu2");
+        card.setDate(new Date());
+        card.setImageUri(HereAndNowUtils.getResourceUri(R.drawable.card_workspace));
 
         topic.addCard(card);
         return topic;

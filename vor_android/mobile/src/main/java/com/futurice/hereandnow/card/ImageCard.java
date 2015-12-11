@@ -47,6 +47,8 @@ public class ImageCard extends BaseCard {
     private String text = "";
     @NonNull
     private Uri imageUri = Uri.EMPTY;
+    private String mImageBase64;
+
     @NonNull
     private Uri thumbnailUri = Uri.EMPTY;
 
@@ -131,12 +133,16 @@ public class ImageCard extends BaseCard {
                 DateUtils.WEEK_IN_MILLIS,
                 0).toString();
 
-        Picasso.with(context)
-                .load(this.getImageUri())
-                .resize(500, 500) // Downscale huge images first
-                .onlyScaleDown()
-                .centerInside() // To keep the aspect ratio on resize
-                .into(cardImageView);
+        if (getImageUri() != Uri.EMPTY) {
+            Picasso.with(context)
+                    .load(getImageUri())
+                    .resize(500, 500) // Downscale huge images first
+                    .onlyScaleDown()
+                    .centerInside() // To keep the aspect ratio on resize
+                    .into(cardImageView);
+        } else if (mImageBase64 != null){
+            cardImageView.setImageBitmap(getImageBitmap());
+        }
 
         cardTextView.setText(getText());
         cardAuthorTextView.setText(resources.getString(R.string.card_author, getAuthor(), date));
@@ -205,6 +211,15 @@ public class ImageCard extends BaseCard {
     public void setImageUri(@NonNull final Uri imageUri) {
         this.imageUri = imageUri;
         this.setThumbnailUri(createThumbnail(this.imageUri));
+    }
+
+    @NonNull
+    public Bitmap getImageBitmap() {
+        return FileUtils.base64ToBitmap(mImageBase64);
+    }
+
+    public void setImageBase64(@NonNull final String base64) {
+        mImageBase64 = base64;
     }
 
     @NonNull

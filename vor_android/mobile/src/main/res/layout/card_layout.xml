@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="top"
-    android:background="@color/colorAccent"
+    android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
     android:padding="@dimen/color_padding"
     android:paddingTop="0dip"
@@ -16,7 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_weight="0"
-        android:background="@android:color/white"
         android:padding="@dimen/color_padding">
 
         <ImageView
@@ -24,7 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            android:background="@drawable/card_pool"/>
 
         <ImageView
             android:id="@+id/video_card_play_button_image"
@@ -41,7 +41,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:background="@android:color/white"
         android:orientation="vertical"
         android:padding="@dimen/color_padding">
 
@@ -49,16 +48,19 @@
             android:id="@+id/card_text"
             style="@style/CardTitle"
             android:layout_gravity="left|center_vertical"
-            android:background="@android:color/white"
-            android:text="@string/card_title_placeholder" />
+            android:text="@string/card_title_placeholder"
+            android:textColor="@android:color/white"
+        android:textIsSelectable="false"
+            android:textSize="22dp"/>
 
         <!-- Author and date -->
         <TextView
             android:id="@+id/card_author"
             style="@style/CardTitle"
             android:layout_gravity="left|center_vertical"
-            android:background="@android:color/white"
-            android:paddingTop="@dimen/margin_medium" />
+            android:textColor="@android:color/white"
+            android:text="Hello World"
+            android:textSize="14dp"/>
     </LinearLayout>
 
     <!-- Send to big screen, in case of videos -->
@@ -94,7 +96,8 @@
         android:layout_width="326dp"
         android:layout_height="35dp"
         android:background="@color/colorAccent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/card_like_button"
@@ -165,7 +168,8 @@
         android:layout_width="326dp"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
     </LinearLayout>
 
 

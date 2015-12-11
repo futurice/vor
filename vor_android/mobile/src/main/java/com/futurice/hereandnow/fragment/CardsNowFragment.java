@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,17 +18,12 @@ import com.futurice.hereandnow.HereAndNowApplication;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.adapter.TopicListAdapter;
 import com.futurice.hereandnow.card.ITopic;
-import com.futurice.hereandnow.card.ImageCard;
-import com.futurice.hereandnow.card.Topic;
-import com.futurice.hereandnow.utils.HereAndNowUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import io.socket.client.Socket;
@@ -42,8 +36,12 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
     Socket mSocket;
 
     SharedPreferences mTestSP;
+    SharedPreferences mFoodSP;
+    SharedPreferences mPoolSP;
 
     OnSharedPreferenceChangeListener mTestCardListener = this::addTestCard;
+    OnSharedPreferenceChangeListener mFoodCardListener = this::addFoodCard;
+    OnSharedPreferenceChangeListener mPoolCardListener = this::addPoolCard;
 
     public CardsNowFragment() {
         // Required empty public constructor
@@ -54,9 +52,11 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
         super.onCreate(savedInstanceState);
 
         mSocket = HereAndNowApplication.getSocket();
-        mSocket.emit("init"); // Requests latest messages
+        mSocket.emit(Constants.EVENT_INIT); // Requests latest messages
 
-        mTestSP = getActivity().getSharedPreferences("test123", Context.MODE_PRIVATE);
+        mTestSP = getActivity().getSharedPreferences(Constants.TEST_KEY, Context.MODE_PRIVATE);
+        mFoodSP = getActivity().getSharedPreferences(Constants.FOOD_KEY, Context.MODE_PRIVATE);
+        mPoolSP = getActivity().getSharedPreferences(Constants.POOL_KEY, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -67,8 +67,8 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
         initViewsAndAdapters();
         initListView();
 
-        FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.now_cards_list);
-        frameLayout.addView(getExpandableListView());
+        FrameLayout mFrameLayout = (FrameLayout) view.findViewById(R.id.now_cards_list);
+        mFrameLayout.addView(getExpandableListView());
 
         mSocket.on(Constants.EVENT_INIT, args -> {
             JSONArray jsonArray = (JSONArray) args[0];
@@ -88,12 +88,16 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
     public void onResume() {
         super.onResume();
         mTestSP.registerOnSharedPreferenceChangeListener(mTestCardListener);
+        mFoodSP.registerOnSharedPreferenceChangeListener(mFoodCardListener);
+        mPoolSP.registerOnSharedPreferenceChangeListener(mPoolCardListener);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mTestSP.unregisterOnSharedPreferenceChangeListener(mTestCardListener);
+        mFoodSP.unregisterOnSharedPreferenceChangeListener(mFoodCardListener);
+        mPoolSP.unregisterOnSharedPreferenceChangeListener(mPoolCardListener);
     }
 
     protected void initViewsAndAdapters() {
@@ -112,6 +116,14 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 Context context = HereAndNowApplication.getStaticContext();
                 switch (jsonObject.getString(Constants.TYPE_KEY)) {
+                    case Constants.POOL_KEY:
+                        String message = jsonObject.getString(Constants.MESSAGE_KEY);
+                        getSourceTopicModel().add(Cards.pool(message, context));
+                        break;
+                    case Constants.FOOD_KEY:
+                        String image = jsonObject.getString(Constants.IMAGE_KEY);
+                        getSourceTopicModel().add(0, Cards.food(image, context));
+                        break;
                     case Constants.SAUNA_KEY:
                         String status = jsonObject.getString("status");
                         getSourceTopicModel().add(0, Cards.sauna(status, context));
@@ -134,50 +146,53 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
     @CallOrigin
     @NonNull
     protected List<ITopic> createPreBuiltTopics() {
-        final Date creationDate = new GregorianCalendar(2015, 5, 1, 12, 0, 0).getTime();
         final List<ITopic> list = new ArrayList<>();
-
-        // Food
-        {
-            final Topic topic = new Topic("Food", 240, this.getActivity());
-            topic.setText("Check what's on FutuCafé table");
-            topic.setIsPrebuiltTopic(true);
-
-            ImageCard card = new ImageCard("__", 540, this.getActivity());
-            card.setText("Check what's on FutuCafé table");
-            card.setAuthor("Futu2", "Futu2");
-            card.setDate(creationDate);
-            card.setImageUri(HereAndNowUtils.getResourceUri(R.drawable.card_food));
-
-            topic.addCard(card);
-            list.add(topic);
-        }
-
-        // Workspace
-        {
-            final Topic topic = new Topic("Workspace", 280, this.getActivity());
-            topic.setText("One of your workspaces is now free");
-            topic.setIsPrebuiltTopic(true);
-
-            ImageCard card = new ImageCard("__", 580, this.getActivity());
-            card.setText("One of your workspaces is now free");
-            card.setAuthor("Futu2", "Futu2");
-            card.setDate(creationDate);
-            card.setImageUri(HereAndNowUtils.getResourceUri(R.drawable.card_workspace));
-
-            topic.addCard(card);
-            list.add(topic);
-        }
-
+        list.add(Cards.workspace("?", getActivity()));
         return list;
     }
 
+    /**
+     * Adds the test card to the view
+     *
+     * @param sharedPreferences the shared preferences
+     * @param key the key
+     */
     private void addTestCard(SharedPreferences sharedPreferences, String key) {
         switch (key) {
             case Constants.MESSAGE_KEY:
                 String message = sharedPreferences.getString(key, "Failed");
-                Log.d(TAG, "TEST MESSAGE: " + message);
                 getSourceTopicModel().add(0, Cards.test(message, this.getActivity()));
+                UI.execute(this::filterModel);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Adds the pool card to the view
+     *
+     * @param sharedPreferences the shared preferences
+     * @param key the key
+     */
+    private void addPoolCard(SharedPreferences sharedPreferences, String key) {
+        String message = sharedPreferences.getString(key, "Failed");
+        getSourceTopicModel().add(0, Cards.pool(message, this.getActivity()));
+        UI.execute(this::filterModel);
+    }
+
+
+    /**
+     * Adds the food card to the view
+     *
+     * @param sharedPreferences the shared preferences
+     * @param key the key
+     */
+    private void addFoodCard(SharedPreferences sharedPreferences, String key) {
+        switch (key) {
+            case Constants.IMAGE_KEY:
+                String file = sharedPreferences.getString(key, "Failed");
+                getSourceTopicModel().add(0, Cards.food(file, this.getActivity()));
                 UI.execute(this::filterModel);
                 break;
             default:

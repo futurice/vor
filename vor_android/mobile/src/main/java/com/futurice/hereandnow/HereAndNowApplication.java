@@ -125,8 +125,19 @@ public class HereAndNowApplication extends Application implements ScampiService.
                         saveToiletToSharedPreferences(jsonObject);
                         break;
                     case Constants.SAUNA_KEY: // Example
-                        Log.d(TAG, jsonObject.toString());
                         testSaunaNotification(jsonObject.getString("status"));
+                        break;
+                    case Constants.POOL_KEY:
+                        String message;
+                        try {
+                            message = jsonObject.getString(Constants.MESSAGE_KEY);
+                        } catch (JSONException e) {
+                            message = "We need players!";
+                        }
+                        savePoolToSharedPreferences(message);
+                        break;
+                    case Constants.FOOD_KEY:
+                        saveFoodToSharedPreferences(jsonObject.getString(Constants.IMAGE_KEY));
                         break;
                     case Constants.TEST_KEY: // Test
                         saveTestToSharedPreferences(jsonObject.getString("message"));
@@ -160,15 +171,29 @@ public class HereAndNowApplication extends Application implements ScampiService.
     }
 
     private void saveTestToSharedPreferences(String message) {
-        SharedPreferences testSP = getSharedPreferences("test123", Context.MODE_PRIVATE);
+        SharedPreferences testSP = getSharedPreferences(Constants.TEST_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = testSP.edit();
         editor.putString(Constants.MESSAGE_KEY, message);
         editor.apply();
     }
 
+    private void savePoolToSharedPreferences(String message) {
+        SharedPreferences foodSP = getSharedPreferences(Constants.POOL_KEY, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = foodSP.edit();
+        editor.putString(Constants.MESSAGE_KEY, message);
+        editor.apply();
+    }
+
+    private void saveFoodToSharedPreferences(String file) {
+        SharedPreferences foodSP = getSharedPreferences(Constants.FOOD_KEY, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = foodSP.edit();
+        editor.putString(Constants.IMAGE_KEY, file);
+        editor.apply();
+    }
+
     @Override
     public void stateChanged(@NonNull final ScampiService.RouterState routerState) {
-        Log.d(TAG, "stateChanged");
+//        Log.d(TAG, "stateChanged");
     }
 
 //    private void initConnection() {
