@@ -2,7 +2,7 @@
 
 To purify your place of work, sprinkle water and say: *"By Vör be cleansed, darkness return, to darkness below"  [*](http://www.northernpaganism.org/shrines/handmaidens/vor/who-is.html)*
 
-[Vör](http://vor.space) is open source software and hardware for turning your open office into an open, real-time map for finding people, open work places and current events. Open. Really. :)
+[Vör (homepage)](http://vor.space) is open source software and hardware for turning your open office into an open, real-time map for finding people, open work places and current events. Open. Really. :)
 
 This project is currently migrating from other repos and undergoing active development. Expect cool, but don't expect stability.
 
@@ -11,7 +11,6 @@ This project is currently migrating from other repos and undergoing active devel
 Vör is an intranet for IoT. It is a decentralized and vendor-agnostic to find out where people are in your office, find a quiet place to work, find someone to play a game with or check air quality. The reference implementation here is all open source. We are doing things as we think they should be and hope that stimulates you to join the conversation and add your innovative ideas. Lets make the world a better place where services are created and controlled directly by the people using them for the needs they themselves define and want. Making that as easy as possible is our goal.
 
 You can download the Node.js server, Android client, and optionally IoT sensors and actuators for providing additional information about your workspace to your employees and visitors. Parametric models for 3D printing the sensors and actuators are also provided so you can tailor the look of your office and add new "things" relatively easily. Everything is open source with permissive licenses. We try to define services based on the user experience (UX) and map that on to the many capabilities open to taking that beyond the touchscreen in your pocket. Have fun and let's play!
-
 
 ### Technical Summary
 
@@ -43,4 +42,5 @@ Director, Wizardry and Mobile Development, [Futurice](http://futurice.com/)
 
 [Blog](http://futurice.com/people/paul-houghton)
 
-[@mobile_rat](https://twitter.com/mobile_rat/) and [@futurice](https://twitter.com/mobile_rat/)
+[@mobile_rat](https://twitter.com/mobile_rat/)
+
