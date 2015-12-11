@@ -1,4 +1,4 @@
-# Vör sensor resources
+# Vör Sensor and Actuator Resources
 
 ## Description
 - Microcontroller reads sensor data
@@ -8,6 +8,9 @@
 - Microcontrollers are powered from the grid or with PoE (Power over Ethernet)
 
 ## Microcontrollers
+
+Current work is mostly focused on the Yun Mini
+
 - [Arduino Mega2560](http://www.arduino.org/products/boards/4-arduino-boards/arduino-mega-2560)
 - [Arduino Leonardo](http://www.arduino.org/products/boards/4-arduino-boards/arduino-leonardo)
 - [Arduino Yun](http://www.arduino.org/products/boards/4-arduino-boards/arduino-yun)
@@ -18,25 +21,32 @@
 
 ### Room
 - Temperature (beacons)
-- [Humidity](https://www.sparkfun.com/products/9569)
-- [Ambient light](https://www.sparkfun.com/products/8688)
-- [Sound](https://www.sparkfun.com/products/12642)
-- [Particle](https://www.sparkfun.com/products/9689)
+- [Particle](https://www.sparkfun.com/products/9689) for air quality
+- [Humidity](https://www.sparkfun.com/products/9569) for moisture level
+- [Ambient light](https://www.sparkfun.com/products/8688) for light level
+- [Sound](https://www.sparkfun.com/products/12642) for noise level
 
 ### Toilet
-- [Methane](https://www.sparkfun.com/products/9404)
-- [Motion](https://www.sparkfun.com/products/13285)
+- [Methane](https://www.sparkfun.com/products/9404) for air quality
+- [Motion](https://www.sparkfun.com/products/13285) for checking if it is occupied
 
 ### Pool table
-- Button (player needed)
+- Button to notify that a player is needed
+- An ftp camera sends images directly to the backend. This is associated with this service, but not technically linked to the Arduino implementation
 
-### Kitchen table
-- Switch (food)
+### Food table
+- Switch to notify if food is for everyone or reserved for an event
+- An ftp camera sends images directly to the backend. This is associated with this service, but not technically linked to the Arduino implementation
 
 ### Sauna
 - [Electric current](https://www.sparkfun.com/products/11005)
 
 ## Installation
+1. Buy an Arduino and sensors
+2. Burn the firmware
+3. 3D print the case
+4. Solder or wire-wrap the sensors and actuators
+5. Play
 
 ### Arduino SDK
 - Download and install the [Arduino SDK](https://www.arduino.cc/en/Main/Software)
