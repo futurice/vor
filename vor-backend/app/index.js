@@ -30,15 +30,6 @@ const cacheClient = () => {
   }
 };
 const cache = require('express-redis-cache')({ client: cacheClient(), prefix: CACHE_PREFIX });
-// common helper for cache set
-const cacheSetSource$ = message => {
-  const key = message.id ? `${message.type}:${message.id}` : `${message.type}`;
-  const data = JSON.stringify(message);
-  const config = { expire: CACHE_TTL, type: 'json' };
-  return Rx.Observable.fromNodeCallback(cache.add, cache)(key, data, config)
-    .doOnNext(message => app.io.emit('stream', [message]))
-    .doOnError(error => utils.logError(error => `Message error:${error}`));
-};
 
 // init location module
 const location = new Location(BEACONS);
@@ -47,6 +38,21 @@ const location = new Location(BEACONS);
 // set up socket.IO
 app.io = socketIO();
 app.io.on('error', utils.logError(error => `Socket connection error: ${error}`));
+
+
+// common helper for cache set
+const cacheSetSource$ = message => {
+  const key = message.id ? `${message.type}:${message.id}` : `${message.type}`;
+  const data = JSON.stringify(message);
+  const config = { expire: CACHE_TTL, type: 'json' };
+  return Rx.Observable.fromNodeCallback(cache.add, cache)(key, data, config)
+    .doOnNext(([key, data, status]) => {
+      utils.log(message => `Message: cache added ${message}`)(data.body);
+      const messageAsJson = JSON.parse(data.body);
+      app.io.emit('stream', [messageAsJson]);
+    })
+    .doOnError(error => utils.logError(error => `Message error:${error}`));
+};
 
 // listen socket connections
 app.io.on('connection', socket => {
@@ -58,12 +64,7 @@ app.io.on('connection', socket => {
 
   Rx.Observable.fromEvent(socket, 'message')
     .flatMap(cacheSetSource$)
-    .subscribe(
-      ([key, data, status]) => {
-        utils.log(message => `Message: cache added ${message}`)(data.body);
-        const messageAsJson = JSON.parse(data.body);
-        app.io.emit('stream', [messageAsJson]);
-      });
+    .subscribe();
 
   Rx.Observable.fromEvent(socket, 'init')
     .flatMap(init => Rx.Observable.fromNodeCallback(cache.get, cache)())
@@ -77,8 +78,8 @@ app.io.on('connection', socket => {
     );
 });
 
-
-// TODO: At the moment Arduinos' have limited websocket support. Remove this route if changes.
+// Post interface for messages
+// TODO: At the moment Arduinos' have limited websocket support. Remove this route if websockets are used in all clients.
 const messageRoute = router.post('/messages', (req, res) => {
   Rx.Observable.return(JSON.parse(req.body))
     .flatMap(cacheSetSource$)
