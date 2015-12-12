@@ -103,7 +103,7 @@ socketInitSource$
     const observable = Rx.Observable.fromNodeCallback(cache.get, cache)();
     return observable.map(messages => [socket, messages]);
   })
-  .subscribe(function([socket, messages]) {
+  .subscribe(([socket, messages]) => {
       utils.log(messages => `Init: fetched ${messages.length} messages from cache`)(messages);
       const messagesAsJson = messages.map(message => JSON.parse(message.body));
       socket.emit('init', messagesAsJson);
