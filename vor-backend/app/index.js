@@ -41,7 +41,23 @@ app.io = socketIO();
 app.io.on('error', utils.logError(error => `Socket connection error: ${error}`));
 
 
-// common helper for cache set
+// listen socket connections
+const socketConnectionSource$ = Rx.Observable.fromEvent(app.io.sockets, 'connection');
+
+
+// listen socket messages
+const socketMessageSource$ = socketConnectionSource$
+  .flatMap(socket => Rx.Observable.fromEvent(socket, 'message'));
+
+// Post interface for messages
+// TODO: At the moment Arduinos' have limited websocket support. Remove when unnecessary.
+const messageRouteSource$ =
+  Rx.Observable.fromCallback(router.post, router)('/messages')
+    .doOnNext(([req, res]) => res.send('OK'))
+    .doOnError(([err, req, res]) => res.status(500).send(`Error: ${error}`))
+    .map(([req, res]) => JSON.parse(req.body));
+
+// common helpers for cache set
 const onMessageEvent = message => {
   const key = message.id ? `${message.type}:${message.id}` : `${message.type}`;
   const data = JSON.stringify(message);
@@ -55,41 +71,45 @@ const onMessageEvent = message => {
     .doOnError(error => utils.logError(error => `Message error:${error}`));
 };
 
-// listen socket connections
-app.io.on('connection', socket => {
-  location.fromDeviceStream(Rx.Observable.fromEvent(socket, 'beacon'))
-    .subscribe(
-      location => app.io.emit('location', location),
-      utils.logError(error =>`Location stream error:${error}`)
-  );
-
-  Rx.Observable.fromEvent(socket, 'message')
-    .flatMap(onMessageEvent)
-    .subscribe();
-
-  Rx.Observable.fromEvent(socket, 'init')
-    .flatMap(init => Rx.Observable.fromNodeCallback(cache.get, cache)())
-    .subscribe(
-      messages => {
-        utils.log(messages => `Init: fetched ${messages.length} messages from cache`)(messages);
-        const messagesAsJson = messages.map(message => JSON.parse(message.body));
-        socket.emit('init', messagesAsJson);
-      },
-      error => utils.logError(error => `Init error:${error}`)
-    );
-});
-
-// Post interface for messages
-// TODO: At the moment Arduinos' have limited websocket support. Remove when unnecessary.
-const messageRouteSource$ =
-  Rx.Observable.fromCallback(router.post, router)('/messages')
-    .doOnNext(([req, res]) => res.send('OK'))
-    .doOnError(([err, req, res]) => res.status(500).send(`Error: ${error}`))
-    .map(([req, res]) => JSON.parse(req.body));
+socketMessageSource$
+  .flatMap(onMessageEvent)
+  .subscribe();
 
 messageRouteSource$
   .flatMap(onMessageEvent)
   .subscribe();
+
+// listen socket beacons
+const socketBeaconSource$ = socketConnectionSource$
+  .flatMap(socket => Rx.Observable.fromEvent(socket, 'beacon'));
+
+location.fromDeviceStream(socketBeaconSource$)
+  .subscribe(
+    location => app.io.emit('location', location),
+    utils.logError(error =>`Location stream error:${error}`)
+  );
+
+
+// listen socket init
+const socketInitSource$ = socketConnectionSource$
+  .flatMap(socket => Rx.Observable.fromEvent(
+      socket,
+      'init',
+      event => socket)
+    );
+
+socketInitSource$
+  .flatMap(socket => {
+    const observable = Rx.Observable.fromNodeCallback(cache.get, cache)();
+    return observable.map(messages => [socket, messages]);
+  })
+  .subscribe(function([socket, messages]) {
+      utils.log(messages => `Init: fetched ${messages.length} messages from cache`)(messages);
+      const messagesAsJson = messages.map(message => JSON.parse(message.body));
+      socket.emit('init', messagesAsJson);
+    },
+    error => utils.logError(error => `Init error:${error}`)
+  );
 
 
 // the test page
