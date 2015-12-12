@@ -30,6 +30,15 @@ const cacheClient = () => {
   }
 };
 const cache = require('express-redis-cache')({ client: cacheClient(), prefix: CACHE_PREFIX });
+// common helper for cache set
+const cacheSetSource$ = message => {
+  const key = message.id ? `${message.type}:${message.id}` : `${message.type}`;
+  const data = JSON.stringify(message);
+  const config = { expire: CACHE_TTL, type: 'json' };
+  return Rx.Observable.fromNodeCallback(cache.add, cache)(key, data, config)
+    .doOnNext(message => app.io.emit('stream', [message]))
+    .doOnError(error => utils.logError(error => `Message error:${error}`));
+};
 
 // init location module
 const location = new Location(BEACONS);
@@ -48,25 +57,16 @@ app.io.on('connection', socket => {
   );
 
   Rx.Observable.fromEvent(socket, 'message')
-    .flatMap(message => {
-      const key = message.id ? `${message.type}:${message.id}` : `${message.type}`;
-      const data = JSON.stringify(message);
-      const config = { expire: CACHE_TTL, type: 'json' };
-      return Rx.Observable.fromNodeCallback(cache.add, cache)(key, data, config);
-    })
+    .flatMap(cacheSetSource$)
     .subscribe(
       ([key, data, status]) => {
         utils.log(message => `Message: cache added ${message}`)(data.body);
         const messageAsJson = JSON.parse(data.body);
         app.io.emit('stream', [messageAsJson]);
-      },
-      error => utils.logError(error => `Message error:${error}`)
-    );
+      });
 
   Rx.Observable.fromEvent(socket, 'init')
-    .flatMap(message => {
-      return Rx.Observable.fromNodeCallback(cache.get, cache)();
-    })
+    .flatMap(init => Rx.Observable.fromNodeCallback(cache.get, cache)())
     .subscribe(
       messages => {
         utils.log(messages => `Init: fetched ${messages.length} messages from cache`)(messages);
@@ -81,9 +81,7 @@ app.io.on('connection', socket => {
 // TODO: At the moment Arduinos' have limited websocket support. Remove this route if changes.
 const messageRoute = router.post('/messages', (req, res) => {
   Rx.Observable.return(JSON.parse(req.body))
-    .flatMap(appCache.transaction.bind(appCache))
-    .doOnNext(message => app.io.emit('stream', [message]))
-    .doOnError(error => utils.logError(error => `Message error:${error}`))
+    .flatMap(cacheSetSource$)
     .subscribe(
       success => res.send('OK'),
       error => res.status(300).send(`Error: ${error}`)
