@@ -6,8 +6,7 @@ const logger = require('morgan');
 const socketIO = require('socket.io');
 const Rx = require('rx');
 const redis = require('redis');
-const { BEACONS, MESSAGE_TTL } = require('config');
-const Cache = require('app/cache');
+const { BEACONS, CACHE_PREFIX, CACHE_TTL } = require('config');
 const Location = require('app/location');
 const viewRoute = require('app/views/routes');
 const views = require('app/views');
@@ -30,8 +29,7 @@ const cacheClient = () => {
     return redis.createClient();
   }
 };
-const appCache = new Cache(cacheClient(), MESSAGE_TTL);
-
+const cache = require('express-redis-cache')({ client: cacheClient(), prefix: CACHE_PREFIX });
 
 // init location module
 const location = new Location(BEACONS);
@@ -50,16 +48,31 @@ app.io.on('connection', socket => {
   );
 
   Rx.Observable.fromEvent(socket, 'message')
-    .flatMap(appCache.transaction.bind(appCache))
+    .flatMap(message => {
+      const key = message.id ? `${message.type}:${message.id}` : `${message.type}`;
+      const data = JSON.stringify(message);
+      const config = { expire: CACHE_TTL, type: 'json' };
+      return Rx.Observable.fromNodeCallback(cache.add, cache)(key, data, config);
+    })
     .subscribe(
-      message => app.io.emit('stream', [message]),
+      ([key, data, status]) => {
+        utils.log(message => `Message: cache added ${message}`)(data.body);
+        const messageAsJson = JSON.parse(data.body);
+        app.io.emit('stream', [messageAsJson]);
+      },
       error => utils.logError(error => `Message error:${error}`)
     );
 
   Rx.Observable.fromEvent(socket, 'init')
-    .flatMap(appCache.getAllStream.bind(appCache))
+    .flatMap(message => {
+      return Rx.Observable.fromNodeCallback(cache.get, cache)();
+    })
     .subscribe(
-      messages => socket.emit('init', messages),
+      messages => {
+        utils.log(messages => `Init: fetched ${messages.length} messages from cache`)(messages);
+        const messagesAsJson = messages.map(message => JSON.parse(message.body));
+        socket.emit('init', messagesAsJson);
+      },
       error => utils.logError(error => `Init error:${error}`)
     );
 });

@@ -29,6 +29,7 @@
     "ejs": "^2.3.4",
     "eslint": "^1.10.1",
     "express": "^4.13.3",
+    "express-redis-cache": "^0.1.9",
     "jscs": "^2.6.0",
     "morgan": "^1.6.1",
     "nodemon": "^1.8.1",

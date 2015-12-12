@@ -2,7 +2,8 @@
   "STREAM": {
     "INTERVAL": 5000
   },
-  "MESSAGE_TTL": {
+  "CACHE_PREFIX": "vor",
+  "CACHE_TTL": {
     "default": 28800
   },
   "BEACONS": [
@@ -29,4 +30,3 @@
     }
   ]
 }
-
