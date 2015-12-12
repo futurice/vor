@@ -1,7 +1,7 @@
 'use strict';
 const io = require('socket.io-client');
 const sinon = require('sinon');
-const fakeRedis = require('fakeRedis');
+const envs = require('envs')
 
 const socketURL = `http://0.0.0.0:${process.env.PORT}`;
 var cacheClient = null;
@@ -20,11 +20,14 @@ const helpers = {
   }),
 
   setupCache: () => {
+    envs('EX_RE_CA_HOST', '');
+    envs('EX_RE_CA_PORT', '');
+    envs('EX_RE_CA_PREFIX', '');
+
     if (cacheClient) {
       return cacheClient;
     } else {
-      cacheClient = fakeRedis.createClient();
-      sinon.spy(cacheClient, 'set');
+      cacheClient = require('redis-mock').createClient();
       const redisStub = sinon.stub(require('redis'), 'createClient').returns(cacheClient);
       return cacheClient;
     }

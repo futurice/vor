@@ -2,11 +2,11 @@
 const should = require('should');
 const assert = require('assert');
 const helpers = require('./helpers/index');
-const cacheClient = helpers.setupCache();
 
 describe('App: On init event', function () {
 
   before(() => {
+    helpers.setupCache();
     const app = require('../bin/www');
   });
 

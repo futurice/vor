@@ -4,19 +4,17 @@ const assert = require('assert');
 const helpers = require('./helpers/index');
 const config = require('../config');
 var request = require('supertest');
-const cacheClient = helpers.setupCache();
 
 describe('App: On message post', function () {
   let app;
 
   beforeEach(function (done) {
+    helpers.setupCache();
     app = require('../bin/www');
     done();
   });
 
-  after(function(done) {
-    helpers.flushCache(done);
-  });
+  afterEach(helpers.flushCache);
 
   it('should publish message', done => {
     const TEST_MESSAGE = '{"id":"1","type":"room","reserved":false,"temperature":10,"light":774,"dioxide":10,"noise":10}';

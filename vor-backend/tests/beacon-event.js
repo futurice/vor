@@ -6,6 +6,7 @@ const helpers = require('./helpers/index');
 describe('App: On beacon event', function () {
 
   before(() => {
+    helpers.setupCache();
     const app = require('../bin/www');
   });
 

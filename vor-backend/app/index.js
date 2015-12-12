@@ -79,7 +79,7 @@ app.io.on('connection', socket => {
 });
 
 // Post interface for messages
-// TODO: At the moment Arduinos' have limited websocket support. Remove this route if websockets are used in all clients.
+// TODO: At the moment Arduinos' have limited websocket support. Remove when unnecessary.
 const messageRoute = router.post('/messages', (req, res) => {
   Rx.Observable.return(JSON.parse(req.body))
     .flatMap(cacheSetSource$)
