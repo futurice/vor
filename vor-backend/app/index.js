@@ -85,7 +85,7 @@ const messageRoute = router.post('/messages', (req, res) => {
     .flatMap(cacheSetSource$)
     .subscribe(
       success => res.send('OK'),
-      error => res.status(300).send(`Error: ${error}`)
+      error => res.status(500).send(`Error: ${error}`)
     );
 });
 app.use('/messages', bodyParser.text({type: '*/*'}), messageRoute);
