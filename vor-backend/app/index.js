@@ -17,6 +17,7 @@ const utils = require('app/utils');
 const app = express();
 const router = express.Router();
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.text({type: '*/*'}));
 app.use(logger('dev'));
 
 
@@ -41,7 +42,7 @@ app.io.on('error', utils.logError(error => `Socket connection error: ${error}`))
 
 
 // common helper for cache set
-const cacheSetSource$ = message => {
+const onMessageEvent = message => {
   const key = message.id ? `${message.type}:${message.id}` : `${message.type}`;
   const data = JSON.stringify(message);
   const config = { expire: CACHE_TTL, type: 'json' };
@@ -63,7 +64,7 @@ app.io.on('connection', socket => {
   );
 
   Rx.Observable.fromEvent(socket, 'message')
-    .flatMap(cacheSetSource$)
+    .flatMap(onMessageEvent)
     .subscribe();
 
   Rx.Observable.fromEvent(socket, 'init')
@@ -80,15 +81,15 @@ app.io.on('connection', socket => {
 
 // Post interface for messages
 // TODO: At the moment Arduinos' have limited websocket support. Remove when unnecessary.
-const messageRoute = router.post('/messages', (req, res) => {
-  Rx.Observable.return(JSON.parse(req.body))
-    .flatMap(cacheSetSource$)
-    .subscribe(
-      success => res.send('OK'),
-      error => res.status(500).send(`Error: ${error}`)
-    );
-});
-app.use('/messages', bodyParser.text({type: '*/*'}), messageRoute);
+const messageRouteSource$ =
+  Rx.Observable.fromCallback(router.post, router)('/messages')
+    .doOnNext(([req, res]) => res.send('OK'))
+    .doOnError(([err, req, res]) => res.status(500).send(`Error: ${error}`))
+    .map(([req, res]) => JSON.parse(req.body));
+
+messageRouteSource$
+  .flatMap(onMessageEvent)
+  .subscribe();
 
 
 // the test page
