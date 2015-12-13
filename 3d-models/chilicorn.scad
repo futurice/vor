@@ -2,12 +2,12 @@
 $fn=45;
 
 head_big_radius = 10;
-head_small_radius = 5;
+head_small_radius = 4.5;
 head_spacing = 18;
-head_angle = 45;
+head_angle = 50;
 
-horn_length = 18;
-horn_radius = 3;
+horn_length = 20;
+horn_radius = 2.8;
 
 neck_radius = 2;
 neck_ratio = .2; // Flattens the interface to the top body
