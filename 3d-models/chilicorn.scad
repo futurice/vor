@@ -1,36 +1,43 @@
-// Chilicorn
+// Unicorn by Paul Houghton ©2015, CC BY-NC-AS license, https://creativecommons.org/licenses/
 $fn=45;
 
-head_big_radius = 10;
-head_small_radius = 4.5;
-head_spacing = 18;
-head_angle = 50;
+scale = 1;
 
-horn_length = 20;
-horn_radius = 2.8;
+head_big_radius = 10*scale;
+head_small_radius = 4.5*scale;
+head_length = 18*scale;
+head_angle = 50*scale;
 
-neck_radius = 2;
+horn_length = 20*scale;
+horn_radius = 2.8*scale;
+
+neck_radius = 2*scale;
 neck_ratio = .2; // Flattens the interface to the top body
-neck_top_x = 3;
+neck_top_x = 3*scale;
 
-body_x = 15;
-body_z = 28;
-body_radius = 15;
-body_back_radius = 13;
-body_length = 33;
+body_x = 15*scale;
+body_z = 28*scale;
+body_radius = 14*scale;
+body_back_radius = 12*scale;
+body_length = 33*scale;
 
-leg_length = 28 + body_radius;
-leg_radius = 4;
+leg_length = (28 + body_radius)*scale;
+leg_radius = 4*scale;
 
 cute_leg_first_ratio = 0.65;
 cute_leg_second_ratio = 0.25;
 cute_leg_third_ratio = 0.11;
 
+base_thickness = 10*scale;
+base_width = 40*scale;
+base_corner_radius = 5*scale;
+base_length = 70*scale;
+
 module head() {
     rotate([0, -head_angle, 0]) {
         hull () {
             sphere(r=head_big_radius);
-            translate([-head_spacing, 0, 0])
+            translate([-head_length, 0, 0])
                 sphere(r=head_small_radius);    
         }
     }
@@ -38,7 +45,7 @@ module head() {
 
 module horn() {
     rotate([0, -head_angle, 0]) {
-        translate([0, 0, head_big_radius - .2])
+        translate([0, 0, head_big_radius - .2*scale])
         cylinder(h = horn_length, r1 = horn_radius, r2 = 0);
     }
 }
@@ -46,7 +53,7 @@ module horn() {
 module neck() {
     hull() {
         translate([neck_top_x, 0, 0]) rotate([0, 180, 0]) {
-            cylinder(h = head_big_radius - .2, r1 = neck_radius, r2 = neck_radius);
+            cylinder(h = head_big_radius - .2*scale, r1 = neck_radius, r2 = neck_radius);
         }
         translate([body_x, 0, -body_z])
             difference() {
@@ -58,9 +65,6 @@ module neck() {
 }
 
 module mane() {
-    rotate([0, -neck_angle + 180, 0]) {
-        cylinder(h = neck_length + head_big_radius - .2, r1 = neck_radius, r2 = neck_radius);
-    }
 }
 
 module body() {
@@ -100,11 +104,24 @@ module cute_leg(lengthwards=0, sideways=0, downwards=0, theta=20, rise_angle=70)
     }
 }
 
-head();
-horn();
-neck();
-body();
-leg(theta=5, sideways=3);
-cute_leg(theta=-5, sideways=-3, downwards=3);
-leg(lengthwards = body_length, sideways=2, theta=15);
-leg(lengthwards = body_length, sideways=-2, theta=-15);
+module base() {
+    translate([body_x + 0.2*body_length, 0, -leg_length - body_z])
+        minkowski() {
+            cube([base_length, base_width - 2*base_corner_radius, base_thickness/3], center = true);
+            cylinder(h = base_thickness / 3, r = base_corner_radius);
+        }
+}
+
+difference() { // difference() -> no base, or union() -> solid base
+    union() {
+        head();
+        horn();
+        neck();
+        body();
+        leg(theta=5, sideways=3);
+        cute_leg(theta=-5, sideways=-3, downwards=3);
+        leg(lengthwards = body_length, sideways=2, theta=15);
+        leg(lengthwards = body_length, sideways=-2, theta=-15);
+    }
+ #   base();
+}
