@@ -42,7 +42,7 @@ tail_thickness = mane_thickness;
 tail_radius = 10 * hair_thickness;
 tail_x = 2*body_x + body_length - tail_radius;
 tail_height = -body_z + 1.7*tail_radius;
-tail_tip_length = 30;
+tail_tip_length = 29;
 
 base_thickness = 10*scale;
 base_width = 40*scale;
@@ -147,35 +147,46 @@ module cute_leg(lengthwards=0, sideways=0, downwards=0, theta=20, rise_angle=70)
     }
 }
 
-module tailhair_line(x = 0, z = 0, delta_x = body_x, delta_z = 1.2*body_z) {
-    translate([x, 0, z - hair_thickness])
-            difference() {
-                hull() {
-                    cylinder(h = tail_thickness, r = tail_radius);
-                    translate([delta_x, -delta_z, 0])
-                        cube([tail_tip_length, tail_tip_length - hair_thickness, tail_thickness]);
-                }
-                hull() {
-                    cylinder(h = tail_thickness, r = tail_radius - hair_spacing);
-                    translate([delta_x + hair_spacing, -delta_z + hair_spacing, 0])
-                        cube([tail_tip_length, tail_tip_length - hair_thickness, tail_thickness]);
-                }                
-            }
-}
-
-module t_hair() {
-    translate([0, 0, -2*hair_thickness])
+module tail_outer_hair() {
+    translate([0, 0, -hair_thickness])
         difference() {
             hull() {
                 cylinder(h = tail_thickness, r = tail_radius);
-                translate([body_x, -1.2*body_z, 0]) rotate([0, 0, 11]) {
-                    cube([tail_tip_length, tail_tip_length, tail_thickness]);
-                }
+                translate([body_x, -1.2*body_z, 0])
+                    rotate([0, 0, 11]) {
+                        cube([tail_tip_length, tail_tip_length, tail_thickness]);
+                    }
             }
             hull() {
                 cylinder(h = tail_thickness, r = tail_radius - hair_spacing);
-                translate([body_x + hair_spacing, -1.2*body_z, 0]) rotate([0, 0, 11]) {
-                    cube([tail_tip_length - hair_spacing, tail_tip_length - hair_spacing, tail_thickness]);
+                translate([body_x + 2*hair_spacing, -1.2*body_z + hair_spacing, 0]) rotate([0, 0, 11]) {
+                    cube([tail_tip_length - 2.8*hair_spacing, tail_tip_length - 2.8*hair_spacing, tail_thickness]);
+                }
+            }
+        }
+}
+
+module tail_single_hair(n=1) {
+    translate([0, -4.5*n, -hair_thickness])
+        rotate([0, 0, -15*n]) {
+            difference() {
+                hull() {
+                    cylinder(h = tail_thickness, r = tail_radius);
+                    translate([body_x, -1.2*body_z, 0])
+                        rotate([0, 0, 11]) {
+                            cube([tail_tip_length, tail_tip_length, tail_thickness]);
+                        }
+                }
+                union() {
+                    hull() {
+                        cylinder(h = tail_thickness, r = tail_radius - hair_spacing);
+                        translate([body_x + 2*hair_spacing, -1.2*body_z + hair_spacing, 0]) rotate([0, 0, 11]) {
+                            cube([tail_tip_length - 2.8*hair_spacing, tail_tip_length - 2.8*hair_spacing, tail_thickness]);
+                        }
+                    }
+                    rotate([50, 90, 0]) {
+                        translate([-3, -7, 0]) cylinder(r = 6, h = 40);
+                    }
                 }
             }
         }
@@ -193,10 +204,12 @@ module tail() {
                                cube([tail_tip_length, tail_tip_length, tail_thickness - 2*hair_thickness]);
                             }
                     }
-                    t_hair();
+                    tail_outer_hair();
+                    tail_single_hair(n=1);
+                    tail_single_hair(n=2);
                 }
                 translate([0, 0, -hair_thickness])
-                    cylinder($fn = 16, h = tail_thickness, r = tail_tip_length*1.25);
+                    cylinder($fn = 16, h = 10+tail_thickness, r = tail_tip_length*1.25);
             }
         }
 }

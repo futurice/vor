@@ -1,4 +1,4 @@
-# Chilicorn 3D Model
-A (not too attractive) unicorn as an Arduino Yun case
+# 3D Models
 
-This is a joke in poor taste. See (chilicorn.org)[http://chilicorn.org]
+* cadcorn.scad - A low-poly unicorn as a Raspberry Pi case. Change parameters to switch horn types etc. This is a joke see (chilicorn.org)[http://chilicorn.org]
+
