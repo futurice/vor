@@ -38,7 +38,7 @@ cute_leg_third_ratio = 0.11;
 base_thickness = 10*scale;
 base_width = 40*scale;
 base_corner_radius = 5*scale;
-base_length = 70*scale;
+base_length = 100*scale;
 
 module head() {
     rotate([0, -head_angle, 0]) {
@@ -71,14 +71,36 @@ module neck() {
         }
 }
 
+hair_thickness = mane_thickness / 10;
+hair_spacing = mane_thickness / 2;
+
+module hair_line(x = 0, z = 0, hair_radius = mane_radius, delta_x = body_x, delta_z = body_z) {
+    translate([x, mane_thickness/2, z])
+            difference() {
+                hull() {
+                    cylinder(h = mane_thickness, r = hair_radius);
+                    translate([delta_x, -delta_z, 0])
+                        cylinder(h = mane_thickness, r = hair_radius);
+                }
+                hull() {
+                    cylinder(h = mane_thickness, r = hair_radius - hair_spacing);
+                    translate([delta_x, -delta_z, 0])
+                        cylinder(h = mane_thickness, r = hair_radius - hair_spacing);
+                }                
+            }
+}
+
 module mane() {
     translate([mane_x, mane_thickness/2, mane_height])
         rotate([90, 0, 0]) {
-            hull() {
-                cylinder(h = mane_thickness, r = mane_radius);
-                translate([body_x, -body_z, 0])
-                    cylinder(h = mane_thickness, r = mane_radius);
-            }
+                hull() {
+                    translate([0, 0, hair_thickness])
+                    cylinder(h = mane_thickness - 2*hair_thickness, r = mane_radius);
+                    translate([body_x, -body_z, 0])
+                       cylinder(h = mane_thickness - 2*hair_thickness, r = mane_radius);
+                }
+              hair_line();
+              hair_line(hair_radius = mane_radius - 2*hair_spacing);
         }
 }
 
@@ -108,13 +130,13 @@ module cute_leg(lengthwards=0, sideways=0, downwards=0, theta=20, rise_angle=70)
                     rotate([0, 90, 0]) {
                         cylinder(h = leg_length*cute_leg_second_ratio, r1 = leg_radius, r2 = leg_radius);
                     }
-                        translate([leg_length*cute_leg_second_ratio, 0, 0])
-                            union() {
-                                sphere(r = leg_radius);
-                                rotate([0, 90 + rise_angle, 0]) {
+                    translate([leg_length*cute_leg_second_ratio, 0, 0])
+                        union() {
+                            sphere(r = leg_radius);
+                            rotate([0, 90 + rise_angle, 0]) {
                                 cylinder(h = leg_length*cute_leg_third_ratio, r1 = leg_radius, r2 = leg_radius);
-                                }
                             }
+                        }
                 }
     }
 }
@@ -129,17 +151,17 @@ module tail() {
         rotate([90, 0, 0]) {
             hull() {
                 cylinder(h = mane_thickness, r = tail_radius);
-                translate([body_x, -body_z, 0])
-                    cylinder(h = tail_thickness, r = tail_radius);
+                translate([1.5*body_x, 1.5*(-body_z), 0])
+                    cube([tail_thickness, tail_thickness, tail_thickness]);
             }
         }
 }
 
 module base() {
-    translate([body_x + 0.2*body_length, 0, -leg_length - body_z])
+    translate([body_x + 0.6*body_length, 0, -leg_length - body_z])
         minkowski() {
-            cube([base_length, base_width - 2*base_corner_radius, base_thickness/3], center = true);
             cylinder(h = base_thickness / 3, r = base_corner_radius);
+            cube([base_length, base_width - 2*base_corner_radius, base_thickness/3], center = true);
         }
 }
 
