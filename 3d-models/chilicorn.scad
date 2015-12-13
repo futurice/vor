@@ -1,5 +1,5 @@
 // Unicorn by Paul Houghton © 2015, CC BY-NC-AS license, https://creativecommons.org/licenses/
-$fn=12;
+$fn=8;
 
 scale = 1;
 
@@ -39,7 +39,7 @@ cute_leg_second_ratio = 0.25;
 cute_leg_third_ratio = 0.11;
 
 tail_thickness = mane_thickness;
-tail_radius = 1.5 * body_back_radius / 3;
+tail_radius = 10 * hair_thickness;
 tail_x = 2*body_x + body_length - tail_radius;
 tail_height = -body_z + 1.7*tail_radius;
 tail_tip_length = 30;
@@ -132,13 +132,13 @@ module cute_leg(lengthwards=0, sideways=0, downwards=0, theta=20, rise_angle=70)
             cylinder(h = leg_length*cute_leg_first_ratio, r1 = leg_radius, r2 = leg_radius);
             translate([0, 0, leg_length*cute_leg_first_ratio])
                 union() {
-                    sphere(r = leg_radius);
+                    sphere($fn = 16, r = leg_radius);
                     rotate([0, 90, 0]) {
                         cylinder(h = leg_length*cute_leg_second_ratio, r1 = leg_radius, r2 = leg_radius);
                     }
                     translate([leg_length*cute_leg_second_ratio, 0, 0])
                         union() {
-                            sphere(r = leg_radius);
+                            sphere($fn = 16, r = leg_radius);
                             rotate([0, 90 + rise_angle, 0]) {
                                 cylinder(h = leg_length*cute_leg_third_ratio, r1 = leg_radius, r2 = leg_radius);
                             }
@@ -158,9 +158,27 @@ module tailhair_line(x = 0, z = 0, delta_x = body_x, delta_z = 1.2*body_z) {
                 hull() {
                     cylinder(h = tail_thickness, r = tail_radius - hair_spacing);
                     translate([delta_x + hair_spacing, -delta_z + hair_spacing, 0])
- #                       cube([tail_tip_length, tail_tip_length - hair_thickness, tail_thickness]);
+                        cube([tail_tip_length, tail_tip_length - hair_thickness, tail_thickness]);
                 }                
             }
+}
+
+module t_hair() {
+    translate([0, 0, -2*hair_thickness])
+        difference() {
+            hull() {
+                cylinder(h = tail_thickness, r = tail_radius);
+                translate([body_x, -1.2*body_z, 0]) rotate([0, 0, 11]) {
+                    cube([tail_tip_length, tail_tip_length, tail_thickness]);
+                }
+            }
+            hull() {
+                cylinder(h = tail_thickness, r = tail_radius - hair_spacing);
+                translate([body_x + hair_spacing, -1.2*body_z, 0]) rotate([0, 0, 11]) {
+                    cube([tail_tip_length - hair_spacing, tail_tip_length - hair_spacing, tail_thickness]);
+                }
+            }
+        }
 }
 
 module tail() {
@@ -171,11 +189,14 @@ module tail() {
                     hull() {
                         cylinder(h = tail_thickness - 2*hair_thickness, r = tail_radius);
                         translate([body_x, -1.2*body_z, 0])
-                            cube([tail_tip_length, tail_tip_length, tail_thickness - 2*hair_thickness]);
+                            rotate([0, 0, 11]) {
+                               cube([tail_tip_length, tail_tip_length, tail_thickness - 2*hair_thickness]);
+                            }
                     }
-color("blue")                  tailhair_line();
+                    t_hair();
                 }
-                cylinder(h = tail_thickness, r = tail_tip_length*1.25);
+                translate([0, 0, -hair_thickness])
+                    cylinder($fn = 16, h = tail_thickness, r = tail_tip_length*1.25);
             }
         }
 }
