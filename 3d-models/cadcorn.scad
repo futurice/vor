@@ -1,6 +1,11 @@
-// Unicorn by Paul Houghton © 2015, CC BY-NC-AS license, https://creativecommons.org/licenses/
-$fn=8;
+// Cadcorn by Paul Houghton © 2015, CC BY-NC-AS license, https://creativecommons.org/licenses/
+low_poly = 8;
+high_poly = 64;
+low_poly_joint = 16;
+high_poly_joint = 64;
 
+$fn=low_poly;
+joint_poly = low_poly_joint;
 scale = 1;
 
 head_big_radius = 10*scale;
@@ -42,7 +47,7 @@ tail_thickness = mane_thickness;
 tail_radius = 10 * hair_thickness;
 tail_x = 2*body_x + body_length - tail_radius;
 tail_height = -body_z + 1.7*tail_radius;
-tail_tip_length = 29;
+tail_tip_length = 29*scale;
 
 base_thickness = 10*scale;
 base_width = 40*scale;
@@ -63,6 +68,26 @@ module horn() {
     rotate([0, -head_angle, 0]) {
         translate([0, 0, head_big_radius - .2*scale])
         cylinder(h = horn_length, r1 = horn_radius, r2 = 0);
+    }
+}
+
+module chili_horn() {
+    rotate([0, -head_angle, 0]) {
+        z = 1.1*scale + head_big_radius - .2*scale;
+        translate([0, 0, z])
+            hull() {
+                sphere(r = horn_radius);
+                translate([0, 0, horn_length/3])
+                    sphere(r = horn_radius * .8);
+            }
+       translate([0, 0, z + horn_length/3])
+            hull() {
+                sphere(r = horn_radius * .8);
+                rotate([0, -10, 0]) {
+                    translate([0, 0, 3*horn_length/6])
+                        sphere(r = horn_radius * .6);
+                }
+            }
     }
 }
 
@@ -132,13 +157,13 @@ module cute_leg(lengthwards=0, sideways=0, downwards=0, theta=20, rise_angle=70)
             cylinder(h = leg_length*cute_leg_first_ratio, r1 = leg_radius, r2 = leg_radius);
             translate([0, 0, leg_length*cute_leg_first_ratio])
                 union() {
-                    sphere($fn = 16, r = leg_radius);
+                    sphere($fn = joint_poly, r = leg_radius);
                     rotate([0, 90, 0]) {
                         cylinder(h = leg_length*cute_leg_second_ratio, r1 = leg_radius, r2 = leg_radius);
                     }
                     translate([leg_length*cute_leg_second_ratio, 0, 0])
                         union() {
-                            sphere($fn = 16, r = leg_radius);
+                            sphere($fn = joint_poly, r = leg_radius);
                             rotate([0, 90 + rise_angle, 0]) {
                                 cylinder(h = leg_length*cute_leg_third_ratio, r1 = leg_radius, r2 = leg_radius);
                             }
@@ -185,7 +210,7 @@ module tail_single_hair(n=1) {
                         }
                     }
                     rotate([50, 90, 0]) {
-                        translate([-3, -7, 0]) cylinder(r = 6, h = 40);
+                        translate([-3*scale, -7*scale, 0]) cylinder(r = 6*scale, h = 40*scale);
                     }
                 }
             }
@@ -209,7 +234,7 @@ module tail() {
                     tail_single_hair(n=2);
                 }
                 translate([0, 0, -hair_thickness])
-                    cylinder($fn = 16, h = 10+tail_thickness, r = tail_tip_length*1.25);
+                    cylinder($fn = 16, h = 10*scale+tail_thickness, r = tail_tip_length*1.25);
             }
         }
 }
@@ -217,15 +242,16 @@ module tail() {
 module base() {
     translate([body_x + 0.6*body_length, 0, -leg_length - body_z])
         minkowski() {
-            cylinder(h = base_thickness / 3, r = base_corner_radius);
+            cylinder($fn = joint_poly, h = base_thickness / 3, r = base_corner_radius);
             cube([base_length, base_width - 2*base_corner_radius, base_thickness/3], center = true);
         }
 }
 
-difference() { // difference() -> no base, or union() -> solid base
+union() { // difference() -> no base, or union() -> solid base
     union() {
         head();
-        horn();
+//        horn();  // Uncomment either horn() or chili_horn or neither
+        color("red") chili_horn();
         neck();
         mane();
         body();
