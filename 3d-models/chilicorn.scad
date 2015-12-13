@@ -1,17 +1,24 @@
-// Unicorn by Paul Houghton ©2015, CC BY-NC-AS license, https://creativecommons.org/licenses/
-$fn=45;
+// Unicorn by Paul Houghton © 2015, CC BY-NC-AS license, https://creativecommons.org/licenses/
+$fn=90;
 
 scale = 1;
 
 head_big_radius = 10*scale;
 head_small_radius = 4.5*scale;
 head_length = 18*scale;
-head_angle = 50*scale;
+head_angle = 50;
 
 horn_length = 20*scale;
 horn_radius = 2.8*scale;
 
-neck_radius = 2*scale;
+mane_thickness = 2*horn_radius;
+mane_radius = head_big_radius;
+mane_height = head_big_radius * 0.7;
+mane_x = head_big_radius * 0.28;
+mane_length_x = 10*scale;
+mane_length_z = 20*scale;
+
+neck_radius = 3*scale;
 neck_ratio = .2; // Flattens the interface to the top body
 neck_top_x = 3*scale;
 
@@ -21,10 +28,10 @@ body_radius = 14*scale;
 body_back_radius = 12*scale;
 body_length = 33*scale;
 
-leg_length = (28 + body_radius)*scale;
+leg_length = (33*scale + body_radius);
 leg_radius = 4*scale;
 
-cute_leg_first_ratio = 0.65;
+cute_leg_first_ratio = 0.5;
 cute_leg_second_ratio = 0.25;
 cute_leg_third_ratio = 0.11;
 
@@ -65,6 +72,14 @@ module neck() {
 }
 
 module mane() {
+    translate([mane_x, mane_thickness/2, mane_height])
+        rotate([90, 0, 0]) {
+            hull() {
+                cylinder(h = mane_thickness, r = mane_radius);
+                translate([body_x, -body_z, 0])
+                    cylinder(h = mane_thickness, r = mane_radius);
+            }
+        }
 }
 
 module body() {
@@ -104,6 +119,22 @@ module cute_leg(lengthwards=0, sideways=0, downwards=0, theta=20, rise_angle=70)
     }
 }
 
+tail_x = 2*body_x + body_length;
+tail_thickness = mane_thickness;
+tail_radius = body_back_radius;
+tail_height = -body_z + tail_radius/2;
+
+module tail() {
+    translate([tail_x, tail_thickness/2, tail_height])
+        rotate([90, 0, 0]) {
+            hull() {
+                cylinder(h = mane_thickness, r = tail_radius);
+                translate([body_x, -body_z, 0])
+                    cylinder(h = tail_thickness, r = tail_radius);
+            }
+        }
+}
+
 module base() {
     translate([body_x + 0.2*body_length, 0, -leg_length - body_z])
         minkowski() {
@@ -117,11 +148,13 @@ difference() { // difference() -> no base, or union() -> solid base
         head();
         horn();
         neck();
+        mane();
         body();
-        leg(theta=5, sideways=3);
-        cute_leg(theta=-5, sideways=-3, downwards=3);
-        leg(lengthwards = body_length, sideways=2, theta=15);
-        leg(lengthwards = body_length, sideways=-2, theta=-15);
+        leg(theta=5, sideways=3*scale);
+        cute_leg(theta=-5, sideways=-3*scale, downwards=3*scale);
+        leg(lengthwards = body_length, sideways=2*scale, theta=15);
+        leg(lengthwards = body_length, sideways=-2*scale, theta=-15);
+        tail();
     }
  #   base();
 }
