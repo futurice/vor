@@ -1,5 +1,5 @@
 // Unicorn by Paul Houghton © 2015, CC BY-NC-AS license, https://creativecommons.org/licenses/
-$fn=90;
+$fn=12;
 
 scale = 1;
 
@@ -18,6 +18,9 @@ mane_x = head_big_radius * 0.28;
 mane_length_x = 10*scale;
 mane_length_z = 20*scale;
 
+hair_thickness = mane_thickness / 8;
+hair_spacing = mane_thickness / 2;
+
 neck_radius = 3*scale;
 neck_ratio = .2; // Flattens the interface to the top body
 neck_top_x = 3*scale;
@@ -34,6 +37,12 @@ leg_radius = 4*scale;
 cute_leg_first_ratio = 0.5;
 cute_leg_second_ratio = 0.25;
 cute_leg_third_ratio = 0.11;
+
+tail_thickness = mane_thickness;
+tail_radius = 1.5 * body_back_radius / 3;
+tail_x = 2*body_x + body_length - tail_radius;
+tail_height = -body_z + 1.7*tail_radius;
+tail_tip_length = 30;
 
 base_thickness = 10*scale;
 base_width = 40*scale;
@@ -71,11 +80,8 @@ module neck() {
         }
 }
 
-hair_thickness = mane_thickness / 10;
-hair_spacing = mane_thickness / 2;
-
 module hair_line(x = 0, z = 0, hair_radius = mane_radius, delta_x = body_x, delta_z = body_z) {
-    translate([x, mane_thickness/2, z])
+    translate([x, 0, z])
             difference() {
                 hull() {
                     cylinder(h = mane_thickness, r = hair_radius);
@@ -141,18 +147,35 @@ module cute_leg(lengthwards=0, sideways=0, downwards=0, theta=20, rise_angle=70)
     }
 }
 
-tail_x = 2*body_x + body_length;
-tail_thickness = mane_thickness;
-tail_radius = body_back_radius;
-tail_height = -body_z + tail_radius/2;
+module tailhair_line(x = 0, z = 0, delta_x = body_x, delta_z = 1.2*body_z) {
+    translate([x, 0, z - hair_thickness])
+            difference() {
+                hull() {
+                    cylinder(h = tail_thickness, r = tail_radius);
+                    translate([delta_x, -delta_z, 0])
+                        cube([tail_tip_length, tail_tip_length - hair_thickness, tail_thickness]);
+                }
+                hull() {
+                    cylinder(h = tail_thickness, r = tail_radius - hair_spacing);
+                    translate([delta_x + hair_spacing, -delta_z + hair_spacing, 0])
+ #                       cube([tail_tip_length, tail_tip_length - hair_thickness, tail_thickness]);
+                }                
+            }
+}
 
 module tail() {
-    translate([tail_x, tail_thickness/2, tail_height])
+    translate([tail_x, tail_thickness/2 - hair_thickness, tail_height])
         rotate([90, 0, 0]) {
-            hull() {
-                cylinder(h = mane_thickness, r = tail_radius);
-                translate([1.5*body_x, 1.5*(-body_z), 0])
-                    cube([tail_thickness, tail_thickness, tail_thickness]);
+            intersection() {
+                union() {
+                    hull() {
+                        cylinder(h = tail_thickness - 2*hair_thickness, r = tail_radius);
+                        translate([body_x, -1.2*body_z, 0])
+                            cube([tail_tip_length, tail_tip_length, tail_thickness - 2*hair_thickness]);
+                    }
+color("blue")                  tailhair_line();
+                }
+                cylinder(h = tail_thickness, r = tail_tip_length*1.25);
             }
         }
 }
@@ -178,5 +201,5 @@ difference() { // difference() -> no base, or union() -> solid base
         leg(lengthwards = body_length, sideways=-2*scale, theta=-15);
         tail();
     }
- #   base();
+    base();
 }
