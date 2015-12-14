@@ -13,6 +13,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 
 import com.futurice.hereandnow.R;
 
@@ -112,6 +113,11 @@ public class SettingsActivity extends PreferenceActivity {
         // Already set the result as OK
         resultIntent = this.getIntent();
         this.setResult(RESULT_OK, resultIntent);
+
+        setContentView(R.layout.activity_settings);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        toolbar.setTitle(R.string.action_settings);
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     /**
