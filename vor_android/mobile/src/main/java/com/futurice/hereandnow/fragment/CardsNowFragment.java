@@ -117,12 +117,12 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
                 Context context = HereAndNowApplication.getStaticContext();
                 switch (jsonObject.getString(Constants.TYPE_KEY)) {
                     case Constants.POOL_KEY:
-                        String message = jsonObject.getString(Constants.MESSAGE_KEY);
-                        getSourceTopicModel().add(Cards.pool(message, context));
+                        String poolImage = jsonObject.getString(Constants.IMAGE_KEY);
+                        getSourceTopicModel().add(Cards.pool(poolImage, context));
                         break;
                     case Constants.FOOD_KEY:
-                        String image = jsonObject.getString(Constants.IMAGE_KEY);
-                        getSourceTopicModel().add(0, Cards.food(image, context));
+                        String foodImage = jsonObject.getString(Constants.IMAGE_KEY);
+                        getSourceTopicModel().add(0, Cards.food(foodImage, context));
                         break;
                     case Constants.SAUNA_KEY:
                         String status = jsonObject.getString("status");
@@ -176,9 +176,15 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
      * @param key the key
      */
     private void addPoolCard(SharedPreferences sharedPreferences, String key) {
-        String message = sharedPreferences.getString(key, "Failed");
-        getSourceTopicModel().add(0, Cards.pool(message, this.getActivity()));
-        UI.execute(this::filterModel);
+        switch (key) {
+            case Constants.IMAGE_KEY:
+                String file = sharedPreferences.getString(key, "Failed");
+                getSourceTopicModel().add(0, Cards.pool(file, this.getActivity()));
+                UI.execute(this::filterModel);
+                break;
+            default:
+                break;
+        }
     }
 
 

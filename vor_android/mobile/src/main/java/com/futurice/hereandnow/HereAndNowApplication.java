@@ -177,10 +177,10 @@ public class HereAndNowApplication extends Application implements ScampiService.
         editor.apply();
     }
 
-    private void savePoolToSharedPreferences(String message) {
-        SharedPreferences foodSP = getSharedPreferences(Constants.POOL_KEY, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = foodSP.edit();
-        editor.putString(Constants.MESSAGE_KEY, message);
+    private void savePoolToSharedPreferences(String file) {
+        SharedPreferences poolSP = getSharedPreferences(Constants.POOL_KEY, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = poolSP.edit();
+        editor.putString(Constants.IMAGE_KEY, file);
         editor.apply();
     }
 

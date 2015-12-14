@@ -15,19 +15,21 @@ public class Cards {
 
     /**
      * Pool card
-     * @param message the message
+     * @param file the file in Base64
      * @return the pool topic
      */
-    public static ITopic pool(String message, Context context) {
+    public static ITopic pool(String file, Context context) {
         final Topic topic = new Topic("Pool", 140, context);
         topic.setText("Are you up for a game?");
         topic.setIsPrebuiltTopic(true);
+        topic.setImageUri(HereAndNowUtils.getResourceUri(R.drawable.card_pool));
 
         ImageCard card = new ImageCard("__", 440, context);
-        card.setText(message);
+        card.setCardType(Constants.POOL_KEY);
+        card.setText("Come and play!");
         card.setAuthor("Vör", "V001");
-        card.setImageUri(HereAndNowUtils.getResourceUri(R.drawable.card_pool));
         card.setDate(new Date());
+        card.setImageBase64(file);
 
         topic.addCard(card);
         return topic;
@@ -35,7 +37,7 @@ public class Cards {
 
     /**
      * Food card
-     * @param file Base64 strings
+     * @param file the file in Base64
      * @return the food topic
      */
     public static ITopic food(String file, Context context) {
