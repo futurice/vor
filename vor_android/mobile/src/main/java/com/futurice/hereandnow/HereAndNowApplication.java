@@ -108,7 +108,7 @@ public class HereAndNowApplication extends Application implements ScampiService.
                     }
                 })
                 .on(Constants.LOCATION_KEY, args -> Log.d(TAG, "LOCATION RECEIVED"))
-                .on(Constants.STREAM_KEY, args -> updateToSharedPreferences((JSONArray) args[0]))
+                .on(Constants.MESSAGE_KEY, args -> updateToSharedPreferences((JSONObject) args[0]))
                 .on(Socket.EVENT_DISCONNECT, args -> Log.d(TAG, "EVENT_DISCONNECT"));
         mSocket.connect();
 
@@ -116,35 +116,32 @@ public class HereAndNowApplication extends Application implements ScampiService.
         startService(new Intent(this, LocationService.class));
     }
 
-    public void updateToSharedPreferences(JSONArray jsonArray) {
+    public void updateToSharedPreferences(JSONObject jsonObject) {
         try {
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                switch (jsonObject.getString(Constants.TYPE_KEY)) {
-                    case Constants.TOILET_KEY:
-                        saveToiletToSharedPreferences(jsonObject);
-                        break;
-                    case Constants.SAUNA_KEY: // Example
-                        testSaunaNotification(jsonObject.getString("status"));
-                        break;
-                    case Constants.POOL_KEY:
-                        String message;
-                        try {
-                            message = jsonObject.getString(Constants.MESSAGE_KEY);
-                        } catch (JSONException e) {
-                            message = "We need players!";
-                        }
-                        savePoolToSharedPreferences(message);
-                        break;
-                    case Constants.FOOD_KEY:
-                        saveFoodToSharedPreferences(jsonObject.getString(Constants.IMAGE_KEY));
-                        break;
-                    case Constants.TEST_KEY: // Test
-                        saveTestToSharedPreferences(jsonObject.getString("message"));
-                        break;
-                    default:
-                        break;
-                }
+            switch (jsonObject.getString(Constants.TYPE_KEY)) {
+                case Constants.TOILET_KEY:
+                    saveToiletToSharedPreferences(jsonObject);
+                    break;
+                case Constants.SAUNA_KEY: // Example
+                    testSaunaNotification(jsonObject.getString("status"));
+                    break;
+                case Constants.POOL_KEY:
+                    String message;
+                    try {
+                        message = jsonObject.getString(Constants.MESSAGE_KEY);
+                    } catch (JSONException e) {
+                        message = "We need players!";
+                    }
+                    savePoolToSharedPreferences(message);
+                    break;
+                case Constants.FOOD_KEY:
+                    saveFoodToSharedPreferences(jsonObject.getString(Constants.IMAGE_KEY));
+                    break;
+                case Constants.TEST_KEY: // Test
+                    saveTestToSharedPreferences(jsonObject.getString("message"));
+                    break;
+                default:
+                    break;
             }
         } catch (JSONException e) {
             e.printStackTrace();
