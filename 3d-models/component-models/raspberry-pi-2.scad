@@ -38,7 +38,19 @@ module header() {
     translate([27.3, 1.2, height]) cube([50.45, 5, 9.2]);
 }
 
-board();
+module hole(x = 0, y = 0) {
+    translate([length - x, width - y, -10]) cylinder(h = 10 + height, r = 2.75);
+}
+
+difference() {
+    board();
+    union() {
+        hole(x = 3.5, y = 3.5);
+        hole(x = 3.5 + 58, y = 3.5 + 49);
+        hole(x = 3.5, y = 3.5 + 49);
+        hole(x = 3.5 + 58, y = 3.5);
+    }
+}
 color("green") ethernet();
 color("red") usb(y=2.35);
 color("blue") usb(y=19.6);
