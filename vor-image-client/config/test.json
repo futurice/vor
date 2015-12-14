@@ -1,31 +1,5 @@
 {
-  "STREAM": {
-    "INTERVAL": 100
-  },
-  "MESSAGE_TTL": {
-    "default": 10
-  },
-  "BEACONS": [
-    {
-      "id": 1,
-      "type": "Room Beacon",
-      "floor": 1,
-      "x": 1,
-      "y": 1
-    },
-    {
-      "id": 2,
-      "type": "Room Beacon",
-      "floor": 1,
-      "x": 1,
-      "y": 3
-    },
-    {
-      "id": 3,
-      "type": "Room Beacon",
-      "floor": 1,
-      "x": 3,
-      "y": 3
-    }
-  ]
+  "SOCKET_SERVER": "http://localhost:8080",
+  "SOCKET_EVENT_TYPE": "button",
+  "SOCKET_EVENT_ID": "button-1"
 }

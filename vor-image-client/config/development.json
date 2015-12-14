@@ -1,8 +1,6 @@
 {
-  "CAMERA_OPTIONS": {
-     "mode": "photo",
-     "output": "assets/photo.png"
-  },
-  "SOCKET_SERVER": "http://localhost:8080"
+  "SOCKET_SERVER": "http://localhost:8080",
+  "SOCKET_EVENT_TYPE": "button",
+  "SOCKET_EVENT_ID": "button-1"
 }
 

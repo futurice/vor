@@ -13,8 +13,9 @@
     "Iot"
   ],
   "dependencies": {
+    "base64-stream": "^0.1.3",
+    "camera-usb": "^1.0.0",
     "nodemon": "^1.8.1",
-    "raspicam": "^0.2.13",
     "socket.io": "^1.3.7"
   }
 }

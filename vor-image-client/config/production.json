@@ -1,32 +1,5 @@
 {
-  "STREAM": {
-    "INTERVAL": 5000
-  },
-  "MESSAGE_TTL": {
-    "default": 28800
-  },
-  "BEACONS": [
-    {
-      "id": "futu-b1-32095-19454",
-      "type": "Room Beacon",
-      "floor": 7,
-      "x": 8.132,
-      "y": 18.5848
-    },
-    {
-      "id": "futu-b2-23964-38945",
-      "type": "Room Beacon",
-      "floor": 7,
-      "x": 5.0279,
-      "y": 7.0501
-    },
-    {
-      "id": "futu-b3-21061-29133",
-      "type": "Room Beacon",
-      "floor": 7,
-      "x": 11.195,
-      "y": 8.3442
-    }
-  ]
+  "SOCKET_SERVER": "http://rubix.futurice.com",
+  "SOCKET_EVENT_TYPE": "button",
+  "SOCKET_EVENT_ID": "button-1"
 }
-
