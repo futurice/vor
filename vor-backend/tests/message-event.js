@@ -22,12 +22,12 @@ describe('App: On message event', function () {
       clientA.emit('message', TEST_MESSAGE);
     });
 
-    clientA.on('stream', message => {
-      should(message[0]).deepEqual(TEST_MESSAGE);
+    clientA.on('message', message => {
+      should(message).deepEqual(TEST_MESSAGE);
     });
 
-    clientB.on('stream', message => {
-      should(message[0]).deepEqual(TEST_MESSAGE);
+    clientB.on('message', message => {
+      should(message).deepEqual(TEST_MESSAGE);
       clientA.disconnect();
       clientB.disconnect();
       done();

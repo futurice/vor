@@ -148,11 +148,9 @@
       }
     }
 
-    socket.on('stream', function(streamMessages){
-        if (streamMessages.length) {
-          utils.renderJson($responseHolder, streamMessages[0])
-        }
-      });
+    socket.on('message', function(message){
+      utils.renderJson($responseHolder, message)
+    });
 
   })(jQuery, window.FUTU2);
 </script>

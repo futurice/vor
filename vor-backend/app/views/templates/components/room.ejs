@@ -79,10 +79,9 @@
       });
     });
 
-    socket.on('stream', function(messages){
-      var roomMessages = utils.messagesByType([responseType], messages);
-      if (roomMessages.length) {
-        utils.renderJson($responseHolder, roomMessages[0])
+    socket.on('message', function(message) {
+      if (message.type === 'room') {
+        utils.renderJson($responseHolder, message)
       }
     });
 
