@@ -22,7 +22,18 @@ module wire() {
     translate([-length/4, (width - 6.2)/2, height]) cube([length/2, 6.2, 1]);
 }
 
+module hole(x = 0, y = 0) {
+    translate([x, y, -10 + height]) cylinder(h = 10 + height, r = 2.6/2);
+}
 
-color("green") board();
+color("green") difference() {
+    board();
+    union() {
+        hole(x = 2.9, y = 2.5);
+        hole(x = length - 2.9, y = width - 2.5);
+        hole(x = 2.9, y = width - 2.5);
+        hole(x = length - 2.9, y = 2.5);
+    }
+}
 color("grey") dome();
 color("black") wire();
