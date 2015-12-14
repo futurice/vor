@@ -5,17 +5,14 @@
   "main": "app/index.js",
   "scripts": {
     "test": "test",
-    "start": "NODE_PATH=. $(npm bin)/nodemon --harmony_destructuring --harmony_modules --harmony_array_includes --es-staging ./app/index",
-    "serve": "NODE_PATH=. node --harmony_destructuring --harmony_modules --harmony_array_includes --es-staging ./bin/www.js"
+    "start": "NODE_PATH=. node --harmony_destructuring --harmony_modules --harmony_array_includes --es-staging ./app/index"
   },
   "keywords": [
     "Vor",
     "Iot"
   ],
   "dependencies": {
-    "base64-stream": "^0.1.3",
     "camera-usb": "^1.0.0",
-    "nodemon": "^1.8.1",
     "socket.io": "^1.3.7"
   }
 }

@@ -2,7 +2,6 @@
 const http = require('http');
 const socketIO = require('socket.io-client');
 const cameraUsb = require('camera-usb');
-const base64 = require('base64-stream');
 const fs = require('fs');
 const { SOCKET_SERVER, SOCKET_EVENT_TYPE, SOCKET_EVENT_ID }  = require('config');
 const log = func => message => console.log(func(message));
