@@ -6,22 +6,24 @@ const logger = require('morgan');
 const socketIO = require('socket.io');
 const Rx = require('rx');
 const redis = require('redis');
-const { BEACONS, MESSAGE_TTL } = require('config');
-const Cache = require('app/cache');
+const expressRedisCache = require('express-redis-cache');
+const { BEACONS, CACHE_PREFIX, CACHE_TTL } = require('config');
 const Location = require('app/location');
 const viewRoute = require('app/views/routes');
 const views = require('app/views');
 const utils = require('app/utils');
 
-
-// init app setup
+// set up app
 const app = express();
 const router = express.Router();
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.text({type: '*/*'}));
 app.use(logger('dev'));
+// set up socket.IO
+app.io = socketIO();
+app.io.on('error', utils.logError(error => `Socket connection error: ${error}`));
 
-
-// init cache storage
+// set up cache storage
 const cacheClient = () => {
   let redisUrl = process.env.REDIS_URL;
   if (redisUrl) {
@@ -30,58 +32,85 @@ const cacheClient = () => {
     return redis.createClient();
   }
 };
-const appCache = new Cache(cacheClient(), MESSAGE_TTL);
+const cache = expressRedisCache({ client: cacheClient(), prefix: CACHE_PREFIX });
 
+// listen socket connections
+const socketConnectionSource$ = Rx.Observable.fromEvent(app.io.sockets, 'connection');
+
+// listen socket beacons
+const socketBeaconSource$ = socketConnectionSource$
+  .flatMap(socket => Rx.Observable.fromEvent(socket, 'beacon'));
+
+// listen socket messages
+const socketMessageSource$ = socketConnectionSource$
+  .flatMap(socket => Rx.Observable.fromEvent(socket, 'message'));
+
+// listen socket init
+const socketInitSource$ = socketConnectionSource$
+  .flatMap(socket => Rx.Observable.fromEvent(
+      socket,
+      'init',
+      event => socket) // we need socket to emit cache content only to one client
+    );
+
+// Post interface for messages
+// TODO: At the moment Arduinos' have limited websocket support. Remove when unnecessary.
+const postMessageSubject = new Rx.Subject();
+const postMessageRoute = router.post('/messages', (req, res) => {
+  try {
+    const json = JSON.parse(req.body);
+    postMessageSubject.onNext(json);
+    res.send('OK');
+  }
+  catch (error) {
+    res.status(500).send(`Error: ${error}`);
+  }
+});
+app.use('/messages', postMessageRoute);
 
 // init location module
 const location = new Location(BEACONS);
-
-
-// set up socket.IO
-app.io = socketIO();
-app.io.on('error', utils.logError(error => `Socket connection error: ${error}`));
-
-// listen socket connections
-app.io.on('connection', socket => {
-  location.fromDeviceStream(Rx.Observable.fromEvent(socket, 'beacon'))
-    .subscribe(
-      location => app.io.emit('location', location),
-      utils.logError(error =>`Location stream error:${error}`)
+// subscribe location
+location.fromDeviceStream(socketBeaconSource$)
+  .subscribe(
+    location => app.io.emit('location', location),
+    utils.logError(error =>`Location stream error:${error}`)
   );
 
-  Rx.Observable.fromEvent(socket, 'message')
-    .flatMap(appCache.transaction.bind(appCache))
-    .subscribe(
-      message => app.io.emit('stream', [message]),
-      error => utils.logError(error => `Message error:${error}`)
-    );
+// subscribe init
+const cacheGet = Rx.Observable.fromNodeCallback(cache.get, cache);
+socketInitSource$
+  .flatMap(socket => cacheGet().map(messages => [socket, messages]))
+  .subscribe(
+    ([socket, messages]) => {
+      utils.log(messages => `Init: fetched ${messages.length} messages from cache`)(messages);
+      const messagesAsJson = messages.map(message => JSON.parse(message.body));
+      socket.emit('init', messagesAsJson);
+    },
+    utils.logError(error => `Init error:${error}`)
+  );
 
-  Rx.Observable.fromEvent(socket, 'init')
-    .flatMap(appCache.getAllStream.bind(appCache))
-    .subscribe(
-      messages => socket.emit('init', messages),
-      error => utils.logError(error => `Init error:${error}`)
-    );
-});
-
-
-// TODO: At the moment Arduinos' have limited websocket support. Remove this route if changes.
-const messageRoute = router.post('/messages', (req, res) => {
-  Rx.Observable.return(JSON.parse(req.body))
-    .flatMap(appCache.transaction.bind(appCache))
-    .doOnNext(message => app.io.emit('stream', [message]))
-    .doOnError(error => utils.logError(error => `Message error:${error}`))
-    .subscribe(
-      success => res.send('OK'),
-      error => res.status(300).send(`Error: ${error}`)
-    );
-});
-app.use('/messages', bodyParser.text({type: '*/*'}), messageRoute);
-
+// subscribe messages
+const cacheAdd = Rx.Observable.fromNodeCallback(cache.add, cache);
+postMessageSubject
+  .merge(socketMessageSource$)
+  .flatMap(message => {
+    const key = message.id ? `${message.type}:${message.id}` : `${message.type}`;
+    const data = JSON.stringify(message);
+    const config = { expire: CACHE_TTL, type: 'json' };
+    return cacheAdd(key, data, config);
+  })
+  .subscribe(
+    ([key, data, status]) => {
+      utils.log(message => `Message: cache added ${message}`)(data.body);
+      const messageAsJson = JSON.parse(data.body);
+      app.io.emit('stream', [messageAsJson]);
+    },
+    utils.logError(error => `Message error:${error}`)
+  );
 
 // the test page
 app.use('/', viewRoute(router));
 views.renderTestPage(app);
-
 
 module.exports = app;

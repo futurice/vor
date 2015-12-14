@@ -2,7 +2,8 @@
   "STREAM": {
     "INTERVAL": 100
   },
-  "MESSAGE_TTL": {
+  "CACHE_PREFIX": "test",
+  "CACHE_TTL": {
     "default": 10
   },
   "BEACONS": [
