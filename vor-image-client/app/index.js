@@ -26,9 +26,9 @@ const matchesEventId = eventId => new RegExp(SOCKET_EVENT_ID).test(eventId);
 
 client.on('connect', socket => {
   log(() => `Socket connection to ${SOCKET_SERVER}`)();
-  client.on('stream', event => {
+  client.on('message', event => {
     if (matchesEventType(event.type) && matchesEventId(event.id)) {
-      log(() => `Socket event ${SOCKET_EVENT} from ${SOCKET_SERVER}`)();
+      log(() => `Socket event ${SOCKET_EVENT_TYPE} from ${SOCKET_SERVER}`)();
       let bufs = [];
       const saveImageStream = cameraUsb.capture();
       saveImageStream.on('data', (buffer) => bufs.push(buffer));
