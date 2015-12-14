@@ -4,13 +4,45 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="top"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/lightest_grey"
     android:orientation="vertical"
     android:padding="@dimen/color_padding"
     android:paddingTop="0dip"
     android:stretchColumns="1">
 
     <!-- Main image of the card -->
+
+    <!-- Card text content -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="vertical"
+        android:padding="@dimen/color_padding">
+
+        <TextView
+            android:id="@+id/card_text"
+            style="@style/CardTitle"
+            android:layout_gravity="start|center_vertical"
+            android:text="@string/card_title_placeholder"
+            android:textColor="@color/colorPrimary"
+        android:textIsSelectable="false"
+            android:gravity="center"
+            android:textSize="18dp"
+            android:layout_marginBottom="5dp"/>
+
+        <!-- Author and date -->
+        <TextView
+            android:id="@+id/card_author"
+            style="@style/CardTitle"
+            android:layout_gravity="start|center_vertical"
+            android:textColor="@color/colorPrimary"
+            android:text="Hello World"
+            android:textSize="12dp"
+            android:gravity="end"/>
+    </LinearLayout>
+
+    <!-- Send to big screen, in case of videos -->
     <FrameLayout
         android:id="@+id/replaceable_card_content"
         android:layout_width="match_parent"
@@ -36,34 +68,6 @@
             android:visibility="gone" />
     </FrameLayout>
 
-    <!-- Card text content -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:orientation="vertical"
-        android:padding="@dimen/color_padding">
-
-        <TextView
-            android:id="@+id/card_text"
-            style="@style/CardTitle"
-            android:layout_gravity="left|center_vertical"
-            android:text="@string/card_title_placeholder"
-            android:textColor="@android:color/white"
-        android:textIsSelectable="false"
-            android:textSize="22dp"/>
-
-        <!-- Author and date -->
-        <TextView
-            android:id="@+id/card_author"
-            style="@style/CardTitle"
-            android:layout_gravity="left|center_vertical"
-            android:textColor="@android:color/white"
-            android:text="Hello World"
-            android:textSize="14dp"/>
-    </LinearLayout>
-
-    <!-- Send to big screen, in case of videos -->
     <LinearLayout
         android:id="@+id/video_card_tobigscreen_layout"
         android:layout_width="fill_parent"
@@ -163,6 +167,7 @@
             android:paddingRight="10dp"
             android:text="@string/card_liked_this"/>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/comments_bar"
         android:layout_width="326dp"
@@ -171,6 +176,5 @@
         android:orientation="vertical"
         android:visibility="gone">
     </LinearLayout>
-
 
     </LinearLayout>
