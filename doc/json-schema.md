@@ -4,6 +4,7 @@
 - [Location message](#location-message) - [example message](#location-example)
 - [Room message](#room-message) - [example message](#room-example)
 - [Toilet message](#toilet-message) - [example message](#toilet-example)
+- [Button message](#button-message) - [example message](#button-example)
 - [Pool message](#pool-message) - [example message](#pool-example)
 - [Cake message](#cake-message) - [example message](#cake-example)
 
@@ -196,6 +197,40 @@
     "type": "toilet",
     "reserved": true, 
     "methane": 0.2
+}
+```
+
+
+<h2 id="button-message">Button message</h2>
+
+####Schema:
+
+```
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",  
+    "title": "Button message",  
+    "description": "Button sends on buttonup",  
+    "type": "object",  
+    "properties": {  
+         "id": {  
+            "description": "An unique identifier for a button",  
+            "type": "string"  
+        },
+        "type": {  
+            "description": "The type of the message",  
+            "constant": "button"  
+        }
+    },  
+    "required": ["id", "type"]
+}
+```
+
+<h4 name="button-example">Example:</h4>
+
+```
+{
+    "id": "button-1",
+    "type": "button"
 }
 ```
 
