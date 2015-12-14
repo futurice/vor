@@ -7,10 +7,12 @@
 
     <color name="grey">#303030</color>
     <color name="light_grey">#eeeeee</color>
+    <color name="lightest_grey">#F0F0F0</color>
 
     <color name="background_grey">#D8D8D8</color>
     <color name="light_grey_space">#DFDFDF</color>
     <color name="light_grey_text">#AFAFAF</color>
+    <color name="light_grey_drawer_item_selected">#E5E5E5</color>
 
     <color name="transparent">#00000000</color>
 
