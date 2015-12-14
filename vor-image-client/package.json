@@ -1,0 +1,20 @@
+{
+  "name": "vor-image-server",
+  "version": "1.0.0",
+  "description": "Ligth-weight server for publishing camera images",
+  "main": "app/index.js",
+  "scripts": {
+    "test": "test",
+    "start": "NODE_PATH=. $(npm bin)/nodemon --harmony_destructuring --harmony_modules --harmony_array_includes --es-staging ./app/index",
+    "serve": "NODE_PATH=. node --harmony_destructuring --harmony_modules --harmony_array_includes --es-staging ./bin/www.js"
+  },
+  "keywords": [
+    "Vor",
+    "Iot"
+  ],
+  "dependencies": {
+    "nodemon": "^1.8.1",
+    "raspicam": "^0.2.13",
+    "socket.io": "^1.3.7"
+  }
+}
