@@ -42,4 +42,17 @@ describe('App: On message post', function () {
 
   });
 
+  it('should fail on invalid json', done => {
+    const TEST_MESSAGE = 'INVALID';
+    request(app)
+      .post('/messages')
+      .set('Content-type', 'text/plain')
+      .send(TEST_MESSAGE)
+      .expect(500)
+      .end(function (err, res) {
+        done();
+      });
+
+  });
+
 });

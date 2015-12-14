@@ -56,13 +56,16 @@ const socketInitSource$ = socketConnectionSource$
 // Post interface for messages
 // TODO: At the moment Arduinos' have limited websocket support. Remove when unnecessary.
 const postMessageSubject = new Rx.Subject();
-const postMessageRoute = router.post('/messages', (req, res) => postMessageSubject.onNext([req,res]));
-const postMessageSource$ =
-  postMessageSubject
-    .doOnNext(([req, res]) => res.send('OK'))
-    .doOnError(([err, req, res]) => res.status(500).send(`Error: ${error}`))
-    .map(([req, res]) => JSON.parse(req.body));
-
+const postMessageRoute = router.post('/messages', (req, res) => {
+  try {
+    const json = JSON.parse(req.body);
+    postMessageSubject.onNext(json);
+    res.send('OK');
+  }
+  catch (error) {
+    res.status(500).send(`Error: ${error}`);
+  }
+});
 app.use('/messages', postMessageRoute);
 
 // init location module
@@ -78,31 +81,33 @@ location.fromDeviceStream(socketBeaconSource$)
 const cacheGet = Rx.Observable.fromNodeCallback(cache.get, cache);
 socketInitSource$
   .flatMap(socket => cacheGet().map(messages => [socket, messages]))
-  .subscribe(([socket, messages]) => {
+  .subscribe(
+    ([socket, messages]) => {
       utils.log(messages => `Init: fetched ${messages.length} messages from cache`)(messages);
       const messagesAsJson = messages.map(message => JSON.parse(message.body));
       socket.emit('init', messagesAsJson);
     },
-    error => utils.logError(error => `Init error:${error}`)
+    utils.logError(error => `Init error:${error}`)
   );
 
 // subscribe messages
 const cacheAdd = Rx.Observable.fromNodeCallback(cache.add, cache);
-postMessageSource$
+postMessageSubject
   .merge(socketMessageSource$)
   .flatMap(message => {
     const key = message.id ? `${message.type}:${message.id}` : `${message.type}`;
     const data = JSON.stringify(message);
     const config = { expire: CACHE_TTL, type: 'json' };
-    return cacheAdd(key, data, config)
-      .doOnNext(([key, data, status]) => {
-        utils.log(message => `Message: cache added ${message}`)(data.body);
-        const messageAsJson = JSON.parse(data.body);
-        app.io.emit('stream', [messageAsJson]);
-      })
-      .doOnError(error => utils.logError(error => `Message error:${error}`));
+    return cacheAdd(key, data, config);
   })
-  .subscribe();
+  .subscribe(
+    ([key, data, status]) => {
+      utils.log(message => `Message: cache added ${message}`)(data.body);
+      const messageAsJson = JSON.parse(data.body);
+      app.io.emit('stream', [messageAsJson]);
+    },
+    utils.logError(error => `Message error:${error}`)
+  );
 
 // the test page
 app.use('/', viewRoute(router));
