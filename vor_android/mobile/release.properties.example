@@ -1,5 +1,0 @@
-# Update to point to your keystore and secrets, rename release.properties
-keyStore=../../my.keystore
-storePassword=123456
-keyAlias=mykey
-keyAliasPassword=123456
