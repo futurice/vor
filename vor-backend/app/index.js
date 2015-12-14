@@ -104,7 +104,7 @@ postMessageSubject
     ([key, data, status]) => {
       utils.log(message => `Message: cache added ${message}`)(data.body);
       const messageAsJson = JSON.parse(data.body);
-      app.io.emit('stream', [messageAsJson]);
+      app.io.emit('message', messageAsJson);
     },
     utils.logError(error => `Message error:${error}`)
   );

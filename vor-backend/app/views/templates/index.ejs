@@ -61,21 +61,9 @@
         return str.length > LIMIT ? (str.substr(0, (LIMIT - 2)) + '..') : str;
       }
 
-      function messagesByType(messageTypes, messages) {
-        if (!messages[0]) {
-          return [];
-        }
-        return matchMessageType(messages[0].type, messageTypes) && messages;
-      }
-
-      function matchMessageType(messageType, messageTypes){
-        return messageTypes.findIndex(function(type){ return messageType === type; }) !== -1;
-      }
-
       window.FUTU2 = {
         getSocket: getSocket(io.connect(window.location.protocol + '//' + window.location.host)),
         utils: {
-          messagesByType: messagesByType,
           formatNumberInput: formatNumberInput,
           renderJson: renderJson
         }

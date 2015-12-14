@@ -27,13 +27,13 @@ describe('App: On message post', function () {
       .send(TEST_MESSAGE)
       .expect(200)
       .end(function (err, res) {
-        clientB.on('stream', message => {
+        clientB.on('message', message => {
 
-          clientA.on('stream', message => {
-            should(message[0]).deepEqual(expectedResponse);
+          clientA.on('message', message => {
+            should(message).deepEqual(expectedResponse);
           });
 
-          should(message[0]).deepEqual(expectedResponse);
+          should(message).deepEqual(expectedResponse);
           clientA.disconnect();
           clientB.disconnect();
           done();

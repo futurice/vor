@@ -53,10 +53,9 @@
       });
     });
 
-    socket.on('stream', function(messages){
-      var toiletMessages = utils.messagesByType([responseType], messages);
-      if (toiletMessages.length) {
-        utils.renderJson($responseHolder, toiletMessages[0])
+    socket.on('message', function(message){
+      if (message.type === 'toilet') {
+        utils.renderJson($responseHolder, message)
       }
     });
 
