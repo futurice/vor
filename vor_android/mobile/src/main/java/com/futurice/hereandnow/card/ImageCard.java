@@ -162,7 +162,8 @@ public class ImageCard extends BaseCard {
         }
 
         cardTextView.setText(getText());
-        cardAuthorTextView.setText(resources.getString(R.string.card_author, getAuthor(), date));
+//        cardAuthorTextView.setText(resources.getString(R.string.card_author, getAuthor(), date));
+        cardAuthorTextView.setText(date);
         setLikeBar(resources, likesBarLinearLayout, likesTextView);
         setLikeButton(cardLikeButton, commentsBar);
     }
