@@ -28,9 +28,13 @@ Please have a look at the subdirectories corresponding to the different parts of
 
 [Android](/vor-android/README.md) for the Android client
 
+[iOS](/vor-ios/README.md) for the iPhone client
+
 [Backend](/vor-backend/README.md) concerning the Node.js server
 
 [Arduino](/vor-arduino/README.md) about the Arduino hardware for IoT sensors and actuators and associated 3D printable bits
+
+[3D Models](/3d-models/README.md) for the custom Arduio and Raspberry Pi 2 IoT nodes
 
 iOS is definitely planned, starting with a simple app to share current location. Unfortunately it is not in the minimum viable product (MVP) test we have going on at this early stage.
 
