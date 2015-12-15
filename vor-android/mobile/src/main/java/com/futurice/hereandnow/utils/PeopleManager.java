@@ -89,6 +89,22 @@ public class PeopleManager {
         return this.people;
     }
 
+    /**
+     * Filter people based on an argument.
+     * @param email What to search for.
+     * @return New list of people matching the argument.
+     */
+    public ArrayList<Person> filterPeople(String email) {
+        ArrayList<Person> filteredPeople = new ArrayList<>();
+
+        for (Person person : people) {
+            if (person.getEmail().contains(email)) {
+                filteredPeople.add(person);
+            }
+        }
+
+        return filteredPeople;
+    }
 
     /**
      * Class for keeping track of a person's location and color on the map.
