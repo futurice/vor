@@ -1,5 +1,4 @@
 {
   "SOCKET_SERVER": "http://localhost:8080",
-  "SOCKET_EVENT_TYPE": "button",
-  "SOCKET_EVENT_ID": "button-1"
+  "TEMP_IMAGE": "snapshot.jpg"
 }

@@ -1,5 +1,20 @@
 {
-  "SOCKET_SERVER": "http://rubix.futurice.com",
-  "SOCKET_EVENT_TYPE": "button",
-  "SOCKET_EVENT_ID": "button-1"
+  "EVENT": {
+    "type": "button",
+    "id": "button-1"
+  },
+  "SOCKET_SERVER": "http://localhost:8080",
+  "SUPPORTED_APPS": [
+    {
+      "command": "fswebcam",
+      "platform": "linux",
+      "parameters": "-r 640x480 --no-banner --scale 320x240"
+    },
+    {
+      "command": "imagesnap",
+      "platform": "darwin",
+      "parameters": ""
+    }
+  ],
+  "TEMP_IMAGE": "snapshot.jpg"
 }

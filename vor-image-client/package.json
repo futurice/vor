@@ -12,6 +12,9 @@
     "Iot"
   ],
   "dependencies": {
+    "base64-img": "^1.0.3",
+    "base64-min": "^0.6.0",
+    "bluebird": "^3.0.6",
     "camera-usb": "^1.0.0",
     "socket.io": "^1.3.7"
   }
