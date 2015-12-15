@@ -42,6 +42,9 @@ public class Constants {
 
     public static final int DELAY_IN_MINUTES = 30;
 
+    // Location service
+    public static final String NETWORK_SSID = "\"Futurice-Helsinki\"";
+
     // To be removed
     public static final String TEST_KEY = "test";
 }

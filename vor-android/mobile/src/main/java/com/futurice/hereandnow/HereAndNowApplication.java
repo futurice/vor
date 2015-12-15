@@ -5,6 +5,8 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat.Builder;
@@ -112,8 +114,14 @@ public class HereAndNowApplication extends Application implements ScampiService.
                 .on(Socket.EVENT_DISCONNECT, args -> Log.d(TAG, "EVENT_DISCONNECT"));
         mSocket.connect();
 
-        // Start the service for updating location.
-        startService(new Intent(this, LocationService.class));
+        // Start the service for updating location if connected to the correct network.
+        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+
+        //TODO Display a notification if the user is not connected to the right network.
+        if (wifiInfo.getSSID().equals(Constants.NETWORK_SSID)) {
+            startService(new Intent(this, LocationService.class));
+        }
     }
 
     public void updateToSharedPreferences(JSONObject jsonObject) {

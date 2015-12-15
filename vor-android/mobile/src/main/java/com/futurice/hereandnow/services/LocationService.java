@@ -48,10 +48,12 @@ public class LocationService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "LocationService destroyed");
-        this.isRunning = false;
-        handler = null;
-        beaconLocationManager.destroy();
+        if (this.isRunning) {
+            this.isRunning = false;
+            handler = null;
+            beaconLocationManager.destroy();
+            super.onDestroy();
+        }
     }
 
     /**
