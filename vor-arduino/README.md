@@ -72,12 +72,11 @@ Current work is mostly focused on the Yun Mini
     - You may [reset](https://www.arduino.cc/en/Guide/ArduinoYun#toc6) the Wi-Fi configuration by holding the ```WLAN RST``` button on the board for more that 5 seconds and less than 30 seconds
 
 ## Major Components List
-
-* PIR motion sensor (Example)[https://www.sparkfun.com/products/13285] About 5€
-* Ambient light sensor (Example)[https://www.sparkfun.com/products/8688] About 5€
-* Noise level sensor (Example)[https://www.sparkfun.com/products/12642] About 22€
-* Humidity (Example)[https://www.sparkfun.com/products/9569] About 15€ 
-* Air particle sensor (Example)[https://www.sparkfun.com/products/9689] About 36€
-* methane (Example)[https://www.sparkfun.com/products/9404] About 20€
-* Arduino Yun Mini * (Example)[http://de.rs-online.com/web/p/entwicklungskits-prozessor-mikrocontroller/8659007/]
-About 60€ About 22€
+* PIR motion sensor [Example](https://www.sparkfun.com/products/13285) About 5€
+* Ambient light sensor [Example](https://www.sparkfun.com/products/8688) About 5€
+* Noise level sensor [Example](https://www.sparkfun.com/products/12642) About 22€
+* Humidity [Example](https://www.sparkfun.com/products/9569) About 15€ 
+* Air particle sensor [Example](https://www.sparkfun.com/products/9689) About 36€
+* methane [Example](https://www.sparkfun.com/products/9404) About 20€
+* Arduino Yun Mini [Example](http://de.rs-online.com/web/p/entwicklungskits-prozessor-mikrocontroller/8659007/)
+About 60€
