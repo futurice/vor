@@ -15,28 +15,13 @@
             style="@style/toiletSquareLeft">
 
             <ImageView
-                android:id="@+id/toilet7AMenImageView"
-                android:src="@drawable/ic_man_wc_white_48dp"
+                android:id="@+id/toilet7AMixedImageView"
+                android:src="@drawable/ic_wc_white_48px"
                 style="@style/toiletGenderImageView"/>
 
             <include
                 layout="@layout/toilet_a_label"
-                android:layout_above="@id/toilet7AMenImageView"
-                style="@style/toiletLabelImageView"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/toilet7AW"
-            style="@style/toiletSquareRight">
-
-            <ImageView
-                android:id="@+id/toilet7AWomenImageView"
-                android:src="@drawable/ic_woman_wc_white_48dp"
-                style="@style/toiletGenderImageView"/>
-
-            <include
-                layout="@layout/toilet_a_label"
-                android:layout_above="@id/toilet7AWomenImageView"
+                android:layout_above="@id/toilet7AMixedImageView"
                 style="@style/toiletLabelImageView"/>
         </RelativeLayout>
 
@@ -52,28 +37,13 @@
             style="@style/toiletSquareLeft">
 
             <ImageView
-                android:id="@+id/toilet7BMenImageView"
-                android:src="@drawable/ic_man_wc_white_48dp"
+                android:id="@+id/toilet7BMixedImageView"
+                android:src="@drawable/ic_wc_white_48px"
                 style="@style/toiletGenderImageView"/>
 
             <include
                 layout="@layout/toilet_b_label"
-                android:layout_above="@id/toilet7BMenImageView"
-                style="@style/toiletLabelImageView"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/toilet7BW"
-            style="@style/toiletSquareRight">
-
-            <ImageView
-                android:id="@+id/toilet7BWomenImageView"
-                android:src="@drawable/ic_woman_wc_white_48dp"
-                style="@style/toiletGenderImageView"/>
-
-            <include
-                layout="@layout/toilet_b_label"
-                android:layout_above="@id/toilet7BWomenImageView"
+                android:layout_above="@id/toilet7BMixedImageView"
                 style="@style/toiletLabelImageView"/>
         </RelativeLayout>
 
