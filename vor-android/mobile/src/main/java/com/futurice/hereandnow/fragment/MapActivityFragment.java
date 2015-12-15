@@ -224,8 +224,8 @@ public class MapActivityFragment extends Fragment {
 
         // Convert to map location.
         float[] result = new float[2];
-        result[0] = scaleFactorX * mImageView.getWidth();
-        result[1] = scaleFactorY * mImageView.getHeight();
+        result[0] = scaleFactorX * mImageView.getDisplayedWidth();
+        result[1] = scaleFactorY * mImageView.getDisplayedHeight();
         return result;
     }
 }

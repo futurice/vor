@@ -3,6 +3,8 @@ package com.futurice.hereandnow.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 
@@ -20,6 +22,8 @@ public class MapView extends PhotoView {
     float markerRadius;
 
     private Handler h;
+
+    float displayedWidth, displayedHeight;
 
     Bitmap mBitmap;
     Canvas mCanvas;
@@ -67,6 +71,32 @@ public class MapView extends PhotoView {
 
         h.postDelayed(runnable, FRAME_RATE);
 
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        float[] matrix = new float[9];
+        getImageMatrix().getValues(matrix);
+
+        final float scaleX = matrix[Matrix.MSCALE_X];
+        final float scaleY = matrix[Matrix.MSCALE_Y];
+
+        final Drawable drawable = getDrawable();
+        final int originalWidth = drawable.getIntrinsicWidth();
+        final int originalHeight = drawable.getIntrinsicHeight();
+
+        displayedWidth = originalWidth * scaleX;
+        displayedHeight = originalHeight * scaleY;
+    }
+
+    public float getDisplayedWidth() {
+        return this.displayedWidth;
+    }
+
+    public float getDisplayedHeight() {
+        return this.displayedHeight;
     }
 
     public void scaleRadius(float scaleFactor) {
