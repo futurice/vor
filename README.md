@@ -26,6 +26,8 @@ Please have a look at the subdirectories corresponding to the different parts of
 
 [JSON](/doc/json-schema.md) describing the different message.
 
+[Design](/design/README.md) visual design assets
+
 [Android](/vor-android/README.md) for the Android client to track your location indoors and interact with the map and service cards. A custom build for fixed table display helps office visitor interact with the service.
 
 [iOS](/vor-ios/README.md) for the iPhone client to track your location indoors
