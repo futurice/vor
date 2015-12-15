@@ -17,14 +17,7 @@ public class WifiBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-
         NetworkInfo networkInfo = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
-        /*
-        if (networkInfo.isConnected()) {
-            //TODO When the application starts, display if you are in the Futurice network or not. Or just start the service based on that.
-            Log.d(TAG, "Connected to a network");
-        }
-        */
 
         if (networkInfo != null) {
             if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
