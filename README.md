@@ -26,13 +26,13 @@ Please have a look at the subdirectories corresponding to the different parts of
 
 [JSON](/doc/json-schema.md) describing the different message.
 
-[Android](/vor-android/README.md) for the Android client
+[Android](/vor-android/README.md) for the Android client to track your location indoors and interact with the map and service cards. A custom build for fixed table display helps office visitor interact with the service.
 
-[iOS](/vor-ios/README.md) for the iPhone client
+[iOS](/vor-ios/README.md) for the iPhone client to track your location indoors
 
 [Backend](/vor-backend/README.md) concerning the Node.js server
 
-[Arduino](/vor-arduino/README.md) about the Arduino hardware for IoT sensors and actuators and associated 3D printable bits
+[Arduino and Raspberry Pi 2](/vor-arduino/README.md) about the custom hardware for IoT sensors and actuators to setup your office
 
 [3D Models](/3d-models/README.md) for the custom Arduio and Raspberry Pi 2 IoT nodes
 
