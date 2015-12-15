@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:padding="30dp"
+    tools:context="com.futurice.hereandnow.activity.OnboardingActivity"
+    tools:showIn="@layout/activity_onboarding">
+
+    <ImageView
+        android:id="@+id/logoOnboarding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/logo"/>
+
+    <TextView
+        android:id="@+id/onboardingEmailTextField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_below="@id/logoOnboarding"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="40dp"
+        android:fontFamily="sans-serif-light"
+        android:text="Email"/>
+
+    <EditText
+        android:id="@+id/onboardingEmailEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:inputType="textEmailAddress"
+        android:textColor="@android:color/white"
+        android:fontFamily="sans-serif-light"
+        android:hint="first.last@futurice.com"
+        android:textColorHint="@color/light_grey_text"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@drawable/edittext_bottom_line"
+        android:layout_below="@id/onboardingEmailTextField"/>
+
+    <Button
+        android:id="@+id/onboardingButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:text="LOGIN"
+        android:textColor="@android:color/white"
+        android:padding="10dp"
+        android:layout_marginTop="40dp"
+        android:layout_below="@id/onboardingEmailEditText"/>
+</RelativeLayout>

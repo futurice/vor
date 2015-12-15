@@ -33,10 +33,12 @@ import com.futurice.cascade.i.IActionOne;
 import com.futurice.cascade.i.IAsyncOrigin;
 import com.futurice.cascade.reactive.ReactiveValue;
 import com.futurice.cascade.util.RCLog;
+import com.futurice.hereandnow.Constants;
 import com.futurice.hereandnow.HereAndNowApplication;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.singleton.ModelSingleton;
 import com.futurice.hereandnow.singleton.ServiceSingleton;
+import com.futurice.hereandnow.utils.HereAndNowUtils;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -88,7 +90,24 @@ public class DrawerActivity extends BaseActivity
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View headerLayout = navigationView.getHeaderView(0);
+        TextView nameTextView = (TextView) headerLayout.findViewById(R.id.drawerLayoutName);
+        TextView emailTextView = (TextView) headerLayout.findViewById(R.id.drawerLayoutEmail);
+        
+        SharedPreferences sp = getSharedPreferences(Constants.USER_EMAIL, Context.MODE_PRIVATE);
+        String email = sp.getString(Constants.EMAIL, Constants.DUMMY_EMAIL);
+
+        nameTextView.setText(getName(email));
+        emailTextView.setText(email);
+
         bluetoothNotificationShowed = false;
+    }
+
+    private String getName(String email) {
+        String[] name = email.split("@")[0].split("\\.");
+        String firstName = HereAndNowUtils.capitalizeFirstLetter(name[0]);
+        String lastName = HereAndNowUtils.capitalizeFirstLetter(name[1]);
+        return String.format("%s %s", firstName, lastName);
     }
 
     @Override
@@ -197,7 +216,13 @@ public class DrawerActivity extends BaseActivity
         } else if (id == R.id.nav_settings) {
             startActivityForResult(new Intent(this, SettingsActivity.class), SETTINGS_INTENT_RESULT);
         } else if (id == R.id.nav_logout) {
-            // TODO Handle logout
+            SharedPreferences sp = getSharedPreferences(Constants.USER_EMAIL, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.clear();
+            editor.apply();
+            
+            Intent intent = new Intent(this, OnboardingActivity.class);
+            startActivity(intent);
         }
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

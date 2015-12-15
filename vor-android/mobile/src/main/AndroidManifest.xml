@@ -27,15 +27,20 @@
         tools:replace="android:icon, android:allowBackup">
         <activity android:name="net.hockeyapp.android.UpdateActivity" />
         <activity
-            android:name=".activity.DrawerActivity"
+            android:name=".activity.OnboardingActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.DrawerActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
 
             <meta-data
                 android:name="android.app.searchable"

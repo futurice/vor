@@ -132,4 +132,6 @@
     <string name="notification_do_not_show_again">Do not show again</string>
     <string name="preferences_notification_sate">bluetooth_notification_state</string>
     <string name="logo">logo</string>
+    <string name="please_add_email">Please add your email</string>
+    <string name="invalid_email">Invalid email</string>
 </resources>
