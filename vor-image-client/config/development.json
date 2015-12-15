@@ -3,7 +3,7 @@
     "type": "button",
     "id": "button-1"
   },
-  "SOCKET_SERVER": "http://rubix.futurice.com",
+  "SOCKET_SERVER": "http://localhost:8080",
   "SUPPORTED_APPS": [
     {
       "command": "fswebcam",
