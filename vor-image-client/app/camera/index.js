@@ -5,7 +5,7 @@ const exec = require('child_process').exec;
 const { CAMERA_COMMAND, TEMP_IMAGE } = require('config');
 
 exports.takePicture = () => {
-  const commandPromise = new Promise((resolve, reject) => {
+  const takingPicturePromise = new Promise((resolve, reject) => {
     const commandStr = `${CAMERA_COMMAND} ${TEMP_IMAGE}`;
     const command = exec(commandStr, (error) => {
       if (error) {
@@ -13,18 +13,13 @@ exports.takePicture = () => {
       }
     });
 
-    command.on('exit', function (stdout, stderr) {
+    command.on('exit', (stdout, stderr) => {
       console.log(`Client took a picture using: ${commandStr} : ${new Date()}`);
       resolve(stdout, stderr);
     });
   });
 
-  return Rx.Observable.fromPromise(commandPromise)
-    .flatMap(success => Rx.Observable.fromPromise(readTempFile()))
-    .doOnError(error => console.log(`Cannot take picture: ${error} : ${new Date()}`));
-};
-
-const readTempFile = () => new Promise((resolve, reject) => {
+  const readTempFile = () => new Promise((resolve, reject) => {
     try {
       resolve(fs.readFileSync(TEMP_IMAGE));
     }
@@ -33,3 +28,11 @@ const readTempFile = () => new Promise((resolve, reject) => {
       reject(error);
     }
   });
+
+  return Rx.Observable.fromPromise(takingPicturePromise)
+    .flatMap(success => Rx.Observable.fromPromise(readTempFile()))
+    .map(binary => new Buffer(binary))
+    .map(buffer => buffer.toString('base64'))
+    .doOnError(error => console.log(`Cannot take picture: ${error} : ${new Date()}`));
+
+};

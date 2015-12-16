@@ -7,16 +7,27 @@
     "node": "5.0.0"
   },
   "scripts": {
-    "start": "NODE_PATH=. $(npm bin)/nodemon --harmony_destructuring --harmony_modules --harmony_array_includes ./app/index",
-    "serve": "NODE_PATH=. NODE_ENV=production node --harmony_destructuring --harmony_modules --harmony_array_includes ./app/index.js"
+    "test": "NODE_PATH=. NODE_ENV=test PORT=9090 $(npm bin)/mocha --harmony_destructuring --harmony_modules --harmony_array_includes tests/*.js || exit 0",
+    "test-watch": "$(npm bin)/nodemon -x 'npm run eslint && npm run test'",
+    "eslint": "$(npm bin)/eslint app",
+    "start": "NODE_PATH=. node --harmony_destructuring --harmony_modules --harmony_array_includes ./app/index",
+    "watch": "$(npm bin)/nodemon  -x 'npm run eslint && npm run start'",
+    "serve": "npm run eslint && NODE_ENV=production npm run start"
   },
   "keywords": [
     "Vor",
     "Iot"
   ],
   "dependencies": {
-    "nodemon": "^1.8.1",
+    "eslint": "^1.10.3",
     "rx": "^4.0.7",
+    "socket.io-client": "^1.3.7"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.4",
+    "nodemon": "^1.8.1",
+    "should": "^8.0.1",
+    "sinon": "^1.17.2",
     "socket.io": "^1.3.7"
   }
 }

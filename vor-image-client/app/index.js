@@ -2,7 +2,7 @@
 const http = require('http');
 const Rx = require('Rx');
 const socketIO = require('socket.io-client');
-const { EVENT, SOCKET_SERVER } = require('config');
+const { MESSAGE_TO_LISTEN, MESSAGE_TO_SEND, SOCKET_SERVER } = require('config');
 const camera = require('app/camera');
 
 const app = http.createServer((request, response) => {
@@ -15,30 +15,32 @@ app.listen(9000, console.log(`Client server listening :9000: ${new Date()}`));
 
 // setup socket
 const client = socketIO.connect(SOCKET_SERVER);
-client.on('connect', () => console.log(`Image client socket connected ${SOCKET_SERVER} : ${new Date()}`));
+console.log(`Client trying to connect ${SOCKET_SERVER} : ${new Date()}`);
+client.on('connect', () => console.log(`Client socket connected ${SOCKET_SERVER} : ${new Date()}`));
 client.on('disconnect', () => console.log(`Client socket disconnected ${SOCKET_SERVER} :  ${new Date()}`));
+client.on('reconnect_attempt', error => console.error(`Error cannot connect to ${SOCKET_SERVER} : ${error} : ${new Date()}`));
 client.on('error', error => console.error(`Error with socket connection: ${error} : ${new Date()}`));
 
 // listen socket messages
 const socketMessageSource$ = Rx.Observable.fromEvent(client, 'message');
 
 const triggerCameraSource$ = socketMessageSource$
-  .filter(message => message.type === EVENT.type)
-  .filter(message => message.id === EVENT.id);
+  .filter(message => message.type === MESSAGE_TO_LISTEN.type)
+  .filter(message => message.id === MESSAGE_TO_LISTEN.id);
 
 triggerCameraSource$
-  .flatMap(res => camera.takePicture())
-  .map(binary => new Buffer(binary))
-  .map(buffer => buffer.toString('base64'))
+  .flatMap(camera.takePicture)
   .subscribe(
-    asBase64 => {
+    imageString => {
       client.emit('message', {
-        type: 'pool',
-        id: 'pool',
-        image: asBase64
-      })
+        type: MESSAGE_TO_SEND.type,
+        id: MESSAGE_TO_SEND.id,
+        image: imageString
+      });
+      console.log(`Client emit message to ${SOCKET_SERVER} :  ${new Date()}`);
     },
-    error => console.error(`Error while taking picture: ${error} : ${new Date()}`));
+    error => console.error(`Error while taking picture: ${error} : ${new Date()}`)
+  );
 
 
 module.exports = app;

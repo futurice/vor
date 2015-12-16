@@ -1,4 +1,11 @@
 {
-  "SOCKET_SERVER": "http://localhost:8080",
-  "TEMP_IMAGE": "snapshot.jpg"
+  "SOCKET_SERVER": "http://localhost:5000",
+  "MESSAGE_TO_LISTEN": {
+    "type": "button",
+    "id": "button-1"
+  },
+  "MESSAGE_TO_SEND": {
+    "type": "pool",
+    "id": "pool"
+  }
 }
