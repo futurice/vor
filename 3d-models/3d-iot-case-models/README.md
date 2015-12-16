@@ -2,7 +2,7 @@
 
 These may be used in building custom IoT components continaing a single board computer (SBC) such as an Arduino or Raspberry Pi plus various sensors and actuators.
 
-* Bathroom sensor (3D View)[https://embed.github.com/view/3d/skalnik/secret-bear-clip/master/stl/clip.stl]
+* Bathroom sensor (3D View)[/3d-models/3d-iot-component-models/creative-HD-1080p-webcam.stl]
 * Toggle switch with cover
 * Arduino Yun
 * Arduino Yun Mini
