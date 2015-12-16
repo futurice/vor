@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "Light-weight client for Rasperry PI 2 to handle web camera",
   "main": "app/index.js",
+  "license": "MIT",
+  "repository": "git://github.com/futurice/vor/tree/add-image-server/vor-image-client",
   "engines": {
     "node": "5.0.0"
   },

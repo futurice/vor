@@ -1,6 +1,6 @@
 'use strict';
 const fs = require('fs');
-const Rx = require('Rx');
+const Rx = require('rx');
 const exec = require('child_process').exec;
 const { CAMERA_COMMAND, TEMP_IMAGE } = require('config');
 
