@@ -40,7 +40,6 @@ public class Constants {
     public static final String RESERVED_KEY = "reserved";
     public static final String METHANE_KEY = "methane";
 
-    public static final String USER_EMAIL = "userEmail";
     public static final String EMAIL = "email";
     public static final String DUMMY_EMAIL = "first.last@futurice.com";
 

@@ -56,7 +56,7 @@
     <string name="pref_about_me_title">About Me</string>
     <string name="pref_about_me_default">About Me Default</string>
     <string name="pref_my_email_title">My Email</string>
-    <string name="pref_my_email_default">anonymous</string>
+    <string name="pref_my_email_default">first.last@futurice.com</string>
 
     <!-- Tab cards titles -->
     <string name="tab_trending_title">Trending</string>

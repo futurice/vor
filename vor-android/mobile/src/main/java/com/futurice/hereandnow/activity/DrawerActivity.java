@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.futurice.cascade.functional.ImmutableValue;
 import com.futurice.cascade.i.IActionOne;
@@ -48,8 +49,10 @@ import java.util.UUID;
 
 import fi.tkk.netlab.dtn.scampi.applib.SCAMPIMessage;
 
-public class DrawerActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, IAsyncOrigin {
+public class DrawerActivity extends BaseActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
+        IAsyncOrigin,
+        SharedPreferences.OnSharedPreferenceChangeListener {
     public static final int PLAY_VIDEO_INTENT_RESULT = 12345;
     public static final int PUBLISH_MEDIA_INTENT_RESULT = 12346;
     public static final int SETTINGS_INTENT_RESULT = 12348;
@@ -64,6 +67,9 @@ public class DrawerActivity extends BaseActivity
     private final ImmutableValue<String> origin = RCLog.originAsync();
 
     private boolean bluetoothNotificationShowed, wifiNotificationShowed;
+
+    TextView mNameTextView;
+    TextView mEmailTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,24 +99,20 @@ public class DrawerActivity extends BaseActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerLayout = navigationView.getHeaderView(0);
-        TextView nameTextView = (TextView) headerLayout.findViewById(R.id.drawerLayoutName);
-        TextView emailTextView = (TextView) headerLayout.findViewById(R.id.drawerLayoutEmail);
-        
-        SharedPreferences sp = getSharedPreferences(Constants.USER_EMAIL, Context.MODE_PRIVATE);
-        String email = sp.getString(Constants.EMAIL, Constants.DUMMY_EMAIL);
+        mNameTextView = (TextView) headerLayout.findViewById(R.id.drawerLayoutName);
+        mEmailTextView = (TextView) headerLayout.findViewById(R.id.drawerLayoutEmail);
 
-        nameTextView.setText(getName(email));
-        emailTextView.setText(email);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        String email = prefs.getString(SettingsActivity.EMAIL_KEY, Constants.DUMMY_EMAIL);
 
         bluetoothNotificationShowed = false;
         wifiNotificationShowed = false;
-    }
 
-    private String getName(String email) {
-        String[] name = email.split("@")[0].split("\\.");
-        String firstName = HereAndNowUtils.capitalizeFirstLetter(name[0]);
-        String lastName = HereAndNowUtils.capitalizeFirstLetter(name[1]);
-        return String.format("%s %s", firstName, lastName);
+        mNameTextView.setText(HereAndNowUtils.getName(email));
+        mEmailTextView.setText(email);
+
+        bluetoothNotificationShowed = false;
     }
 
     @Override
@@ -253,7 +255,7 @@ public class DrawerActivity extends BaseActivity
         } else if (id == R.id.nav_settings) {
             startActivityForResult(new Intent(this, SettingsActivity.class), SETTINGS_INTENT_RESULT);
         } else if (id == R.id.nav_logout) {
-            SharedPreferences sp = getSharedPreferences(Constants.USER_EMAIL, Context.MODE_PRIVATE);
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = sp.edit();
             editor.clear();
             editor.apply();
@@ -365,5 +367,22 @@ public class DrawerActivity extends BaseActivity
     @Override // IAsyncOrigin
     public ImmutableValue<String> getOrigin() {
         return origin;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(SettingsActivity.EMAIL_KEY)) {
+            String email = sharedPreferences.getString(key, null);
+            if (email != null && !email.trim().isEmpty()) {
+                if (HereAndNowUtils.isEmailValid(email)) {
+                    mNameTextView.setText(HereAndNowUtils.getName(email));
+                    mEmailTextView.setText(email);
+                } else {
+                    Toast.makeText(this, R.string.invalid_email, Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, R.string.please_add_email, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

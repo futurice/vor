@@ -8,6 +8,8 @@ import android.support.v4.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class HereAndNowUtils {
 
@@ -111,5 +113,21 @@ public final class HereAndNowUtils {
 
     public static String capitalizeFirstLetter(String str) {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+
+    public static boolean isEmailValid(String email) {
+        Pattern pattern = Pattern.compile("^(.+\\..+)@futurice.com$");
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    public static String getName(String email) {
+        if (!isEmailValid(email)) {
+            return "";
+        }
+        String[] name = email.split("@")[0].split("\\.");
+        String firstName = HereAndNowUtils.capitalizeFirstLetter(name[0]);
+        String lastName = HereAndNowUtils.capitalizeFirstLetter(name[1]);
+        return String.format("%s %s", firstName, lastName);
     }
 }
