@@ -1,13 +1,13 @@
-# Vör image client
+# Vör Image Client
 
 ## A light-weight node.js client(server) installed in Rasperry PI 2 
 - connects to backend using websockets
-- takes a picture on certain socket event (see production config/)
+- takes a picture on socket event (see config/)
 
 ### Requirements
 - Node.js 5.0.0 [node.js homepage](https://nodejs.org/en/)
-- command line camera app, uses imagesnap in development and 
-fswebcam in production. This can be changed in config. 
+- command line camera app, uses [ImageSnap](http://iharder.sourceforge.net/current/macosx/imagesnap/) in development and 
+[fswebcam](http://manpages.ubuntu.com/manpages/lucid/man1/fswebcam.1.html) in production. These can be changed in config. 
 
 ### Local setup
 1. Install dependencies:```npm install```
@@ -19,6 +19,8 @@ fswebcam in production. This can be changed in config.
 - To run tests: ```npm run test```
 - To run tests continuously: ```npm run test-watch```
 
-
 ### Deploying to Rasperry PI
-
+1. Install node.js ^5.0.0
+2. SSH to Rasperry PI [Rasperry PI support](https://www.raspberrypi.org/documentation/remote-access/ssh/)
+3. Run ```npm install```
+4. Run ```npm run serve```
