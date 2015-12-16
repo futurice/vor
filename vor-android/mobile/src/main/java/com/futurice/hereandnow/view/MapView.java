@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import uk.co.senab.photoview.PhotoView;
 
 public class MapView extends PhotoView {
-    private static final float animationSpeed = .1f;
+    private static final float animationSpeed = .05f;
     private static final int FRAME_RATE = 30;
     private static final float updateRadius = 1.f;
 
