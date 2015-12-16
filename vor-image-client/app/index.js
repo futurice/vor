@@ -1,6 +1,6 @@
 'use strict';
 const http = require('http');
-const Rx = require('Rx');
+const Rx = require('rx');
 const socketIO = require('socket.io-client');
 const { MESSAGE_TO_LISTEN, MESSAGE_TO_SEND, SOCKET_SERVER } = require('config');
 const camera = require('app/camera');

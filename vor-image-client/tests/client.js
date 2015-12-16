@@ -3,7 +3,7 @@ const should = require('should');
 const assert = require('assert');
 const sinon = require('sinon');
 const http = require('http');
-const Rx = require('Rx');
+const Rx = require('rx');
 const camera = require('../app/camera');
 const { MESSAGE_TO_LISTEN, MESSAGE_TO_SEND } = require('config');
 const socketIO = require('socket.io');
@@ -34,6 +34,7 @@ describe(`App: on ${MESSAGE_TO_LISTEN.type} event`, function () {
       socket.on('message', message => {
         should(message.id).equal(MESSAGE_TO_SEND.id);
         should(message.type).equal(MESSAGE_TO_SEND.type);
+        should(message.image).equal('test-image');
         done();
       });
     });
