@@ -9,6 +9,5 @@
   },
   "SOCKET_SERVER": "http://localhost:8080",
   "CAMERA_COMMAND": "imagesnap",
-  "CAMERA_PARAMETERS": "",
   "TEMP_IMAGE": "snapshot.jpg"
 }
