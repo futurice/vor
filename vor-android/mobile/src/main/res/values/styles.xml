@@ -142,30 +142,36 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:background">@drawable/toilet_free_bg</item>
-        <item name="android:layout_marginBottom">@dimen/toilet_layout_out_margin</item>
     </style>
 
     <style name="toiletSquareLeft" parent="toiletSquare">
         <item name="android:layout_marginRight">@dimen/toilet_layout_in_margin</item>
-        <item name="android:layout_marginEnd" tools:targetApi="jelly_bean_mr1">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="toiletSquareRight" parent="toiletSquare">
         <item name="android:layout_marginLeft">@dimen/toilet_layout_in_margin</item>
-        <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="toiletLabelImageView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginBottom">10dp</item>
     </style>
 
     <style name="toiletGenderImageView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/toilet_label_gender_margin</item>
-        <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:layout_centerVertical">true</item>
+        <!--<item name="android:layout_marginTop">@dimen/toilet_label_gender_margin</item>-->
+    </style>
+
+    <style name="toiletMiddleIcons">
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 </resources>
