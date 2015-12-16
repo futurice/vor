@@ -64,23 +64,21 @@ module micro_sd() {
     translate([length + 2 - 7.5, 10.2, -1.3]) cube([7.5, 12.6, 1.3]);
 }
 
-difference() {
+module arduino_yun() {
     color("green") board();
-    union() {
-//        hole(x = 2.5, y = width - 4);
-//        hole(x = length - 2, y = 2);
-    }
+    color("magenta") usb_power();
+    color("yellow") ethernet();
+    color("brown") usb();
+    color("silver") shield();
+    color("red") leds();
+    color("blue") button(length - 8.8, 7.9);
+    color("blue") button(4.4, width - 2.5);
+    color("violet") side_button();
+    color("lime") micro_sd();
+    color("black") header(x = 26.3, y = 1.3, z = height, length = 20.8);
+    color("black") header(x = 49.3, y = 1.3, z = height, length = 20.8);
+    color("black") header(x = 17.05, y = width - 1.3 - 2.6, z = height, length = 26.6);
+    color("black") header(x = 44.2, y = width - 1.3 - 2.6, z = height, length = 26.6);
 }
-color("magenta") usb_power();
-color("yellow") ethernet();
-color("brown") usb();
-color("silver") shield();
-color("red") leds();
-color("blue") button(length - 8.8, 7.9);
-color("blue") button(4.4, width - 2.5);
-color("violet") side_button();
-color("lime") micro_sd();
-color("black") header(x = 26.3, y = 1.3, z = height, length = 20.8);
-color("black") header(x = 49.3, y = 1.3, z = height, length = 20.8);
-color("black") header(x = 17.05, y = width - 1.3 - 2.6, z = height, length = 26.6);
-color("black") header(x = 44.2, y = width - 1.3 - 2.6, z = height, length = 26.6);
+
+arduino_yun();

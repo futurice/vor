@@ -8,6 +8,9 @@ height = 19.12;
 
 module base() {
     cube([length, width, height]);
+}
+
+module prongs() {
     translate([1.5, 5.5, -10.6]) cube([.8, 6.5, 10.6]);
     translate([25.5, 5.5, -10.6]) cube([.8, 6.5, 10.6]);
     translate([-8.5, 0, 0]) cube([8.5, 6.3, .76]);
@@ -32,8 +35,16 @@ module cover() {
     color("red") translate([40.6 - 17.56, 0, height + 6.82]) cube([17.56, width, 43.9]);
 }
 
-base();
-shaft();
-plate();
-toggle();
-cover();
+module toggle_switch_with_cover() {
+    translate([0, 0, -height - .82 - 6]) 
+        union() {
+            base();
+            color("silver") prongs();
+            color("black") shaft();
+            color("silver") plate();
+            color("red") toggle();
+            color("red") cover();
+        }
+}
+
+toggle_switch_with_cover();

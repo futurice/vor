@@ -16,11 +16,15 @@ module pin(theta = 0) {
     }
 }
 
-color("grey") center();
-color("violet") top();
-pin(theta = 0);
-pin(theta = 45);
-pin(theta = -45);
-pin(theta = 180);
-pin(theta = 180 + 45);
-pin(theta = 180 - 45);
+module methane_sensor() {
+    color("grey") center();
+    color("violet") top();
+    pin(theta = 0);
+    pin(theta = 45);
+    pin(theta = -45);
+    pin(theta = 180);
+    pin(theta = 180 + 45);
+    pin(theta = 180 - 45);
+}
+
+methane_sensor();

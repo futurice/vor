@@ -26,14 +26,18 @@ module hole(x = 0, y = 0) {
     translate([x, y, -10 + height]) cylinder(h = 10 + height, r = 2.6/2);
 }
 
-color("green") difference() {
-    board();
-    union() {
-        hole(x = 2.9, y = 2.5);
-        hole(x = length - 2.9, y = width - 2.5);
-        hole(x = 2.9, y = width - 2.5);
-        hole(x = length - 2.9, y = 2.5);
+module pir_motion_sensor() {
+    color("green") difference() {
+        board();
+        union() {
+            hole(x = 2.9, y = 2.5);
+            hole(x = length - 2.9, y = width - 2.5);
+            hole(x = 2.9, y = width - 2.5);
+            hole(x = length - 2.9, y = 2.5);
+        }
     }
+    color("grey") dome();
+    color("black") wire();
 }
-color("grey") dome();
-color("black") wire();
+
+pir_motion_sensor();

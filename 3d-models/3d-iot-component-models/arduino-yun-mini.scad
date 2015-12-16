@@ -35,19 +35,25 @@ module hole(x = 0, y = 0) {
     translate([x, y, -9]) cylinder(h = 10 + height, r = 2.5/2);
 }
 
-difference() {
-    color("green") board();
-    union() {
-        hole(x = 2.5, y = width - 4);
-        hole(x = length - 2, y = 2);
+
+module arduino_yun_mini() {
+    difference() {
+        color("green") board();
+        union() {
+            hole(x = 2.5, y = width - 4);
+            hole(x = length - 2, y = 2);
+        }
     }
+
+    color("magenta") usb_power();
+    color("red") leds();
+    color("blue") button(y = 6.5);
+    color("blue") button(y = 10.3);
+    color("violet") bottom_button(y = 10.3);
+    color("black") header(z = height, y = 0);
+    color("black") header(z = 0, y = width - 2.6);
+    color("silver") header(z = -9.2, y = 0);
+    color("silver") header(z = -9.2, y = width - 2.6);
 }
-color("magenta") usb_power();
-color("red") leds();
-color("blue") button(y = 6.5);
-color("blue") button(y = 10.3);
-color("violet") bottom_button(y = 10.3);
-color("black") header(z = height, y = 0);
-color("black") header(z = 0, y = width - 2.6);
-color("silver") header(z = -9.2, y = 0);
-color("silver") header(z = -9.2, y = width - 2.6);
+
+arduino_yun_mini();

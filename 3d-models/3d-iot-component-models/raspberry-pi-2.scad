@@ -42,21 +42,25 @@ module hole(x = 0, y = 0) {
     translate([length - x, width - y, -10]) cylinder(h = 10 + height, r = 2.75);
 }
 
-difference() {
-    board();
-    union() {
-        hole(x = 3.5, y = 3.5);
-        hole(x = 3.5 + 58, y = 3.5 + 49);
-        hole(x = 3.5, y = 3.5 + 49);
-        hole(x = 3.5 + 58, y = 3.5);
+module raspberry_pi_2() {
+    difference() {
+        board();
+        union() {
+            hole(x = 3.5, y = 3.5);
+            hole(x = 3.5 + 58, y = 3.5 + 49);
+            hole(x = 3.5, y = 3.5 + 49);
+            hole(x = 3.5 + 58, y = 3.5);
+        }
     }
+    color("green") ethernet();
+    color("red") usb(y=2.35);
+    color("blue") usb(y=19.6);
+    color("orange") dvi();
+    audio();
+    color("magenta") usb_power();
+    color("lime") micro_sd();
+    color("teal") usb_power();
+    color("black") header();
 }
-color("green") ethernet();
-color("red") usb(y=2.35);
-color("blue") usb(y=19.6);
-color("orange") dvi();
-audio();
-color("magenta") usb_power();
-color("lime") micro_sd();
-color("teal") usb_power();
-color("black") header();
+
+raspberry_pi_2();
