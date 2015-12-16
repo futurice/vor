@@ -6,14 +6,15 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:padding="30dp"
-    tools:context="com.futurice.hereandnow.activity.OnboardingActivity"
-    tools:showIn="@layout/activity_onboarding">
+    tools:context="com.futurice.hereandnow.activity.OnboardingActivity">
 
     <ImageView
         android:id="@+id/logoOnboarding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        android:maxWidth="75dp"
+        android:adjustViewBounds="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/logo"/>
 
