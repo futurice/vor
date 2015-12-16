@@ -1,12 +1,9 @@
 'use strict';
-const os = require('os');
-const exec = require('child_process').exec;
-const fs = require('fs');
 const http = require('http');
+const Rx = require('Rx');
 const socketIO = require('socket.io-client');
-const { EVENT, SOCKET_SERVER, SUPPORTED_APPS, TEMP_IMAGE } = require('config');
-const log = func => message => console.log(func(message));
-const logError = func => error => console.log(func(error));
+const { EVENT, SOCKET_SERVER } = require('config');
+const camera = require('app/camera');
 
 const app = http.createServer((request, response) => {
   log(() => `Request to server on ${new Date()}`);
@@ -14,58 +11,34 @@ const app = http.createServer((request, response) => {
   response.end();
 });
 
-app.listen(9000, function () {
-  log(() => `Server is listening on port 8080 on ${new Date()}`);
-});
+app.listen(9000, console.log(`Client server listening :9000: ${new Date()}`));
 
+// setup socket
 const client = socketIO.connect(SOCKET_SERVER);
+client.on('connect', () => console.log(`Image client socket connected ${SOCKET_SERVER} : ${new Date()}`));
+client.on('disconnect', () => console.log(`Client socket disconnected ${SOCKET_SERVER} :  ${new Date()}`));
+client.on('error', error => console.error(`Error with socket connection: ${error} : ${new Date()}`));
 
-const takePicture = app => new Promise((resolve, reject) => {
-  const commandStr = `${app.command} ${app.parameters} ${TEMP_IMAGE}`;
-  log(message => `Taking picture using: ${message}`)(commandStr);
-  const command = exec(commandStr, (error) => {
-    if (error) {
-      reject(logError(error => `Cannot take picture: ${error}`)(error));
-    }
-  });
+// listen socket messages
+const socketMessageSource$ = Rx.Observable.fromEvent(client, 'message');
 
-  command.on('exit', function (stdout, stderr) {
-    resolve(stdout, stderr);
-  })
-});
+const triggerCameraSource$ = socketMessageSource$
+  .filter(message => message.type === EVENT.type)
+  .filter(message => message.id === EVENT.id);
 
-const convertBase64 = file => {
-  try {
-    const bitmap = fs.readFileSync(file);
-    return new Buffer(bitmap).toString('base64');
-  }
-  catch (e) {
-    reject(logError(error => `Cannot read file: ${error}`)(e));
-  }
-};
+triggerCameraSource$
+  .flatMap(res => camera.takePicture())
+  .map(binary => new Buffer(binary))
+  .map(buffer => buffer.toString('base64'))
+  .subscribe(
+    asBase64 => {
+      client.emit('message', {
+        type: 'pool',
+        id: 'pool',
+        image: asBase64
+      })
+    },
+    error => console.error(`Error while taking picture: ${error} : ${new Date()}`));
 
-const imageApp = SUPPORTED_APPS.find(app => app.platform === os.platform());
-
-if (!imageApp) {
-  logError(() => `no image app available!`)()
-} else {
-  client.on('connect', socket => {
-    log(() => `Socket connection to ${SOCKET_SERVER}`)();
-    client.on('message', event => {
-      if (event.type === EVENT.type && event.id === EVENT.id) {
-        takePicture(imageApp)
-          .then(data => {
-            client.emit('message', {
-              type: 'pool',
-              id: 'pool',
-              image: convertBase64('snapshot.jpg')
-            });
-          });
-      }
-    });
-  });
-}
-
-client.on('error', logError(error => `Error with socket connection ${error}`));
 
 module.exports = app;

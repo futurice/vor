@@ -4,17 +4,7 @@
     "id": "button-1"
   },
   "SOCKET_SERVER": "http://rubix.futurice.com",
-  "SUPPORTED_APPS": [
-    {
-      "command": "fswebcam",
-      "platform": "linux",
-      "parameters": "-r 640x480 --no-banner --scale 320x240"
-    },
-    {
-      "command": "imagesnap",
-      "platform": "darwin",
-      "parameters": ""
-    }
-  ],
+  "CAMERA_COMMAND": "fswebcam",
+  "CAMERA_PARAMETERS": "-r 640x480 --no-banner --scale 320x240",
   "TEMP_IMAGE": "snapshot.jpg"
 }
