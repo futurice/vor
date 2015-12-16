@@ -5,7 +5,7 @@ const exec = require('child_process').exec;
 const { CAMERA_COMMAND, TEMP_IMAGE } = require('config');
 
 exports.takePicture = () => {
-  const takingPicturePromise = new Promise((resolve, reject) => {
+  const takePicturePromise = new Promise((resolve, reject) => {
     const commandStr = `${CAMERA_COMMAND} ${TEMP_IMAGE}`;
     const command = exec(commandStr, (error) => {
       if (error) {
@@ -29,7 +29,7 @@ exports.takePicture = () => {
     }
   });
 
-  return Rx.Observable.fromPromise(takingPicturePromise)
+  return Rx.Observable.fromPromise(takePicturePromise)
     .flatMap(success => Rx.Observable.fromPromise(readTempFile()))
     .map(binary => new Buffer(binary))
     .map(buffer => buffer.toString('base64'))
