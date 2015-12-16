@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -61,7 +63,7 @@ public class DrawerActivity extends BaseActivity
     ReactiveValue<String> chatReactiveValue;
     private final ImmutableValue<String> origin = RCLog.originAsync();
 
-    private boolean bluetoothNotificationShowed;
+    private boolean bluetoothNotificationShowed, wifiNotificationShowed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +103,7 @@ public class DrawerActivity extends BaseActivity
         emailTextView.setText(email);
 
         bluetoothNotificationShowed = false;
+        wifiNotificationShowed = false;
     }
 
     private String getName(String email) {
@@ -114,14 +117,19 @@ public class DrawerActivity extends BaseActivity
     protected void onStart() {
         super.onStart();
 
-        // Display a notification if Bluetooth isn't enabled.
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        // Previous states of do not show again.
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Boolean savedNotificationState = preferences.getBoolean(
+        Boolean saveBluetoothState = preferences.getBoolean(
                 getString(R.string.preferences_notification_sate),
                 false);
+        Boolean savedWifiState = preferences.getBoolean(
+                getString(R.string.preferences_wifi_notification_state),
+                false);
 
-        if (bluetoothAdapter != null && !bluetoothAdapter.isEnabled() && !bluetoothNotificationShowed && !savedNotificationState) {
+        // Display a notification if Bluetooth isn't enabled.
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        if (bluetoothAdapter != null && !bluetoothAdapter.isEnabled() && !bluetoothNotificationShowed && !saveBluetoothState) {
             View notificationView = getLayoutInflater().inflate(R.layout.checkbox_bluetooth, null);
             final CheckBox doNotShowAgain = (CheckBox) notificationView.findViewById(R.id.checkbox_bluetooth);
 
@@ -129,6 +137,7 @@ public class DrawerActivity extends BaseActivity
             alert.setView(notificationView);
             alert.setTitle(getString(R.string.notification_bluetooth_title));
             alert.setMessage(getString(R.string.notification_bluetooth_message));
+            alert.setCancelable(false);
             alert.setPositiveButton(getString(R.string.notification_bluetooth_button), (dialog, which) -> {
                 bluetoothNotificationShowed = true;
 
@@ -136,6 +145,34 @@ public class DrawerActivity extends BaseActivity
                     // Do not show this dialog again.
                     preferences.edit()
                             .putBoolean(getString(R.string.preferences_notification_sate), true)
+                            .apply();
+                }
+                dialog.dismiss();
+            });
+
+            alert.create().show();
+        }
+
+        // Display a notification if the user is not connected to the correct wifi.
+        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+
+        if (!wifiInfo.getSSID().equals(Constants.NETWORK_SSID) && !savedWifiState && !wifiNotificationShowed) {
+            View notificationView = getLayoutInflater().inflate(R.layout.checkbox_bluetooth, null);
+            final CheckBox doNotShowAgain = (CheckBox) notificationView.findViewById(R.id.checkbox_bluetooth);
+
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setView(notificationView);
+            alert.setTitle(getString(R.string.notification_wifi_title));
+            alert.setMessage(String.format(getString(R.string.notification_wifi_message), Constants.NETWORK_SSID));
+            alert.setCancelable(false);
+            alert.setPositiveButton(getString(R.string.notification_bluetooth_button), (dialog, which) -> {
+                wifiNotificationShowed = true;
+
+                if (doNotShowAgain.isChecked()) {
+                    // Do not show this dialog again.
+                    preferences.edit()
+                            .putBoolean(getString(R.string.preferences_wifi_notification_state), true)
                             .apply();
                 }
                 dialog.dismiss();

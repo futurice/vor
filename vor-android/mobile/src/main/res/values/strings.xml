@@ -129,8 +129,11 @@
     <string name="notification_bluetooth_title">Bluetooth</string>
     <string name="notification_bluetooth_message">Your Bluetooth isn\'t enabled.\n\nIf you wish to update your location on the app, please enable it.</string>
     <string name="notification_bluetooth_button">close</string>
+    <string name="notification_wifi_title">Wifi</string>
+    <string name="notification_wifi_message">You need to be connected to %s wifi in order to receive messages.</string>
     <string name="notification_do_not_show_again">Do not show again</string>
     <string name="preferences_notification_sate">bluetooth_notification_state</string>
+    <string name="preferences_wifi_notification_state">wifi_notification_state</string>
     <string name="logo">logo</string>
     <string name="please_add_email">Please add your email</string>
     <string name="invalid_email">Invalid email</string>
