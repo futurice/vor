@@ -1,4 +1,4 @@
-# 3D Models of Components
+# 3D Internet of Things (IoT) Models of Components
 
 These may be used in planning and combining assemblies. Please add parts you use so that others may benefit.
 
