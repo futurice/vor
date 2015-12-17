@@ -9,12 +9,14 @@
     "node": "5.0.0"
   },
   "scripts": {
-    "test": "NODE_PATH=. NODE_ENV=test PORT=9090 $(npm bin)/mocha --harmony_destructuring --harmony_modules --harmony_array_includes tests/*.js || exit 0",
+    "server": "NODE_PATH=. node --harmony_destructuring --harmony_modules --harmony_array_includes app",
+    "mocha": "$(npm bin)/mocha --harmony_destructuring --harmony_modules --harmony_array_includes tests/*.js",
+    "test": "NODE_PATH=. NODE_ENV=test PORT=9090 SOCKET_SERVER=http://localhost:5000 npm run mocha || exit 0",
     "test-watch": "$(npm bin)/nodemon -x 'npm run eslint && npm run test'",
     "eslint": "$(npm bin)/eslint app",
-    "start": "NODE_PATH=. node --harmony_destructuring --harmony_modules --harmony_array_includes ./app/index",
+    "start": "SOCKET_SERVER=http://localhost:8080 npm run server",
     "watch": "$(npm bin)/nodemon  -x 'npm run eslint && npm run start'",
-    "serve": "npm run eslint && NODE_ENV=production npm run start"
+    "serve": "npm run eslint && NODE_ENV=production npm run server"
   },
   "keywords": [
     "Vor",

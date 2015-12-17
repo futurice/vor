@@ -7,7 +7,5 @@
     "type": "pool",
     "id": "pool"
   },
-  "SOCKET_SERVER": "http://rubix.futurice.com",
-  "CAMERA_COMMAND": "fswebcam -r 640x480 --no-banner --scale 320x240",
-  "TEMP_IMAGE": "snapshot.jpg"
+  "CAMERA_COMMAND": "fswebcam -r 640x480 --no-banner --scale 320x240"
 }

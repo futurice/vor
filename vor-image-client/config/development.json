@@ -7,7 +7,5 @@
     "type": "pool",
     "id": "pool"
   },
-  "SOCKET_SERVER": "http://localhost:8080",
-  "CAMERA_COMMAND": "imagesnap",
-  "TEMP_IMAGE": "snapshot.jpg"
+  "CAMERA_COMMAND": "imagesnap"
 }
