@@ -16,7 +16,7 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",  
     "title": "Room beacon message",  
-    "description": "Client sends room beacon data to get indoor position",  
+    "description": "Client pusblishes room beacon data",  
     "type": "object",  
     "properties": { 
         "email": {  
@@ -38,9 +38,13 @@
         "distance": {  
             "description": "The distance of the client from beacon",  
             "type": "float"  
+        },
+        "temperature": {
+            "description": "The temperature measured by beacon",
+            "type": "float"  
         }
     },  
-    "required": ["email", "id", "type", "floor", "distance"]
+    "required": ["email", "id", "type", "floor", "distance", "temperature"]
 ```
 
 <h4 name="room-beacon-example">Example:</h4>
@@ -63,7 +67,7 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",  
     "title": "Location message",  
-    "description": "Server sends client's indoor location",  
+    "description": "Server publishes client's indoor location",  
     "type": "object",  
     "properties": {  
         "email": {  
@@ -209,7 +213,7 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",  
     "title": "Button message",  
-    "description": "Button sends on buttonup",  
+    "description": "Button publishes on button up event",  
     "type": "object",  
     "properties": {  
          "id": {  
