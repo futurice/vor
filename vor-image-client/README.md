@@ -26,8 +26,9 @@
 4. Run ```npm install``` with sudo if needed
 5. Set required environment variables:
   ```SOCKET_SERVER=<socket-server>
-     LISTEN_TYPE=<socket-event-type> 
-     LISTEN_ID=<event-emitter-id> 
-     SEND_TYPE=<emit-type> 
-     SEND_ID=<emit-client-id> ```
+    LISTEN_TYPE=<socket-event-type>
+    LISTEN_ID=<event-emitter-id>
+    SEND_TYPE=<event-type>
+    SEND_ID=<image-client-id>```
+  
 6. Run ```npm run serve``` with sudo if needed
