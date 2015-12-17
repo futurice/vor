@@ -1,3 +1,3 @@
 #!/bin/bash -ex
-chmod -R 777 ./node_modules
+cd /var/vor/vor-image-client
 npm run serve
