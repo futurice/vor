@@ -25,10 +25,12 @@
 3. Install fswebcam [more info](https://www.raspberrypi.org/documentation/usage/webcams/)
 4. Run ```npm install``` with sudo if needed
 5. Set required environment variables:
-  ```SOCKET_SERVER=<socket-server>
+  ```
+    SOCKET_SERVER=<socket-server-url>
     LISTEN_TYPE=<socket-event-type>
     LISTEN_ID=<event-emitter-id>
     SEND_TYPE=<event-type>
-    SEND_ID=<image-client-id>```
+    SEND_ID=<image-client-id>
+  ```
   
 6. Run ```npm run serve``` with sudo if needed
