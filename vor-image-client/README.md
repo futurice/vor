@@ -20,23 +20,42 @@
 - To run tests continuously: ```npm run test-watch```
 
 ### Deploying to Rasperry PI
-1. SSH to Rasberry PI [Rasberry PI support](https://www.raspberrypi.org/documentation/remote-access/ssh/)
-2. Install node.js ^5.0.0 [more info](http://elinux.org/Node.js_on_RPi)
-3. Install fswebcam [more info](https://www.raspberrypi.org/documentation/usage/webcams/)
-4. Clone this repo to var folder and cd vor/vor-image-client/
-5. Run ```npm install``` with sudo if needed
-6. Run ```crontab -u pi -e``` and select preferred editor
-5. Add a command to run on Rasberry PI start:
+1. Install Raspian version ^8 to Rasberry PI
+2. SSH to Rasberry PI [Rasberry PI support](https://www.raspberrypi.org/documentation/remote-access/ssh/)
+3. Install node.js ^5.0.0 [more info](http://elinux.org/Node.js_on_RPi)
+4. Install fswebcam [more info](https://www.raspberrypi.org/documentation/usage/webcams/)
+5. Clone this repo to var folder
+6. Go to folder and Run  ```npm install``` with sudo if needed
+7. Add /var/vor.env file with content:
   ```
-    @reboot
-    cd /var/vor/vor-image-client/
-     /usr/bin/sudo -u pi -H 
-     SOCKET_SERVER=<socket-server-url> 
-     LISTEN_TYPE=<socket-event-type> 
-     LISTEN_ID=<event-emitter-id>  S
-     END_TYPE=<event-type> 
-     SEND_ID=<image-client-id> 
-     /usr/local/bin/npm run serve
+  SOCKET_SERVER=<vor-backend server>
+  LISTEN_TYPE=<socket message type to listen>
+  LISTEN_ID=<socket message id to listen>
+  SEND_TYPE=<the type property of message to be sent>
+  SEND_ID=<the id property of message to be sent>
+  NODE_PATH=/var/vor/vor-image-client/
+  NODE_ENV=production
   ```
   
-6. Restart Rasberry PI
+7. Add /etc/systemd/system/vor.service file with content: 
+```
+  [Unit]
+  Description=vor-image-client
+  
+  [Service]
+  ExecStart=/usr/local/bin/node --harmony_destructuring --harmony_modules --harmony_array_includes /var/vor/vor-image-client/app/index.js
+  EnvironmentFile=-/var/vor.env
+  WorkingDirectory=/var/vor/vor-image-client
+  
+  [Install]
+  WantedBy=multi-user.target
+  ```
+  
+8. Run: ```sudo systemctl start vor.service``` to start service. 
+  Notice! when ever you edit vor.service file:
+    1. run: ```sudo systemctl daemon-reload``` to ensure updated file is used.
+    2. run: ```sudo systemctl restart vor.service``` to ensure updated file is used.
+9. Run: ```sudo systemctl enable vor.service``` to enable service for reboot.
+10. Run ```sudo systemctl status vor.service```to view the process output.
+
+EXTRA: [More about system services](https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units)
