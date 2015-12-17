@@ -181,7 +181,7 @@ public class MapActivityFragment extends Fragment {
         mAttacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
             @Override
             public void onViewTap(View view, float x, float y) {
-                float errorMargin = 60f;
+                float errorMargin = 60f * mAttacher.getScale();
                 float marginX, marginY;
 
                 PeopleManager.Person closestPerson = null;
