@@ -16,7 +16,7 @@
     "eslint": "$(npm bin)/eslint app",
     "start": "SOCKET_SERVER=http://localhost:8080 LISTEN_TYPE=button LISTEN_ID=button-1 SEND_TYPE=pool SEND_ID=pool npm run server",
     "watch": "$(npm bin)/nodemon  -x 'npm run eslint && npm run start'",
-    "serve": "npm run eslint && NODE_ENV=production npm run server"
+    "serve": "NODE_ENV=production npm run server"
   },
   "keywords": [
     "Vor",
