@@ -29,7 +29,14 @@
 5. Add a command to run on Rasberry PI start:
   ```
     @reboot
-     /usr/bin/sudo -u pi -H SOCKET_SERVER=<socket-server-url> LISTEN_TYPE=<socket-event-type> LISTEN_ID=<event-emitter-id>  SEND_TYPE=<event-type> SEND_ID=<image-client-id> /usr/local/bin/npm run serve
+    cd /var/vor/vor-image-client/
+     /usr/bin/sudo -u pi -H 
+     SOCKET_SERVER=<socket-server-url> 
+     LISTEN_TYPE=<socket-event-type> 
+     LISTEN_ID=<event-emitter-id>  S
+     END_TYPE=<event-type> 
+     SEND_ID=<image-client-id> 
+     /usr/local/bin/npm run serve
   ```
   
 6. Restart Rasberry PI
