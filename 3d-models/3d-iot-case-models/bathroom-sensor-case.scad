@@ -3,35 +3,29 @@
 $fn = 8;
 
 cube_side = 140;
-cube_tip_clip = 12;
+cube_tip_clip = 10;
+wall_width = 26;
+
 skin = 10;
-inner_skin = 5;
+inner_skin = 8;
 thin_skin = 0.05;
 
 difference() {
     color("red") box();
-    union() {
-        methane_moved_skin();
-    }
+    methane_moved_skin();
 }
 
-//yun_moved();
+yun_moved();
 methane_moved();
 
-module yun() {
-    include <../3d-iot-component-models/arduino-yun-mini.scad>
-}
-
-module methane() {
-    include <../3d-iot-component-models/methane-sensor.scad>
-}
-
-module motion() {
-    include <../3d-iot-component-models/pir-motion-sensor.scad>
-}
+yun_y = -wall_width;
+yun_z = -wall_width;
 
 module yun_moved() {
-    translate([0, -cube_side/3 + skin, 0]) yun();
+    translate([-skin, yun_y, yun_z])
+        rotate([180, 0, 0]) {
+            yun();
+        }
 }
 
 module yun_moved_skin() {
@@ -63,26 +57,65 @@ module poly(clip = 0) {
                 [0,-cube_side,0],
                 [0,0,cube_side],
                 [cube_side,0]],
-            faces=[[0,1,4],[1,2,4],[2,3,4],[3,0,4],[1,0,3],[2,1,3]],
-            convexivity=8);        
-        translate([cube_side - clip/2, 0, 0])
-            cube([clip*2, clip*3, clip*3], center = true);
+            faces=[[0,1,4],[1,2,4],[2,3,4],[3,0,4],[1,0,3],[2,1,3]]);
+        union() {
+            translate([-2*cube_side, -2*cube_side, clip/.85])
+                cube([cube_side*4, cube_side*4, cube_side]);
+            translate([cube_side - clip/2, 0, 0])
+                cube([clip*2, clip*3, clip*3], center = true);
+        }
     }
+}
+
+module wall_tunnel() {
+    translate([-2*cube_side, -wall_width/2, -2*cube_side - cube_tip_clip/.6])
+        cube([4*cube_side, wall_width, 2*cube_side]);
 }
 
 module box() {
     difference() {
         minkowski() {
-            poly(cube_tip_clip);
+            union() {
+                poly(cube_tip_clip);
+                intersection() {
+                    hull() {
+                        poly(cube_tip_clip);
+                    }
+                    minkowski() {
+                        wall_tunnel();
+                        sphere(r=skin);
+                    }
+                }
+            }
             sphere(r=skin);
         }
         union() {
             methane_moved_skin();
-            minkowski() {
-                translate([-skin, 0, 0])
-                    poly(cube_tip_clip/2);
-                sphere(r=inner_skin);
+            difference() {
+                minkowski() {
+                    translate([-skin, 0, 0])
+                        poly(cube_tip_clip/2);
+                    sphere(r=inner_skin);
+                }
+                minkowski() {
+                    wall_tunnel();
+                    sphere(r=skin - inner_skin);
+                }
             }
+            wall_tunnel();
         }
     }
 }
+
+module yun() {
+    include <../3d-iot-component-models/arduino-yun-mini.scad>
+}
+
+module methane() {
+    include <../3d-iot-component-models/methane-sensor.scad>
+}
+
+module motion() {
+    include <../3d-iot-component-models/pir-motion-sensor.scad>
+}
+
