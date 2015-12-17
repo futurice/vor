@@ -28,6 +28,7 @@ public class MapView extends PhotoView {
     private Handler h;
 
     float displayedWidth, displayedHeight;
+    float textSize;
 
     Bitmap mBitmap;
     Canvas mCanvas;
@@ -42,10 +43,11 @@ public class MapView extends PhotoView {
         this.context = context;
 
         markerRadius = 2.f;
+        textSize = 32f;
 
         namePaint = new Paint();
         namePaint.setColor(Color.WHITE);
-        namePaint.setTextSize(32f);
+        namePaint.setTextSize(textSize);
         namePaint.setAntiAlias(true);
         namePaint.setTextAlign(Paint.Align.CENTER);
         namePaint.setStyle(Paint.Style.FILL);
@@ -122,7 +124,8 @@ public class MapView extends PhotoView {
     }
 
     public void scaleRadius(float scaleFactor) {
-        markerRadius *= scaleFactor;
+        textSize *= scaleFactor;
+        namePaint.setTextSize(textSize);
     }
 
 
