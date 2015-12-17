@@ -7,14 +7,14 @@
     "node": "4.1.1"
   },
   "scripts": {
-    "test": "npm run lint && NODE_PATH=. NODE_ENV=test PORT=9090 $(npm bin)/_mocha --compilers js:babel-core/register -- tests/*.js || exit 0",
-    "test-watch": "$(npm bin)/nodemon --exec 'babel-node' -x 'NODE_PATH=. NODE_ENV=test PORT=9090 $(npm bin)/_mocha --compilers js:babel-core/register -- tests/*.js'",
-    "jscs": "$(npm bin)/jscs app",
-    "eslint": "$(npm bin)/eslint app",
+    "server": "NODE_PATH=. node --harmony_destructuring --harmony_modules --harmony_array_includes ./bin/www.js",
+    "mocha": "NODE_PATH=. NODE_ENV=test PORT=9090 mocha --harmony_destructuring --harmony_modules --harmony_array_includes tests/*.js",
+    "jscs": "jscs app",
+    "eslint": "eslint app",
     "lint": "npm run jscs && npm run eslint",
-    "start": "NODE_PATH=. $(npm bin)/nodemon --harmony_destructuring --harmony_modules --harmony_array_includes --es-staging ./bin/www",
-    "watch": " npm run lint && npm start",
-    "serve": "NODE_PATH=. node --harmony_destructuring --harmony_modules --harmony_array_includes --es-staging ./bin/www.js"
+    "test": "NODE_PATH=. PORT=9090 npm run mocha || exit 0",
+    "test-watch": "nodemon -x 'npm run lint && npm run test'",
+    "watch": "nodemon  -x 'npm run lint && npm run server'"
   },
   "keywords": [
     "IoT",
