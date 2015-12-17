@@ -30,5 +30,4 @@
      LISTEN_ID=<event-emitter-id> 
      SEND_TYPE=<emit-type> 
      SEND_ID=<emit-client-id> ```
-  
 6. Run ```npm run serve``` with sudo if needed
