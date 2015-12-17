@@ -60,14 +60,14 @@ Current work is mostly focused on the Yun Mini
 ### LinkIt ONE
 - For installing LinkIt ONE SDK (on top of the Arduino SDK) follow [this guide](http://www.seeedstudio.com/wiki/LinkIt_ONE) or [this guide](http://labs.mediatek.com/forums/posts/list/559.page)
 
-### Arduino Yun Mini
-- Turn on Yun Mini by connecting the mini USB cable
-- [The first time](https://www.arduino.cc/en/Guide/ArduinoYun#toc14) Yun Mini is turned on its Wi-Fi is unconfigured and Yun creates a network called LININO-*
+### Arduino Yun and Arduino Yun Mini
+- Turn on Yun by connecting the mini USB cable
+- [The first time](https://www.arduino.cc/en/Guide/ArduinoYun#toc14) Yun is turned on its Wi-Fi is unconfigured and Yun creates a network called LININO-*
     - On your computer connect to the network and go to [http://arduinoyun.local](http://arduinoyun.local) or [192.168.240.1](192.168.240.1) with a browser
         - The default password of the configuration page is ```doghunter```
         - Once logged in click ```Configure``` and configure Yun to connect to the desired network
     - After configuring Yun's Wi-Fi connect your computer to the same network Yun is connected to
-        - You may now access the configuration page at [http://arduinoyun.local](http://arduinoyun.local)
+        - You may now access the configuration page at [http://name_of_the_board.local](http://name_of_the_board.local) where ```name_of_the_board``` is the one set when configuring the board (e.g. voryunmini01).
         - You may now [upload your sketch over Wi-Fi](https://www.arduino.cc/en/Guide/ArduinoYun#toc15) by selecting the corresponding Port in the Arduino IDE
     - You may [reset](https://www.arduino.cc/en/Guide/ArduinoYun#toc6) the Wi-Fi configuration by holding the ```WLAN RST``` button on the board for more that 5 seconds and less than 30 seconds
 
@@ -77,6 +77,6 @@ Current work is mostly focused on the Yun Mini
 * PIR motion sensor [About 5€](https://www.sparkfun.com/products/13285)
 * Ambient light sensor [About 5€](https://www.sparkfun.com/products/8688)
 * Noise level sensor [About 22€](https://www.sparkfun.com/products/12642)
-* Humidity [About 15€](https://www.sparkfun.com/products/9569) 
+* Humidity [About 15€](https://www.sparkfun.com/products/9569)
 * Air particle sensor [About 36€](https://www.sparkfun.com/products/9689)
 * Methane/biogas [About 20€](https://www.sparkfun.com/products/9404)
