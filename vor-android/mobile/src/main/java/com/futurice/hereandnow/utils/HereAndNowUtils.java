@@ -137,10 +137,8 @@ public final class HereAndNowUtils {
 
         if (splittedName.length > 1) {
             return String.format("%s%s", splittedName[0].charAt(0), splittedName[1].charAt(0));
-        } else if (splittedName[0].length() >= 2) {
-            return splittedName[0].substring(0, 2);
         } else {
-            return splittedName[0].substring(0, 1);
+            return email.substring(0, 2).toUpperCase();
         }
     }
 }

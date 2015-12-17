@@ -6,17 +6,10 @@ import android.graphics.Paint;
 import java.util.ArrayList;
 
 public class PeopleManager {
-    private static final float GOLDEN_RATIO_CONJUGATE = 0.618033988749895f;
-    private static final float COLOR_SATURATION = 0.5f;
-    private static final float COLOR_VALUE = 0.95f;
-
-    private float hue;
-
     ArrayList<Person> people;
 
     public PeopleManager() {
         this.people = new ArrayList<>();
-        hue = -1f;
     }
 
     /**
@@ -25,7 +18,6 @@ public class PeopleManager {
      */
     public void addPerson(String email) {
         Person person = new Person(people.size(), email);
-        person.setColor(getNewColor());
         this.people.add(person);
     }
 
@@ -57,28 +49,6 @@ public class PeopleManager {
         }
 
         return null;
-    }
-
-    /**
-     * Calculate a unique color for the marker.
-     *
-     * http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
-     * @return unique color.
-     */
-    private int getNewColor() {
-        if (hue == -1f) {
-            // Initial starting value for the hue.
-            hue = (float) Math.random();
-        }
-        hue += GOLDEN_RATIO_CONJUGATE;
-        hue %= 1f;
-
-        float[] hsv = new float[3];
-        hsv[0] = hue * 360f; // Hue range in HSVToColor [0, 360]
-        hsv[1] = COLOR_SATURATION;
-        hsv[2] = COLOR_VALUE;
-
-        return Color.HSVToColor(hsv);
     }
 
     /**
@@ -134,7 +104,7 @@ public class PeopleManager {
 
             paint = new Paint();
             paint.setAntiAlias(true);
-            paint.setColor(Color.GREEN); //default color.
+            color = null;
         }
 
         public void setColor(Integer color) {

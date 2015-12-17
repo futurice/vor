@@ -1,7 +1,9 @@
 package com.futurice.hereandnow.fragment;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.graphics.RectF;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.futurice.hereandnow.R;
+import com.futurice.hereandnow.activity.SettingsActivity;
 import com.futurice.hereandnow.utils.BeaconLocationManager;
 import com.futurice.hereandnow.utils.HereAndNowUtils;
 import com.futurice.hereandnow.utils.PeopleManager;
@@ -42,6 +45,8 @@ public class MapActivityFragment extends Fragment {
     PhotoViewAttacher mAttacher;
     BeaconLocationManager beaconLocationManager;
     PeopleManager peopleManager;
+
+    SharedPreferences preferences;
 
     public MapActivityFragment() {}
 
@@ -86,6 +91,8 @@ public class MapActivityFragment extends Fragment {
                 break;
         }
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
         // Attach a PhotoViewAttacher, which takes care of all of the zooming functionality.
         mAttacher = new PhotoViewAttacher(mImageView);
         mAttacher.setOnMatrixChangeListener(new MapChangedListener());
@@ -120,6 +127,13 @@ public class MapActivityFragment extends Fragment {
                         peopleManager.addPerson(email);
                     }
                     PeopleManager.Person selectedPerson = peopleManager.getPerson(email);
+                    if (selectedPerson.getColor() == null) {
+                        if (selectedPerson.getEmail().equals(preferences.getString(SettingsActivity.EMAIL_KEY, ""))) {
+                            selectedPerson.setColor(ContextCompat.getColor(getContext(), R.color.orange));
+                        } else {
+                            selectedPerson.setColor(ContextCompat.getColor(getContext(), R.color.green));
+                        }
+                    }
 
                     // Calculate a new location for the person.
                     float location[] = convertToMapLocation(

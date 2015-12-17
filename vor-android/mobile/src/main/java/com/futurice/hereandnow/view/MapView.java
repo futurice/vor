@@ -93,7 +93,6 @@ public class MapView extends PhotoView {
         }
 
         h.postDelayed(runnable, FRAME_RATE);
-
     }
 
     @Override
