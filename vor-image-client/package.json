@@ -10,12 +10,12 @@
   },
   "scripts": {
     "server": "NODE_PATH=. node --harmony_destructuring --harmony_modules --harmony_array_includes app",
-    "mocha": "$(npm bin)/mocha --harmony_destructuring --harmony_modules --harmony_array_includes tests/*.js",
+    "mocha": "mocha --harmony_destructuring --harmony_modules --harmony_array_includes tests/*.js",
     "test": "NODE_PATH=. PORT=9090 SOCKET_SERVER=http://localhost:5000 npm run mocha || exit 0",
-    "test-watch": "$(npm bin)/nodemon -x 'npm run eslint && npm run test'",
-    "eslint": "$(npm bin)/eslint app",
+    "test-watch": "nodemon -x 'npm run eslint && npm run test'",
+    "eslint": "eslint app",
     "start": "SOCKET_SERVER=http://localhost:8080 LISTEN_TYPE=button LISTEN_ID=button-1 SEND_TYPE=pool SEND_ID=pool npm run server",
-    "watch": "$(npm bin)/nodemon  -x 'npm run eslint && npm run start'",
+    "watch": "nodemon  -x 'npm run eslint && npm run start'",
     "serve": "NODE_ENV=production npm run server"
   },
   "keywords": [
