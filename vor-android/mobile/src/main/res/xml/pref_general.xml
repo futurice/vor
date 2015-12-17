@@ -2,6 +2,7 @@
 
     <!-- NOTE: EditTextPreference accepts EditText attributes. -->
     <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+    <!--
     <EditTextPreference
         android:key="settings_my_tag"
         android:title="@string/pref_my_tag_title"
@@ -21,6 +22,7 @@
         android:capitalize="words"
         android:singleLine="true"
         android:maxLines="1" />
+     -->
 
     <EditTextPreference
         android:key="settings_my_email"
