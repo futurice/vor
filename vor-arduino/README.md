@@ -63,7 +63,7 @@ Current work is mostly focused on the Yun Mini
 ### Arduino Yun and Arduino Yun Mini
 - Turn on Yun by connecting the mini USB cable
 - [The first time](https://www.arduino.cc/en/Guide/ArduinoYun#toc14) Yun is turned on its Wi-Fi is unconfigured and Yun creates a network called LININO-*
-    - On your computer connect to the network and go to [http://arduinoyun.local](http://arduinoyun.local) or [192.168.240.1](192.168.240.1) with a browser
+    - On your computer connect to the network and go to [http://linino.local](http://linino.local) or [192.168.240.1](192.168.240.1) with a browser
         - The default password of the configuration page is ```doghunter```
         - Once logged in click ```Configure``` and configure Yun to connect to the desired network
     - After configuring Yun's Wi-Fi connect your computer to the same network Yun is connected to
