@@ -1,0 +1,38 @@
+{
+  "name": "vor-image-client",
+  "version": "1.0.0",
+  "description": "Light-weight client for Rasperry PI 2 to handle web camera",
+  "main": "app/index.js",
+  "license": "MIT",
+  "repository": "git://github.com/futurice/vor/tree/add-image-server/vor-image-client",
+  "engines": {
+    "node": "5.0.0"
+  },
+  "scripts": {
+    "server": "NODE_PATH=. node --harmony_destructuring --harmony_modules --harmony_array_includes app",
+    "mocha": "mocha --harmony_destructuring --harmony_modules --harmony_array_includes tests/*.js",
+    "test": "NODE_PATH=. PORT=9090 SOCKET_SERVER=http://localhost:5000 npm run mocha || exit 0",
+    "test-watch": "nodemon -x 'npm run eslint && npm run test'",
+    "eslint": "eslint app",
+    "start": "SOCKET_SERVER=http://localhost:8080 LISTEN_TYPE=button LISTEN_ID=button-1 SEND_TYPE=pool SEND_ID=pool npm run server",
+    "watch": "nodemon  -x 'npm run eslint && npm run start'",
+    "serve": "NODE_ENV=production npm run server"
+  },
+  "keywords": [
+    "Vor",
+    "Iot"
+  ],
+  "dependencies": {
+    "eslint": "^1.10.3",
+    "rx": "^4.0.7",
+    "socket.io-client": "^1.3.7"
+  },
+  "devDependencies": {
+    "envs": "^0.1.6",
+    "mocha": "^2.3.4",
+    "nodemon": "^1.8.1",
+    "should": "^8.0.1",
+    "sinon": "^1.17.2",
+    "socket.io": "^1.3.7"
+  }
+}
