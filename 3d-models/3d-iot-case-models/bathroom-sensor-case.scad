@@ -8,7 +8,10 @@ wall_width = 26;
 
 skin = 10;
 inner_skin = 8;
-thin_skin = 0.05;
+thin_skin = 0.1;
+
+yun_y = -wall_width;
+yun_z = -20;
 
 difference() {
     color("red") box();
@@ -21,13 +24,13 @@ difference() {
 
 yun_moved();
 methane_moved();
-motion_moved(-40, 0);
-motion_moved(40, 90);
+//motion_moved(-40, 0);
+//motion_moved(40, 90);
 
 color("blue") yun_holder();
 
 module motion_moved(y=0, theta=0) {
-    translate([90, y, -25]) rotate([36, 137, theta]) {
+    translate([95, y, -20]) rotate([36, 137, theta]) {
         motion();
     }
 }
@@ -38,9 +41,6 @@ module motion_moved_skin(y=0, theta=0) {
         sphere(r=thin_skin);
     }
 }
-
-yun_y = -wall_width;
-yun_z = -wall_width;
 
 module yun_moved() {
     translate([-skin, yun_y, yun_z])
@@ -58,8 +58,8 @@ module yun_moved_skin() {
 
 module yun_holder() {
     intersection() {
-        translate([-skin/2, -cube_side - wall_width/2, -38])
-            cube([70, cube_side, 5]);
+        translate([-skin/2, -cube_side - wall_width/2, -33])
+            cube([50, cube_side, 5]);
         poly(cube_tip_clip);
     }
 }
@@ -92,6 +92,8 @@ module poly(clip = 0) {
                 cube([cube_side*4, cube_side*4, cube_side]);
             translate([cube_side - clip/2, 0, 0])
                 cube([clip*2, clip*3, clip*3], center = true);
+            side_block(wall_width*2.5, 180);
+            side_block(wall_width*2.5, 0);
         }
     }
 }
@@ -112,8 +114,8 @@ module box() {
                     }
                     minkowski() {
                         wall_tunnel();
-                        sphere(r=skin);
-                    }
+                           sphere(r=skin);
+                        }
                 }
             }
             sphere(r=skin);
@@ -133,6 +135,13 @@ module box() {
             }
             wall_tunnel();
         }
+    }
+}
+
+module side_block(y=0, theta=0) {
+    rotate([theta, 0, 0]) {
+        translate([-2*cube_side, y, -2*cube_side])
+            cube([4*cube_side, 3*wall_width, 4*cube_side]);
     }
 }
 
