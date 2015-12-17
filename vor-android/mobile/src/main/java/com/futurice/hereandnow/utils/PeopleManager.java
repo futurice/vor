@@ -85,6 +85,7 @@ public class PeopleManager {
         private String email;
         private Integer color;
         private Paint paint;
+        boolean clicked;
 
         // Pixel coordinates in the map.
         float mapLocationX, mapLocationY;
@@ -105,6 +106,7 @@ public class PeopleManager {
             paint = new Paint();
             paint.setAntiAlias(true);
             color = null;
+            clicked = false;
         }
 
         public void setColor(Integer color) {
@@ -119,6 +121,10 @@ public class PeopleManager {
         public void setLocation(float newX, float newY) {
             this.mapLocationX = newX;
             this.mapLocationY = newY;
+        }
+
+        public void setClicked(boolean clicked) {
+            this.clicked = clicked;
         }
 
         public float getMapLocationX() {
@@ -155,6 +161,10 @@ public class PeopleManager {
 
         public Paint getPaint() {
             return this.paint;
+        }
+
+        public boolean isClicked() {
+            return this.clicked;
         }
 
         /**

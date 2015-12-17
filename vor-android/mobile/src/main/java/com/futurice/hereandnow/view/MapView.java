@@ -79,15 +79,19 @@ public class MapView extends PhotoView {
             person.updateCurrentLocation(animationSpeed, updateRadius); // Animate the markers.
 
             if (person.getLocationOnScreenX() >= 0 && person.getLocationOnScreenY() >= 0) {
-                String name = HereAndNowUtils.getName(person.getEmail());
-                String initials = HereAndNowUtils.getInitials(person.getEmail());
+                String text;
+                if (person.isClicked()) {
+                    text = HereAndNowUtils.getName(person.getEmail());
+                } else {
+                    text = HereAndNowUtils.getInitials(person.getEmail());
+                }
 
-                namePaint.getTextBounds(initials, 0, initials.length(), bounds);
+                namePaint.getTextBounds(text, 0, text.length(), bounds);
                 canvas.drawCircle(person.getCurrentLocationX(),
                         person.getCurrentLocationY() - (bounds.height() / 2),
                         bounds.width() + markerRadius,
                         person.getPaint());
-                canvas.drawText(initials,
+                canvas.drawText(text,
                         person.getCurrentLocationX(),
                         person.getCurrentLocationY(),
                         namePaint);
