@@ -3,11 +3,15 @@ package com.futurice.hereandnow.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 
+import com.futurice.hereandnow.utils.HereAndNowUtils;
 import com.futurice.hereandnow.utils.PeopleManager;
 
 import java.util.ArrayList;
@@ -28,6 +32,8 @@ public class MapView extends PhotoView {
     Bitmap mBitmap;
     Canvas mCanvas;
     Context context;
+    Paint namePaint;
+    Rect bounds;
 
     private OnMapDrawListener onMapDrawListener;
 
@@ -35,7 +41,16 @@ public class MapView extends PhotoView {
         super(context, attrs);
         this.context = context;
 
-        markerRadius = 20.f;
+        markerRadius = 2.f;
+
+        namePaint = new Paint();
+        namePaint.setColor(Color.WHITE);
+        namePaint.setTextSize(32f);
+        namePaint.setAntiAlias(true);
+        namePaint.setTextAlign(Paint.Align.CENTER);
+        namePaint.setStyle(Paint.Style.FILL);
+
+        bounds = new Rect();
 
         h = new Handler();
     }
@@ -62,10 +77,18 @@ public class MapView extends PhotoView {
             person.updateCurrentLocation(animationSpeed, updateRadius); // Animate the markers.
 
             if (person.getLocationOnScreenX() >= 0 && person.getLocationOnScreenY() >= 0) {
+                String name = HereAndNowUtils.getName(person.getEmail());
+                String initials = HereAndNowUtils.getInitials(person.getEmail());
+
+                namePaint.getTextBounds(initials, 0, initials.length(), bounds);
                 canvas.drawCircle(person.getCurrentLocationX(),
-                        person.getCurrentLocationY(),
-                        markerRadius,
+                        person.getCurrentLocationY() - (bounds.height() / 2),
+                        bounds.width() + markerRadius,
                         person.getPaint());
+                canvas.drawText(initials,
+                        person.getCurrentLocationX(),
+                        person.getCurrentLocationY(),
+                        namePaint);
             }
         }
 
@@ -102,6 +125,8 @@ public class MapView extends PhotoView {
     public void scaleRadius(float scaleFactor) {
         markerRadius *= scaleFactor;
     }
+
+
 
     public interface OnMapDrawListener {
         ArrayList<PeopleManager.Person> getPersons();

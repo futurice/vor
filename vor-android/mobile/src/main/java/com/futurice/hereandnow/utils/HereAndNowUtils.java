@@ -130,4 +130,17 @@ public final class HereAndNowUtils {
         String lastName = HereAndNowUtils.capitalizeFirstLetter(name[1]);
         return String.format("%s %s", firstName, lastName);
     }
+
+    public static String getInitials(String email) {
+        String name = getName(email);
+        String[] splittedName = name.split(" ");
+
+        if (splittedName.length > 1) {
+            return String.format("%s%s", splittedName[0].charAt(0), splittedName[1].charAt(0));
+        } else if (splittedName[0].length() >= 2) {
+            return splittedName[0].substring(0, 2);
+        } else {
+            return splittedName[0].substring(0, 1);
+        }
+    }
 }

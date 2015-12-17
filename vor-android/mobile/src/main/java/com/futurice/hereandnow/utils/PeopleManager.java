@@ -98,7 +98,7 @@ public class PeopleManager {
         ArrayList<Person> filteredPeople = new ArrayList<>();
 
         for (Person person : people) {
-            if (person.getEmail().contains(email)) {
+            if (person.getEmail().contains(email.toLowerCase())) {
                 filteredPeople.add(person);
             }
         }
@@ -135,8 +135,6 @@ public class PeopleManager {
             paint = new Paint();
             paint.setAntiAlias(true);
             paint.setColor(Color.GREEN); //default color.
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setStrokeWidth(8f);
         }
 
         public void setColor(Integer color) {
