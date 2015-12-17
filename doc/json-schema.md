@@ -55,7 +55,8 @@
     "id": "futu-b1-32095-19454",
     "type": "beacon",
     "floor": 7,
-    "distance": 8.132
+    "distance": 8.132,
+    "temperature": 19.4
 }
 ```
 
