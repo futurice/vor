@@ -13,6 +13,7 @@ import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.fragment.Floor7Fragment;
 import com.futurice.hereandnow.fragment.Floor8Fragment;
 import com.futurice.hereandnow.fragment.ToiletMapFragment;
+import com.futurice.hereandnow.view.CustomViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class ToiletActivity extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.toiletViewPager);
+        CustomViewPager viewPager = (CustomViewPager) findViewById(R.id.toiletViewPager);
         setupToiletViewPager(viewPager);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.toiletTabs);
