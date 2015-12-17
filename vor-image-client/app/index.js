@@ -15,7 +15,7 @@ console.log(`Client envs set:
    : ${new Date()}`);
 
 if(!SOCKET_SERVER || !LISTEN_TYPE || !LISTEN_ID || !SEND_TYPE || !SEND_ID) {
-  console.log(`Error not all reguired envs set : ${new Date()}`);
+  console.log(`Error - missing reguired environment varaibles  : ${new Date()}`);
   process.exit(0);
 }
 
@@ -32,8 +32,8 @@ const client = socketIO.connect(SOCKET_SERVER);
 console.log(`Client trying to connect ${SOCKET_SERVER} : ${new Date()}`);
 client.on('connect', () => console.log(`Client socket connected ${SOCKET_SERVER} : ${new Date()}`));
 client.on('disconnect', () => console.log(`Client socket disconnected ${SOCKET_SERVER} :  ${new Date()}`));
-client.on('reconnect_attempt', error => console.error(`Error cannot connect to ${SOCKET_SERVER} : ${error} : ${new Date()}`));
-client.on('error', error => console.error(`Error with socket connection: ${error} : ${new Date()}`));
+client.on('reconnect_attempt', error => console.error(`Error - cannot connect to ${SOCKET_SERVER} : ${error} : ${new Date()}`));
+client.on('error', error => console.error(`Error - socket connection: ${error} : ${new Date()}`));
 
 // listen socket messages
 const socketMessageSource$ = Rx.Observable.fromEvent(client, 'message');
@@ -53,7 +53,7 @@ triggerCameraSource$
       });
       console.log(`Client emit message to ${SOCKET_SERVER} :  ${new Date()}`);
     },
-    error => console.error(`Error while taking picture: ${error} : ${new Date()}`)
+    error => console.error(`Error - unable to take picture: ${error} : ${new Date()}`)
   );
 
 

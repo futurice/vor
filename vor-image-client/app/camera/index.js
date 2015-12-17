@@ -11,7 +11,7 @@ exports.takePicture = () => {
     const commandStr = `${CAMERA_COMMAND} `;
     const command = exec(commandStr, (error) => {
       if (error) {
-        reject(console.error(`Error cannot take picture: ${error} : ${new Date()}`));
+        reject(console.error(`Error - cannot run '${CAMERA_COMMAND}': ${error} : ${new Date()}`));
       }
     });
 
@@ -27,7 +27,7 @@ exports.takePicture = () => {
       resolve(image);
     }
     catch (error) {
-      console.log(`Cannot read image file: ${error} : ${new Date()}`);
+      console.error(`Error - cannot read image file: ${error} : ${new Date()}`);
       reject(error);
     }
   });
@@ -36,6 +36,6 @@ exports.takePicture = () => {
     .flatMap(Rx.Observable.fromPromise(readTempFilePromise))
     .map(binary => new Buffer(binary))
     .map(buffer => buffer.toString('base64'))
-    .doOnError(error => console.log(`Cannot take picture: ${error} : ${new Date()}`));
+    .doOnError(error => console.error(`Error - cannot take picture: ${error} : ${new Date()}`));
 
 };
