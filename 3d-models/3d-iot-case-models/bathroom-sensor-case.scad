@@ -12,11 +12,32 @@ thin_skin = 0.05;
 
 difference() {
     color("red") box();
-    methane_moved_skin();
+    union() {
+        methane_moved_skin();
+        motion_moved_skin(-40, 0);
+        motion_moved_skin(40, 90);
+    }
 }
 
 yun_moved();
 methane_moved();
+motion_moved(-40, 0);
+motion_moved(40, 90);
+
+color("blue") yun_holder();
+
+module motion_moved(y=0, theta=0) {
+    translate([90, y, -25]) rotate([36, 137, theta]) {
+        motion();
+    }
+}
+
+module motion_moved_skin(y=0, theta=0) {
+    minkowski() {
+        motion_moved(y, theta);
+        sphere(r=thin_skin);
+    }
+}
 
 yun_y = -wall_width;
 yun_z = -wall_width;
@@ -32,6 +53,14 @@ module yun_moved_skin() {
     minkowski() {
         yun_moved();
         sphere(r=thin_skin);
+    }
+}
+
+module yun_holder() {
+    intersection() {
+        translate([-skin/2, -cube_side - wall_width/2, -38])
+            cube([70, cube_side, 5]);
+        poly(cube_tip_clip);
     }
 }
 
@@ -68,7 +97,7 @@ module poly(clip = 0) {
 }
 
 module wall_tunnel() {
-    translate([-2*cube_side, -wall_width/2, -2*cube_side - cube_tip_clip/.6])
+    translate([-2*cube_side, -wall_width/2, -2*cube_side - cube_tip_clip/.7])
         cube([4*cube_side, wall_width, 2*cube_side]);
 }
 

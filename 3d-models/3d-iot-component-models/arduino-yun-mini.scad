@@ -51,7 +51,7 @@ module arduino_yun_mini() {
     color("blue") button(y = 10.3);
     color("violet") bottom_button(y = 10.3);
     color("black") header(z = height, y = 0);
-    color("black") header(z = 0, y = width - 2.6);
+    color("black") header(z = height, y = width - 2.6);
     color("silver") header(z = -9.2, y = 0);
     color("silver") header(z = -9.2, y = width - 2.6);
 }
