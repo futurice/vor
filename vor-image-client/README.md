@@ -20,7 +20,15 @@
 - To run tests continuously: ```npm run test-watch```
 
 ### Deploying to Rasperry PI
-1. Install node.js ^5.0.0
-2. SSH to Rasperry PI [Rasperry PI support](https://www.raspberrypi.org/documentation/remote-access/ssh/)
-3. Run ```npm install``` with sudo if needed
-4. Run ```npm run serve``` with sudo if needed
+1. SSH to Rasperry PI [Rasperry PI support](https://www.raspberrypi.org/documentation/remote-access/ssh/)
+2. Install node.js ^5.0.0 [more info](http://elinux.org/Node.js_on_RPi)
+3. Install fswebcam [more info](https://www.raspberrypi.org/documentation/usage/webcams/)
+4. Run ```npm install``` with sudo if needed
+5. Set required environment variables:
+  ```SOCKET_SERVER=<socket-server>
+     LISTEN_TYPE=<socket-event-type> 
+     LISTEN_ID=<event-emitter-id> 
+     SEND_TYPE=<emit-type> 
+     SEND_ID=<emit-client-id> ```
+  
+6. Run ```npm run serve``` with sudo if needed

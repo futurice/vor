@@ -10,9 +10,21 @@ const socketIO = require('socket.io');
 const server = http.createServer();
 const io = socketIO();
 
-describe(`App: on ${MESSAGE_TO_LISTEN.type} event`, function () {
+const LISTEN_TYPE = 'button';
+const LISTEN_ID = 'button-1';
+const SEND_TYPE = 'pool';
+const SEND_ID = 'pool-1';
+
+describe(`App: on socket event`, function () {
 
   before((done) => {
+
+    process.env.SOCKET_SERVER = 'http://localhost:5000';
+    process.env.LISTEN_TYPE = LISTEN_TYPE;
+    process.env.LISTEN_ID = LISTEN_ID;
+    process.env.SEND_TYPE = SEND_TYPE;
+    process.env.SEND_ID = SEND_ID;
+
     io.attach(server);
     io.on('error', (error => console.log(`Socket connection error: ${error}`)));
     server.listen(5000);
@@ -25,13 +37,13 @@ describe(`App: on ${MESSAGE_TO_LISTEN.type} event`, function () {
     io.on('connection', socketServer => {
 
       socketServer.emit('message', {
-        type: MESSAGE_TO_LISTEN.type,
-        id: MESSAGE_TO_LISTEN.id
+        type: LISTEN_TYPE,
+        id: LISTEN_ID
       });
 
       socketServer.on('message', message => {
-        should(message.id).equal(MESSAGE_TO_SEND.id);
-        should(message.type).equal(MESSAGE_TO_SEND.type);
+        should(message.id).equal(SEND_ID);
+        should(message.type).equal(SEND_TYPE);
         should(message.image).equal('test-image');
         done();
       });

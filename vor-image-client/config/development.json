@@ -1,11 +1,3 @@
 {
-  "MESSAGE_TO_LISTEN": {
-    "type": "button",
-    "id": "button-1"
-  },
-  "MESSAGE_TO_SEND": {
-    "type": "pool",
-    "id": "pool"
-  },
   "CAMERA_COMMAND": "imagesnap"
 }
