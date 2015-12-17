@@ -11,7 +11,6 @@ const { BEACONS, CACHE_PREFIX, CACHE_TTL } = require('config');
 const Location = require('app/location');
 const viewRoute = require('app/views/routes');
 const views = require('app/views');
-const utils = require('app/utils');
 
 // set up app
 const app = express();
@@ -21,7 +20,7 @@ app.use(bodyParser.text({type: '*/*'}));
 app.use(logger('dev'));
 // set up socket.IO
 app.io = socketIO();
-app.io.on('error', utils.logError(error => `Socket connection error: ${error}`));
+app.io.on('error', error => console.error(`Error - Socket connection error: ${error} : ${new Date}`));
 
 // set up cache storage
 const cacheClient = () => {
@@ -74,7 +73,7 @@ const location = new Location(BEACONS);
 location.fromDeviceStream(socketBeaconSource$)
   .subscribe(
     location => app.io.emit('location', location),
-    utils.logError(error =>`Location stream error:${error}`)
+    error => console.error(`Error - location stream: ${error} : ${new Date}`)
   );
 
 // subscribe init
@@ -83,11 +82,11 @@ socketInitSource$
   .flatMap(socket => cacheGet().map(messages => [socket, messages]))
   .subscribe(
     ([socket, messages]) => {
-      utils.log(messages => `Init: fetched ${messages.length} messages from cache`)(messages);
+      console.log(`Server - fetched ${messages.length} messages from cache : ${new Date}`);
       const messagesAsJson = messages.map(message => JSON.parse(message.body));
       socket.emit('init', messagesAsJson);
     },
-    utils.logError(error => `Init error:${error}`)
+    error => console.error(`Error - init stream: ${error} : ${new Date}`)
   );
 
 // subscribe messages
@@ -102,11 +101,11 @@ postMessageSubject
   })
   .subscribe(
     ([key, data, status]) => {
-      utils.log(message => `Message: cache added ${message}`)(data.body);
       const messageAsJson = JSON.parse(data.body);
+      console.log(`Server - received and stored '${messageAsJson.type}' message to cache : ${new Date}`);
       app.io.emit('message', messageAsJson);
     },
-    utils.logError(error => `Message error:${error}`)
+    error => console.error(`Error - message stream: ${error} : ${new Date}`)
   );
 
 // the test page

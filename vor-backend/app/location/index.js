@@ -1,6 +1,5 @@
 'use strict';
 const Rx = require('rx');
-const utils = require('app/utils');
 
 class Location {
   constructor(beacons) {
@@ -17,8 +16,8 @@ class Location {
           type: 'location' // constant for every message
         }, calculatePosition(beacon1, beacon2, beacon3));
         const logBeacons = `${beacon1.id}, ${beacon2.id}, ${beacon3.id}`;
-        const log = utils.log(value => `Location.fromDeviceStream (${logBeacons}) --> ${JSON.stringify(value)}`);
-        return log(messageData);
+        console.log(`Server - location for (${logBeacons}) --> ${JSON.stringify(messageData)}`);
+        return messageData;
       });
   }
 }
