@@ -4,13 +4,18 @@
     <a id="clear-init" href="#">Clear</a>
   </div>
   <div class="col-md-4">
-    <ul id="init-data" class="list-unstyled">No data</ul>
+    <h4>Cached events</h4>
+    <ul id="init-data-messages" class="list-unstyled">No data</ul>
+    <h4>Clients</h4>
+    <ul id="init-data-clients" class="list-unstyled">No clients</ul>
   </div>
 </div>
 <script>
   (function ($, FUTU2) {
     var utils = FUTU2.utils;
     var socket = FUTU2.getSocket();
+    var $initDataMessages = $('#init-data-messages');
+    var $initDataClients = $('#init-data-clients');
 
     $('#get-init').on('click', function (event) {
       event.preventDefault();
@@ -19,23 +24,40 @@
 
     $('#clear-init').on('click', function (event) {
       event.preventDefault();
-      clearInit();
+      $initDataMessages.html('No data');
+      $initDataClients.html('No clients');
     });
 
-    function clearInit (){
-      $('#init-data').html('');
-    }
+    socket.on('init', function(initObject){
 
-    socket.on('init', function(rows){
-      clearInit();
-      if(!rows) {
+      if(!initObject.messages && !initObject.clients) {
         return;
       }
-      $.each(rows, function(index, row){
+
+      if(initObject.messages.length === 0){
+        $initDataMessages.html('No data');
+      } else {
+        $initDataMessages.html('');
+      }
+
+      if(initObject.clients.length === 0){
+        $initDataClients.html('No clients');
+      } else {
+        $initDataClients.html('');
+      }
+
+      $.each(initObject.messages, function(index, message){
         var rowEl = $('<li/>');
-        var elWithJson = utils.renderJson(rowEl, row);
-        $('#init-data').append(rowEl)
+        var elWithJson = utils.renderJson(rowEl, message);
+        $initDataMessages.append(rowEl)
       });
+
+      $.each(initObject.clients, function(index, clients){
+        var rowEl = $('<li/>');
+        var elWithJson = utils.renderJson(rowEl, clients);
+        $initDataClients.append(rowEl)
+      });
+
     });
 
   })(jQuery, window.FUTU2);
