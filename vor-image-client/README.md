@@ -55,7 +55,7 @@
 8. Run: ```sudo systemctl start vor.service``` to start service. 
   Notice! when ever you edit vor.service file:
     1. run: ```sudo systemctl daemon-reload``` to ensure updated file is used.
-    2. run: ```sudo systemctl restart vor.service``` to ensure restart service.
+    2. run: ```sudo systemctl restart vor.service``` to restart service.
 9. Run: ```sudo systemctl enable vor.service``` to enable service for reboot.
 10. Run ```sudo systemctl status vor.service```to view the process output.
 
