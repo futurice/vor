@@ -1,10 +1,12 @@
 // Bathroom Sensor 3D Model with methane sensor, 2 motion sensors and Arduino Yun
 
-$fn = 8;
+$fn = 32;
 
 cube_side = 140;
 cube_tip_clip = 10;
-wall_width = 26;
+wall_width = 26;  // Bathroom divider wall tunnel size
+side_clip_ratio = 2.5;
+left_wing_clip_height = 35;
 
 skin = 10;
 inner_skin = 8;
@@ -22,17 +24,18 @@ difference() {
     }
 }
 
-yun_moved();
-methane_moved();
+//yun_moved();
+//methane_moved();
 //motion_moved(-40, 0);
 //motion_moved(40, 90);
 
 color("blue") yun_holder();
 
 module motion_moved(y=0, theta=0) {
-    translate([95, y, -20]) rotate([36, 137, theta]) {
-        motion();
-    }
+    translate([95, y, -20]) 
+        rotate([36, 137, theta]) {
+            motion_angle(-60);
+        }
 }
 
 module motion_moved_skin(y=0, theta=0) {
@@ -57,10 +60,13 @@ module yun_moved_skin() {
 }
 
 module yun_holder() {
-    intersection() {
-        translate([-skin/2, -cube_side - wall_width/2, -33])
-            cube([50, cube_side, 5]);
-        poly(cube_tip_clip);
+    difference() {
+        intersection() {
+            translate([-skin/2, -cube_side - wall_width/2, -33])
+                cube([55, cube_side, 5]);
+            poly(cube_tip_clip);
+        }
+        yun_moved_skin();
     }
 }
 
@@ -92,8 +98,8 @@ module poly(clip = 0) {
                 cube([cube_side*4, cube_side*4, cube_side]);
             translate([cube_side - clip/2, 0, 0])
                 cube([clip*2, clip*3, clip*3], center = true);
-            side_block(wall_width*2.5, 180);
-            side_block(wall_width*2.5, 0);
+            side_block(wall_width*side_clip_ratio, 180);
+            side_block(wall_width*side_clip_ratio, 0);
         }
     }
 }
@@ -101,20 +107,28 @@ module poly(clip = 0) {
 module wall_tunnel() {
     translate([-2*cube_side, -wall_width/2, -2*cube_side - cube_tip_clip/.7])
         cube([4*cube_side, wall_width, 2*cube_side]);
+    left_wing_clip();     // Comment this line to make both wings full size
+}
+
+module left_wing_clip() {
+    translate([-cube_side, 0, -left_wing_clip_height - cube_side])
+        cube([cube_side*2, cube_side, cube_side]);            
 }
 
 module box() {
     difference() {
         minkowski() {
+            difference() {
             union() {
                 poly(cube_tip_clip);
                 intersection() {
-                    hull() {
-                        poly(cube_tip_clip);
-                    }
-                    minkowski() {
-                        wall_tunnel();
-                           sphere(r=skin);
+                        hull() {
+                            poly(cube_tip_clip);
+                        }
+                        minkowski() {
+                            wall_tunnel();
+                            sphere(r=skin);
+                            }
                         }
                 }
             }
@@ -155,5 +169,11 @@ module methane() {
 
 module motion() {
     include <../3d-iot-component-models/pir-motion-sensor.scad>
+}
+
+module motion_angle(angle = 0) {
+    rotate([0, 0, angle]) {
+        motion();
+    }
 }
 

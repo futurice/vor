@@ -1,6 +1,6 @@
 // A PIR motion sensor ordered from https://www.sparkfun.com/products/13285
 
-$fn = 8;
+$fn = 32;
 
 length = 33.6;
 width = 28.6;

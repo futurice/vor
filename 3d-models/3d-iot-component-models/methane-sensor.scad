@@ -1,6 +1,6 @@
 // A CNG-Methane sensor MQ-4 ordered from https://www.sparkfun.com/products/9404
 
-$fn = 8;
+$fn = 32;
 
 pin_length = 7.7;
 

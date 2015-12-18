@@ -1,6 +1,6 @@
 // Arduino Yun Mini 3D model for planning
 
-$fn = 8;
+$fn = 32;
 
 length = 71.12;
 width = 22.86;
