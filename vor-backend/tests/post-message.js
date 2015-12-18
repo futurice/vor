@@ -4,7 +4,7 @@ const assert = require('assert');
 const helpers = require('./helpers/index');
 var request = require('supertest');
 
-describe('App: On message post', function () {
+describe('App: on message post', function () {
   let app;
 
   beforeEach(function (done) {

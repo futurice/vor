@@ -37,15 +37,19 @@ const cache = expressRedisCache({ client: cacheClient(), prefix: CACHE_PREFIX })
 // listen socket connections
 const socketConnectionSource$ = Rx.Observable.fromEvent(app.io.sockets, 'connection');
 
-// listen socket beacons
-const socketBeaconSource$ = socketConnectionSource$
-  .flatMap(socket => Rx.Observable.fromEvent(socket, 'beacon'));
-
 // listen socket messages
 const socketMessageSource$ = socketConnectionSource$
   .flatMap(socket => Rx.Observable.fromEvent(socket, 'message'));
 
-// listen socket init
+// split location events
+let [ deviceSource$, messageSource$ ] = socketMessageSource$
+  .partition(message => message.type === 'location');
+
+// init location module
+const location = new Location(BEACONS);
+const locationSource$ = location.fromDeviceStream(deviceSource$);
+
+// listen socket 'init' messages
 const socketInitSource$ = socketConnectionSource$
   .flatMap(socket => Rx.Observable.fromEvent(
       socket,
@@ -68,15 +72,6 @@ const postMessageRoute = router.post('/messages', (req, res) => {
 });
 app.use('/messages', postMessageRoute);
 
-// init location module
-const location = new Location(BEACONS);
-// subscribe location
-location.fromDeviceStream(socketBeaconSource$)
-  .subscribe(
-    location => app.io.emit('location', location),
-    error => console.error(`Error - location stream: ${error} : ${new Date}`)
-  );
-
 // subscribe init
 const cacheGet = Rx.Observable.fromNodeCallback(cache.get, cache);
 socketInitSource$
@@ -97,18 +92,21 @@ socketInitSource$
 // subscribe messages
 const cacheAdd = Rx.Observable.fromNodeCallback(cache.add, cache);
 postMessageSubject
-  .merge(socketMessageSource$)
+  .merge(messageSource$)
   .flatMap(message => {
     const key = message.id ? `${message.type}:${message.id}` : `${message.type}`;
     const data = JSON.stringify(message);
     const config = { expire: CACHE_TTL, type: 'json' };
     return cacheAdd(key, data, config);
   })
+  .map(([key, data, status]) => {
+    const messageAsJson = JSON.parse(data.body);
+    return messageAsJson;
+  })
+  .merge(locationSource$) // merge location stream back after cache save
   .subscribe(
-    ([key, data, status]) => {
-      const messageAsJson = JSON.parse(data.body);
-      console.log(`Server - received and stored '${messageAsJson.type}' message to cache : ${new Date}`);
-      app.io.emit('message', messageAsJson);
+    message => {
+      app.io.emit('message', message);
     },
     error => console.error(`Error - message stream: ${error} : ${new Date}`)
   );

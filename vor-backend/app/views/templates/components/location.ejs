@@ -61,17 +61,20 @@
       $distances.each(function (i, el) {
         var id = $(el).data('id');
         var val = $(el).val();
-        socket.emit('beacon', {
+        socket.emit('message', {
           id: id,
           email: user,
+          type: 'location',
           floor: parseInt(floor, 10),
           distance: val === "" ? 0 : parseFloat(val)
         });
       });
     });
 
-    socket.on('location', function(location){
-      utils.renderJson($responseHolder, location);
+    socket.on('message', function (message) {
+      if(message.type === 'location') {
+        utils.renderJson($responseHolder, message);
+      }
     });
   })(jQuery, window.FUTU2);
 </script>
