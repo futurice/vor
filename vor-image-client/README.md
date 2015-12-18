@@ -22,10 +22,11 @@
 ### Deploying to Rasperry PI
 1. Install Raspian version ^8 to Rasberry PI
 2. SSH to Rasberry PI [Rasberry PI support](https://www.raspberrypi.org/documentation/remote-access/ssh/)
-3. Install node.js ^5.0.0 [more info](http://elinux.org/Node.js_on_RPi)
-4. Install fswebcam [more info](https://www.raspberrypi.org/documentation/usage/webcams/)
-5. Clone this repo to var folder
-6. Go to folder and Run  ```npm install``` with sudo if needed
+3. Install node.js ^5.0.0 [more info](http://blog.wia.io/installing-node-js-v4-0-0-on-a-raspberry-pi/)
+4. Run: ```sudo update apt-get``` to update package manager
+4. Run: ```sudo apt-get install fswebcam``` to install fe [more info](https://www.raspberrypi.org/documentation/usage/webcams/)
+5. Go to /var folder and run: ```sudo git clone https://github.com/futurice/vor.git``` to clone this repo
+6. Go to /vor/vor-image-client folder and Run  ```sudo npm install --unsafe.perm --production ```
 7. Add /var/vor.env file with content:
   ```
   SOCKET_SERVER=<vor-backend server>
