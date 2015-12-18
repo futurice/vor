@@ -38,7 +38,7 @@
   ```
   
 7. Add /etc/systemd/system/vor.service file with content: 
-```
+  ```
   [Unit]
   Description=vor-image-client
   
