@@ -25,8 +25,8 @@
 3. Install node.js ^5.0.0 [more info](http://blog.wia.io/installing-node-js-v4-0-0-on-a-raspberry-pi/)
 4. Run: ```sudo update apt-get``` to update package manager
 4. Run: ```sudo apt-get install fswebcam``` to install fswebcam [more info](https://www.raspberrypi.org/documentation/usage/webcams/)
-5. Go to /var folder and run: ```sudo git clone https://github.com/futurice/vor.git``` to clone this repo
-6. Go to /vor/vor-image-client folder and Run  ```sudo npm install --unsafe-perm --production ```
+5. Run: ```cd /var``` and run: ```sudo git clone https://github.com/futurice/vor.git``` to clone this repo
+6. Run: ```cd /var/vor/vor-image-client``` and run:  ```sudo npm install --unsafe-perm --production ```
 7. Run ```cd``` and add /var/vor.env file with content:
   ```
   SOCKET_SERVER=<vor-backend server>
