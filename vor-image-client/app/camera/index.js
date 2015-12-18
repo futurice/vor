@@ -8,7 +8,7 @@ const TEMP_IMAGE = 'snapshot.jpg';
 
 exports.takePicture = () => {
   const takePicturePromise = new Promise((resolve, reject) => {
-    const commandStr = `${CAMERA_COMMAND} `;
+    const commandStr = `${CAMERA_COMMAND} ${TEMP_IMAGE}`;
     const command = exec(commandStr, (error) => {
       if (error) {
         reject(console.error(`Error - cannot run '${CAMERA_COMMAND}': ${error} : ${new Date()}`));
