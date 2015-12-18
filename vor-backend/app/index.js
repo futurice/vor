@@ -7,7 +7,8 @@ const socketIO = require('socket.io');
 const Rx = require('rx');
 const redis = require('redis');
 const expressRedisCache = require('express-redis-cache');
-const { BEACONS, CACHE_PREFIX, CACHE_TTL } = require('config');
+const { CACHE_PREFIX, CACHE_TTL } = require('config/server');
+const { CLIENTS } = require('config/shared');
 const Location = require('app/location');
 const viewRoute = require('app/views/routes');
 const views = require('app/views');
@@ -68,7 +69,7 @@ const postMessageRoute = router.post('/messages', (req, res) => {
 app.use('/messages', postMessageRoute);
 
 // init location module
-const location = new Location(BEACONS);
+const location = new Location(CLIENTS);
 // subscribe location
 location.fromDeviceStream(socketBeaconSource$)
   .subscribe(
@@ -80,11 +81,12 @@ location.fromDeviceStream(socketBeaconSource$)
 const cacheGet = Rx.Observable.fromNodeCallback(cache.get, cache);
 socketInitSource$
   .flatMap(socket => cacheGet().map(messages => [socket, messages]))
+  .map(([socket, messages]) => [socket, messages, CLIENTS]) // add configured clients in response
   .subscribe(
-    ([socket, messages]) => {
+    ([socket, messages, clients]) => {
       console.log(`Server - fetched ${messages.length} messages from cache : ${new Date}`);
       const messagesAsJson = messages.map(message => JSON.parse(message.body));
-      socket.emit('init', messagesAsJson);
+      socket.emit('init', { messages: messagesAsJson, clients: clients });
     },
     error => console.error(`Error - init stream: ${error} : ${new Date}`)
   );

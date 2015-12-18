@@ -2,7 +2,6 @@
 const should = require('should');
 const assert = require('assert');
 const helpers = require('./helpers/index');
-const config = require('../config');
 var request = require('supertest');
 
 describe('App: On message post', function () {

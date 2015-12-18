@@ -1,12 +1,5 @@
 {
-  "STREAM": {
-    "INTERVAL": 100
-  },
-  "CACHE_PREFIX": "test",
-  "CACHE_TTL": {
-    "default": 10
-  },
-  "BEACONS": [
+  "CLIENTS": [
     {
       "id": 1,
       "type": "Room Beacon",
