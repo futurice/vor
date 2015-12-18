@@ -20,7 +20,7 @@ module dome() {
     translate([5.55, 2.84, height])
         cube([base_length, base_width, base_height]);
     difference() {
-        translate([length/2, width/2, height + 5.6]) sphere(r = dome_radius);
+        translate([length/2, width/2, height + 5.6]) sphere($fn=8, r=dome_radius);
         translate([0, 0, -10]) cube([length, width, 10]);
     }
 }

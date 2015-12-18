@@ -1,6 +1,6 @@
 // Arduino Yun Mini 3D model for planning
 
-$fn = 32;
+$fn = 16;
 
 length = 71.12;
 width = 22.86;
@@ -24,17 +24,16 @@ module leds() {
 }
 
 module button(y = 0) {
-    translate([length - 2.75, y, height]) cylinder(r = 3/2, h = 1);    
+    translate([length - 2.75, y, height]) cylinder($fn=8, r=3/2, h=1);    
 }
 
 module bottom_button() {
-    translate([length - 2, 7.5, -1]) cylinder(r = 3/2, h = 1);    
+    translate([length - 2, 7.5, -1]) cylinder($fn=8, r=3/2, h=1); 
 }
 
 module hole(x = 0, y = 0) {
     translate([x, y, -9]) cylinder(h = 10 + height, r = 2.5/2);
 }
-
 
 module arduino_yun_mini() {
     difference() {

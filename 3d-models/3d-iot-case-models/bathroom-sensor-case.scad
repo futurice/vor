@@ -1,12 +1,13 @@
 // Bathroom Sensor 3D Model with methane sensor, 2 motion sensors and Arduino Yun
 
-$fn = 32;
+$fn = 8;
 
 cube_side = 140;
 cube_tip_clip = 10;
 wall_width = 26;  // Bathroom divider wall tunnel size
 side_clip_ratio = 2.5;
 left_wing_clip_height = 35;
+right_wing_clip_height = 35;
 
 skin = 10;
 inner_skin = 8;
@@ -107,11 +108,17 @@ module poly(clip = 0) {
 module wall_tunnel() {
     translate([-2*cube_side, -wall_width/2, -2*cube_side - cube_tip_clip/.7])
         cube([4*cube_side, wall_width, 2*cube_side]);
-    left_wing_clip();     // Comment this line to make both wings full size
+    left_wing_clip();     // Comment this line to make wing full size
+    right_wing_clip();     // Comment this line to make wing full size
 }
 
 module left_wing_clip() {
     translate([-cube_side, 0, -left_wing_clip_height - cube_side])
+        cube([cube_side*2, cube_side, cube_side]);            
+}
+
+module right_wing_clip() {
+    translate([-cube_side, -cube_side, -right_wing_clip_height - cube_side])
         cube([cube_side*2, cube_side, cube_side]);            
 }
 

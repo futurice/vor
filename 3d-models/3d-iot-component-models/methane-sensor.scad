@@ -10,13 +10,13 @@ module center() {
 
 module top() {
     translate([0, 0, 18 - 16/2])
-        sphere(r = 16/2);
+        sphere($fn=8, r=16/2);
 }
 
 module pin(theta = 0) {
     color("black") rotate([180, 0, theta]) {
         translate([6, 0, 0])
-            cylinder(r = .3, h = pin_length);
+            cylinder($fn=8, r=.3, h=pin_length);
     }
 }
 
