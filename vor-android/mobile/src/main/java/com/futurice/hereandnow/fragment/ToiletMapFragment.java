@@ -24,21 +24,31 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ToiletMapFragment extends Fragment {
-    @Bind(R.id.toiletMap) MapView mToiletMapImageView;
+    private static final String TAG = ToiletMapFragment.class.getSimpleName();
 
-    private static final int FLOOR_7_AA_BA_DRAWABLE = R.drawable.map_toilet_7th_floor_aa_ba;
-    private static final int FLOOR_7_AA_BT_DRAWABLE = R.drawable.map_toilet_7th_floor_aa_bt;
-    private static final int FLOOR_7_AT_BA_DRAWABLE = R.drawable.map_toilet_7th_floor_at_ba;
-    private static final int FLOOR_7_AT_BT_DRAWABLE = R.drawable.map_toilet_7th_floor_at_bt;
-    private static final int FLOOR_8_DRAWABLE = R.drawable.map_general_8th_floor;
+    @Bind(R.id.toiletMap) MapView mToiletMapImageView;
 
     Activity mActivity;
 
     SharedPreferences mToilet7amSP;
     SharedPreferences mToilet7bmSP;
 
-    OnSharedPreferenceChangeListener toilet7amListener = (sharedPreferences, key) -> updateView();
-    OnSharedPreferenceChangeListener toilet7bmListener = (sharedPreferences, key) -> updateView();
+    SharedPreferences mToilet8amSP;
+    SharedPreferences mToilet8bmSP;
+    SharedPreferences mToilet8cmSP;
+    SharedPreferences mToilet8awSP;
+    SharedPreferences mToilet8bwSP;
+    SharedPreferences mToilet8cwSP;
+
+    OnSharedPreferenceChangeListener toilet7amListener = (sharedPreferences, key) -> updateView7th();
+    OnSharedPreferenceChangeListener toilet7bmListener = (sharedPreferences, key) -> updateView7th();
+
+    OnSharedPreferenceChangeListener toilet8amListener = (sharedPreferences, key) -> updateView8th();
+    OnSharedPreferenceChangeListener toilet8bmListener = (sharedPreferences, key) -> updateView8th();
+    OnSharedPreferenceChangeListener toilet8cmListener = (sharedPreferences, key) -> updateView8th();
+    OnSharedPreferenceChangeListener toilet8awListener = (sharedPreferences, key) -> updateView8th();
+    OnSharedPreferenceChangeListener toilet8bwListener = (sharedPreferences, key) -> updateView8th();
+    OnSharedPreferenceChangeListener toilet8cwListener = (sharedPreferences, key) -> updateView8th();
 
     private int mCurrentFloor;
 
@@ -54,6 +64,13 @@ public class ToiletMapFragment extends Fragment {
         mActivity = getActivity();
         mToilet7amSP = mActivity.getSharedPreferences("toilet7am", Context.MODE_PRIVATE);
         mToilet7bmSP = mActivity.getSharedPreferences("toilet7bm", Context.MODE_PRIVATE);
+
+        mToilet8amSP = mActivity.getSharedPreferences("toilet8am", Context.MODE_PRIVATE);
+        mToilet8bmSP = mActivity.getSharedPreferences("toilet8bm", Context.MODE_PRIVATE);
+        mToilet8cmSP = mActivity.getSharedPreferences("toilet8cm", Context.MODE_PRIVATE);
+        mToilet8awSP = mActivity.getSharedPreferences("toilet8aw", Context.MODE_PRIVATE);
+        mToilet8bwSP = mActivity.getSharedPreferences("toilet8bw", Context.MODE_PRIVATE);
+        mToilet8cwSP = mActivity.getSharedPreferences("toilet8cw", Context.MODE_PRIVATE);
     }
 
     @Override
@@ -61,7 +78,7 @@ public class ToiletMapFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map_toilet, container, false);
         ButterKnife.bind(this, view);
-        updateView();
+        updateView7th();
         return view;
     }
 
@@ -71,12 +88,25 @@ public class ToiletMapFragment extends Fragment {
         mToilet7amSP.registerOnSharedPreferenceChangeListener(toilet7amListener);
         mToilet7bmSP.registerOnSharedPreferenceChangeListener(toilet7bmListener);
 
+        mToilet8amSP.registerOnSharedPreferenceChangeListener(toilet8amListener);
+        mToilet8bmSP.registerOnSharedPreferenceChangeListener(toilet8bmListener);
+        mToilet8cmSP.registerOnSharedPreferenceChangeListener(toilet8cmListener);
+        mToilet8awSP.registerOnSharedPreferenceChangeListener(toilet8awListener);
+        mToilet8bwSP.registerOnSharedPreferenceChangeListener(toilet8bwListener);
+        mToilet8cwSP.registerOnSharedPreferenceChangeListener(toilet8cwListener);
     }
 
     @Override
     public void onPause() {
-        mToilet7amSP.registerOnSharedPreferenceChangeListener(toilet7amListener);
-        mToilet7bmSP.registerOnSharedPreferenceChangeListener(toilet7bmListener);
+        mToilet7amSP.unregisterOnSharedPreferenceChangeListener(toilet7amListener);
+        mToilet7bmSP.unregisterOnSharedPreferenceChangeListener(toilet7bmListener);
+
+        mToilet8amSP.unregisterOnSharedPreferenceChangeListener(toilet8amListener);
+        mToilet8bmSP.unregisterOnSharedPreferenceChangeListener(toilet8bmListener);
+        mToilet8cmSP.unregisterOnSharedPreferenceChangeListener(toilet8cmListener);
+        mToilet8awSP.unregisterOnSharedPreferenceChangeListener(toilet8awListener);
+        mToilet8bwSP.unregisterOnSharedPreferenceChangeListener(toilet8bwListener);
+        mToilet8cwSP.unregisterOnSharedPreferenceChangeListener(toilet8cwListener);
         super.onPause();
     }
 
@@ -94,11 +124,11 @@ public class ToiletMapFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_change_floor:
                 if (mCurrentFloor == 7) {
-                    setToiletMapImageView(FLOOR_8_DRAWABLE);
+                    updateView8th();
                     item.setTitle(getString(R.string.map_7th_floor));
                     mCurrentFloor = 8;
                 } else {
-                    updateView();
+                    updateView7th();
                     item.setTitle(getString(R.string.map_8th_floor));
                     mCurrentFloor = 7;
                 }
@@ -113,18 +143,158 @@ public class ToiletMapFragment extends Fragment {
         mToiletMapImageView.setImageDrawable(drawable);
     }
 
-    public void updateView() {
+    public void updateView7th() {
         Boolean am = mToilet7amSP.getBoolean(Constants.RESERVED_KEY, false);
         Boolean bm = mToilet7bmSP.getBoolean(Constants.RESERVED_KEY, false);
 
         if (am && bm) {
-            setToiletMapImageView(FLOOR_7_AT_BT_DRAWABLE);
+            setToiletMapImageView(R.drawable.map_toilet_7th_floor_aa_ba);
         } else if (am && !bm) {
-            setToiletMapImageView(FLOOR_7_AA_BT_DRAWABLE);
+            setToiletMapImageView(R.drawable.map_toilet_7th_floor_aa_bt);
         } else if (!am && bm) {
-            setToiletMapImageView(FLOOR_7_AT_BA_DRAWABLE);
+            setToiletMapImageView(R.drawable.map_toilet_7th_floor_at_ba);
         } else {
-            setToiletMapImageView(FLOOR_7_AA_BA_DRAWABLE);
+            setToiletMapImageView(R.drawable.map_toilet_7th_floor_at_bt);
+        }
+    }
+
+    public void updateView8th() {
+        Boolean am = !mToilet8amSP.getBoolean(Constants.RESERVED_KEY, true);
+        Boolean bm = !mToilet8bmSP.getBoolean(Constants.RESERVED_KEY, true);
+        Boolean cm = !mToilet8cmSP.getBoolean(Constants.RESERVED_KEY, true);
+
+        Boolean aw = !mToilet8awSP.getBoolean(Constants.RESERVED_KEY, true);
+        Boolean bw = !mToilet8bwSP.getBoolean(Constants.RESERVED_KEY, true);
+        Boolean cw = !mToilet8cwSP.getBoolean(Constants.RESERVED_KEY, true);
+
+        if (am && aw && bm && bw && cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awa_bma_bwa_cma_cwa);
+        } else if (am && aw && bm && bw && cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awa_bma_bwa_cma_cwt);
+        } else if (am && aw && bm && bw && !cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awa_bma_bwa_cmt_cwa);
+        } else if (am && aw && bm && bw && !cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awa_bma_bwa_cmt_cwt);
+        } else if (am && aw && bm && !bw && cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awa_bma_bwt_cma_cwa);
+        } else if (am && aw && bm && !bw && cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awa_bma_bwt_cma_cwt);
+        } else if (am && aw && bm && !bw && !cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awa_bma_bwt_cmt_cwa);
+        } else if (am && aw && bm && !bw && !cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awa_bma_bwt_cmt_cwt);
+        } else if (am && aw && !bm && bw && cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awa_bmt_bwa_cma_cwa);
+        } else if (am && aw && !bm && bw && cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awa_bmt_bwa_cma_cwt);
+        } else if (am && aw && !bm && bw && !cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awa_bmt_bwa_cmt_cwa);
+        } else if (am && aw && !bm && bw && !cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awa_bmt_bwa_cmt_cwt);
+        } else if (am && aw && !bm && !bw && cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awa_bmt_bwt_cma_cwa);
+        } else if (am && aw && !bm && !bw && cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awa_bmt_bwt_cma_cwt);
+        } else if (am && aw && !bm && !bw && !cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awa_bmt_bwt_cmt_cwa);
+        } else if (am && aw && !bm && !bw && !cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awa_bmt_bwt_cmt_cwt);
+        } else if (am && !aw && bm && bw && cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awt_bma_bwa_cma_cwa);
+        } else if (am && !aw && bm && bw && cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awt_bma_bwa_cma_cwt);
+        } else if (am && !aw && bm && bw && !cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awt_bma_bwa_cmt_cwa);
+        } else if (am && !aw && bm && bw && !cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awt_bma_bwa_cmt_cwt);
+        } else if (am && !aw && bm && !bw && cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awt_bma_bwt_cma_cwa);
+        } else if (am && !aw && bm && !bw && cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awt_bma_bwt_cma_cwt);
+        } else if (am && !aw && bm && !bw && !cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awt_bma_bwt_cmt_cwa);
+        } else if (am && !aw && bm && !bw && !cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awt_bma_bwt_cmt_cwt);
+        } else if (am && !aw && !bm && bw && cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awt_bmt_bwa_cma_cwa);
+        } else if (am && !aw && !bm && bw && cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awt_bmt_bwa_cma_cwt);
+        } else if (am && !aw && !bm && bw && !cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awt_bmt_bwa_cmt_cwa);
+        } else if (am && !aw && !bm && bw && !cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awt_bmt_bwa_cmt_cwt);
+        } else if (am && !aw && !bm && !bw && cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awt_bmt_bwt_cma_cwa);
+        } else if (am && !aw && !bm && !bw && cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awt_bmt_bwt_cma_cwt);
+        } else if (am && !aw && !bm && !bw && !cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awt_bmt_bwt_cmt_cwa);
+        } else if (am && !aw && !bm && !bw && !cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_ama_awt_bmt_bwt_cmt_cwt);
+        } else if (!am && aw && bm && bw && cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awa_bma_bwa_cma_cwa);
+        } else if (!am && aw && bm && bw && cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awa_bma_bwa_cma_cwt);
+        } else if (!am && aw && bm && bw && !cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awa_bma_bwa_cmt_cwa);
+        } else if (!am && aw && bm && bw && !cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awa_bma_bwa_cmt_cwt);
+        } else if (!am && aw && bm && !bw && cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awa_bma_bwt_cma_cwa);
+        } else if (!am && aw && bm && !bw && cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awa_bma_bwt_cma_cwt);
+        } else if (!am && aw && bm && !bw && !cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awa_bma_bwt_cmt_cwa);
+        } else if (!am && aw && bm && !bw && !cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awa_bma_bwt_cmt_cwt);
+        } else if (!am && aw && !bm && bw && cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awa_bmt_bwa_cma_cwa);
+        } else if (!am && aw && !bm && bw && cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awa_bmt_bwa_cma_cwt);
+        } else if (!am && aw && !bm && bw && !cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awa_bmt_bwa_cmt_cwa);
+        } else if (!am && aw && !bm && bw && !cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awa_bmt_bwa_cmt_cwt);
+        } else if (!am && aw && !bm && !bw && cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awa_bmt_bwt_cma_cwa);
+        } else if (!am && aw && !bm && !bw && cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awa_bmt_bwt_cma_cwt);
+        } else if (!am && aw && !bm && !bw && !cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awa_bmt_bwt_cmt_cwa);
+        } else if (!am && aw && !bm && !bw && !cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awa_bmt_bwt_cmt_cwt);
+        } else if (!am && !aw && bm && bw && cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awt_bma_bwa_cma_cwa);
+        } else if (!am && !aw && bm && bw && cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awt_bma_bwa_cma_cwt);
+        } else if (!am && !aw && bm && bw && !cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awt_bma_bwa_cmt_cwa);
+        } else if (!am && !aw && bm && bw && !cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awt_bma_bwa_cmt_cwt);
+        } else if (!am && !aw && bm && !bw && cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awt_bma_bwt_cma_cwa);
+        } else if (!am && !aw && bm && !bw && cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awt_bma_bwt_cma_cwt);
+        } else if (!am && !aw && bm && !bw && !cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awt_bma_bwt_cmt_cwa);
+        } else if (!am && !aw && bm && !bw && !cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awt_bma_bwt_cmt_cwt);
+        } else if (!am && !aw && !bm && bw && cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awt_bmt_bwa_cma_cwa);
+        } else if (!am && !aw && !bm && bw && cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awt_bmt_bwa_cma_cwt);
+        } else if (!am && !aw && !bm && bw && !cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awt_bmt_bwa_cmt_cwa);
+        } else if (!am && !aw && !bm && bw && !cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awt_bmt_bwa_cmt_cwt);
+        } else if (!am && !aw && !bm && !bw && cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awt_bmt_bwt_cma_cwa);
+        } else if (!am && !aw && !bm && !bw && cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awt_bmt_bwt_cma_cwt);
+        } else if (!am && !aw && !bm && !bw && !cm && cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awt_bmt_bwt_cmt_cwa);
+        } else if (!am && !aw && !bm && !bw && !cm && !cw) {
+            setToiletMapImageView(R.drawable.map_toilet_8th_floor_amt_awt_bmt_bwt_cmt_cwt);
         }
     }
 }

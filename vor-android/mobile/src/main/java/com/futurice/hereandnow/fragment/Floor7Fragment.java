@@ -62,8 +62,8 @@ public class Floor7Fragment extends Fragment {
 
     @Override
     public void onPause() {
-        mToilet7amSP.registerOnSharedPreferenceChangeListener(toilet7amListener);
-        mToilet7bmSP.registerOnSharedPreferenceChangeListener(toilet7bmListener);
+        mToilet7amSP.unregisterOnSharedPreferenceChangeListener(toilet7amListener);
+        mToilet7bmSP.unregisterOnSharedPreferenceChangeListener(toilet7bmListener);
         super.onPause();
     }
 
