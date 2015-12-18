@@ -33,7 +33,7 @@ describe(`App: on socket event`, function () {
     done();
   });
 
-  it('should send a image message', done => {
+  it('should send an image message', done => {
     io.on('connection', socketServer => {
 
       socketServer.emit('message', {
