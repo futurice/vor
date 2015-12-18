@@ -79,12 +79,7 @@ public class MapView extends PhotoView {
             person.updateCurrentLocation(animationSpeed, updateRadius); // Animate the markers.
 
             if (person.getLocationOnScreenX() >= 0 && person.getLocationOnScreenY() >= 0) {
-                String text;
-                if (person.isClicked()) {
-                    text = HereAndNowUtils.getName(person.getEmail());
-                } else {
-                    text = HereAndNowUtils.getInitials(person.getEmail());
-                }
+                String text = HereAndNowUtils.getInitials(person.getEmail());
 
                 namePaint.getTextBounds(text, 0, text.length(), bounds);
                 canvas.drawCircle(person.getCurrentLocationX(),
@@ -94,6 +89,24 @@ public class MapView extends PhotoView {
                 canvas.drawText(text,
                         person.getCurrentLocationX(),
                         person.getCurrentLocationY(),
+                        namePaint);
+            }
+        }
+
+        for (PeopleManager.Person person : onMapDrawListener.getPersons()) {
+            if (person.isClicked()) {
+                String text = HereAndNowUtils.getName(person.getEmail());
+
+                namePaint.getTextBounds(text, 0, text.length(), bounds);
+
+                float radius = bounds.width() + markerRadius;
+                canvas.drawCircle(person.getCurrentLocationX() - radius,
+                        person.getCurrentLocationY() - (bounds.height() / 2) - (radius / 2),
+                        radius,
+                        person.getPaint());
+                canvas.drawText(text,
+                        person.getCurrentLocationX() - radius,
+                        person.getCurrentLocationY() - (radius / 2),
                         namePaint);
             }
         }
@@ -131,8 +144,6 @@ public class MapView extends PhotoView {
         textSize *= scaleFactor;
         namePaint.setTextSize(textSize);
     }
-
-
 
     public interface OnMapDrawListener {
         ArrayList<PeopleManager.Person> getPersons();
