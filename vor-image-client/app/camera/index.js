@@ -15,25 +15,16 @@ exports.takePicture = () => {
       }
     });
 
-    command.on('exit', (stdout, stderr) => {
+    command.on('close', (stdout, stderr) => {
       console.log(`Client took a picture using: ${commandStr} : ${new Date()}`);
       resolve(stdout, stderr);
     });
   });
 
-  const readTempFilePromise = new Promise((resolve, reject) => {
-    try {
-      const image = fs.readFileSync(TEMP_IMAGE);
-      resolve(image);
-    }
-    catch (error) {
-      console.error(`Error - cannot read image file: ${error} : ${new Date()}`);
-      reject(error);
-    }
-  });
+  const readTempFile = Rx.Observable.fromNodeCallback(fs.readFile, this);
 
   return Rx.Observable.fromPromise(takePicturePromise)
-    .flatMap(Rx.Observable.fromPromise(readTempFilePromise))
+    .flatMap(tookPicture => readTempFile(TEMP_IMAGE))
     .map(binary => new Buffer(binary))
     .map(buffer => buffer.toString('base64'))
     .doOnError(error => console.error(`Error - cannot take picture: ${error} : ${new Date()}`));
