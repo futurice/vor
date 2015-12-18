@@ -105,9 +105,7 @@ postMessageSubject
   })
   .merge(locationSource$) // merge location stream back after cache save
   .subscribe(
-    message => {
-      app.io.emit('message', message);
-    },
+    message => app.io.emit('message', message),
     error => console.error(`Error - message stream: ${error} : ${new Date}`)
   );
 
