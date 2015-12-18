@@ -1,0 +1,563 @@
+@import "constants";
+
+html {
+    font-size: 10px; // 1rem = 10px
+}
+
+body {
+    background-color: $color-light-gray;
+    color: $color-dark-blue;
+    line-height: 2.0rem;
+    font-family: $font-bodycopy;
+    font-size: 1.8rem;
+    font-weight: 300;
+}
+
+.heading-1 {
+    color: $color-dark-blue;
+    font-family: $font-regular;
+    font-size: 4.6rem;
+    font-weight: 800;
+    line-height: 5.0rem;
+    margin: 0 0 16px 0;
+    padding: 0;
+}
+
+p {
+    padding: 4px 0;
+
+    &.large {
+        line-height: 2.4rem;
+        font-size: 2.0rem;
+    }
+}
+
+a {
+    color: $color-futurice;
+    transition: color $animation-duration;
+
+    &:hover,
+    &:focus {
+        color: $color-dark-blue;
+        text-decoration: none;
+    }
+
+    &.anchor {
+        display: block;
+        position: relative;
+        top: -70px;
+        visibility: hidden;
+    }
+}
+
+.button {
+    border: 1px solid $color-white;
+    color: $color-white;
+    display: inline-block;
+    padding: 5px 20px;
+    margin: 20px 0 40px 0;
+    transition: color $animation-duration, background-color $animation-duration;
+
+    &.dark-blue {
+        border-color: $color-white;
+        color: $color-white;
+
+        &:hover,
+        &:focus {
+            background-color: $color-white;
+            color: $color-dark-blue;
+        }
+    }
+
+    &.green {
+        border-color: $color-white;
+        color: $color-white;
+
+        &:hover,
+        &:focus {
+            background-color: $color-white;
+            color: $color-futurice;
+        }
+    }
+
+    &.light-gray {
+        border-color: $color-dark-blue;
+        color: $color-dark-blue;
+
+        &:hover,
+        &:focus {
+            background-color: $color-dark-blue;
+            color: $color-white;
+        }
+    }
+
+    &:hover,
+    &:focus {
+        color: $color-white;
+        text-decoration: none;
+    }
+}
+
+.element-spacing {
+    margin-bottom: $element-spacing;
+
+    @media (min-width: 768px) {
+        margin-bottom: $medium-element-spacing;
+    }
+}
+
+.fullsize-container {
+    padding: 40px 0;
+    width: 100%;
+
+    &.light-gray {
+        background-color: $color-light-gray;
+        color: $color-black;
+    }
+
+    &.dark-blue {
+        background-color: $color-dark-blue;
+        color: $color-white;
+    }
+
+    &.green {
+        background-color: $color-futurice;
+        color: $color-white;
+    }
+
+    &.hero {
+        background-image: url("../images/hero.jpg");
+        background-position: center 60%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        padding: 180px 0;
+        position: relative;
+        text-align: center;
+        margin-top: 70px;
+
+        @media (max-width: 767px) {
+            padding: 80px 0;
+            margin-top: 50px;
+        }
+
+        .heading-1 {
+            color: $color-white;
+            font-size: 6.6rem;
+            line-height: 7.0rem;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+
+            @media (max-width: 767px) {
+                font-size: 4.6rem;
+                line-height: 5.0rem;
+            }
+        }
+    }
+
+    &.cards {
+        background-image: url("../images/cards.png");
+        background-position: right center;
+        background-repeat: no-repeat;
+        background-size: 50% auto;
+        min-height: 560px;
+
+        @media (min-width: 992px) {
+            background-size: contain;
+            min-height: auto;
+        }
+
+        @media (max-width: 767px) {
+            background-image: none;
+        }
+
+        .heading-1 {
+            @media (min-width: 992px) {
+                padding-top: 40px;
+            }
+        }
+    }
+
+    &.video {
+        padding: 40px 0 60px 0;
+
+        .container {
+            @media (max-width: 767px) {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+    }
+
+    &.contact {
+        .heading-1 {
+            font-size: 3.6rem;
+            line-height: 4.0rem;
+        }
+    }
+
+    &.opensource,
+    &.futurice,
+    &.share,
+    &.photos,
+    &.go-out {
+        padding: 60px 0 40px 0;
+        text-align: center;
+
+        @media (max-width: 767px) {
+            text-align: left;
+        }
+
+        .heading-1 {
+            color: $color-white;
+            font-size: 3.6rem;
+            line-height: 4.0rem;
+        }
+    }
+
+    &.opensource {
+        a {
+            &:hover,
+            &:focus {
+                color: $color-white;
+            }
+        }
+
+        .button.dark-blue {
+            &:hover,
+            &:focus {
+                color: $color-dark-blue;
+            }
+        }
+    }
+
+    &.futurice {
+        .futurice-logo {
+            height: 3.6rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            width: 160px;
+        }
+    }
+
+    &.go-out {
+        .futurice-logo {
+            height: 2.0rem;
+            margin-bottom: 3px;
+            width: 105px;
+        }
+    }
+}
+
+.media {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    &.cards {
+        background-image: url("../images/cards.png");
+        background-position: right center;
+        background-size: contain;
+        height: 300px;
+    }
+
+    &.kit {
+        background-image: url("../images/kit.png");
+        background-position: center center;
+        background-size: contain;
+        height: 300px;
+
+        @media (min-width: 767px) {
+            height: 450px;
+        }
+    }
+
+    &.blueprints {
+        background-image: url("../images/blueprints_overview.png");
+        background-position: center center;
+        background-size: contain;
+        height: 300px;
+
+        @media (min-width: 767px) {
+            height: 450px;
+        }
+    }
+}
+
+.pull-right-sm {
+    @media (min-width: 767px) {
+        float: right;
+    }
+}
+
+.navbar-header {
+    font-size: 3rem;
+    height: 80px;
+    line-height: 80px;
+
+    @media (min-width: 480px) {
+        height: 50px;
+        line-height: 50px;
+    }
+
+    @media (min-width: 768px) {
+        height: 72px;
+        line-height: 72px;
+    }
+}
+.header-title {
+    font-weight: 800;
+    color: $color-black;
+    transition: color $medium-animation-duration ease-in-out;
+
+    &:hover {
+        color: $color-futurice;
+    }
+
+    height: 3rem;
+    display: block;
+    margin-top: -1.5rem;
+
+    @media (min-width: 480px) {
+        display: inline-block;
+        height: 50px;
+        line-height: 50px;
+        margin-bottom: 0;
+        margin-top: 0;
+    }
+
+    @media (max-width: 767px) {
+        margin-left: 15px;
+    }
+}
+.header-by {
+    font-size: 1.8rem;
+    margin-left: 15px;
+
+    @media (min-width: 480px) {
+        margin-left: 0;
+    }
+
+}
+.header-logo {
+    display: inline-block;
+    height: 2rem;
+    position: relative;
+    top: -2px;
+    img {
+        max-height: 2rem;
+    }
+}
+
+.navbar-default {
+    background-color: $color-navbar-bg;
+    border: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+    .navbar-collapse {
+
+        @media (max-width: 767px) {
+            >li>a:hover {
+                color: $color-navbar-text;
+                border-color: transparent;
+            }
+        }
+
+        &.in {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.40);
+        }
+    }
+
+
+    .navbar-nav > li {
+        padding: 20px 15px;
+
+        > a {
+            color: $color-navbar-text;
+            transition: all $medium-animation-duration ease-in-out;
+            border-bottom: 2px solid transparent;
+            padding: 5px;
+
+            &:hover,
+            &.active {
+                color: $color-navbar-hover;
+                border-color: $color-navbar-hover;
+            }
+        }
+    }
+
+    .navbar-toggle {
+        &:hover,
+        &:focus {
+            background-color: transparent;
+        }
+
+        .icon-bar {
+            background-color: $color-navbar-text;
+        }
+    }
+
+    .navbar-brand {
+        background-image: url("../images/iot_service_logo.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        display: inline-block;
+        width: 180px;
+        height: 50px;
+        margin: 0;
+        padding: 0;
+        text-indent: -9999px;
+
+        @media (max-width: 768px) {
+            margin-left: 15px;
+        }
+    }
+}
+
+.navbar-toggle {
+    background-color: transparent;
+    border: 0;
+
+    .icon-bar {
+        transition: all .1s ease-in-out;
+    }
+
+    .bar-1 {
+        transform: rotate(45deg) translateX(4.243px) translateY(4.243px);
+    }
+
+    .bar-2 {
+        opacity: 0.0;
+    }
+
+    .bar-3 {
+        transform: rotate(-45deg) translateX(4.243px) translateY(-4.243px);
+    }
+
+    &.collapsed {
+
+        .bar-3,
+        .bar-1 {
+            transform: none;
+        }
+
+        .bar-2 {
+            opacity: 1.0;
+        }
+    }
+}
+
+
+
+.futurice-logo {
+    background-image: url("../images/futurice_logo.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+    height: 2.4rem;
+    text-indent: -9999px;
+    width: 120px;
+    transition: transform $animation-duration;
+
+    &:hover,
+    &:focus {
+        transform: scale(1.05, 1.05);
+    }
+}
+
+.social-icon {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+    height: 60px;
+    margin: 12px 16px;
+    width: 60px;
+    text-indent: -9999px;
+    transition: transform $animation-duration;
+
+    &:hover,
+    &:focus {
+        transform: scale(1.1, 1.1);
+    }
+
+    &.facebook {
+        background-image: url("../images/social_icon_facebook.png");
+    }
+
+    &.twitter {
+        background-image: url("../images/social_icon_twitter.png");
+    }
+}
+
+.video-js {
+    position: relative !important;
+    width: 100% !important;
+    height: 529px !important;
+
+    @media (max-width: 767px) {
+        height: 320px !important;
+    }
+}
+
+.vjs-default-skin .vjs-play-progress,
+.vjs-default-skin .vjs-volume-level {
+    background-color: $color-futurice;
+}
+
+// .cards-3d {
+//     background-color: #ff0000;
+//     height: 100px; width: 100px;
+//     transform: rotateX(39deg) rotateZ(347deg);
+//     perspective: 500px;
+//     perspective-origin: 50% 50%;
+// }
+
+.person-portrait {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: block;
+    height: 200px;
+    margin: 0 auto;
+    width: 200px;
+
+    &.paul {
+        background-image: url("../images/paul_pic.png");
+    }
+
+    &.ricardo {
+        background-image: url("../images/ric_pic.png");
+    }
+}
+
+.person-name {
+    color: $color-dark-blue;
+    font-family: $font-regular;
+    font-size: 2.6rem;
+    font-weight: 700;
+    line-height: 3.0rem;
+    margin: 16px 0 4px 0;
+    padding: 0;
+}
+
+.person-title {
+    line-height: 2.0rem;
+    font-family: $font-bodycopy;
+    font-size: 1.6rem;
+    font-weight: 300;
+    margin: 0 0 16px 0;
+}
+
+#video-iframe {
+    height: 500px;
+
+
+    @media (min-width: 992px) {
+        height: 650px;
+    }
+
+    @media (max-width: 767px) {
+        height: 300px;
+    }
+}

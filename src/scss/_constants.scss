@@ -1,0 +1,27 @@
+
+// colors
+$color-futurice: #349d4a;
+$color-light-gray: #f8f8f8;
+$color-black: rgb(33,15,0);
+$color-white: #ffffff;
+$color-gray-blue: rgb(238,243,245);
+$color-dark-blue: rgb(0,52,65);
+$color-gray: rgb(238,243,245);
+
+$color-navbar-bg: $color-white;
+$color-navbar-text: $color-black;
+$color-navbar-hover: $color-futurice;
+$color-headline: $color-dark-blue;
+
+// fonts
+$font-regular: "proxima-nova","Helvetica Neue",Arial,sans-serif;
+$font-bodycopy: $font-regular;
+
+// animation duration
+$animation-duration: .1s;
+$medium-animation-duration: .3s;
+$long-animation-duration: .5s;
+
+// other constants
+$element-spacing: 40px;
+$medium-element-spacing: 60px;
