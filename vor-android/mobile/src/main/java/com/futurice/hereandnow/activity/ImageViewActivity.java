@@ -18,7 +18,6 @@ import com.squareup.picasso.Picasso;
 public class ImageViewActivity extends Activity {
 
     @NonNull
-
     public static final String IMAGE_URI = "imageUri";
 
     @Override
@@ -40,7 +39,8 @@ public class ImageViewActivity extends Activity {
                     .centerInside()
                     .into(imageView);
         } else if (getIntent().hasExtra(Constants.TYPE_KEY)){
-            SharedPreferences sp = getSharedPreferences(Constants.FOOD_KEY, Context.MODE_PRIVATE);
+            String type = getIntent().getExtras().getString(Constants.TYPE_KEY);
+            SharedPreferences sp = getSharedPreferences(type, Context.MODE_PRIVATE);
             String base64 = sp.getString(Constants.IMAGE_KEY, "Failed");
             imageView.setImageBitmap(FileUtils.base64ToBitmap(base64));
         }
