@@ -14,8 +14,7 @@ public class Constants {
     public static final int MAP_8TH_FLOOR = 1;
     public static final int MAPS_NUMBER_OF_TABS = 2;
 
-//    public static final String SERVER_URL = "http://rubix.futurice.com/";
-    public static final String SERVER_URL = "http://192.168.0.107:8080/";
+    public static final String SERVER_URL = "http://rubix.futurice.com/";
 
     public static final String TYPE_KEY = "type";
     public static final String ID_KEY = "id";
