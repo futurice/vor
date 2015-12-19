@@ -46,7 +46,7 @@ public final class Topic extends BaseTopic {
         RelativeLayout topicLayout = (RelativeLayout) view.findViewById(R.id.topic_linear_layout);
 
         topicIconImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        topicTitleTextView.setText(this.mText);
+        topicTitleTextView.setText(mText);
         topicLayout.setBackgroundColor(mColor);
 
         Picasso.with(context)
@@ -57,7 +57,7 @@ public final class Topic extends BaseTopic {
 
     @Override
     public boolean matchesSearch(@NonNull final String search) {
-        return this.mText.toLowerCase().contains(search) || super.matchesSearch(search);
+        return mText.toLowerCase().contains(search) || super.matchesSearch(search);
     }
 
     @Override
@@ -71,7 +71,7 @@ public final class Topic extends BaseTopic {
     }
 
     public void setText(@NonNull final String text) {
-        this.mText = text;
+        mText = text;
     }
 
     public int getColor() {
@@ -88,6 +88,6 @@ public final class Topic extends BaseTopic {
     }
 
     public void setImageUri(@NonNull final Uri uri) {
-        this.mImageUri = uri;
+        mImageUri = uri;
     }
 }

@@ -179,7 +179,7 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
         switch (key) {
             case Constants.IMAGE_KEY:
                 String file = sharedPreferences.getString(key, "Failed");
-                getSourceTopicModel().add(0, Cards.pool(file, this.getActivity()));
+                getSourceTopicModel().add(0, Cards.pool(file, getActivity()));
                 UI.execute(this::filterModel);
                 break;
             default:

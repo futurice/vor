@@ -35,17 +35,17 @@ public class ImageCard extends BaseCard {
     public static final int CARD_TYPE = 0;    // Needed for ListView recycling
     public static final String TAG = ImageCard.class.getName();
     @NonNull
-    private String text = "";
+    private String mText = "";
 
     @NonNull
     private String mCardType = "";
 
     @NonNull
-    private Uri imageUri = Uri.EMPTY;
+    private Uri mImageUri = Uri.EMPTY;
     private String mImageBase64;
 
     @NonNull
-    private Uri thumbnailUri = Uri.EMPTY;
+    private Uri mThumbnailUri = Uri.EMPTY;
 
     public ImageCard(final String name, final long uid, final Context context) {
         super(name, uid, context, R.layout.card_layout);
@@ -114,7 +114,7 @@ public class ImageCard extends BaseCard {
         final ImageView cardImageView = (ImageView) view.findViewById(R.id.card_image);
 
         final String date = DateUtils.getRelativeDateTimeString(mContext,
-                this.getDate().getTime(),
+                getDate().getTime(),
                 DateUtils.MINUTE_IN_MILLIS,
                 DateUtils.WEEK_IN_MILLIS,
                 0).toString();
@@ -153,16 +153,16 @@ public class ImageCard extends BaseCard {
 
     @Override
     public boolean matchesSearch(@NonNull final String search) {
-        return text.toLowerCase().contains(search.toLowerCase());
+        return mText.toLowerCase().contains(search.toLowerCase());
     }
 
     @NonNull
     public String getText() {
-        return text;
+        return mText;
     }
 
     public void setText(@NonNull final String text) {
-        this.text = text;
+        mText = text;
     }
 
     @NonNull
@@ -176,12 +176,12 @@ public class ImageCard extends BaseCard {
 
     @NonNull
     public Uri getImageUri() {
-        return imageUri;
+        return mImageUri;
     }
 
     public void setImageUri(@NonNull final Uri imageUri) {
-        this.imageUri = imageUri;
-        this.setThumbnailUri(createThumbnail(this.imageUri));
+        mImageUri = imageUri;
+        setThumbnailUri(createThumbnail(mImageUri));
     }
 
     @NonNull
@@ -195,10 +195,10 @@ public class ImageCard extends BaseCard {
 
     @NonNull
     public Uri getThumbnailUri() {
-        return thumbnailUri;
+        return mThumbnailUri;
     }
 
     public void setThumbnailUri(@NonNull final Uri thumbnailUri) {
-        this.thumbnailUri = thumbnailUri;
+        mThumbnailUri = thumbnailUri;
     }
 }
