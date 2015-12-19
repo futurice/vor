@@ -171,42 +171,34 @@ public class MapActivityFragment extends Fragment {
             }
         });
 
-        mImageView.setOnMapDrawListener(new MapView.OnMapDrawListener() {
-            @Override
-            public ArrayList<PeopleManager.Person> getPersons() {
-                return peopleManager.getPeople();
-            }
-        });
+        mImageView.setOnMapDrawListener(peopleManager::getPeople);
 
-        mAttacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
-            @Override
-            public void onViewTap(View view, float x, float y) {
-                float errorMargin = 60f * mAttacher.getScale();
-                float marginX, marginY;
+        mAttacher.setOnViewTapListener((view, x, y) -> {
+            float errorMargin = 60f * mAttacher.getScale();
+            float marginX, marginY;
 
-                PeopleManager.Person closestPerson = null;
-                float closestValue = 0f;
+            PeopleManager.Person closestPerson = null;
+            float closestValue = 0f;
 
-                for (PeopleManager.Person person : peopleManager.getPeople()) {
-                    marginX = Math.abs(x - person.getCurrentLocationX());
-                    marginY = Math.abs(y - person.getLocationOnScreenY());
+            for (PeopleManager.Person person : peopleManager.getPeople()) {
+                marginX = Math.abs(x - person.getCurrentLocationX());
+                marginY = Math.abs(y - person.getLocationOnScreenY());
 
-                    if (marginX < errorMargin && marginY < errorMargin) {
-                        if (closestPerson == null) {
+                if (marginX < errorMargin && marginY < errorMargin) {
+                    if (closestPerson == null) {
+                        closestPerson = person;
+                        closestValue = marginX + marginY;
+                    } else {
+                        if ((marginX + marginY) < closestValue) {
                             closestPerson = person;
                             closestValue = marginX + marginY;
-                        } else {
-                            if ((marginX + marginY) < closestValue) {
-                                closestPerson = person;
-                                closestValue = marginX + marginY;
-                            }
                         }
                     }
                 }
+            }
 
-                if (closestPerson != null) {
-                    closestPerson.setClicked(!closestPerson.isClicked());
-                }
+            if (closestPerson != null) {
+                closestPerson.setClicked(!closestPerson.isClicked());
             }
         });
     }

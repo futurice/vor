@@ -1,6 +1,5 @@
 package com.futurice.hereandnow.utils;
 
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import java.util.ArrayList;

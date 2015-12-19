@@ -27,7 +27,7 @@
         android:textColor="@android:color/white"
         android:layout_marginTop="40dp"
         android:fontFamily="sans-serif-light"
-        android:text="Email"/>
+        android:text="@string/email"/>
 
     <EditText
         android:id="@+id/onboardingEmailEditText"
@@ -37,7 +37,7 @@
         android:inputType="textEmailAddress"
         android:textColor="@android:color/white"
         android:fontFamily="sans-serif-light"
-        android:hint="first.last@futurice.com"
+        android:hint="@string/pref_my_email_default"
         android:textColorHint="@color/light_grey_text"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
@@ -49,7 +49,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
-        android:text="LOGIN"
+        android:text="@string/login"
+        android:textAllCaps="true"
         android:textColor="@android:color/white"
         android:padding="10dp"
         android:layout_marginTop="40dp"

@@ -112,7 +112,9 @@ public final class ImageUtils {
     @CheckResult(suggest = "IAltFuture#fork()")
     public static IAltFuture<?, File> createEmptyImageAsync(File emptyImageFile, Context context) {
         return Async.SERIAL_WORKER.then(() -> {
-            final Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.no_image_placeholder);
+            final Bitmap bitmap = BitmapFactory.decodeResource(
+                    context.getResources(),
+                    R.raw.no_image_placeholder);
             final FileOutputStream fos = new FileOutputStream(emptyImageFile);
 
             try {

@@ -1,2 +1,2 @@
-include ':mobile', ':cascade', ':scampi_client'
+include ':mobile', ':cascade'
 project(':cascade').projectDir = new File(settingsDir, '../../cascade/ReactiveCascade/cascade')

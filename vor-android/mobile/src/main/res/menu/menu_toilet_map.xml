@@ -4,6 +4,7 @@
       tools:context="com.futurice.hereandnow.activity.MapActivity">
     <item
         android:id="@+id/action_change_floor"
+        android:title="@string/change_floor"
         android:orderInCategory="100"
         app:showAsAction="never"/>
 </menu>

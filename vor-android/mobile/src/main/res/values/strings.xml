@@ -3,58 +3,26 @@
     <string name="app_name">Vör</string>
 
     <!-- Toolbar -->
+    <string name="action_bar_up_description">Navigate up</string>
     <string name="settings_title">Settings</string>
-    <string name="close_service_title">Close background service</string>
 
     <!-- Topic -->
-    <string name="topic_create_title">Creating a New Topic</string>
-    <string name="topic_title_hint">Topic title</string>
-    <string name="topic_create_success">New topic published</string>
-    <string name="topic_delete_confirmation">Are you sure you want to delete this card?</string>
-    <string name="topic_flag_confirmation">Are you sure you want to report this as inappropriate?</string>
     <string name="topic_background">Topic background</string>
     <string name="topic_like_image">Topic like image</string>
 
     <!-- Card -->
-    <string name="card_title">Card title</string>
-    <string name="card_text">Leave a comment</string>
     <string name="card_title_placeholder">Card Title</string>
-    <string name="card_create_title">Add a New Card</string>
-    <string name="card_create_success">New card published</string>
-    <string name="card_send_to_big_screen">Send to a Big Screen nearby.</string>
-    <string name="card_like_toast_message"><![CDATA[You like -> card moves up Trending. Thanks!]]></string>
-    <string name="card_liked_this">%d people liked this:</string>
-    <string name="card_liked_this_singular">%d person liked this:</string>
-    <string name="card_unlike_toast_message"><![CDATA[You unlike -> card moves down Trending. Thanks!]]></string>
-    <string name="card_discard">Discard</string>
-    <string name="card_submit">Submit</string>
-    <string name="card_comment">Comment</string>
-    <string name="card_take_picture_label">Take a new picture</string>
-    <string name="optional_picture_text">Add picture (optional)</string>
-    <string name="optional_video_text">Add video (optional)</string>
 
     <!-- People -->
-    <string name="people_about_me">About Me:</string>
-    <string name="people_tag">Tag:</string>
     <string name="people_tag_anonymous">anonymous</string>
-    <string name="people_about_me_empty">(empty)</string>
-    <string name="people_user_not_found">User: %1$s is not currently available</string>
 
     <!-- Search -->
     <string name="search_title">Search</string>
     <string name="search_hint_trending">Search trending</string>
-    <string name="search_hint_happening_now">Search happening now</string>
-    <string name="search_hint_people">Search for people</string>
-    <string name="search_hint_beacons">Search for beacons</string>
-    <string name="search_hint_map">Search for map</string>
 
     <!-- Settings -->
     <string name="title_activity_settings">ACTIVITY</string>
     <string name="pref_header_general">Settings</string>
-    <string name="pref_my_tag_title">My @tag (visible to everyone)</string>
-    <string name="pref_my_tag_default">anonymous</string>
-    <string name="pref_about_me_title">About Me</string>
-    <string name="pref_about_me_default">About Me Default</string>
     <string name="pref_my_email_title">My Email</string>
     <string name="pref_my_email_default">first.last@futurice.com</string>
 
@@ -67,25 +35,6 @@
     <string name="tab_map_7th_floor_title">7th floor</string>
     <string name="tab_map_8th_floor_title">8th floor</string>
 
-    <!-- Generic -->
-    <string name="gen_ok">@android:string/ok</string>
-    <string name="gen_cancel">Cancel</string>
-    <string name="gen_delete">Delete</string>
-    <string name="gen_select_media">Select media</string>
-    <string name="gen_select_picture">Select media</string>
-
-    <string name="error_non_local_file">You can only share local files.</string>
-
-    <string name="liked">%1$s %2$s</string>
-    <string name="card_author">\@%1$s\n%2$s</string>
-
-    <plurals name="number_of_likes">
-        <item quantity="one">%d person liked this:</item>
-        <item quantity="other">%d people liked this:</item>
-    </plurals>
-
-    <string name="no_data">No data</string>
-    <string name="beacon_image_description">Beacon Image</string>
     <string name="action_settings">Settings</string>
 
     <string name="title_activity_toilet">Toilets</string>
@@ -99,8 +48,6 @@
     <string name="title_activity_map">Maps</string>
     <string name="futurice_map">Futurice map</string>
     <string name="error_connect">Failed to connect</string>
-
-    <string name="title_activity_drawer">DrawerActivity</string>
 
     <string name="nav_my_cards">My cards</string>
     <string name="nav_people">People</string>
@@ -117,24 +64,23 @@
     <string name="space_floor_7">Space 7th Floor</string>
     <string name="space_floor_8">Space 8th Floor</string>
 
-    <string name="title_activity_new_settings">Settings</string>
-
     <string name="title_activity_cards">Cards</string>
     <string name="title_activity_people">People Nearby</string>
-    <string name="title_activity_beacons">Beacons (Temporary)</string>
-    <string name="add_as_favourite">Add as Favourite</string>
-    <string name="beacons_listviewadapter_beacons_found">Beacon Found!</string>
 
     <!-- Notification -->
     <string name="notification_bluetooth_title">Bluetooth</string>
     <string name="notification_bluetooth_message">Your Bluetooth isn\'t enabled.\n\nIf you wish to update your location on the app, please enable it.</string>
-    <string name="notification_bluetooth_button">close</string>
+    <string name="notification_close">close</string>
     <string name="notification_wifi_title">Wifi</string>
     <string name="notification_wifi_message">You need to be connected to %s wifi in order to receive messages.</string>
     <string name="notification_do_not_show_again">Do not show again</string>
     <string name="preferences_notification_sate">bluetooth_notification_state</string>
     <string name="preferences_wifi_notification_state">wifi_notification_state</string>
     <string name="logo">logo</string>
+    <string name="email">email</string>
     <string name="please_add_email">Please add your email</string>
     <string name="invalid_email">Invalid email</string>
+    <string name="login">login</string>
+    <string name="change_floor">Change floor</string>
+    <string name="people_nearby">People Nearby</string>
 </resources>

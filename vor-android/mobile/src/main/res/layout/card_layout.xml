@@ -28,7 +28,7 @@
             android:textColor="@color/colorPrimary"
         android:textIsSelectable="false"
             android:gravity="center"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:layout_marginBottom="5dp"/>
 
         <!-- Author and date -->
@@ -37,8 +37,7 @@
             style="@style/CardTitle"
             android:layout_gravity="start|center_vertical"
             android:textColor="@color/light_grey_text"
-            android:text="Hello World"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:gravity="end"/>
     </LinearLayout>
 
@@ -58,123 +57,6 @@
             android:scaleType="fitCenter"
             />
 
-        <ImageView
-            android:id="@+id/video_card_play_button_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:src="@drawable/video_play_overlay_black"
-            android:visibility="gone" />
     </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/video_card_tobigscreen_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@android:color/white"
-        android:orientation="horizontal"
-        android:padding="@dimen/color_padding"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/video_card_tobigscreen_button"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:clickable="true"
-            android:paddingRight="@dimen/color_padding"
-            android:src="@drawable/send_bigscreen" />
-
-       <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="@string/card_send_to_big_screen"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-
-    <!-- Card specific actions -->
-    <LinearLayout
-        android:id="@+id/topic_button_bar"
-        android:layout_width="326dp"
-        android:layout_height="35dp"
-        android:background="@color/colorAccent"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/card_like_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/like_button" />
-
-        <ImageView
-            android:id="@+id/card_comment_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/comment_button" />
-
-
-        <ImageView
-            android:id="@+id/card_user_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/user_button" />
-
-
-        <include
-            android:id="@+id/delete_icon_layout"
-            layout="@layout/delete_icon"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:layout_weight="1"
-            android:scaleType="centerInside" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/likes_bar"
-        android:layout_width="326dp"
-        android:layout_height="35dp"
-        android:background="@android:color/white"
-        android:visibility="gone"
-        android:orientation="horizontal">
- <!--       <TextView
-            android:id="@+id/likes_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="3dp"
-            android:text="0"/>-->
-        <TextView
-            android:id="@+id/likes_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:paddingLeft="3dp"
-            android:paddingRight="10dp"
-            android:text="@string/card_liked_this"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/comments_bar"
-        android:layout_width="326dp"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:orientation="vertical"
-        android:visibility="gone">
-    </LinearLayout>
-
-    </LinearLayout>
+</LinearLayout>

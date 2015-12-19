@@ -22,7 +22,7 @@ public class Cards {
         final Topic topic = new Topic("Pool", 140, context);
         topic.setText("Are you up for a game?");
         topic.setIsPrebuiltTopic(true);
-        topic.setImageUri(HereAndNowUtils.getResourceUri(R.drawable.card_pool));
+        topic.setImageUri(HereAndNowUtils.getResourceUri(R.raw.card_pool));
 
         ImageCard card = new ImageCard("__", 440, context);
         card.setCardType(Constants.POOL_KEY);
@@ -44,7 +44,7 @@ public class Cards {
         final Topic topic = new Topic("Food", 240, context);
         topic.setText("Check what's on FutuCafé table");
         topic.setIsPrebuiltTopic(true);
-        topic.setImageUri(HereAndNowUtils.getResourceUri(R.drawable.card_food));
+        topic.setImageUri(HereAndNowUtils.getResourceUri(R.raw.card_food));
 
         ImageCard card = new ImageCard("__", 540, context);
         card.setCardType(Constants.FOOD_KEY);
@@ -112,7 +112,7 @@ public class Cards {
         card.setText("One of your workspaces is now free");
         card.setAuthor("Futu2", "Futu2");
         card.setDate(new Date());
-        card.setImageUri(HereAndNowUtils.getResourceUri(R.drawable.card_workspace));
+        card.setImageUri(HereAndNowUtils.getResourceUri(R.raw.card_workspace));
 
         topic.addCard(card);
         return topic;

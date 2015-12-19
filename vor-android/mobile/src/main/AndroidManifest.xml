@@ -46,16 +46,6 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
         </activity>
-        <activity android:name=".activity.NewTopicActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.DrawerActivity"/>
-        </activity>
-        <activity android:name=".activity.NewCardActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.DrawerActivity"/>
-        </activity>
         <activity android:name=".activity.ImageViewActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

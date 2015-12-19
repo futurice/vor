@@ -1,7 +1,6 @@
 package com.futurice.hereandnow.services;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
@@ -13,28 +12,26 @@ public class LocationService extends Service {
     private static final int DELAY = 5000;
     private static final String TAG = "LocationService";
 
-    private boolean isRunning;
-    private Context context;
-    private BeaconLocationManager beaconLocationManager;
+    private boolean mIsRunning;
+    private BeaconLocationManager mBeaconLocationManager;
 
-    private Handler handler;
+    private Handler mHandler;
 
     @Override
     public void onCreate() {
-        this.context = this;
-        this.isRunning = false;
-        beaconLocationManager = new BeaconLocationManager(this);
-        beaconLocationManager.initialize();
-        handler = new Handler();
+        mIsRunning = false;
+        mBeaconLocationManager = new BeaconLocationManager(this);
+        mBeaconLocationManager.initialize();
+        mHandler = new Handler();
         Log.d(TAG, "LocationService created");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (!this.isRunning) {
-            this.isRunning = true;
-            beaconLocationManager.resume();
-            handler.postDelayed(locationUpdate, DELAY);
+        if (!mIsRunning) {
+            mIsRunning = true;
+            mBeaconLocationManager.resume();
+            mHandler.postDelayed(locationUpdate, DELAY);
             Log.d(TAG, "LocationService started");
         }
 
@@ -48,10 +45,10 @@ public class LocationService extends Service {
 
     @Override
     public void onDestroy() {
-        if (this.isRunning) {
-            this.isRunning = false;
-            handler = null;
-            beaconLocationManager.destroy();
+        if (mIsRunning) {
+            mIsRunning = false;
+            mHandler = null;
+            mBeaconLocationManager.destroy();
             super.onDestroy();
         }
     }
@@ -62,8 +59,8 @@ public class LocationService extends Service {
     private Runnable locationUpdate = new Runnable() {
         @Override
         public void run() {
-            beaconLocationManager.sendLocation();
-            handler.postDelayed(this, DELAY);
+            mBeaconLocationManager.sendLocation();
+            mHandler.postDelayed(this, DELAY);
         }
     };
 }

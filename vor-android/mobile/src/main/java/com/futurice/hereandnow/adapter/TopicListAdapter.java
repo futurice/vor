@@ -15,7 +15,6 @@ import com.futurice.cascade.util.RCLog;
 import com.futurice.hereandnow.card.ICard;
 import com.futurice.hereandnow.card.ITopic;
 import com.futurice.hereandnow.card.Topic;
-import com.futurice.hereandnow.singleton.ModelSingleton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -221,7 +220,7 @@ public class TopicListAdapter extends BaseExpandableListAdapter implements IName
 
     @Override
     public Filter getFilter() {
-        final Filter filter = new Filter() { //TODO Redundant variable, check
+        return new Filter() {
             @Override
             protected FilterResults performFiltering(@NonNull final CharSequence constraint) {
                 final FilterResults results = new FilterResults();
@@ -254,8 +253,6 @@ public class TopicListAdapter extends BaseExpandableListAdapter implements IName
                 notifyDataSetChanged();
             }
         };
-
-        return filter;
     }
 
     public boolean filter(@NonNull final ITopic topic,

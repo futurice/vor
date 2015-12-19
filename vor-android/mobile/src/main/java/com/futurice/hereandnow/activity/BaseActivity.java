@@ -10,7 +10,7 @@ import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
 
 abstract class BaseActivity extends AppCompatActivity {
-    protected boolean hasExtra(@NonNull final String name) {
+    private boolean hasExtra(@NonNull final String name) {
         return getIntent().getExtras() != null && getIntent().getExtras().get(name) != null;
     }
 

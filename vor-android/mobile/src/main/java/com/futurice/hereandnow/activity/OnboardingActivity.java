@@ -8,12 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.futurice.hereandnow.Constants;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.utils.HereAndNowUtils;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

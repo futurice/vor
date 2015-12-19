@@ -13,8 +13,6 @@ import com.futurice.cascade.util.AssertUtil;
 import com.futurice.cascade.util.RCLog;
 import com.futurice.hereandnow.adapter.TopicListAdapter;
 import com.futurice.hereandnow.card.ITopic;
-import com.futurice.hereandnow.singleton.ModelSingleton;
-import com.futurice.hereandnow.singleton.ServiceSingleton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,22 +24,19 @@ import java.util.List;
  */
 public class BaseHereAndNowFragment extends Fragment implements TextWatcher, IAsyncOrigin {
 
-    protected static final ServiceSingleton serviceSingleton = ServiceSingleton.instance();
-    @NonNull
-    protected static final ModelSingleton modelSingleton = ModelSingleton.instance();
-    private final List<ITopic> sourceTopicModel = new ArrayList<>();
-    private ExpandableListView expandableListView;
+    private final List<ITopic> mSourceTopicModel = new ArrayList<>();
+    private ExpandableListView mExpandablelistview;
     @Nullable
-    private TopicListAdapter topicListAdapter; // View Model, sorted and filtered from the Model
+    private TopicListAdapter mTopicListAdapter; // View Model, sorted and filtered from the Model
     @Nullable
-    private CharSequence searchString;
-    private final ImmutableValue<String> origin = RCLog.originAsync();
+    private CharSequence mSearchString;
+    private final ImmutableValue<String> mOriginAsync = RCLog.originAsync();
 
     protected void initListView() {
         RCLog.d(this, "Init HereAndNowFragment list");
-        final ExpandableListView lv = AssertUtil.assertNotNull(expandableListView);
+        final ExpandableListView lv = AssertUtil.assertNotNull(mExpandablelistview);
 
-        lv.setAdapter(topicListAdapter);
+        lv.setAdapter(mTopicListAdapter);
         lv.setGroupIndicator(null);
         lv.setDividerHeight(0);
         registerForContextMenu(lv);
@@ -49,11 +44,11 @@ public class BaseHereAndNowFragment extends Fragment implements TextWatcher, IAs
 
     @Nullable
     public TopicListAdapter getTopicListAdapter() {
-        return topicListAdapter;
+        return mTopicListAdapter;
     }
 
     public void setTopicListAdapter(@NonNull final TopicListAdapter topicListAdapter) {
-        this.topicListAdapter = topicListAdapter;
+        this.mTopicListAdapter = topicListAdapter;
     }
 
     @Override
@@ -64,15 +59,15 @@ public class BaseHereAndNowFragment extends Fragment implements TextWatcher, IAs
 
     @Nullable
     public ExpandableListView getExpandableListView() {
-        return expandableListView;
+        return mExpandablelistview;
     }
 
     public void setExpandableListView(@NonNull ExpandableListView expandableListView) {
-        this.expandableListView = expandableListView;
+        this.mExpandablelistview = expandableListView;
     }
 
     protected List<ITopic> getSourceTopicModel() {
-        return sourceTopicModel;
+        return mSourceTopicModel;
     }
 
     protected void initTopicsAndCards(
@@ -84,8 +79,8 @@ public class BaseHereAndNowFragment extends Fragment implements TextWatcher, IAs
     }
 
     protected void filterModel() {
-        if (topicListAdapter != null) {
-            topicListAdapter.getFilter().filter(searchString);
+        if (mTopicListAdapter != null) {
+            mTopicListAdapter.getFilter().filter(mSearchString);
         }
     }
 
@@ -95,7 +90,7 @@ public class BaseHereAndNowFragment extends Fragment implements TextWatcher, IAs
             final int start,
             final int before,
             final int count) {
-        searchString = sequence;
+        mSearchString = sequence;
         filterModel();
     }
 
@@ -114,6 +109,6 @@ public class BaseHereAndNowFragment extends Fragment implements TextWatcher, IAs
     @NonNull
     @Override
     public ImmutableValue<String> getOrigin() {
-        return origin;
+        return mOriginAsync;
     }
 }

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v7.app.NotificationCompat;
@@ -15,9 +14,7 @@ import android.util.Log;
 
 import com.futurice.cascade.AsyncBuilder;
 import com.futurice.hereandnow.services.LocationService;
-import com.spacetimenetworks.scampiandroidlib.ScampiService;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,55 +26,19 @@ import io.socket.client.Socket;
 /**
  * Main application
  */
-public class HereAndNowApplication extends Application implements ScampiService.StateChangeCallback {
-
+public class HereAndNowApplication extends Application {
     public static String TAG = HereAndNowApplication.class.getCanonicalName();
-    private static Context sContext;
 
-    private static Socket mSocket;
+    private static Context sContext;
+    private static Socket sSocket;
 
     /**
      * Reference to the service.
      */
     @Nullable
 
-//    ScampiService service;
-
     public static Context getStaticContext() {
         return HereAndNowApplication.sContext;
-    }
-
-    public static void stopServiceDelayed(@NonNull final Context context) {
-        final HereAndNowApplication app = ((HereAndNowApplication) (context.getApplicationContext()));
-//        if (app.service != null) {
-//            app.service.stop(Constants.DELAY_IN_MINUTES, TimeUnit.MINUTES);
-//        }
-    }
-
-    public static void stopServiceNow(@NonNull final Context context) {
-//        final HereAndNowApplication app = ((HereAndNowApplication) (sContext.getApplicationContext()));
-//        if (app.service != null) {
-//            app.service.stop();
-//            Async.exitWithErrorCode(TAG, "User shutdown", null);
-//            new Thread(() -> {
-//                try {
-//                    Thread.sleep(300);
-//                } catch (InterruptedException e) {
-//                    Log.e(TAG, "Interrupted app exit sleep: ", e);
-//                }
-//                Async.exitWithErrorCode(TAG, "User shutdown", null);
-//            });
-//        }
-    }
-
-    public static void startServiceIf(@NonNull final Context context) {
-//        final HereAndNowApplication app = ((HereAndNowApplication) (sContext.getApplicationContext()));
-//
-//        if (app.service != null) {
-//            app.service.start();
-//        } else {
-//            app.initConnection();
-//        }
     }
 
     public static String getApplicationName() {
@@ -96,12 +57,13 @@ public class HereAndNowApplication extends Application implements ScampiService.
                 .build();
 
         try {
-            mSocket = IO.socket(Constants.SERVER_URL);
+            sSocket = IO.socket(Constants.SERVER_URL);
+            IO.setDefaultHostnameVerifier((hostname, session) -> true);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
-        mSocket
+        sSocket
                 .on(Socket.EVENT_CONNECT, args -> Log.d(TAG, "EVENT_CONNECT"))
                 .on(Socket.EVENT_CONNECT_ERROR, args -> {
                     Log.d(TAG, "EVENT_CONNECT_ERROR");
@@ -112,7 +74,7 @@ public class HereAndNowApplication extends Application implements ScampiService.
                 .on(Constants.LOCATION_KEY, args -> Log.d(TAG, "LOCATION RECEIVED"))
                 .on(Constants.MESSAGE_KEY, args -> updateToSharedPreferences((JSONObject) args[0]))
                 .on(Socket.EVENT_DISCONNECT, args -> Log.d(TAG, "EVENT_DISCONNECT"));
-        mSocket.connect();
+        sSocket.connect();
 
         // Start the service for updating location if connected to the correct network.
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -163,7 +125,7 @@ public class HereAndNowApplication extends Application implements ScampiService.
                 .setContentText("Sauna is " + status);
         NotificationManager mNotifyMgr =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        mNotifyMgr.notify(001, mBuilder.build());
+        mNotifyMgr.notify(1, mBuilder.build());
     }
 
     private void saveToiletToSharedPreferences(JSONObject jsonObject) throws JSONException {
@@ -196,77 +158,7 @@ public class HereAndNowApplication extends Application implements ScampiService.
         editor.apply();
     }
 
-    @Override
-    public void stateChanged(@NonNull final ScampiService.RouterState routerState) {
-//        Log.d(TAG, "stateChanged");
-    }
-
-//    private void initConnection() {
-//        // Setup the service binding
-//        super.startService(new Intent(this, ScampiService.class));
-//        // Connection used to get a callback once the service is connected.
-//        this.bindService(new Intent(this, ScampiService.class),
-//                this.getServiceConnection(), Context.BIND_AUTO_CREATE);
-//    }
-
-//    private void startRouter() {
-//        // Build a configuration for the Service. The configuration
-//        // defines all user visible things such as notification tray icon
-//        // and texts, as well as things like the home directory to store the
-//        // router files and the configuration to use for the router. There
-//        // are defaults for all the settings.
-//        final ServiceConfig scampiServiceConfig =
-//                ServiceConfig.builder(HereAndNowApplication.this)
-//                        .logToStdout()    // Causes the router to log to stdout
-//                        .debugLogLevel()  // Sets log level to debug for the router
-////Use only if works only with a local server        .configFileAsset("star.conf")
-//                        .notifyIntent(new Intent(this, DrawerActivity.class))
-//                        .notifyContentText(HereAndNowApplication.getApplicationName())
-//                        .notifyIcon(R.drawable.ic_launcher_transparent)
-//                        .build();
-//
-//        // startScan() either starts up the router if it's not running, or does
-//        // nothing otherwise.
-//        if (service != null) {
-//            this.service.start(scampiServiceConfig);
-//        } else {
-//            Log.i(TAG, "Can not startScan SCAMPI service- not connected");
-//        }
-//    }
-
-//    @NonNull
-//    private ServiceConnection getServiceConnection() {
-//        return new ServiceConnection() {
-//
-//            @Override
-//            public void onServiceConnected(@NonNull final ComponentName className, @NonNull final IBinder service) {
-//                Log.d(TAG, "onServiceConnected");
-//
-//                // Get reference to the IScampiService
-//                final ScampiService scampiService = ((ScampiService.ScampiBinder) service).getService();
-//                HereAndNowApplication.this.service = scampiService;
-//
-//                // Add callbacks to the service
-//                scampiService.addStateChangeCallback(HereAndNowApplication.this);
-//                startRouter();
-//            }
-//
-//            @Override
-//            public void onServiceDisconnected(@NonNull final ComponentName arg0) {
-//                Log.d(TAG, "onServiceDisconnected");
-//                removeCallback();
-//            }
-//        };
-//    }
-
-    public void removeCallback() {
-//        if (HereAndNowApplication.this.service != null) {
-//            HereAndNowApplication.this.service.removeStateChangeCallback(HereAndNowApplication.this);
-//            HereAndNowApplication.this.service = null;
-//        }
-    }
-
     public static Socket getSocket() {
-        return mSocket;
+        return sSocket;
     }
 }

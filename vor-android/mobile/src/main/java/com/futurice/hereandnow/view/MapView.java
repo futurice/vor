@@ -57,7 +57,7 @@ public class MapView extends PhotoView {
         h = new Handler();
     }
 
-    private Runnable runnable = () -> invalidate();
+    private Runnable runnable = this::invalidate;
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {

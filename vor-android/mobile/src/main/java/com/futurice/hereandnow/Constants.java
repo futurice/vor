@@ -14,13 +14,8 @@ public class Constants {
     public static final int MAP_8TH_FLOOR = 1;
     public static final int MAPS_NUMBER_OF_TABS = 2;
 
-    public static final String EMPTY_IMAGE_FILE_NAME = "empty_image_here_and_now.jpg";
-
-    public static int[] TAB_ICONS = {R.drawable.topmenu_trending, R.drawable.topmenu_happening_now, R.drawable.topmenu_my_tribe};
-
-    public static final String USER_AUTHOR_KEY = "author_key";
-
-    public static final String SERVER_URL = "http://rubix.futurice.com/";
+//    public static final String SERVER_URL = "http://rubix.futurice.com/";
+    public static final String SERVER_URL = "http://192.168.0.107:8080/";
 
     public static final String TYPE_KEY = "type";
     public static final String ID_KEY = "id";
@@ -42,8 +37,6 @@ public class Constants {
 
     public static final String EMAIL = "email";
     public static final String DUMMY_EMAIL = "first.last@futurice.com";
-
-    public static final int DELAY_IN_MINUTES = 30;
 
     // Location service
     public static final String NETWORK_SSID = "\"Futurice-Helsinki\"";

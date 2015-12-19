@@ -23,7 +23,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 public class MapActivityEspressoTest {
 
     @Rule
-    public ActivityTestRule<MapActivity> mActivityRule = new ActivityTestRule(MapActivity.class);
+    public ActivityTestRule<MapActivity> mActivityRule = new ActivityTestRule<>(MapActivity.class);
 
     @Test
     public void showsTheBlueprint() {

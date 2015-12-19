@@ -2,9 +2,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">8dp</dimen>
     <dimen name="activity_vertical_margin">8dp</dimen>
-    <dimen name="space_between_vertical_margin">8dp</dimen>
     <dimen name="color_padding">16dp</dimen>
-    <dimen name="navigation_drawer_width">240dp</dimen>
 
     <!-- Named margin sizes -->
     <dimen name="margin_tiny">4dp</dimen>
@@ -25,5 +23,4 @@
     <!-- Toilets -->
     <dimen name="toilet_layout_out_margin">4dp</dimen>
     <dimen name="toilet_layout_in_margin">2dp</dimen>
-    <dimen name="toilet_label_gender_margin">8dp</dimen>
 </resources>

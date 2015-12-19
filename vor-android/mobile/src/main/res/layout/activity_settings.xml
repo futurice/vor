@@ -14,7 +14,7 @@
         android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:navigationIcon="?attr/homeAsUpIndicator"
-        app:navigationContentDescription="@string/abc_action_bar_up_description"
+        app:navigationContentDescription="@string/action_bar_up_description"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <ListView

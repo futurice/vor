@@ -16,10 +16,6 @@
 
     <color name="transparent">#00000000</color>
 
-    <!-- TEMPORARY -->
-    <color name="light_green">#ecffe8</color>
-    <color name="light_red">#ffd0d0</color>
-
     <color name="selectedTabText">#B0B0B0</color>
 
     <color name="blueDark">#12262D</color>
