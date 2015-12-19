@@ -96,13 +96,7 @@ public class HereAndNowApplication extends Application {
                     testSaunaNotification(jsonObject.getString("status"));
                     break;
                 case Constants.POOL_KEY:
-                    String message;
-                    try {
-                        message = jsonObject.getString(Constants.MESSAGE_KEY);
-                    } catch (JSONException e) {
-                        message = "We need players!";
-                    }
-                    savePoolToSharedPreferences(message);
+                    savePoolToSharedPreferences(jsonObject.getString(Constants.IMAGE_KEY));
                     break;
                 case Constants.FOOD_KEY:
                     saveFoodToSharedPreferences(jsonObject.getString(Constants.IMAGE_KEY));
