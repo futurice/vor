@@ -32,6 +32,7 @@ function mapData(beacons, beaconConfigurations) {
 function mapDataWithConfig(data, config) {
   return {
     id: data.id,
+    email: data.email,
     distance: data.distance,
     x: config.x,
     y: config.y
