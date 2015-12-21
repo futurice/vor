@@ -1,8 +1,12 @@
 // A CNG-Methane sensor MQ-4 ordered from https://www.sparkfun.com/products/9404
+// Part of http://vor.space by Futurice
 
-$fn = 64;
+$fn = 16;
 
 pin_length = 7.7;
+
+// Uncomment to test module
+//methane_sensor();
 
 module center() {
     cylinder(h = 6.4, r = 19/2);
@@ -30,5 +34,3 @@ module methane_sensor() {
     pin(theta = 180 + 45);
     pin(theta = 180 - 45);
 }
-
-methane_sensor();

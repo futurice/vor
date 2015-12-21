@@ -6,6 +6,9 @@ length = 85;
 width = 56;
 height = 1.3;
 
+// Uncomment to test module
+// raspberry_pi_2();
+
 module board() {
     cube([length, width, height]);
 }
@@ -39,7 +42,7 @@ module header() {
 }
 
 module hole(x = 0, y = 0) {
-    translate([length - x, width - y, -10]) cylinder(h = 10 + height, r = 2.75);
+    translate([length - x, width - y, -9]) cylinder(h = 10 + height, r = 2.75);
 }
 
 module raspberry_pi_2() {
@@ -62,5 +65,3 @@ module raspberry_pi_2() {
     color("teal") usb_power();
     color("black") header();
 }
-
-raspberry_pi_2();

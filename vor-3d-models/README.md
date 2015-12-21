@@ -9,4 +9,4 @@
 ## Other Models
 These models may be the basis for 3D Cases and other printables
 
-* cadcorn.scad - [3D View](/3d-models/chilicorn-hipoly.stl) A parametric unicorn CAD model for use as a Raspberry Pi case etc. Change parameters to switch horn types, set polygon count, tilt the head, fatten the legs, add a base to hold the part and such. The chili horn is a joke for [chilicorn.org](http://chilicorn.org)
+* cadcorn.scad - [3D View](/vor-3d-models/chilicorn-hipoly.stl) A parametric unicorn CAD model for use as a Raspberry Pi case etc. Change parameters to switch horn types, set polygon count, tilt the head, fatten the legs, add a base to hold the part and such. The chili horn is a joke for [chilicorn.org](http://chilicorn.org)

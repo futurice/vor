@@ -26,7 +26,7 @@ Please have a look at the subdirectories corresponding to the different parts of
 
 [JSON](/doc/json-schema.md) describing the different message.
 
-[Design](/design/README.md) visual design assets
+[Design](/vor-design/README.md) visual design assets
 
 [Android](/vor-android/README.md) for the Android client to track your location indoors and interact with the map and service cards. A custom build for fixed table display helps office visitor interact with the service.
 
@@ -34,9 +34,11 @@ Please have a look at the subdirectories corresponding to the different parts of
 
 [Backend](/vor-backend/README.md) concerning the Node.js server
 
+[Backend Image Client](/vor-image-client/README.md) concerning the Node.js image service
+
 [Arduino and Raspberry Pi 2](/vor-arduino/README.md) about the custom hardware for IoT sensors and actuators to setup your office
 
-[3D Models](/3d-models/README.md) for the custom Arduio and Raspberry Pi 2 IoT nodes
+[3D Models](/vor-3d-models/README.md) for the custom Arduio and Raspberry Pi 2 IoT nodes
 
 iOS is definitely planned, starting with a simple app to share current location. Unfortunately it is not in the minimum viable product (MVP) test we have going on at this early stage.
 

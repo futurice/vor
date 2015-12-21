@@ -6,6 +6,9 @@ length = 73;
 width = 54;
 height = 1.6;
 
+// Uncommont to test the module
+//arduino_yun();
+
 module board() {
     difference() {
         cube([length, width, height]);
@@ -80,5 +83,3 @@ module arduino_yun() {
     color("black") header(x = 17.05, y = width - 1.3 - 2.6, z = height, length = 26.6);
     color("black") header(x = 44.2, y = width - 1.3 - 2.6, z = height, length = 26.6);
 }
-
-arduino_yun();

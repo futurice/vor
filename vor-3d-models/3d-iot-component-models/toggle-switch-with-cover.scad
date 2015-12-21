@@ -6,6 +6,9 @@ length = 28;
 width = 16.55;
 height = 19.12;
 
+// Uncomment to test module
+//toggle_switch_with_cover();
+
 module base() {
     cube([length, width, height]);
 }
@@ -46,5 +49,3 @@ module toggle_switch_with_cover() {
             color("red") cover();
         }
 }
-
-toggle_switch_with_cover();

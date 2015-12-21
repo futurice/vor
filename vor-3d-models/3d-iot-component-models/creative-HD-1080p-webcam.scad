@@ -1,10 +1,13 @@
 // A toggle switch ordered from https://www.sparkfun.com/products/11310
 
-$fn = 64;
+$fn = 32;
 
 length = 71.2;
 width = 14.4;
 height = 24.75;
+
+// Uncomment to test module
+//creative_hd();
 
 module camera() {
     intersection() {
@@ -27,6 +30,9 @@ module cable() {
     }
 }
 
-color("dimgrey") camera();
-color("lightgrey") lens();
-color("black") cable();
+module creative_hd() {
+    color("dimgrey") camera();
+    color("lightgrey") lens();
+    color("black") cable();
+}
+    

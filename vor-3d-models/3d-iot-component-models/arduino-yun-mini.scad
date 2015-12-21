@@ -1,11 +1,14 @@
 // Arduino Yun Mini 3D model for planning
 
-$fn = 64;
+$fn = 16;
 
 length = 71.12;
 width = 22.86;
 height = 1.3;
 header_length = 64;
+
+// Uncommont to test the module
+//arduino_yun_mini();
 
 module board() {
     cube([length, width, height]);
@@ -54,5 +57,3 @@ module arduino_yun_mini() {
     color("silver") header(z = -9.2, y = 0);
     color("silver") header(z = -9.2, y = width - 2.6);
 }
-
-arduino_yun_mini();

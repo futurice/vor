@@ -1,6 +1,6 @@
 // A PIR motion sensor ordered from https://www.sparkfun.com/products/13285
 
-$fn = 64;
+$fn = 16;
 
 length = 33.6;
 width = 28.6;
@@ -11,6 +11,9 @@ base_width = 22.7;
 base_height = 5.6;
 
 dome_radius = 22/2;
+
+// Uncomment to test module
+//pir_motion_sensor();
 
 module board() {
     cube([length, width, height]);
@@ -26,8 +29,8 @@ module dome() {
 }
 
 module wire() {
-    translate([-length/4, (width - 6.2)/2, height])
-        cube([length/2, 6.2, 1]);
+    translate([-length/5, (width - 6.2)/2, 0])
+        cube([length/2, 6.2, height + 3]);
 }
 
 module hole(x = 0, y = 0) {
@@ -49,5 +52,3 @@ module pir_motion_sensor() {
         color("black") wire();
     }    
 }
-
-pir_motion_sensor();

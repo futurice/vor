@@ -1,6 +1,6 @@
 // Bathroom Sensor 3D Model with methane sensor, 2 motion sensors and Arduino Yun
 
-$fn = 32;
+$fn = 8;
 
 cube_side = 140;
 cube_tip_clip = 10;
