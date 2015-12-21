@@ -5,17 +5,17 @@
 #include "vor_led.h"
 
 VorLed::VorLed() :
-VorSensor(13, DIGITAL_OUTPUT) {
+VorActuator(LED_PIN, DIGITAL_OUTPUT) {
     turnOff();
 }
 
 void VorLed::turnOn() {
-    VorSensor::write(HIGH);
+    VorActuator::write(HIGH);
     _on = true;
 }
 
 void VorLed::turnOff() {
-    VorSensor::write(LOW);
+    VorActuator::write(LOW);
     _on = false;
 }
 

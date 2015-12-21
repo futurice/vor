@@ -5,9 +5,11 @@
 #ifndef VOR_LED_H
 #define VOR_LED_H
 
-#include "vor_sensor.h"
+#include "vor_actuator.h"
 
-class VorLed : public VorSensor {
+#define LED_PIN 13
+
+class VorLed : public VorActuator {
 public:
     VorLed();
 
@@ -18,8 +20,6 @@ public:
     void turnOff();
 
     void toggle();
-
-protected:
 
 private:
     bool _on;
