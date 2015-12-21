@@ -178,8 +178,10 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
     private void addPoolCard(SharedPreferences sharedPreferences, String key) {
         switch (key) {
             case Constants.IMAGE_KEY:
+                List<ITopic> cards = getSourceTopicModel();
                 String file = sharedPreferences.getString(key, "Failed");
-                getSourceTopicModel().add(0, Cards.pool(file, getActivity()));
+                cards.add(0, Cards.pool(file, getActivity()));
+                removeDuplicates(Constants.POOL_KEY, cards);
                 UI.execute(this::filterModel);
                 break;
             default:
@@ -197,12 +199,29 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
     private void addFoodCard(SharedPreferences sharedPreferences, String key) {
         switch (key) {
             case Constants.IMAGE_KEY:
+                List<ITopic> cards = getSourceTopicModel();
                 String file = sharedPreferences.getString(key, "Failed");
-                getSourceTopicModel().add(0, Cards.food(file, this.getActivity()));
+                cards.add(0, Cards.food(file, this.getActivity()));
+                removeDuplicates(Constants.FOOD_KEY, cards);
                 UI.execute(this::filterModel);
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * Removes cards that have the same type as the one just added.
+     *
+     * @param key the type of card
+     * @param topics the current list of cards
+     */
+    private void removeDuplicates(String key, List<ITopic> topics) {
+        for (int i = topics.size() - 1; i > 0; i--) {
+            ITopic topic = topics.get(i);
+            if (topic.getCardType().equals(key)) {
+                topics.remove(i);
+            }
         }
     }
 }

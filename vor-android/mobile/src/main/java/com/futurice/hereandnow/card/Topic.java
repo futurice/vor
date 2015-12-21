@@ -25,8 +25,15 @@ public final class Topic extends BaseTopic {
 
     private int mColor;
 
-    public Topic(@NonNull final String name, final long topicUid, final Context context) {
+    private String mCardType;
+
+    public Topic(
+            @NonNull final String name,
+            final long topicUid,
+            final Context context,
+            final String type) {
         super(name, topicUid, context, R.layout.topic_layout);
+        mCardType = type;
     }
 
     @Override
@@ -89,5 +96,13 @@ public final class Topic extends BaseTopic {
 
     public void setImageUri(@NonNull final Uri uri) {
         mImageUri = uri;
+    }
+
+    public String getCardType() {
+        return mCardType;
+    }
+
+    public void setCardType(String cardType) {
+        mCardType = cardType;
     }
 }
