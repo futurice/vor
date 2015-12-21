@@ -10,8 +10,11 @@ class Location {
     return stream
       .bufferWithCount(3)
       .map(([b1, b2, b3]) => {
-        let beacons = [b1, b2, b3].map(mapData(this.beacons));
         console.log('Server - beacons --> ', b1, b2, b3);
+        let beacons = [b1, b2, b3]
+          .map(mapData(this.beacons))
+          .filter(data => !!data);
+
         if (beacons.length < 3) {
           return;
         }
@@ -28,7 +31,7 @@ class Location {
 }
 
 function mapData(beaconConfigurations) {
-  return beacon => {
+  return function(beacon){
     let index = beaconConfigurations.findIndex(config => config.id === beacon.id);
     if (index === -1) {
       return false;
