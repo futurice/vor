@@ -6,6 +6,7 @@ length = 71.12;
 width = 22.86;
 height = 1.3;
 header_length = 64;
+header_height = 9.2;
 
 arduino_yun_mini();
 
@@ -18,7 +19,7 @@ module usb_power() {
 }
 
 module header(y = 0, z = 0) {
-    translate([2, y, z]) cube([header_length, 2.6, 9.2]);
+    translate([2, y, z]) cube([header_length, 2.6, header_height]);
 }
 
 module leds() {

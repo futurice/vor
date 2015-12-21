@@ -1,51 +1,75 @@
-// Bathroom Sensor 3D Model with methane sensor, 2 motion sensors and Arduino Yun
+// WIFI Switch 3D Model, Arduino Yun version
 
 $fn = 8;
 
-cube_side = 50;
-cube_tip_clip = 40;
+cube_side = 72;
+cube_tip_clip = 59;
+side_clip = cube_tip_clip*.665;
 
 skin = 10;
 inner_skin = 8;
 thin_skin = 0.1;
 
-yun_y = -wall_width;
-yun_z = -20;
+yun_length = 71.12;
+yun_width = 22.86;
+yun_height = 1.3 + 2*64;
+yun_x = -yun_length/2;
+yun_y = -yun_width/2;
+yun_z = 13;
+yun_skin = .2;
 
-color("red") box();
+toggle_length = 28;
+toggle_width = 16.55;
+toggle_z = 55;
 
-//yun_moved();
-//color("blue") yun_holder();
+tip_surround_width = 3;
+tip_width = toggle_width + 2*tip_surround_width;
+tip_length = 46;
 
-module motion_moved(y=0, theta=0) {
-    translate([95, y, -20]) 
-        rotate([36, 137, theta]) {
-            motion_angle(-60);
-        }
-}
+push_button();
 
-module motion_moved_skin(y=0, theta=0) {
-    minkowski() {
-        motion_moved(y, theta);
-        sphere(r=thin_skin);
+module push_button() {
+    color("purple") difference() {
+        box();
+        yun_hole();
     }
+    color("orange") difference() {
+        tip();
+        minkowski() {
+            yun_moved();
+            sphere(r=yun_skin);
+        }
+    }
+    yun_moved();
+    toggle_moved();
 }
 
 module yun_moved() {
-    translate([-skin, yun_y, yun_z])
-        rotate([180, 0, 0]) {
-            yun();
-        }
+    translate([yun_x, yun_y, yun_z])
+        yun();
 }
 
-module yun_moved_skin() {
-    minkowski() {
-        yun_moved();
-        sphere(r=thin_skin);
-    }
+module yun_hole() {
+    translate([yun_x - yun_skin, yun_y - yun_skin, yun_z - 9.6 - yun_skin])
+        cube([yun_length + 2*yun_skin, yun_width + 2*yun_skin, 9.2*2 + 1.6 + 2*yun_skin]);
 }
 
 module yun_holder() {
+    translate([yun_x, yun_y, yun_z])
+        yun();    
+}
+
+module tip() {
+    translate([-30, -tip_width/2, yun_z + 8])
+        difference() {
+            union() {
+                cube([tip_length, tip_width, cube_tip_clip + .1]);
+                translate([10, 0, 0])
+                    cube([tip_length, tip_width, 10]);
+            }
+            translate([0, 0, toggle_z])
+                cube([tip_length/2, tip_width, 20]);
+        }
 }
 
 module poly() {
@@ -57,16 +81,36 @@ module poly() {
                 [0,cube_side,0],
                 [0,0,cube_side]],
             faces=[[0,1,4],[1,2,4],[2,3,4],[3,0,4],[1,0,3],[2,1,3]]);
-        translate([-2*cube_side, -2*cube_side, cube_tip_clip])
-            cube([cube_side*4, cube_side*4, cube_side]);
+        union() {
+            translate([-2*cube_side, -2*cube_side, cube_tip_clip])
+                cube([cube_side*4, cube_side*4, cube_side]);
+            translate([-2*cube_side, -side_clip - 4*cube_side, -1])
+                cube([cube_side*4, cube_side*4, cube_side]);
+            translate([-2*cube_side, side_clip, -1])
+                cube([cube_side*4, cube_side*4, cube_side]);            
+        }
     }
 }
 
 module box() {
-    poly();
+    difference() {
+        poly();
+        yun_holder();
+    }
+}
+
+module toggle_moved() {
+    rotate([0, 0, 180]) {
+        translate([-toggle_length/2, -toggle_width/2, toggle_z])
+            toggle();
+    }
 }
 
 module yun() {
     include <../3d-iot-component-models/arduino-yun-mini.scad>
+}
+
+module toggle() {
+    include <../3d-iot-component-models/toggle-switch-with-cover.scad>
 }
 
