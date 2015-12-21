@@ -10,32 +10,36 @@ class Location {
     return stream
       .bufferWithCount(3)
       .map(([b1, b2, b3]) => {
-        let [beacon1, beacon2, beacon3] = mapData([b1, b2, b3], this.beacons);
+        let beacons = [b1, b2, b3].map(mapData(this.beacons));
+        console.log('Server - beacons --> ', b1, b2, b3);
+        if (beacons.length < 3) {
+          return;
+        }
+
         const messageData = Object.assign({
-          email: beacon1.email, // get email data from beacon
+          email: beacons[0].email, // get email data from beacon
           type: 'location' // constant for every message
-        }, calculatePosition(beacon1, beacon2, beacon3));
-        const logBeacons = `${beacon1.id}, ${beacon2.id}, ${beacon3.id}`;
+        }, calculatePosition(beacons[0], beacons[1], beacons[2]));
+        const logBeacons = `${beacons[0].id}, ${beacons[1].id}, ${beacons[2].id}`;
         console.log(`Server - location for (${logBeacons}) --> ${JSON.stringify(messageData)}`);
         return messageData;
       });
   }
 }
 
-function mapData(beacons, beaconConfigurations) {
-  return beacons.map(beacon => {
-    let currentConfig = beaconConfigurations.find(config => config.id === beacon.id);
-    return mapDataWithConfig(beacon, currentConfig);
-  });
-}
-
-function mapDataWithConfig(data, config) {
-  return {
-    id: data.id,
-    email: data.email,
-    distance: data.distance,
-    x: config.x,
-    y: config.y
+function mapData(beaconConfigurations) {
+  return beacon => {
+    let index = beaconConfigurations.findIndex(config => config.id === beacon.id);
+    if (index === -1) {
+      return false;
+    }
+    return {
+      id: beacon.id,
+      email: beacon.email,
+      distance: beacon.distance,
+      x: beaconConfigurations[index].x,
+      y: beaconConfigurations[index].y
+    };
   };
 }
 
