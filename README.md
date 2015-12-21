@@ -36,7 +36,7 @@ Please have a look at the subdirectories corresponding to the different parts of
 
 [Backend Image Client](/vor-image-client/README.md) concerning the Node.js image service
 
-[Arduino and Raspberry Pi 2](/vor-arduino/README.md) about the custom hardware for IoT sensors and actuators to setup your office
+[Arduino](/vor-arduino/README.md) and [Raspberry Pi 2](/vor-image-client/README.md) about the custom hardware for IoT sensors and actuators to setup your office
 
 [3D Models](/vor-3d-models/README.md) for the custom Arduio and Raspberry Pi 2 IoT nodes
 
