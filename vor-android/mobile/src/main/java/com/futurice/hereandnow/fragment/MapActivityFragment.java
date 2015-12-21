@@ -31,10 +31,9 @@ import butterknife.ButterKnife;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class MapActivityFragment extends Fragment {
-    //TODO Measure real dimensions for the 8th floor.
     // Real life dimensions for the map in meters.
-    private static final float FLOOR8_WIDTH = 20f;
-    private static final float FLOOR8_HEIGHT = 20f;
+    private static final float FLOOR8_WIDTH = 51.9670588235f;
+    private static final float FLOOR8_HEIGHT = 85.7766233766f;
     private static final float FLOOR7_WIDTH = 16.2423255f;
     private static final float FLOOR7_HEIGHT = 28.4685258f;
 
