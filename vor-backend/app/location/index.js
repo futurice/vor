@@ -7,11 +7,11 @@ class Location {
   }
 
   fromDeviceStream(stream) {
-    const beaconStreams = splitInToBeaconStreams(stream, this.beacons);
-    return Rx.Observable.combineLatest(
-      beaconStreams,
-      (beacon1, beacon2, beacon3) => {
-        const messageData = Object.assign ({
+    return stream
+      .bufferWithCount(3)
+      .map(([b1, b2, b3]) => {
+        let [beacon1, beacon2, beacon3] = mapData([b1, b2, b3], this.beacons);
+        const messageData = Object.assign({
           email: beacon1.email, // get email data from beacon
           type: 'location' // constant for every message
         }, calculatePosition(beacon1, beacon2, beacon3));
@@ -22,12 +22,10 @@ class Location {
   }
 }
 
-function splitInToBeaconStreams(stream, beaconsConfiguration) {
-  return beaconsConfiguration.map(beaconConfig => {
-    return stream
-      .filter(beaconData => beaconData.floor === beaconConfig.floor)
-      .filter(beaconData => beaconData.id === beaconConfig.id)
-      .map(beaconData => Object.assign(beaconConfig, beaconData));
+function mapData(beacons, beaconConfigurations) {
+  return beacons.map(beacon => {
+    let currentConfig = beaconConfigurations.find(config => config.id === beacon.id);
+    return mapDataWithConfig(beacon, currentConfig);
   });
 }
 

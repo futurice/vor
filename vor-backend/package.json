@@ -7,8 +7,8 @@
     "node": "4.1.1"
   },
   "scripts": {
-    "server": "NODE_PATH=. node --harmony_destructuring --harmony_modules --harmony_array_includes ./bin/www.js",
-    "mocha": "NODE_PATH=. NODE_ENV=test PORT=9090 mocha --harmony_destructuring --harmony_modules --harmony_array_includes tests/*.js",
+    "server": "NODE_PATH=. node --harmony_destructuring --harmony_modules --harmony_array_includes --harmony_rest_parameters ./bin/www.js",
+    "mocha": "NODE_PATH=. NODE_ENV=test PORT=9090 mocha --harmony_destructuring --harmony_modules --harmony_array_includes --harmony_rest_parameters tests/*.js",
     "jscs": "jscs app",
     "eslint": "eslint app",
     "lint": "npm run jscs && npm run eslint",
