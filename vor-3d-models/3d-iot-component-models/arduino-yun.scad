@@ -6,8 +6,7 @@ length = 73;
 width = 54;
 height = 1.6;
 
-// Uncommont to test the module
-//arduino_yun();
+arduino_yun();
 
 module board() {
     difference() {

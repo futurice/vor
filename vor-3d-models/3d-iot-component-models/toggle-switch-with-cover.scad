@@ -6,8 +6,7 @@ length = 28;
 width = 16.55;
 height = 19.12;
 
-// Uncomment to test module
-//toggle_switch_with_cover();
+toggle_switch_with_cover();
 
 module base() {
     cube([length, width, height]);
@@ -30,12 +29,13 @@ module plate() {
 
 module toggle() {
     translate([length/2, width/2, height + 9]) rotate([0, -15, 0]) {
-        cylinder(h = 19, r = 7.22/2);    
+        cylinder(h = 15, r = 7.22/2);    
     }
 }
 
 module cover() {
-    color("red") translate([40.6 - 17.56, 0, height + 6.82]) cube([17.56, width, 43.9]);
+    color("red") translate([40.6 - 17.56, 0, height + 6.82])
+        cube([17.56, width, 43.9 - 17.56]);
 }
 
 module toggle_switch_with_cover() {

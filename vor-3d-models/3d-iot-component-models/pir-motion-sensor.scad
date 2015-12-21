@@ -12,8 +12,7 @@ base_height = 5.6;
 
 dome_radius = 22/2;
 
-// Uncomment to test module
-//pir_motion_sensor();
+pir_motion_sensor();
 
 module board() {
     cube([length, width, height]);

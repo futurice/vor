@@ -6,8 +6,7 @@ length = 71.2;
 width = 14.4;
 height = 24.75;
 
-// Uncomment to test module
-//creative_hd();
+creative_hd();
 
 module camera() {
     intersection() {

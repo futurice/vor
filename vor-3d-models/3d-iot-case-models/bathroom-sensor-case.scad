@@ -4,7 +4,7 @@ $fn = 8;
 
 cube_side = 140;
 cube_tip_clip = 10;
-wall_width = 26;  // Bathroom divider wall tunnel size
+wall_width = 29;  // Bathroom divider wall tunnel size
 side_clip_ratio = 2.5;
 left_wing_clip_height = 35;
 right_wing_clip_height = 35;
@@ -16,27 +16,39 @@ thin_skin = 0.1;
 yun_y = -wall_width;
 yun_z = -20;
 
-difference() {
-    color("red") box();
-    union() {
-        methane_moved_skin();
-        motion_moved_skin(-40, 0);
-        motion_moved_skin(40, 90);
+bathroom_sensor_shell();
+
+module bathroom_sensor_shell() {
+    difference() {
+        color("red") box();
+        union() {
+            methane_moved_skin();
+            motion_moved_skin(-40, 0);
+            motion_moved_skin(40, 90);
+        }
     }
+
+    color("blue") yun_holder();
 }
 
-//yun_moved();
-//methane_moved();
-//motion_moved(-40, 0);
-//motion_moved(40, 90);
-
-color("blue") yun_holder();
+module bathroom_sensors_shown() {
+    yun_moved();
+    methane_moved();
+    motion_moved(-40, 0); 
+    motion_moved(40, 90);
+}
 
 module motion_moved(y=0, theta=0) {
     translate([95, y, -20]) 
         rotate([36, 137, theta]) {
             motion_angle(-60);
         }
+}
+
+module motion_angle(angle = 0) {
+    rotate([0, 180, angle]) {
+        motion();
+    }
 }
 
 module motion_moved_skin(y=0, theta=0) {
@@ -176,11 +188,5 @@ module methane() {
 
 module motion() {
     include <../3d-iot-component-models/pir-motion-sensor.scad>
-}
-
-module motion_angle(angle = 0) {
-    rotate([0, 0, angle]) {
-        motion();
-    }
 }
 

@@ -5,8 +5,7 @@ $fn = 16;
 
 pin_length = 7.7;
 
-// Uncomment to test module
-//methane_sensor();
+methane_sensor();
 
 module center() {
     cylinder(h = 6.4, r = 19/2);

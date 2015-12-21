@@ -7,8 +7,7 @@ width = 22.86;
 height = 1.3;
 header_length = 64;
 
-// Uncommont to test the module
-//arduino_yun_mini();
+arduino_yun_mini();
 
 module board() {
     cube([length, width, height]);

@@ -6,8 +6,7 @@ length = 85;
 width = 56;
 height = 1.3;
 
-// Uncomment to test module
-// raspberry_pi_2();
+raspberry_pi_2();
 
 module board() {
     cube([length, width, height]);
