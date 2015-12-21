@@ -7,7 +7,7 @@
 
 #include "vor_sensor.h"
 
-#define DEBOUNCE 50 // milliseconds
+#define DEBOUNCE 100 // milliseconds
 
 class VorButton : public VorSensor {
 public:
@@ -16,7 +16,10 @@ public:
     int read();
 
 private:
-    uint64_t _debounceTime = 0; // milliseconds
+
+    int _buttonValue;
+    uint64_t _debounceTime; // milliseconds
+
 };
 
 #endif
