@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:padding="20dp"
+    android:background="@color/lightest_grey"
+    android:layout_marginBottom="2dp"
+    >
+
+    <ImageView
+        android:id="@+id/personImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_people_white_48dp"/>
+
+    <TextView
+        android:id="@+id/personNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
+        android:paddingRight="0dp"
+        android:paddingEnd="0dp"
+        />
+
+    <TextView
+        android:id="@+id/personDistanceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
