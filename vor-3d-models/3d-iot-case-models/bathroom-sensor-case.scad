@@ -22,7 +22,7 @@ module bathroom_sensor_shell() {
     difference() {
         color("red") box();
         union() {
-            methane_moved_skin();
+            methane_space_moved_skin();
             motion_moved_skin(-40, 0);
             motion_moved_skin(40, 90);
         }
@@ -34,27 +34,27 @@ module bathroom_sensor_shell() {
 module bathroom_sensors_shown() {
     yun_moved();
     methane_moved();
-    motion_moved(-40, 0); 
-    motion_moved(40, 90);
+    motion_moved(y=-40, theta=0); 
+    motion_moved(y=40, theta=90);
 }
 
 module motion_moved(y=0, theta=0) {
     translate([95, y, -20]) 
         rotate([36, 137, theta]) {
-            motion_angle(-60);
+            motion_angle(60);
         }
-}
-
-module motion_angle(angle = 0) {
-    rotate([0, 180, angle]) {
-        motion();
-    }
 }
 
 module motion_moved_skin(y=0, theta=0) {
     minkowski() {
         motion_moved(y, theta);
         sphere(r=thin_skin);
+    }
+}
+
+module motion_angle(angle = 0) {
+    rotate([0, 0, angle]) {
+        motion();
     }
 }
 
@@ -83,6 +83,20 @@ module yun_holder() {
     }
 }
 
+module methane_moved_skin() {
+    minkowski() {
+        methane_moved();
+        sphere(r=thin_skin);
+    }
+}
+
+module methane_space_moved_skin() {
+    minkowski() {
+        methane_space_moved();
+        sphere(r=thin_skin);
+    }
+}
+
 module methane_moved() {
     translate([cube_side + skin - cube_tip_clip*2, 0, 0])
         rotate([0, 90, 0]) {
@@ -90,11 +104,11 @@ module methane_moved() {
         }
 }
 
-module methane_moved_skin() {
-    minkowski() {
-        methane_moved();
-        sphere(r=thin_skin);
-    }
+module methane_space_moved() {
+    translate([cube_side + skin - cube_tip_clip*2, 0, 0])
+        rotate([0, 90, 0]) {
+            methane_space();
+        }
 }
 
 module poly(clip = 0) {
@@ -190,3 +204,6 @@ module motion() {
     include <../3d-iot-component-models/pir-motion-sensor.scad>
 }
 
+module methane_space() {
+    import ("../3d-iot-component-models/methane-sensor-space.stl", convexity=3);
+}

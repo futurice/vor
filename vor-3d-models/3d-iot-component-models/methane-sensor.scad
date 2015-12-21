@@ -5,10 +5,15 @@ $fn = 16;
 
 pin_length = 7.7;
 
+// Uncomment one or the other depending on the use case shape desired
 methane_sensor();
+//methane_sensor_space();
 
 module center() {
-    cylinder(h = 6.4, r = 19/2);
+    hull() {
+        cylinder(h = 6.4, r = 19/2);
+        cylinder(h = 8.4, r = 15/2);
+    }
 }
 
 module top() {
@@ -23,6 +28,12 @@ module pin(theta = 0) {
     }
 }
 
+module pin_space(radius = 7) {
+    rotate([180, 0, 0]) {
+        cylinder(r=radius, h=pin_length + 1);
+    }
+}
+
 module methane_sensor() {
     color("grey") center();
     color("violet") top();
@@ -32,4 +43,10 @@ module methane_sensor() {
     pin(theta = 180);
     pin(theta = 180 + 45);
     pin(theta = 180 - 45);
+}
+
+module methane_sensor_space() {
+    color("grey") center();
+    color("violet") top();
+    color("black") pin_space();
 }
