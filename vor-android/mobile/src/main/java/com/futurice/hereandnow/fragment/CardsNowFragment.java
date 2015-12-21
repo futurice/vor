@@ -148,6 +148,8 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
     protected List<ITopic> createPreBuiltTopics() {
         final List<ITopic> list = new ArrayList<>();
         list.add(Cards.workspace("?", getActivity()));
+        list.add(Cards.sauna("ON", getActivity()));
+        list.add(Cards.trackItem("Device B78", getActivity()));
         return list;
     }
 

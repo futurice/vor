@@ -92,9 +92,6 @@ public class HereAndNowApplication extends Application {
                 case Constants.TOILET_KEY:
                     saveToiletToSharedPreferences(jsonObject);
                     break;
-                case Constants.SAUNA_KEY: // Example
-                    testSaunaNotification(jsonObject.getString("status"));
-                    break;
                 case Constants.POOL_KEY:
                     savePoolToSharedPreferences(jsonObject.getString(Constants.IMAGE_KEY));
                     break;
@@ -110,16 +107,6 @@ public class HereAndNowApplication extends Application {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    private void testSaunaNotification(String status) {
-        Builder mBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.tribe_icon)
-                .setContentTitle("Sauna")
-                .setContentText("Sauna is " + status);
-        NotificationManager mNotifyMgr =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        mNotifyMgr.notify(1, mBuilder.build());
     }
 
     private void saveToiletToSharedPreferences(JSONObject jsonObject) throws JSONException {

@@ -84,7 +84,7 @@ public class Cards {
      * @return the topic
      */
     public static ITopic trackItem(String item, Context context) {
-        final Topic topic = new Topic("Sauna", 1350, context, Constants.TRACK_ITEM_KEY);
+        final Topic topic = new Topic("TrackItem", 1350, context, Constants.TRACK_ITEM_KEY);
         topic.setText("Track the item " + item);
         topic.setColor(R.color.green);
         topic.setIsPrebuiltTopic(true);
