@@ -16,7 +16,6 @@ class Cache {
       }
     };
     this.client = expressRedisCache({client: cacheClient(), prefix: cachePrefix});
-    return this;
   }
 
   store(message) {

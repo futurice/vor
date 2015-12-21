@@ -29,10 +29,10 @@ module.exports = function (app, router, configs) {
   // listen socket 'init' messages
   const socketInitSource$ = socketConnectionSource$
     .flatMap(socket => Rx.Observable.fromEvent(
-        socket,
-        'init',
+      socket,
+      'init',
         event => socket) // we need socket to emit cache content only to one client
-      ).share();
+  ).share();
 
   // Post interface for messages
   // TODO: At the moment Arduinos' have limited websocket support. Remove when unnecessary.
@@ -58,15 +58,14 @@ module.exports = function (app, router, configs) {
       return Rx.Observable.zip(Rx.Observable.return(socket), cache.getAll());
     })
     .subscribe(
-      ([socket, messagesAsString]) => {
-        console.log(`Server - fetched ${messagesAsString.length} messages from cache : ${new Date}`);
-        const messages = messagesAsString.map(message => JSON.parse(message.body));
-        socket.emit('init',
-          {
-            beacons: BEACONS, // send configured beacons data
-            messages: messages
-          });
-      },
+    ([socket, messages]) => {
+      socket.emit('init',
+        {
+          beacons: BEACONS, // send configured beacons data
+          messages: messages
+        });
+      console.log(`Server - fetched ${messages.length} messages from cache : ${new Date}`);
+    },
       error => console.error(`Error - init stream: ${error} : ${new Date}`)
   );
 
@@ -78,11 +77,11 @@ module.exports = function (app, router, configs) {
     .merge(locationSource$) // merge location without storing it
     .subscribe(
       message => {
-        app.io.emit('message', message);
-        console.log(`Server - emit ${message.type} : ${new Date}`);
-      },
+      app.io.emit('message', message);
+      console.log(`Server - emit ${message.type} : ${new Date}`);
+    },
       error => console.error(`Error - message stream: ${error} : ${new Date}`)
-    );
+  );
 
   // the test page
   app.use('/', viewRoute(router));
