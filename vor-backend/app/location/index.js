@@ -38,7 +38,8 @@ const mapWithConfig = ([beaconMessage, config]) => {
     email: beaconMessage.email,
     distance: beaconMessage.distance,
     x: config.x,
-    y: config.y
+    y: config.y,
+    floor: config.floor
   };
 };
 
@@ -57,7 +58,8 @@ function calculatePosition(obj1, obj2, obj3) {
 
   return {
     x: isValidPosition(x) && x || 0,
-    y: isValidPosition(y) && y || 0
+    y: isValidPosition(y) && y || 0,
+    floor: obj1.floor // get floor from the first object
   };
 }
 const getIntersectionPoint = (obj1, obj2) => {

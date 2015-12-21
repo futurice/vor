@@ -30,7 +30,7 @@ describe('App: on message event "location"', function () {
      +---+---+---+
      */
 
-    const EXPECTED_A_LOCATION_MESSAGE = {email: 'ClientA', type: 'location', x: 2, y: 2};
+    const EXPECTED_A_LOCATION_MESSAGE = {email: 'ClientA', type: 'location', floor: 1, x: 2, y: 2};
     const clientA = helpers.createSocketConnection();
     const clientB = helpers.createSocketConnection();
 
