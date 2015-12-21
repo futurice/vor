@@ -13,10 +13,11 @@ class Location {
       .map((beaconMessages) => this.beacons.reduce(reduceConfig(beaconMessages), []))
       .filter(validBeacons => validBeacons.length === 3)
       .map(([beacon1, beacon2, beacon3]) => {
+        const position = calculatePosition(beacon1, beacon2, beacon3);
         const messageData = Object.assign({
           email: beacon1.email, // get email data from beacon
           type: 'location' // constant for every message
-        }, calculatePosition(beacon1, beacon2, beacon3));
+        }, position);
         const logBeacons = `${beacon1.id}, ${beacon2.id}, ${beacon3.id}`;
         console.log(`Server - location for (${logBeacons}) --> ${JSON.stringify(messageData)}`);
         return messageData;
@@ -24,16 +25,16 @@ class Location {
   }
 }
 
-function reduceConfig(beacons) {
+function reduceConfig(beaconMessage) {
   return function(validBeacons, config) {
-    const beaconWithConfig = beacons
-      .filter(beacon => beacon.id === config.id)
-      .filter(beacon => beacon.floor === config.floor)
-      .map(beacon => {
+    const beaconWithConfig = beaconMessage
+      .filter(beaconMessage => beaconMessage.id === config.id)
+      .filter(beaconMessage => beaconMessage.floor === config.floor)
+      .map(beaconMessage => {
         return {
-          id: beacon.id,
-          email: beacon.email,
-          distance: beacon.distance,
+          id: beaconMessage.id,
+          email: beaconMessage.email,
+          distance: beaconMessage.distance,
           x: config.x,
           y: config.y
         };
