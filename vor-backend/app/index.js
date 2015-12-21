@@ -20,7 +20,7 @@ module.exports = function (app, router, configs) {
 
   // split location messages
   let [ deviceSource$, messageSource$ ] = socketMessageSource$
-    .partition(message => message.type === 'location');
+    .partition(message => message.type === 'beacon');
 
   // set up location stream
   const location = new Location(configs.BEACONS);

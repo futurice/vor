@@ -64,7 +64,7 @@
         socket.emit('message', {
           id: id,
           email: user,
-          type: 'location',
+          type: 'beacon',
           floor: parseInt(floor, 10),
           distance: val === "" ? 0 : parseFloat(val)
         });
