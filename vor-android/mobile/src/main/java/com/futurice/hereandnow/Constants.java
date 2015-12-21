@@ -33,6 +33,10 @@ public class Constants {
     public static final String TRACK_ITEM_KEY = "track";
     public static final String RESERVED_KEY = "reserved";
     public static final String METHANE_KEY = "methane";
+    public static final String WORKSPACE_KEY = "workspace";
+    public static final String LIGHT_KEY = "light";
+    public static final String SILENCE_KEY = "silence";
+    public static final String LAST_PERSON_KEY = "last_person";
 
     public static final String EMAIL = "email";
     public static final String DUMMY_EMAIL = "first.last@futurice.com";

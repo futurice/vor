@@ -90,4 +90,11 @@ public interface ITopic extends INamed {
      * @param likes
      */
     void setLikes(int likes);
+
+    /**
+     * Returns the type of this topic.
+     *
+     * @return the type
+     */
+    String getCardType();
 }

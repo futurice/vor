@@ -10,6 +10,7 @@ import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 
 import com.futurice.cascade.i.CallOrigin;
+import com.futurice.hereandnow.Constants;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.adapter.TopicListAdapter;
 import com.futurice.hereandnow.card.ITopic;
@@ -90,7 +91,7 @@ public class TrendingFragment extends BaseHereAndNowFragment {
 
         // Food
         {
-            final Topic topic = new Topic("Food", 240, this.getActivity());
+            final Topic topic = new Topic("Food", 240, getActivity(), Constants.FOOD_KEY);
             topic.setText("Check what's on FutuCafé table");
             topic.setIsPrebuiltTopic(true);
 
@@ -106,7 +107,7 @@ public class TrendingFragment extends BaseHereAndNowFragment {
 
         // Light
         {
-            final Topic topic = new Topic("Light", 250, this.getActivity());
+            final Topic topic = new Topic("Light", 250, getActivity(), Constants.LIGHT_KEY);
             topic.setText("Lightest place");
             topic.setIsPrebuiltTopic(true);
 
@@ -122,7 +123,7 @@ public class TrendingFragment extends BaseHereAndNowFragment {
 
         // Silence
         {
-            final Topic topic = new Topic("Silence", 260, this.getActivity());
+            final Topic topic = new Topic("Silence", 260, getActivity(), Constants.SILENCE_KEY);
             topic.setText("Find out latest quiet spot");
             topic.setIsPrebuiltTopic(true);
 
@@ -138,7 +139,7 @@ public class TrendingFragment extends BaseHereAndNowFragment {
 
         // Last person
         {
-            final Topic topic = new Topic("Last person", 270, this.getActivity());
+            final Topic topic = new Topic("Last person", 270, getActivity(), Constants.LAST_PERSON_KEY);
             topic.setText("You're the last person in the office");
             topic.setIsPrebuiltTopic(true);
 
@@ -154,7 +155,7 @@ public class TrendingFragment extends BaseHereAndNowFragment {
 
         // Workspace
         {
-            final Topic topic = new Topic("Workspace", 280, this.getActivity());
+            final Topic topic = new Topic("Workspace", 280, getActivity(), Constants.WORKSPACE_KEY);
             topic.setText("One of your workspaces is now free");
             topic.setIsPrebuiltTopic(true);
 
