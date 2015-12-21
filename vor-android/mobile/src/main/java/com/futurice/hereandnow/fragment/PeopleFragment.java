@@ -1,21 +1,22 @@
 package com.futurice.hereandnow.fragment;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
-import android.widget.FrameLayout;
 
-import com.futurice.cascade.util.AssertUtil;
 import com.futurice.hereandnow.R;
+import com.futurice.hereandnow.adapter.PeopleNearbyAdapter;
+import com.futurice.hereandnow.pojo.PersonNearby;
+
+import java.util.ArrayList;
 
 public class PeopleFragment extends BaseHereAndNowFragment {
 
-    private int lastExpanded = -1;
-    private boolean collapse = true;
+    private RecyclerView mRecyclerView;
 
     public static PeopleFragment newInstance() {
         final PeopleFragment fragment = new PeopleFragment();
@@ -27,42 +28,18 @@ public class PeopleFragment extends BaseHereAndNowFragment {
 
     @Override
     @NonNull
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_people_nearby, container, false);
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.people_recycler_view);
 
-    public View onCreateView(
-            @NonNull final LayoutInflater inflater,
-            @Nullable final ViewGroup container,
-            @Nullable final Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-
-        final View rootView = inflater.inflate(R.layout.fragment_people_nearby, container, false);
-        initViewsAndAdapters();
-
-        final FrameLayout messageListFrameLayout = (FrameLayout) rootView.findViewById(
-                R.id.here_and_now_message_list);
-        messageListFrameLayout.addView(AssertUtil.assertNotNull(getExpandableListView()));
-
-        initListView();
-
-        return rootView;
-    }
-
-    private void initViewsAndAdapters() {
-        // Set ExpandableListView values
-        final ExpandableListView elv = new ExpandableListView(getActivity());
-        setExpandableListView(elv);
-        elv.setOnGroupExpandListener(topicIndex -> {
-            if (lastExpanded != -1 && topicIndex != lastExpanded) {
-                elv.collapseGroup(lastExpanded);
-            }
-            lastExpanded = topicIndex;
-        });
-    }
-
-    public void collapseLast() {
-        if (collapse) {
-            getExpandableListView().collapseGroup(lastExpanded);
-        } else {
-            collapse = true;
-        }
+        ArrayList<PersonNearby> peopleNearby = new ArrayList<>();
+        peopleNearby.add(new PersonNearby("Ville Tainio", 2));
+        peopleNearby.add(new PersonNearby("Mika Nevalainen", 3));
+        peopleNearby.add(new PersonNearby("Liva Kallite", 4));
+        peopleNearby.add(new PersonNearby("Paul Houghton", 50));
+        mRecyclerView.setAdapter(new PeopleNearbyAdapter(peopleNearby));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        return v;
     }
 }
