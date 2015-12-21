@@ -1,19 +1,33 @@
 #!/usr/bin/env node
 'use strict';
+const express = require('express');
+const bodyParser = require('body-parser');
+const logger = require('morgan');
+const socketIO = require('socket.io');
+const config = require('config');
 
 // module dependencies.
-const app = require('app');
 const debug = require('debug')('vor-backend:server');
 const http = require('http');
 
 // Get port from environment and store in Express.
 const port = process.env.PORT || '8080';
+const app = express();
+const router = express.Router();
+
 app.set('port', port);
 
 // create HTTP server
 var server = http.createServer(app);
 
-// attach socket.io
+// set parsers
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.text({type: '*/*'}));
+app.use(logger('dev'));
+
+// set up socket.IO
+app.io = socketIO();
+app.io.on('error', error => console.error(`Error - Socket connection error: ${error} : ${new Date}`));
 app.io.attach(server);
 
 // listen on provided port, on all network interfaces.
@@ -55,4 +69,5 @@ function onListening() {
   console.log('Server - listening on ' + bind);
 }
 
-module.exports = app;
+const main = require('app');
+module.exports = main(app, router, config);
