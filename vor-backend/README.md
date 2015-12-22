@@ -24,4 +24,4 @@
 1. SSH to your host server
 2. Add ssh key for dokku on your host server - [help](https://www.digitalocean.com/community/questions/dokku-add-new-ssh-key)
 3. Add a remote repo to your local repository: <br/>```git remote add dokku dokku@<your host domain/ip>:<app name>```
-4. Push local repo to Dokku, run in the project root folder (vor):<br/>``` git push dokku `git subtree split --prefix vor-backend <your branch>`:master```
+4. To push local vor-backend to Dokku, run in the project root folder (vor):<br/>``` git push dokku `git subtree split --prefix vor-backend <your branch>`:master```
