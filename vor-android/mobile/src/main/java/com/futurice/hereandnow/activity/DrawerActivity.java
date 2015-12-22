@@ -199,7 +199,7 @@ public class DrawerActivity extends BaseActivity implements
             startActivity(new Intent(this, CardsActivity.class));
         } else if (id == R.id.nav_people) {
             startActivity(new Intent(this, PeopleActivity.class));
-        } else if (id == R.id.nav_map) {
+        } else if (id == R.id.nav_heat_map) {
             startActivity(new Intent(this, MapActivity.class));
         } else if (id == R.id.nav_space) {
             startActivity(new Intent(this, SpaceActivity.class));
