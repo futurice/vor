@@ -69,16 +69,24 @@ module right_half() {
 }
 
 module body() {
-    color("purple") difference() {
-        box();
-        yun_hole();
-    }
-    color("orange") difference() {
-        tip();
-        minkowski() {
-            yun_moved();
-            sphere(r=yun_skin);
+    difference() {
+        union() {
+            color("purple") difference() {
+                box();
+                yun_hole();
+            }
+            color("orange") tip();
         }
+        union() {
+	        toggle_moved(dx=yun_skin, dy=yun_skin, dz=yun_skin);
+	        toggle_moved(dx=yun_skin, dy=yun_skin, dz=-yun_skin);
+	        toggle_moved(dx=yun_skin, dy=-yun_skin, dz=yun_skin);
+	        toggle_moved(dx=yun_skin, dy=-yun_skin, dz=-yun_skin);
+	        toggle_moved(dx=-yun_skin, dy=yun_skin, dz=yun_skin);
+	        toggle_moved(dx=-yun_skin, dy=yun_skin, dz=-yun_skin);
+	        toggle_moved(dx=-yun_skin, dy=-yun_skin, dz=yun_skin);
+	        toggle_moved(dx=-yun_skin, dy=-yun_skin, dz=-yun_skin);
+	    }
     }
 }
 
@@ -92,7 +100,7 @@ module yun_hole() {
         cube([yun_length + 2*yun_skin, yun_width + 2*yun_skin, 9.2*2 + 1.6 + 2*yun_skin]);
     minkowski() {
         yun_moved();
-        sphere(r=.1);
+        cube(side=yun_skin, center=true);
     }
 }
 
@@ -141,9 +149,9 @@ module box() {
     }
 }
 
-module toggle_moved() {
+module toggle_moved(dx=0, dy=0, dz=0) {
     rotate([0, 0, 180]) {
-        translate([-toggle_length/2, -toggle_width/2, toggle_z])
+        translate([-toggle_length/2 + dx, -toggle_width/2 + dy, toggle_z + dz])
             toggle();
     }
 }

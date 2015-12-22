@@ -13,9 +13,9 @@ module base() {
 }
 
 module prongs() {
-    translate([1.5, 5.5, -10.6]) cube([.8, 6.5, 10.6]);
-    translate([25.5, 5.5, -10.6]) cube([.8, 6.5, 10.6]);
-    translate([-8.5, 0, 0]) cube([8.5, 6.3, .76]);
+    translate([1.5, 5.5, -10.6]) cube([.9, 6.6, 10.6]);
+    translate([25.5, 5.5, -10.6]) cube([.9, 6.6, 10.6]);
+    translate([-8.5, 0, 0]) cube([8.5, width/2, .9]);
 }
 
 module shaft() {
@@ -24,7 +24,7 @@ module shaft() {
 }
 
 module plate() {
-    translate([0, 0, height + 6]) cube([40.6, 17, .82]);
+    translate([0, 0, height + 6]) cube([40.6, 17, .9]);
 }
 
 module toggle() {
