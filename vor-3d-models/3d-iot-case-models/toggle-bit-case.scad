@@ -1,4 +1,4 @@
-// WIFI Switch 3D Model, Arduino Yun version
+// WIFI Toggle Switch 3D Model, Arduino Yun Mini version
 
 $fn = 8;
 
@@ -26,9 +26,9 @@ push_button();
 
 module push_button() {
     // Uncomment one of the following 3 lines at a time
-//    body();
+    body();
 //    left_half();
-    right_half();
+//    right_half();
     
 //    yun_moved();
 //    toggle_moved();
