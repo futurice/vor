@@ -21,19 +21,5 @@
       "x": 3,
       "y": 3
     }
-  ],
-  "TOILETS": [
-    {
-      "id": "a",
-      "male": true,
-      "female": true,
-      "floor": 8
-    },
-    {
-      "id": "b",
-      "male": true,
-      "female": true,
-      "floor": 8
-    }
   ]
 }

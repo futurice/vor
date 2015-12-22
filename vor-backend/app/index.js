@@ -8,7 +8,7 @@ const Rx = require('rx');
 const redis = require('redis');
 const expressRedisCache = require('express-redis-cache');
 const { CACHE_PREFIX, CACHE_TTL } = require('config/server');
-const { BEACONS, TOILETS } = require('config/shared');
+const { BEACONS } = require('config/shared');
 const Location = require('app/location');
 const viewRoute = require('app/views/routes');
 const views = require('app/views');
@@ -88,8 +88,7 @@ socketInitSource$
       socket.emit('init',
         {
           beacons: BEACONS, // send configured beacons data
-          messages: messages,
-          toilets: TOILETS // send configured toilets data
+          messages: messages
         });
     },
     error => console.error(`Error - init stream: ${error} : ${new Date}`)

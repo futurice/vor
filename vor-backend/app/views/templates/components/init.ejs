@@ -8,9 +8,6 @@
     <ul id="init-data-messages" class="list-unstyled"></ul>
     <h4>Beacons</h4>
     <ul id="init-data-beacons" class="list-unstyled"></ul>
-    <h4>Toilets</h4>
-    <ul id="init-data-toilets" class="list-unstyled"></ul>
-
   </div>
 </div>
 <script>
@@ -19,15 +16,12 @@
     var socket = FUTU2.getSocket();
     var BEACONS_PLACEHOLDER = 'No beacons';
     var MESSAGE_PLACEHOLDER = 'No messages';
-    var TOILETS_PLACEHOLDER = 'No toilets';
     var $initDataMessages = $('#init-data-messages');
     var $initDataBeacons = $('#init-data-beacons');
-    var $initDataToilets = $('#init-data-toilets');
 
     function initTexts(){
       $initDataMessages.html(MESSAGE_PLACEHOLDER);
       $initDataBeacons.html(BEACONS_PLACEHOLDER);
-      $initDataToilets.html(TOILETS_PLACEHOLDER);
     }
 
     initTexts();
@@ -60,12 +54,6 @@
         $initDataBeacons.html('');
       }
 
-      if(toilets.length === 0){
-        $initDataToilets.html(TOILETS_PLACEHOLDER);
-      } else {
-        $initDataToilets.html('');
-      }
-
       $.each(messages, function(index, message){
         var rowEl = $('<li/>');
         var elWithJson = utils.renderJson(rowEl, message);
@@ -76,12 +64,6 @@
         var rowEl = $('<li/>');
         var elWithJson = utils.renderJson(rowEl, beacon);
         $initDataBeacons.append(rowEl)
-      });
-
-      $.each(toilets, function(index, toilet){
-        var rowEl = $('<li/>');
-        var elWithJson = utils.renderJson(rowEl, toilet);
-        $initDataToilets.append(rowEl)
       });
 
     });

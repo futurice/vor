@@ -180,55 +180,5 @@
       "y": 50.17038961,
       "floor": 8
     }
-  ],
-  "TOILETS": [
-    {
-      "id": "a",
-      "male": true,
-      "female": true,
-      "floor": 7
-    },
-    {
-      "id": "b",
-      "male": true,
-      "female": true,
-      "floor": 7
-    },
-    {
-      "id": "a",
-      "male": true,
-      "female": false,
-      "floor": 8
-    },
-    {
-      "id": "a",
-      "male": false,
-      "female": true,
-      "floor": 8
-    },
-    {
-      "id": "b",
-      "male": true,
-      "female": false,
-      "floor": 8
-    },
-    {
-      "id": "b",
-      "male": false,
-      "female": true,
-      "floor": 8
-    },
-    {
-      "id": "c",
-      "male": true,
-      "female": false,
-      "floor": 8
-    },
-    {
-      "id": "c",
-      "male": false,
-      "female": true,
-      "floor": 8
-    }
   ]
 }
