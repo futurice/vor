@@ -87,9 +87,9 @@ socketInitSource$
       const messages = messagesAsString.map(message => JSON.parse(message.body));
       socket.emit('init',
         {
-          beacons: BEACONS, // send configured beacon data
+          beacons: BEACONS, // send configured beacons data
           messages: messages,
-          toilets: TOILETS // send configured toilet data
+          toilets: TOILETS // send configured toilets data
         });
     },
     error => console.error(`Error - init stream: ${error} : ${new Date}`)
