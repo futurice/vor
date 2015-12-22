@@ -118,7 +118,9 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
                 Context context = HereAndNowApplication.getStaticContext();
                 switch (jsonObject.getString(Constants.TYPE_KEY)) {
                     case Constants.TOILET_KEY:
-                        Storing.saveToiletToSharedPreferences(jsonObject, getActivity());
+                        Storing.saveToiletToSharedPreferences(
+                                jsonObject,
+                                HereAndNowApplication.getStaticContext());
                         break;
                     case Constants.POOL_KEY:
                         String poolImage = jsonObject.getString(Constants.IMAGE_KEY);
