@@ -4,13 +4,27 @@
     <a id="clear-init" href="#">Clear</a>
   </div>
   <div class="col-md-4">
-    <ul id="init-data" class="list-unstyled">No data</ul>
+    <h4>Cached events</h4>
+    <ul id="init-data-messages" class="list-unstyled"></ul>
+    <h4>Beacons</h4>
+    <ul id="init-data-beacons" class="list-unstyled"></ul>
   </div>
 </div>
 <script>
   (function ($, FUTU2) {
     var utils = FUTU2.utils;
     var socket = FUTU2.getSocket();
+    var BEACONS_PLACEHOLDER = 'No beacons';
+    var MESSAGE_PLACEHOLDER = 'No messages';
+    var $initDataMessages = $('#init-data-messages');
+    var $initDataBeacons = $('#init-data-beacons');
+
+    function initTexts(){
+      $initDataMessages.html(MESSAGE_PLACEHOLDER);
+      $initDataBeacons.html(BEACONS_PLACEHOLDER);
+    }
+
+    initTexts();
 
     $('#get-init').on('click', function (event) {
       event.preventDefault();
@@ -19,23 +33,39 @@
 
     $('#clear-init').on('click', function (event) {
       event.preventDefault();
-      clearInit();
+      initTexts();
     });
 
-    function clearInit (){
-      $('#init-data').html('');
-    }
+    socket.on('init', function(initObject){
+      var beacons = initObject.beacons;
+      var messages = initObject.messages;
+      var toilets = initObject.toilets;
 
-    socket.on('init', function(rows){
-      clearInit();
-      if(!rows) {
-        return;
+
+      if(messages.length === 0){
+        $initDataMessages.html(MESSAGE_PLACEHOLDER);
+      } else {
+        $initDataMessages.html('');
       }
-      $.each(rows, function(index, row){
+
+      if(beacons.length === 0){
+        $initDataBeacons.html(BEACONS_PLACEHOLDER);
+      } else {
+        $initDataBeacons.html('');
+      }
+
+      $.each(messages, function(index, message){
         var rowEl = $('<li/>');
-        var elWithJson = utils.renderJson(rowEl, row);
-        $('#init-data').append(rowEl)
+        var elWithJson = utils.renderJson(rowEl, message);
+        $initDataMessages.append(rowEl)
       });
+
+      $.each(beacons, function(index, beacon){
+        var rowEl = $('<li/>');
+        var elWithJson = utils.renderJson(rowEl, beacon);
+        $initDataBeacons.append(rowEl)
+      });
+
     });
 
   })(jQuery, window.FUTU2);

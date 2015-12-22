@@ -1,11 +1,4 @@
 {
-  "STREAM": {
-    "INTERVAL": 5000
-  },
-  "CACHE_PREFIX": "vor",
-  "CACHE_TTL": {
-    "default": 28800
-  },
   "BEACONS": [
     {
       "id": "futu-b001i-6495-40639",

@@ -1,11 +1,4 @@
 {
-  "STREAM": {
-    "INTERVAL": 100
-  },
-  "CACHE_PREFIX": "test",
-  "CACHE_TTL": {
-    "default": 10
-  },
   "BEACONS": [
     {
       "id": 1,

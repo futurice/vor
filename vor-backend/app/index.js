@@ -7,7 +7,8 @@ const socketIO = require('socket.io');
 const Rx = require('rx');
 const redis = require('redis');
 const expressRedisCache = require('express-redis-cache');
-const { BEACONS, CACHE_PREFIX, CACHE_TTL } = require('config');
+const { CACHE_PREFIX, CACHE_TTL } = require('config/server');
+const { BEACONS } = require('config/shared');
 const Location = require('app/location');
 const viewRoute = require('app/views/routes');
 const views = require('app/views');
@@ -81,10 +82,14 @@ const cacheGet = Rx.Observable.fromNodeCallback(cache.get, cache);
 socketInitSource$
   .flatMap(socket => cacheGet().map(messages => [socket, messages]))
   .subscribe(
-    ([socket, messages]) => {
-      console.log(`Server - fetched ${messages.length} messages from cache : ${new Date}`);
-      const messagesAsJson = messages.map(message => JSON.parse(message.body));
-      socket.emit('init', messagesAsJson);
+    ([socket, messagesAsString]) => {
+      console.log(`Server - fetched ${messagesAsString.length} messages from cache : ${new Date}`);
+      const messages = messagesAsString.map(message => JSON.parse(message.body));
+      socket.emit('init',
+        {
+          beacons: BEACONS, // send configured beacons data
+          messages: messages
+        });
     },
     error => console.error(`Error - init stream: ${error} : ${new Date}`)
   );
