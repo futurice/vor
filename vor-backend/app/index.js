@@ -8,7 +8,7 @@ const Rx = require('rx');
 const redis = require('redis');
 const expressRedisCache = require('express-redis-cache');
 const { CACHE_PREFIX, CACHE_TTL } = require('config/server');
-const { CLIENTS } = require('config/shared');
+const { BEACONS, TOILETS } = require('config/shared');
 const Location = require('app/location');
 const viewRoute = require('app/views/routes');
 const views = require('app/views');
@@ -69,7 +69,7 @@ const postMessageRoute = router.post('/messages', (req, res) => {
 app.use('/messages', postMessageRoute);
 
 // init location module
-const location = new Location(CLIENTS);
+const location = new Location(BEACONS);
 // subscribe location
 location.fromDeviceStream(socketBeaconSource$)
   .subscribe(
@@ -81,12 +81,16 @@ location.fromDeviceStream(socketBeaconSource$)
 const cacheGet = Rx.Observable.fromNodeCallback(cache.get, cache);
 socketInitSource$
   .flatMap(socket => cacheGet().map(messages => [socket, messages]))
-  .map(([socket, messages]) => [socket, messages, CLIENTS]) // add configured clients in response
   .subscribe(
-    ([socket, messages, clients]) => {
-      console.log(`Server - fetched ${messages.length} messages from cache : ${new Date}`);
-      const messagesAsJson = messages.map(message => JSON.parse(message.body));
-      socket.emit('init', { messages: messagesAsJson, clients: clients });
+    ([socket, messagesAsString]) => {
+      console.log(`Server - fetched ${messagesAsString.length} messages from cache : ${new Date}`);
+      const messages = messagesAsString.map(message => JSON.parse(message.body));
+      socket.emit('init',
+        {
+          beacons: BEACONS, // send configured beacon data
+          messages: messages,
+          toilets: TOILETS // send configured toilet data
+        });
     },
     error => console.error(`Error - init stream: ${error} : ${new Date}`)
   );

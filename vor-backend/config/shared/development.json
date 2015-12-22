@@ -1,5 +1,5 @@
 {
-  "CLIENTS": [
+  "BEACONS": [
     {
       "id": "futu-b001i-6495-40639",
       "type": "Room Beacon",
@@ -19,6 +19,20 @@
       "type": "Room Beacon",
       "x": 44.22011765,
       "y": 42.53090909,
+      "floor": 8
+    }
+  ],
+  "TOILETS": [
+    {
+      "id": "a",
+      "male": true,
+      "female": true,
+      "floor": 8
+    },
+    {
+      "id": "b",
+      "male": true,
+      "female": true,
       "floor": 8
     }
   ]

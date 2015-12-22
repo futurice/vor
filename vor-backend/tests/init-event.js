@@ -46,7 +46,8 @@ describe('App: On init event', function () {
       client.emit('init');
 
       client.on('init', initObject => {
-        should(initObject.clients).deepEqual(sharedConfig.CLIENTS);
+        should(initObject.beacons).deepEqual(sharedConfig.BEACONS);
+        should(initObject.toilets).deepEqual(sharedConfig.TOILETS);
         setTimeout(done, 10);
       });
     });
