@@ -34,8 +34,8 @@ module toggle() {
 }
 
 module cover() {
-    color("red") translate([40.6 - 17.56, 0, height + 6.82])
-        cube([17.56, width, 43.9 - 17.56]);
+    color("red") translate([0, 0, height + 6.82])
+        cube([40.6, width, 43.9 - 17.56]);
 }
 
 module toggle_switch_with_cover() {

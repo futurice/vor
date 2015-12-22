@@ -4,11 +4,7 @@ $fn = 8;
 
 cube_side = 72;
 cube_tip_clip = 59;
-side_clip = cube_tip_clip*.665;
-
-skin = 10;
-inner_skin = 8;
-thin_skin = 0.1;
+side_clip = cube_tip_clip*.41;
 
 yun_length = 71.12;
 yun_width = 22.86;
@@ -86,6 +82,18 @@ module body() {
 	        toggle_moved(dx=-yun_skin, dy=yun_skin, dz=-yun_skin);
 	        toggle_moved(dx=-yun_skin, dy=-yun_skin, dz=yun_skin);
 	        toggle_moved(dx=-yun_skin, dy=-yun_skin, dz=-yun_skin);
+            translate([-24, -9, 45]) rotate([90, 0, 0]) {
+                bolt();
+            }
+            translate([-24, 9, 45]) rotate([-90, 0, 0]) {
+                bolt();
+            }
+            translate([44, -10, 11]) rotate([90, 0, 0]) {
+                bolt();
+            }
+            translate([44, 10, 11]) rotate([-90, 0, 0]) {
+                bolt();
+            }
 	    }
     }
 }
@@ -113,7 +121,7 @@ module tip() {
     translate([-30, -tip_width/2, yun_z + 8])
         difference() {
             union() {
-                cube([tip_length, tip_width, cube_tip_clip + .1 - 20]);
+                cube([tip_length, tip_width, cube_tip_clip + .1 - 26]);
                 translate([10, 0, 0])
                     cube([tip_length, tip_width, 10]);
             }
@@ -162,5 +170,9 @@ module yun() {
 
 module toggle() {
     include <../3d-iot-component-models/toggle-switch-with-cover.scad>
+}
+
+module bolt() {
+    include <../3d-iot-component-models/m3.scad>
 }
 
