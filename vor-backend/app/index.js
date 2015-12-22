@@ -32,7 +32,7 @@ module.exports = function (app, router, configs) {
       socket,
       'init',
         event => socket) // we need socket to emit cache content only to one client
-  ).share();
+  );
 
   // Post interface for messages
   // TODO: At the moment Arduinos' have limited websocket support. Remove when unnecessary.
