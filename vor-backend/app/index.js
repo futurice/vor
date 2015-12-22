@@ -2,14 +2,12 @@
 const Rx = require('rx');
 const redis = require('redis');
 const expressRedisCache = require('express-redis-cache');
-const { CACHE_PREFIX, CACHE_TTL } = require('config/server');
-const { BEACONS } = require('config/shared');
 const Cache = require('app/cache');
 const Location = require('app/location');
 const viewRoute = require('app/views/routes');
 const views = require('app/views');
 
-module.exports = function (app, router, configs) {
+module.exports = function (app, router, configs, sharedConfigs) {
 
   // listen socket connections
   const socketConnectionSource$ = Rx.Observable.fromEvent(app.io.sockets, 'connection');
@@ -23,7 +21,7 @@ module.exports = function (app, router, configs) {
     .partition(message => message.type === 'beacon');
 
   // set up location stream
-  const location = new Location(configs.BEACONS);
+  const location = new Location(sharedConfigs.BEACONS);
   const locationSource$ = location.fromDeviceStream(deviceSource$);
 
   // listen socket 'init' messages
@@ -61,7 +59,7 @@ module.exports = function (app, router, configs) {
     ([socket, messages]) => {
       socket.emit('init',
         {
-          beacons: BEACONS, // send configured beacons data
+          beacons: sharedConfigs.BEACONS, // send configured beacons data
           messages: messages
         });
       console.log(`Server - fetched ${messages.length} messages from cache : ${new Date}`);

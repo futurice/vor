@@ -4,7 +4,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const socketIO = require('socket.io');
-const config = require('config');
+const configs = require('config/server');
+const sharedConfigs = require('config/shared');
 
 // module dependencies.
 const debug = require('debug')('vor-backend:server');
@@ -70,4 +71,4 @@ function onListening() {
 }
 
 const main = require('app');
-module.exports = main(app, router, config);
+module.exports = main(app, router, configs, sharedConfigs);
