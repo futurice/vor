@@ -15,7 +15,8 @@ class Location {
       .map(([beacon1, beacon2, beacon3]) => {
         const position = calculatePosition(beacon1, beacon2, beacon3);
         const messageData = Object.assign({
-          email: beacon1.email, // get email data from beacon
+          email: beacon1.email, // get email from first beacon
+          floor: beacon1.floor, // get floor from first beacon
           type: 'location' // constant for every message
         }, position);
         const logBeacons = `${beacon1.id}, ${beacon2.id}, ${beacon3.id}`;
@@ -58,8 +59,7 @@ function calculatePosition(obj1, obj2, obj3) {
 
   return {
     x: isValidPosition(x) && x || 0,
-    y: isValidPosition(y) && y || 0,
-    floor: obj1.floor // get floor from the first object
+    y: isValidPosition(y) && y || 0
   };
 }
 const getIntersectionPoint = (obj1, obj2) => {
