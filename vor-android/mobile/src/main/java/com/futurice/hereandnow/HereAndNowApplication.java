@@ -90,6 +90,7 @@ public class HereAndNowApplication extends Application {
         try {
             switch (jsonObject.getString(Constants.TYPE_KEY)) {
                 case Constants.TOILET_KEY:
+                    Log.d(TAG, "Constants.TOILET_KEY received!");
                     saveToiletToSharedPreferences(jsonObject);
                     break;
                 case Constants.POOL_KEY:
@@ -110,9 +111,10 @@ public class HereAndNowApplication extends Application {
     }
 
     private void saveToiletToSharedPreferences(JSONObject jsonObject) throws JSONException {
-        String toiletId = Constants.TOILET_KEY + jsonObject.getString(Constants.ID_KEY);
+        String toiletId = jsonObject.getString(Constants.ID_KEY);
         SharedPreferences toilets = getSharedPreferences(toiletId, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = toilets.edit();
+        editor.putString(Constants.ID_KEY, jsonObject.getString(Constants.ID_KEY));
         editor.putBoolean(Constants.RESERVED_KEY, jsonObject.getBoolean(Constants.RESERVED_KEY));
         editor.putInt(Constants.METHANE_KEY, jsonObject.getInt(Constants.METHANE_KEY));
         editor.apply();
