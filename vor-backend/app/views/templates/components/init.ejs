@@ -5,17 +5,32 @@
   </div>
   <div class="col-md-4">
     <h4>Cached events</h4>
-    <ul id="init-data-messages" class="list-unstyled">No data</ul>
-    <h4>Clients</h4>
-    <ul id="init-data-clients" class="list-unstyled">No clients</ul>
+    <ul id="init-data-messages" class="list-unstyled"></ul>
+    <h4>Beacons</h4>
+    <ul id="init-data-beacons" class="list-unstyled"></ul>
+    <h4>Toilets</h4>
+    <ul id="init-data-toilets" class="list-unstyled"></ul>
+
   </div>
 </div>
 <script>
   (function ($, FUTU2) {
     var utils = FUTU2.utils;
     var socket = FUTU2.getSocket();
+    var BEACONS_PLACEHOLDER = 'No beacons';
+    var MESSAGE_PLACEHOLDER = 'No messages';
+    var TOILETS_PLACEHOLDER = 'No toilets';
     var $initDataMessages = $('#init-data-messages');
-    var $initDataClients = $('#init-data-clients');
+    var $initDataBeacons = $('#init-data-beacons');
+    var $initDataToilets = $('#init-data-toilets');
+
+    function initTexts(){
+      $initDataMessages.html(MESSAGE_PLACEHOLDER);
+      $initDataBeacons.html(BEACONS_PLACEHOLDER);
+      $initDataToilets.html(TOILETS_PLACEHOLDER);
+    }
+
+    initTexts();
 
     $('#get-init').on('click', function (event) {
       event.preventDefault();
@@ -24,38 +39,49 @@
 
     $('#clear-init').on('click', function (event) {
       event.preventDefault();
-      $initDataMessages.html('No data');
-      $initDataClients.html('No clients');
+      initTexts();
     });
 
     socket.on('init', function(initObject){
+      var beacons = initObject.beacons;
+      var messages = initObject.messages;
+      var toilets = initObject.toilets;
 
-      if(!initObject.messages && !initObject.clients) {
-        return;
-      }
 
-      if(initObject.messages.length === 0){
-        $initDataMessages.html('No data');
+      if(messages.length === 0){
+        $initDataMessages.html(MESSAGE_PLACEHOLDER);
       } else {
         $initDataMessages.html('');
       }
 
-      if(initObject.clients.length === 0){
-        $initDataClients.html('No clients');
+      if(beacons.length === 0){
+        $initDataBeacons.html(BEACONS_PLACEHOLDER);
       } else {
-        $initDataClients.html('');
+        $initDataBeacons.html('');
       }
 
-      $.each(initObject.messages, function(index, message){
+      if(toilets.length === 0){
+        $initDataToilets.html(TOILETS_PLACEHOLDER);
+      } else {
+        $initDataToilets.html('');
+      }
+
+      $.each(messages, function(index, message){
         var rowEl = $('<li/>');
         var elWithJson = utils.renderJson(rowEl, message);
         $initDataMessages.append(rowEl)
       });
 
-      $.each(initObject.clients, function(index, clients){
+      $.each(beacons, function(index, beacon){
         var rowEl = $('<li/>');
-        var elWithJson = utils.renderJson(rowEl, clients);
-        $initDataClients.append(rowEl)
+        var elWithJson = utils.renderJson(rowEl, beacon);
+        $initDataBeacons.append(rowEl)
+      });
+
+      $.each(toilets, function(index, toilet){
+        var rowEl = $('<li/>');
+        var elWithJson = utils.renderJson(rowEl, toilet);
+        $initDataToilets.append(rowEl)
       });
 
     });
