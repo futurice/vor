@@ -3,7 +3,7 @@ const should = require('should');
 const assert = require('assert');
 const helpers = require('./helpers/index');
 
-describe('App: On message event', function () {
+describe('App: on message event', function () {
 
   before(() => {
     helpers.setupCache();

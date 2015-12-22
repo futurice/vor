@@ -3,7 +3,7 @@ const should = require('should');
 const assert = require('assert');
 const helpers = require('./helpers/index');
 
-describe('App: On beacon event', function () {
+describe('App: on message event "location"', function () {
 
   before(() => {
     helpers.setupCache();
@@ -30,25 +30,25 @@ describe('App: On beacon event', function () {
      +---+---+---+
      */
 
-    const CLIENT_A_LOCATION = {email: 'ClientA', type: 'location', x: 2, y: 2};
+    const EXPECTED_A_LOCATION_MESSAGE = {email: 'ClientA', type: 'location', floor: 1, x: 2, y: 2};
     const clientA = helpers.createSocketConnection();
     const clientB = helpers.createSocketConnection();
 
     clientA.on('connect', () => {
-      clientA.emit('beacon', {email: 'ClientA', id: 1, distance: 1, floor: 1});
-      clientA.emit('beacon', {email: 'ClientA', id: 2, distance: 1, floor: 1});
-      clientA.emit('beacon', {email: 'ClientA', id: 3, distance: 1, floor: 1});
+      clientA.emit('message', {type:'beacon', email: 'ClientA', id: 1, distance: 1, floor: 1});
+      clientA.emit('message', {type:'beacon', email: 'ClientA', id: 2, distance: 1, floor: 1});
+      clientA.emit('message', {type:'beacon', email: 'ClientA', id: 3, distance: 1, floor: 1});
 
       clientA.on('location', message => {
-        should(message).deepEqual(CLIENT_A_LOCATION);
+        should(message).deepEqual(EXPECTED_A_LOCATION_MESSAGE);
         done();
       });
 
       clientA.disconnect();
     });
 
-    clientB.on('location', message => {
-      should(message).deepEqual(CLIENT_A_LOCATION);
+    clientB.on('message', message => {
+      should(message).deepEqual(EXPECTED_A_LOCATION_MESSAGE);
       clientB.disconnect();
       done();
     });

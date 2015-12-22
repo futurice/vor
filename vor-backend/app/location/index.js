@@ -15,11 +15,12 @@ class Location {
       .map(([beacon1, beacon2, beacon3]) => {
         const position = calculatePosition(beacon1, beacon2, beacon3);
         const messageData = Object.assign({
-          email: beacon1.email, // get email data from beacon
+          email: beacon1.email, // get email from first beacon
+          floor: beacon1.floor, // get floor from first beacon
           type: 'location' // constant for every message
         }, position);
         const logBeacons = `${beacon1.id}, ${beacon2.id}, ${beacon3.id}`;
-        console.log(`Server - location (${logBeacons}) : ${JSON.stringify(messageData)} : ${new Date}`);
+        console.log(`Server - location (${logBeacons}) : ${JSON.stringify(position)} : ${new Date}`);
         return messageData;
       });
   }
@@ -38,7 +39,8 @@ const mapWithConfig = ([beaconMessage, config]) => {
     email: beaconMessage.email,
     distance: beaconMessage.distance,
     x: config.x,
-    y: config.y
+    y: config.y,
+    floor: config.floor
   };
 };
 

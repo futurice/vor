@@ -4,7 +4,7 @@ const assert = require('assert');
 const helpers = require('./helpers/index');
 const sharedConfig = require('../config/shared');
 
-describe('App: On init event', function () {
+describe('App: on "init" ', function () {
 
   before(() => {
     helpers.setupCache();
