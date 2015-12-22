@@ -20,7 +20,7 @@ class Location {
           type: 'location' // constant for every message
         }, position);
         const logBeacons = `${beacon1.id}, ${beacon2.id}, ${beacon3.id}`;
-        console.log(`Server - location (${logBeacons}) : ${JSON.stringify(messageData)} : ${new Date}`);
+        console.log(`Server - location (${logBeacons}) : ${JSON.stringify(position)} : ${new Date}`);
         return messageData;
       });
   }
