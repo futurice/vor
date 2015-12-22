@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.futurice.cascade.AsyncBuilder;
 import com.futurice.hereandnow.services.LocationService;
+import com.futurice.hereandnow.utils.Storing;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -91,16 +92,16 @@ public class HereAndNowApplication extends Application {
             switch (jsonObject.getString(Constants.TYPE_KEY)) {
                 case Constants.TOILET_KEY:
                     Log.d(TAG, "Constants.TOILET_KEY received!");
-                    saveToiletToSharedPreferences(jsonObject);
+                    Storing.saveToiletToSharedPreferences(jsonObject, this);
                     break;
                 case Constants.POOL_KEY:
-                    savePoolToSharedPreferences(jsonObject.getString(Constants.IMAGE_KEY));
+                    Storing.savePoolToSharedPreferences(jsonObject.getString(Constants.IMAGE_KEY), this);
                     break;
                 case Constants.FOOD_KEY:
-                    saveFoodToSharedPreferences(jsonObject.getString(Constants.IMAGE_KEY));
+                    Storing.saveFoodToSharedPreferences(jsonObject.getString(Constants.IMAGE_KEY), this);
                     break;
                 case Constants.TEST_KEY: // Test
-                    saveTestToSharedPreferences(jsonObject.getString("message"));
+                    Storing.saveTestToSharedPreferences(jsonObject.getString("message"), this);
                     break;
                 default:
                     break;
@@ -108,37 +109,6 @@ public class HereAndNowApplication extends Application {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    private void saveToiletToSharedPreferences(JSONObject jsonObject) throws JSONException {
-        String toiletId = jsonObject.getString(Constants.ID_KEY);
-        SharedPreferences toilets = getSharedPreferences(toiletId, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = toilets.edit();
-        editor.putString(Constants.ID_KEY, jsonObject.getString(Constants.ID_KEY));
-        editor.putBoolean(Constants.RESERVED_KEY, jsonObject.getBoolean(Constants.RESERVED_KEY));
-        editor.putInt(Constants.METHANE_KEY, jsonObject.getInt(Constants.METHANE_KEY));
-        editor.apply();
-    }
-
-    private void saveTestToSharedPreferences(String message) {
-        SharedPreferences testSP = getSharedPreferences(Constants.TEST_KEY, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = testSP.edit();
-        editor.putString(Constants.MESSAGE_KEY, message);
-        editor.apply();
-    }
-
-    private void savePoolToSharedPreferences(String file) {
-        SharedPreferences poolSP = getSharedPreferences(Constants.POOL_KEY, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = poolSP.edit();
-        editor.putString(Constants.IMAGE_KEY, file);
-        editor.apply();
-    }
-
-    private void saveFoodToSharedPreferences(String file) {
-        SharedPreferences foodSP = getSharedPreferences(Constants.FOOD_KEY, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = foodSP.edit();
-        editor.putString(Constants.IMAGE_KEY, file);
-        editor.apply();
     }
 
     public static Socket getSocket() {
