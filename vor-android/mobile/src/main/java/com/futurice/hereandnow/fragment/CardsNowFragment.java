@@ -18,6 +18,7 @@ import com.futurice.hereandnow.HereAndNowApplication;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.adapter.TopicListAdapter;
 import com.futurice.hereandnow.card.ITopic;
+import com.futurice.hereandnow.utils.Storing;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -116,6 +117,11 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 Context context = HereAndNowApplication.getStaticContext();
                 switch (jsonObject.getString(Constants.TYPE_KEY)) {
+                    case Constants.TOILET_KEY:
+                        Storing.saveToiletToSharedPreferences(
+                                jsonObject,
+                                HereAndNowApplication.getStaticContext());
+                        break;
                     case Constants.POOL_KEY:
                         String poolImage = jsonObject.getString(Constants.IMAGE_KEY);
                         getSourceTopicModel().add(Cards.pool(poolImage, context));
