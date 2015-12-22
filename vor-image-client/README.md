@@ -1,6 +1,6 @@
 # Vör Image Client
 
-## A light-weight node.js client(server) installed in Rasperry PI 2 
+## A light-weight node.js client(server) installed in Raspberry PI 2 
 - connects to backend using websockets
 - takes a picture on socket event
 
@@ -19,7 +19,7 @@
 - To run tests: ```npm run test```
 - To run tests continuously: ```npm run test-watch```
 
-### Deploying to Rasperry PI
+### Deploying to Raspberry PI
 1. Install Raspian version ^8 to Rasberry PI
 2. SSH to Rasberry PI [Rasberry PI support](https://www.raspberrypi.org/documentation/remote-access/ssh/)
 3. Install node.js ^5.0.0 [more info](http://blog.wia.io/installing-node-js-v4-0-0-on-a-raspberry-pi/)
