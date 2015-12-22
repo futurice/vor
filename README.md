@@ -24,7 +24,7 @@ Please have a look at the subdirectories corresponding to the different parts of
 
 #### Starting points depending on your interest:
 
-[JSON](/doc/json-schema.md) describing the different message.
+[JSON](/doc/json-schema.md) describing the different messages sent and received by phones and Arduinos, echoed to clients on the local WLAN by the Node.js server to create a local bus with end-to-end push using websockets
 
 [Design](/vor-design/README.md) visual design assets
 
