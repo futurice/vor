@@ -1,6 +1,6 @@
 # Vör Image Client
 
-## A light-weight node.js client(server) installed in Raspberry PI 2 
+## A light-weight node.js client(server) installed in Raspberry PI 1 or 2 
 - connects to backend using websockets
 - takes a picture on socket event
 
