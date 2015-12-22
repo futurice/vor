@@ -77,10 +77,10 @@
     <string name="preferences_notification_sate">bluetooth_notification_state</string>
     <string name="preferences_wifi_notification_state">wifi_notification_state</string>
     <string name="logo">logo</string>
-    <string name="email">email</string>
-    <string name="please_add_email">Please add your email</string>
+    <string name="email">Your futurice email</string>
+    <string name="please_add_email">Email</string>
     <string name="invalid_email">Invalid email</string>
-    <string name="login">login</string>
+    <string name="enter">Enter</string>
     <string name="change_floor">Change floor</string>
     <string name="people_nearby">People Nearby</string>
 </resources>
