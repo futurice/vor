@@ -27,8 +27,8 @@ push_button();
 module push_button() {
     // Uncomment one of the following 3 lines at a time
 //    body();
-    left_half();
-//    right_half();
+//    left_half();
+    right_half();
     
 //    yun_moved();
 //    toggle_moved();
