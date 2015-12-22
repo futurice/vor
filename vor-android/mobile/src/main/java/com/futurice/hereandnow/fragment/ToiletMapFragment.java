@@ -144,8 +144,8 @@ public class ToiletMapFragment extends Fragment {
     }
 
     public void updateView7th() {
-        Boolean am = mToilet7amSP.getBoolean(Constants.RESERVED_KEY, false);
-        Boolean bm = mToilet7bmSP.getBoolean(Constants.RESERVED_KEY, false);
+        Boolean am = !mToilet7amSP.getBoolean(Constants.RESERVED_KEY, true);
+        Boolean bm = !mToilet7bmSP.getBoolean(Constants.RESERVED_KEY, true);
 
         if (am && bm) {
             setToiletMapImageView(R.drawable.map_toilet_7th_floor_aa_ba);
