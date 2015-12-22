@@ -15,7 +15,7 @@ module board() {
 }
 
 module usb_power() {
-    translate([-2, (width - 5.8) / 2, height]) cube([7.5, 5.8, 3]);
+    translate([-102, (width - 15) / 2, height - 4]) cube([105.5 + length, 15, 3 + 8]);
 }
 
 module header(y = 0, z = 0) {
@@ -27,11 +27,18 @@ module leds() {
 }
 
 module button(y = 0) {
-    translate([length - 2.75, y, height]) cylinder(r=3/2, h=1);    
+    translate([length - 2.75, y, height]) cylinder(r=2.2, h=100);    
 }
 
-module bottom_button() {
-    translate([length - 2, 7.5, -1]) cylinder(r=3/2, h=1); 
+module bottom_button(bx = length - 2, by = 7.5) {
+    translate([bx, by, -100]) cylinder(r=2.2, h=100); 
+}
+
+module bottom_slot(y = 0) {
+    hull() {
+        translate([length - 10, y, -100]) cylinder(r=2.2, h=100); 
+        translate([10, y, -100]) cylinder(r=2.2, h=100); 
+    }
 }
 
 module hole(x = 0, y = 0) {
@@ -52,8 +59,20 @@ module arduino_yun_mini() {
     color("blue") button(y = 6.5);
     color("blue") button(y = 10.3);
     color("violet") bottom_button(y = 10.3);
-    color("black") header(z = height, y = 0);
-    color("black") header(z = height, y = width - 2.6);
+    color("orange") bottom_slot(y = 8);
+    color("orange") bottom_slot(y = width - 8);
+    color("black") hull() {
+        header(z = height, y = 0);
+        translate([0, 0, 2.6]) rotate([-90, 0, 0]) {
+            header(z = 0, y = 0);
+        }
+    }
+    color("black") hull() {
+        header(z = height, y = width - 2.6);
+        translate([0, width - 2.6, 0]) rotate([90, 0, 0]) {
+            header(z = 0, y = 0);
+        }
+    }
     color("silver") header(z = -9.2, y = 0);
     color("silver") header(z = -9.2, y = width - 2.6);
 }

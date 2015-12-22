@@ -29,6 +29,46 @@ tip_length = 46;
 push_button();
 
 module push_button() {
+    // Uncomment one of the following 3 lines at a time
+//    body();
+    left_half();
+//    right_half();
+    
+//    yun_moved();
+//    toggle_moved();
+}
+
+module left_half() {
+    difference() {
+        body();
+        union() {
+            translate([-2*cube_side, -4*cube_side, -1])
+                cube([cube_side*4, cube_side*4, cube_side*2]);        
+            yun_hole();
+        }
+    }
+    color("pink") spike(x=-45);
+    color("pink") spike(x=40);
+}
+
+module spike(x=0, skin=0) {
+    translate([x - skin, -5 - skin, 3 - skin])
+        cube([5 + 2*skin, 10 + 2*skin, 5 + 2*skin]);
+}
+
+module right_half() {
+    difference() {
+        body();
+        union() {
+            translate([-2*cube_side, 0, -1])
+                cube([cube_side*4, cube_side*4, cube_side*2]);
+            spike(x=-45, skin=.1);
+            spike(x=40, skin=.1);
+        }
+    }
+}
+
+module body() {
     color("purple") difference() {
         box();
         yun_hole();
@@ -40,8 +80,6 @@ module push_button() {
             sphere(r=yun_skin);
         }
     }
-    yun_moved();
-    toggle_moved();
 }
 
 module yun_moved() {
@@ -52,6 +90,10 @@ module yun_moved() {
 module yun_hole() {
     translate([yun_x - yun_skin, yun_y - yun_skin, yun_z - 9.6 - yun_skin])
         cube([yun_length + 2*yun_skin, yun_width + 2*yun_skin, 9.2*2 + 1.6 + 2*yun_skin]);
+    minkowski() {
+        yun_moved();
+        sphere(r=.1);
+    }
 }
 
 module yun_holder() {
@@ -63,7 +105,7 @@ module tip() {
     translate([-30, -tip_width/2, yun_z + 8])
         difference() {
             union() {
-                cube([tip_length, tip_width, cube_tip_clip + .1]);
+                cube([tip_length, tip_width, cube_tip_clip + .1 - 20]);
                 translate([10, 0, 0])
                     cube([tip_length, tip_width, 10]);
             }
