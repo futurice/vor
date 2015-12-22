@@ -1,23 +1,23 @@
 /*
-    Digital button sensor.
+    Digital switch sensor.
 */
 
-#ifndef VOR_BUTTON_H
-#define VOR_BUTTON_H
+#ifndef VOR_SWITCH_H
+#define VOR_SWITCH_H
 
 #include "vor_sensor.h"
 
 #define DEBOUNCE 100 // milliseconds
 
-class VorButton : public VorSensor {
+class VorSwitch : public VorSensor {
 public:
-    VorButton(uint8_t pin);
+    VorSwitch(uint8_t pin);
 
     int read();
 
 private:
 
-    int _buttonValue;
+    int _switchValue;
     uint64_t _debounceTime; // milliseconds
 
 };

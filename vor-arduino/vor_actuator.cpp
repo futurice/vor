@@ -1,5 +1,5 @@
 /*
-    Abstraction of a sensor.
+    Abstraction of an actuator.
 */
 
 #include "vor_actuator.h"

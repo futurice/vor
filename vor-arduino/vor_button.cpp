@@ -1,5 +1,5 @@
 /*
-    Button sensor.
+    Digital button sensor.
 */
 
 #include "vor_button.h"

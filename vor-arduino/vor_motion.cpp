@@ -1,12 +1,13 @@
 /*
-    Button sensor.
+    Digital PIR motion sensor.
 */
 
 #include "vor_motion.h"
 
-VorMotion::VorMotion(uint8_t pin) :
+VorMotion::VorMotion(uint8_t pin, uint32_t debounce) :
 VorSensor(pin, DIGITAL_INPUT_PULLUP),
 _motionValue(HIGH),
+_debounce(debounce),
 _debounceTime(0) {
 
 }
@@ -20,7 +21,7 @@ int VorMotion::read() {
         _debounceTime = now;
     }
 
-    if (now - _debounceTime > DEBOUNCE) {
+    if (now - _debounceTime > _debounce) {
         _motionValue = value;
     }
 
