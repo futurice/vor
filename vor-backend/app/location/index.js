@@ -2,16 +2,16 @@
 const Rx = require('rx');
 
 class Location {
-  constructor(beacons) {
-    this.beacons = beacons;
+  constructor(beaconConfigs) {
+    this.beaconConfigs = beaconConfigs;
   }
 
   fromDeviceStream(stream) {
     return stream
+      .map(getConfig(this.beaconConfigs))
+      .filter(([beaconMessage, config]) => !!config)
+      .map(mapWithConfig)
       .bufferWithCount(3)
-      .do(([b1, b2, b3]) => console.log('Server - beacons --> ', b1, b2, b3))
-      .map((beaconMessages) => this.beacons.reduce(reduceConfig(beaconMessages), []))
-      .filter(validBeacons => validBeacons.length === 3)
       .map(([beacon1, beacon2, beacon3]) => {
         const position = calculatePosition(beacon1, beacon2, beacon3);
         const messageData = Object.assign({
@@ -19,29 +19,28 @@ class Location {
           type: 'location' // constant for every message
         }, position);
         const logBeacons = `${beacon1.id}, ${beacon2.id}, ${beacon3.id}`;
-        console.log(`Server - location for (${logBeacons}) --> ${JSON.stringify(messageData)}`);
+        console.log(`Server - location (${logBeacons}) : ${JSON.stringify(messageData)} : ${new Date}`);
         return messageData;
       });
   }
 }
 
-function reduceConfig(beaconMessage) {
-  return function(validBeacons, config) {
-    const beaconWithConfig = beaconMessage
-      .filter(beaconMessage => beaconMessage.id === config.id)
-      .filter(beaconMessage => beaconMessage.floor === config.floor)
-      .map(beaconMessage => {
-        return {
-          id: beaconMessage.id,
-          email: beaconMessage.email,
-          distance: beaconMessage.distance,
-          x: config.x,
-          y: config.y
-        };
-      });
-    return validBeacons.concat(beaconWithConfig);
+const getConfig = beaconConfigs => beaconMessage => {
+  const [config] = beaconConfigs
+    .filter(config => config.id === beaconMessage.id)
+    .filter(config => config.floor === beaconMessage.floor);
+  return [ beaconMessage, config ];
+};
+
+const mapWithConfig = ([beaconMessage, config]) => {
+  return {
+    id: beaconMessage.id,
+    email: beaconMessage.email,
+    distance: beaconMessage.distance,
+    x: config.x,
+    y: config.y
   };
-}
+};
 
 /*
  http://everything2.com/title/Triangulate
