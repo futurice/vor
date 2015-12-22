@@ -23,6 +23,8 @@
 1. Install Raspian version ^8 to Rasberry PI
 2. SSH to Rasberry PI [Rasberry PI support](https://www.raspberrypi.org/documentation/remote-access/ssh/)
 3. Install node.js ^5.0.0 [more info](http://blog.wia.io/installing-node-js-v4-0-0-on-a-raspberry-pi/)
+    - use https://nodejs.org/dist/v5.0.0/node-v5.0.0-linux-armv6l.tar.gz for Raspberry PI 1
+    - use https://nodejs.org/dist/v5.0.0/node-v5.0.0-linux-armv7l.tar.gz for Raspberry PI 2
 4. Run: ```sudo update apt-get``` to update package manager
 4. Run: ```sudo apt-get install fswebcam``` to install fswebcam [more info](https://www.raspberrypi.org/documentation/usage/webcams/)
 5. Run: ```cd /var``` and run: ```sudo git clone https://github.com/futurice/vor.git``` to clone this repo
