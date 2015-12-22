@@ -7,6 +7,7 @@ width = 22.86;
 height = 1.3;
 header_length = 64;
 header_height = 9.2;
+button_radius = 2;
 
 arduino_yun_mini();
 
@@ -27,16 +28,16 @@ module leds() {
 }
 
 module button(y = 0) {
-    translate([length - 2.75, y, height]) cylinder(r=2.2, h=100);    
+    translate([length - 2.75, y, height]) cylinder(r=button_radius, h=100);    
 }
 
 module bottom_button(bx = length - 2, by = 7.5) {
-    translate([bx, by, -100]) cylinder(r=2.2, h=100); 
+    translate([bx, by, -100]) cylinder(r=button_radius, h=100); 
 }
 
 module bottom_slot(y = 0) {
     hull() {
-        translate([length - 10, y, -100]) cylinder(r=2.2, h=100); 
+        translate([length - 10, y, -100]) cylinder(r=2, h=100); 
         translate([10, y, -100]) cylinder(r=2.2, h=100); 
     }
 }
@@ -59,8 +60,10 @@ module arduino_yun_mini() {
     color("blue") button(y = 6.5);
     color("blue") button(y = 10.3);
     color("violet") bottom_button(y = 10.3);
-    color("orange") bottom_slot(y = 8);
-    color("orange") bottom_slot(y = width - 8);
+    color("orange") hull() {
+         bottom_slot(y = 8);
+         bottom_slot(y = width - 8);
+    }
     color("black") hull() {
         header(z = height, y = 0);
         translate([0, 0, 2.6]) rotate([-90, 0, 0]) {

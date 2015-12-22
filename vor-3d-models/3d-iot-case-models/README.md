@@ -7,9 +7,9 @@ These may be used in building custom IoT components continaing a single board co
 * Toggle Bit Yun Mini Case, Toggle Switch with Missile Launch Flip Cover 
 [3D View](/vor-3d-models/3d-iot-case-models/toggle-bit-case.stl)
 
-[3D View](/vor-3d-models/3d-iot-case-models/toggle-bit-left.stl)
+[3D View](/vor-3d-models/3d-iot-case-models/toggle-bit-case-left.stl)
 
-[3D View](/vor-3d-models/3d-iot-case-models/toggle-bit-right.stl)
+[3D View](/vor-3d-models/3d-iot-case-models/toggle-bit-case-right.stl)
 
 ** Solder wire-wrap wires to the toggle switch
 

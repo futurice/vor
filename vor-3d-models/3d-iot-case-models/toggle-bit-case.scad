@@ -28,8 +28,7 @@ module push_button() {
     // Uncomment one of the following 3 lines at a time
     body();
 //    left_half();
-//    right_half();
-    
+//
 //    yun_moved();
 //    toggle_moved();
 }
@@ -45,11 +44,12 @@ module left_half() {
     }
     color("pink") spike(x=-45);
     color("pink") spike(x=40);
+    color("pink") spike(x=-30, z = 30);
 }
 
-module spike(x=0, skin=0) {
-    translate([x - skin, -5 - skin, 3 - skin])
-        cube([5 + 2*skin, 10 + 2*skin, 5 + 2*skin]);
+module spike(x=0, skin=0, z = 0) {
+    translate([x - skin, -5 - skin, 1.6 + z])
+        cube([7 + 2*skin, 12 + 2*skin, 7 + 2*skin]);
 }
 
 module right_half() {
@@ -58,9 +58,10 @@ module right_half() {
         union() {
             translate([-2*cube_side, 0, -1])
                 cube([cube_side*4, cube_side*4, cube_side*2]);
-            spike(x=-45, skin=.1);
-            spike(x=40, skin=.1);
-        }
+            spike(x=-45, skin=.2);
+            spike(x=40, skin=.2);
+            spike(x=-30, skin=.2, z = 30);
+            }
     }
 }
 
@@ -82,10 +83,10 @@ module body() {
 	        toggle_moved(dx=-yun_skin, dy=yun_skin, dz=-yun_skin);
 	        toggle_moved(dx=-yun_skin, dy=-yun_skin, dz=yun_skin);
 	        toggle_moved(dx=-yun_skin, dy=-yun_skin, dz=-yun_skin);
-            translate([-24, -9, 45]) rotate([90, 0, 0]) {
+            translate([-24, -9, 47]) rotate([90, 0, 0]) {
                 bolt();
             }
-            translate([-24, 9, 45]) rotate([-90, 0, 0]) {
+            translate([-24, 9, 47]) rotate([-90, 0, 0]) {
                 bolt();
             }
             translate([44, -10, 11]) rotate([90, 0, 0]) {
@@ -108,7 +109,7 @@ module yun_hole() {
         cube([yun_length + 2*yun_skin, yun_width + 2*yun_skin, 9.2*2 + 1.6 + 2*yun_skin]);
     minkowski() {
         yun_moved();
-        cube(side=yun_skin, center=true);
+        sphere(r=yun_skin);
     }
 }
 
@@ -137,7 +138,7 @@ module poly() {
                 [0,-cube_side,0],
                 [-cube_side,0,0],
                 [0,cube_side,0],
-                [0,0,cube_side]],
+                [0,0,cube_side*1.1]],
             faces=[[0,1,4],[1,2,4],[2,3,4],[3,0,4],[1,0,3],[2,1,3]]);
         union() {
             translate([-2*cube_side, -2*cube_side, cube_tip_clip])
