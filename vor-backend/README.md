@@ -20,7 +20,8 @@
 - To run tests continuously: ```npm run test-watch```
 
 
-### Making a deploy
-1. Add remote repo
-2. If you are using Dokku, Heroku or something similar run in root folder:<br/>
-    ``` git push dokku `git subtree split --prefix vor-backend <your branch>`:master```
+### Making a deploy - using [Dokku](http://dokku.viewdocs.io/dokku/) 
+1. SSH to your host server
+2. Add ssh key for dokku on your host server - [help](https://www.digitalocean.com/community/questions/dokku-add-new-ssh-key)
+3. Add a remote repo to your local repository: <br/>```git remote add dokku dokku@<your host domain/ip>:<app name>```
+4. Push local repo to Dokku, run in the project root folder (vor):<br/>``` git push dokku `git subtree split --prefix vor-backend <your branch>`:master```
