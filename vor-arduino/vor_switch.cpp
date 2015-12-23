@@ -12,9 +12,7 @@ _debounceTime(0) {
 
 int VorSwitch::read() {
     int value = VorSensor::read();
-    if (!_debounceTime) {
-        _switchValue = value;
-    }
+
     uint64_t now = millis();
 
     if (now - _debounceTime > DEBOUNCE && value != _switchValue) {
