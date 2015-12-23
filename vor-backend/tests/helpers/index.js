@@ -1,7 +1,7 @@
 'use strict';
 const io = require('socket.io-client');
 const sinon = require('sinon');
-const envs = require('envs')
+const envs = require('envs');
 
 const socketURL = `http://0.0.0.0:${process.env.PORT}`;
 var cacheClient = null;
@@ -9,9 +9,9 @@ var cacheClient = null;
 const helpers = {
 
   TEST_MESSAGE: {
-    "type": "test-room",
-    "id": "1a",
-    "text": "text"
+    type: 'test-room',
+    id: '1a',
+    text: 'text'
   },
 
   createSocketConnection: () => io.connect(socketURL, {

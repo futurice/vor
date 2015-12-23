@@ -16,7 +16,7 @@ describe('App: on message post', function () {
   afterEach(helpers.flushCache);
 
   it('should publish message', done => {
-    const TEST_MESSAGE = '{"id":"1","type":"room","reserved":false,"temperature":10,"light":774,"dioxide":10,"noise":10}';
+    const TEST_MESSAGE = '{"id":"1","type":"room","reserved":false,"temperature":10}';
     const expectedResponse = JSON.parse(TEST_MESSAGE);
     const clientA = helpers.createSocketConnection();
     const clientB = helpers.createSocketConnection();

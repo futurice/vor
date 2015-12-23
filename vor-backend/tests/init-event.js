@@ -26,7 +26,7 @@ describe('App: on "init" ', function () {
         clientA.emit('init');
 
         clientB.on('init', messages => {
-          messagesForClientB = messages
+          messagesForClientB = messages;
         });
 
         clientA.on('init', initObject => {

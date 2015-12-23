@@ -4,15 +4,18 @@
   "description": "Backend for handling communication between clients and sensors",
   "main": "bin/www.js",
   "license": "MIT",
-  "repository": "git://github.com/futurice/vor/vor-backend",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/futurice/vor.git"
+  },
   "engines": {
     "node": "5.0.0"
   },
   "scripts": {
     "server": "NODE_PATH=. node --harmony_destructuring --harmony_modules --harmony_array_includes --harmony_rest_parameters ./bin/www.js",
     "mocha": "NODE_PATH=. NODE_ENV=test PORT=9090 mocha --harmony_destructuring --harmony_modules --harmony_array_includes --harmony_rest_parameters tests/*.js",
-    "jscs": "jscs app",
-    "eslint": "eslint app",
+    "jscs": "jscs app bin tests",
+    "eslint": "eslint app bin tests",
     "lint": "npm run jscs && npm run eslint",
     "test": "npm run lint && npm run mocha",
     "test-watch": "nodemon -x 'npm run test'",
