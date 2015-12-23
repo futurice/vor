@@ -5,7 +5,7 @@
 - Caches some messages for short period
 
 ### Requirements
-- Node.js 4.1 [node.js homepage](https://nodejs.org/en/)
+- Node.js ^5.0.0 [node.js homepage](https://nodejs.org/en/)
 - Redis [Redis quickstart](http://redis.io/topics/quickstart)
 
 ### Local setup
