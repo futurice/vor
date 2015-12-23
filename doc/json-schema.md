@@ -86,9 +86,13 @@
         "y": {  
             "description": "The calculated y-axis position of the client",  
             "type": "float"  
-        }
+        },
+        "floor":{  
+            "description": "The floor where beacons locate",  
+            "type": "integer"  
+        } 
     },  
-    "required": ["email", "type", "x", "y"]
+    "required": ["email", "type", "x", "y", "floor"]
 }
 ```
 
@@ -99,7 +103,8 @@
     "email": "user@mail.com",
     "type": "location",
     "x": 2.453, 
-    "y": 1.224
+    "y": 1.224,
+    "floor": 8
 }
 ```
 
