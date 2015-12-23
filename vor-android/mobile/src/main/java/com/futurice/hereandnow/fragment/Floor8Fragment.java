@@ -4,17 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.futurice.hereandnow.Constants;
 import com.futurice.hereandnow.R;
+import com.futurice.hereandnow.utils.ToiletUtils;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,36 +29,10 @@ public class Floor8Fragment extends Fragment {
 
     Activity mActivity;
 
-    SharedPreferences mToilet8amSP;
-    SharedPreferences mToilet8awSP;
-    SharedPreferences mToilet8bmSP;
-    SharedPreferences mToilet8bwSP;
-    SharedPreferences mToilet8cmSP;
-    SharedPreferences mToilet8cwSP;
-
-    OnSharedPreferenceChangeListener toilet8amListener = (sharedPreferences, key) -> {
-        updateToiletView(sharedPreferences, key, mToilet8AM);
-    };
-
-    OnSharedPreferenceChangeListener toilet8awListener = (sharedPreferences, key) -> {
-        updateToiletView(sharedPreferences, key, mToilet8AW);
-    };
-
-    OnSharedPreferenceChangeListener toilet8bmListener = (sharedPreferences, key) -> {
-        updateToiletView(sharedPreferences, key, mToilet8BM);
-    };
-
-    OnSharedPreferenceChangeListener toilet8bwListener = (sharedPreferences, key) -> {
-        updateToiletView(sharedPreferences, key, mToilet8BW);
-    };
-
-    OnSharedPreferenceChangeListener toilet8cmListener = (sharedPreferences, key) -> {
-        updateToiletView(sharedPreferences, key, mToilet8CM);
-    };
-
-    OnSharedPreferenceChangeListener toilet8cwListener = (sharedPreferences, key) -> {
-        updateToiletView(sharedPreferences, key, mToilet8CW);
-    };
+    ArrayList<String> mIds = new ArrayList<>();
+    ArrayList<RelativeLayout> mRelativeLayouts = new ArrayList<>();
+    ArrayList<SharedPreferences> mSharedPreferences = new ArrayList<>();
+    ArrayList<OnSharedPreferenceChangeListener> mOnSharedPreferenceChangeListeners = new ArrayList<>();
 
     public Floor8Fragment() {
     }
@@ -68,12 +42,17 @@ public class Floor8Fragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mActivity = getActivity();
-        mToilet8amSP = mActivity.getSharedPreferences("toilet8am", Context.MODE_PRIVATE);
-        mToilet8awSP = mActivity.getSharedPreferences("toilet8aw", Context.MODE_PRIVATE);
-        mToilet8bmSP = mActivity.getSharedPreferences("toilet8bm", Context.MODE_PRIVATE);
-        mToilet8bwSP = mActivity.getSharedPreferences("toilet8bw", Context.MODE_PRIVATE);
-        mToilet8cmSP = mActivity.getSharedPreferences("toilet8cm", Context.MODE_PRIVATE);
-        mToilet8cwSP = mActivity.getSharedPreferences("toilet8cw", Context.MODE_PRIVATE);
+
+        mIds.add("toilet8am");
+        mIds.add("toilet8aw");
+        mIds.add("toilet8bm");
+        mIds.add("toilet8bw");
+        mIds.add("toilet8cm");
+        mIds.add("toilet8cw");
+
+        for (String id : mIds) {
+            mSharedPreferences.add(mActivity.getSharedPreferences(id, Context.MODE_PRIVATE));
+        }
     }
 
     @Override
@@ -82,59 +61,58 @@ public class Floor8Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_floor_8_toilet, container, false);
         ButterKnife.bind(this, view);
 
-        updateView();
+        setupView();
 
         return view;
+    }
+
+    private void setupView() {
+        mRelativeLayouts.add(mToilet8AM);
+        mRelativeLayouts.add(mToilet8AW);
+        mRelativeLayouts.add(mToilet8BM);
+        mRelativeLayouts.add(mToilet8BW);
+        mRelativeLayouts.add(mToilet8CM);
+        mRelativeLayouts.add(mToilet8CW);
+
+        for (int i = 0; i < mRelativeLayouts.size(); i++) {
+            RelativeLayout relativeLayout = mRelativeLayouts.get(i);
+            mOnSharedPreferenceChangeListeners.add((sharedPreferences, key) -> {
+                ToiletUtils.updateView(sharedPreferences, key, relativeLayout, mActivity);
+            });
+            SharedPreferences sp = mSharedPreferences.get(i);
+            String id = mIds.get(i);
+            relativeLayout.setOnClickListener(v -> {
+                ToiletUtils.setClickListener(sp.getString(id, null), mActivity);
+            });
+            ToiletUtils.updateView(sp, mIds.get(i), relativeLayout, mActivity);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        mToilet8amSP.registerOnSharedPreferenceChangeListener(toilet8amListener);
-        mToilet8awSP.registerOnSharedPreferenceChangeListener(toilet8awListener);
-        mToilet8bmSP.registerOnSharedPreferenceChangeListener(toilet8bmListener);
-        mToilet8bwSP.registerOnSharedPreferenceChangeListener(toilet8bwListener);
-        mToilet8cmSP.registerOnSharedPreferenceChangeListener(toilet8cmListener);
-        mToilet8cwSP.registerOnSharedPreferenceChangeListener(toilet8cwListener);
+        registerListeners();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-
-        mToilet8amSP.unregisterOnSharedPreferenceChangeListener(toilet8amListener);
-        mToilet8awSP.unregisterOnSharedPreferenceChangeListener(toilet8awListener);
-        mToilet8bmSP.unregisterOnSharedPreferenceChangeListener(toilet8bmListener);
-        mToilet8bwSP.unregisterOnSharedPreferenceChangeListener(toilet8bwListener);
-        mToilet8cmSP.unregisterOnSharedPreferenceChangeListener(toilet8cmListener);
-        mToilet8cwSP.unregisterOnSharedPreferenceChangeListener(toilet8cwListener);
+        unregisterListeners();
     }
 
-    private void updateToiletView(SharedPreferences sharedPreferences, String key, View view) {
-        switch (key) {
-            case Constants.RESERVED_KEY:
-                updateToiletBackground(view, sharedPreferences.getBoolean(key, false));
-                break;
-            case Constants.METHANE_KEY:
-                break;
-            default:
-                break;
+    private void registerListeners() {
+        for(int i = 0; i < mSharedPreferences.size(); i++) {
+            SharedPreferences sharedPreferences = mSharedPreferences.get(i);
+            OnSharedPreferenceChangeListener listener = mOnSharedPreferenceChangeListeners.get(i);
+            sharedPreferences.registerOnSharedPreferenceChangeListener(listener);
         }
     }
 
-    private void updateView() {
-        updateToiletBackground(mToilet8AM, mToilet8amSP.getBoolean(Constants.RESERVED_KEY, false));
-        updateToiletBackground(mToilet8AW, mToilet8awSP.getBoolean(Constants.RESERVED_KEY, false));
-        updateToiletBackground(mToilet8BM, mToilet8bmSP.getBoolean(Constants.RESERVED_KEY, false));
-        updateToiletBackground(mToilet8BW, mToilet8bwSP.getBoolean(Constants.RESERVED_KEY, false));
-        updateToiletBackground(mToilet8CM, mToilet8cmSP.getBoolean(Constants.RESERVED_KEY, false));
-        updateToiletBackground(mToilet8CW, mToilet8cwSP.getBoolean(Constants.RESERVED_KEY, false));
-    }
-
-    public void updateToiletBackground(View view, Boolean reserved) {
-        Drawable freeBg = ContextCompat.getDrawable(getContext(), R.drawable.toilet_free_bg);
-        Drawable takenBg = ContextCompat.getDrawable(getContext(), R.drawable.toilet_taken_bg);
-        view.setBackground(reserved ? takenBg : freeBg);
+    private void unregisterListeners() {
+        for(int i = 0; i < mSharedPreferences.size(); i++) {
+            SharedPreferences sharedPreferences = mSharedPreferences.get(i);
+            OnSharedPreferenceChangeListener listener = mOnSharedPreferenceChangeListeners.get(i);
+            sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener);
+        }
     }
 }

@@ -1,20 +1,16 @@
 package com.futurice.hereandnow;
 
 import android.app.Application;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat.Builder;
-import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.futurice.cascade.AsyncBuilder;
 import com.futurice.hereandnow.services.LocationService;
-import com.futurice.hereandnow.utils.Storing;
+import com.futurice.hereandnow.utils.SharedPreferencesManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,7 +69,9 @@ public class HereAndNowApplication extends Application {
                     }
                 })
                 .on(Constants.LOCATION_KEY, args -> Log.d(TAG, "LOCATION RECEIVED"))
-                .on(Constants.MESSAGE_KEY, args -> updateToSharedPreferences((JSONObject) args[0]))
+                .on(Constants.MESSAGE_KEY, args -> {
+                    SharedPreferencesManager.saveToSharedPreferences((JSONObject) args[0], this);
+                })
                 .on(Socket.EVENT_DISCONNECT, args -> Log.d(TAG, "EVENT_DISCONNECT"));
         sSocket.connect();
 
@@ -84,30 +82,6 @@ public class HereAndNowApplication extends Application {
         //TODO Display a notification if the user is not connected to the right network.
         if (wifiInfo.getSSID().equals(Constants.NETWORK_SSID)) {
             startService(new Intent(this, LocationService.class));
-        }
-    }
-
-    public void updateToSharedPreferences(JSONObject jsonObject) {
-        try {
-            switch (jsonObject.getString(Constants.TYPE_KEY)) {
-                case Constants.TOILET_KEY:
-                    Log.d(TAG, "Constants.TOILET_KEY received!");
-                    Storing.saveToiletToSharedPreferences(jsonObject, this);
-                    break;
-                case Constants.POOL_KEY:
-                    Storing.savePoolToSharedPreferences(jsonObject.getString(Constants.IMAGE_KEY), this);
-                    break;
-                case Constants.FOOD_KEY:
-                    Storing.saveFoodToSharedPreferences(jsonObject.getString(Constants.IMAGE_KEY), this);
-                    break;
-                case Constants.TEST_KEY: // Test
-                    Storing.saveTestToSharedPreferences(jsonObject.getString("message"), this);
-                    break;
-                default:
-                    break;
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 
