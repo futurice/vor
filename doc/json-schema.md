@@ -6,7 +6,7 @@
 - [Toilet message](#toilet-message) - [example message](#toilet-example)
 - [Button message](#button-message) - [example message](#button-example)
 - [Pool message](#pool-message) - [example message](#pool-example)
-- [Cake message](#cake-message) - [example message](#cake-example)
+- [Food message](#food-message) - [example message](#food-example)
 
 <h2 name="room-beacon-message">Room beacon message</h2>
 
@@ -253,11 +253,11 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",  
     "title": "Pool message",  
-    "description": "Information of toilet's conditions",  
+    "description": "Image message sent by pool camera client",  
     "type": "object",  
     "properties": {  
          "id": {  
-            "description": "An unique identifier for a pool",  
+            "description": "An unique identifier for a pool camera",  
             "type": "string"  
         },
         "type": {  
@@ -265,7 +265,7 @@
             "constant": "pool"  
         },
         "image": {  
-            "description": "Image of the cake as base64",  
+            "description": "Image as base64",  
             "type": "string"  
         }
     },  
@@ -283,27 +283,27 @@
 }
 ```
 
-<h2 id="cake-message">Cake message</h2>
+<h2 id="food-message">Food message</h2>
 
 ####Schema:
 
 ```
 {
     "$schema": "http://json-schema.org/draft-04/schema#",  
-    "title": "Cake message",  
-    "description": "Information of toilet's conditions",  
+    "title": "Food message",  
+    "description": "Image message sent by food camera client",   
     "type": "object",  
     "properties": {  
          "id": {  
-            "description": "An unique identifier for a toilet",  
+            "description": "An unique identifier for a food camera client",  
             "type": "string"  
         },
         "type": {  
             "description": "The type of the message",  
-            "constant": "cake"  
+            "constant": "food"  
         },
         "image": {  
-            "description": "Image of the cake as base64",  
+            "description": "Image as base64",  
             "type": "string"  
         }
     },  
@@ -311,12 +311,12 @@
 }
 ```
 
-<h4 name="cake-example">Example:</h4>
+<h4 name="food-example">Example:</h4>
 
 ```
 {
-    "id": "cake",
-    "type": "cake",
+    "id": "food",
+    "type": "food",
     "image": "/9j/4AAQSkZJRgABAQEASABIAAD/4QCAR.."
 }
 ```
