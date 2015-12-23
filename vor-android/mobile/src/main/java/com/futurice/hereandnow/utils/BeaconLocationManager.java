@@ -9,18 +9,16 @@ import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 import com.estimote.sdk.Utils;
 import com.futurice.hereandnow.Constants;
+import com.futurice.hereandnow.HereAndNowApplication;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.activity.SettingsActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URISyntaxException;
 import java.util.UUID;
 
-import io.socket.client.IO;
 import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
 
 public class BeaconLocationManager {
     private static final String TAG = "BeaconLocation";
@@ -30,12 +28,12 @@ public class BeaconLocationManager {
     public static final String IDENTIFIER_B3 = "futu-b3";
 
     public static final String BEACON_KEY = "beacon";
-    public static final String LOCATION_KEY = "location";
 
     public static final String BEACON_KEY_ID = "id";
     public static final String BEACON_KEY_DISTANCE = "distance";
     public static final String BEACON_KEY_USER_IDENTIFIER = "email";
     public static final String BEACON_KEY_FLOOR = "floor";
+    public static final String BEACON_TEMPERATURE_KEY = "temperature";
 
     public static final int FLOOR_8 = 8;
     public static final int FLOOR_7 = 7;
@@ -72,19 +70,6 @@ public class BeaconLocationManager {
         mB1Manager = new BeaconManager(context);
         mB2Manager = new BeaconManager(context);
         mB3Manager = new BeaconManager(context);
-
-        try {
-            mSocket = IO.socket(Constants.SERVER_URL);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        mSocket
-                .on(Socket.EVENT_CONNECT, args -> Log.d(TAG, "EVENT_CONNECT"))
-                .on(Socket.EVENT_CONNECT_ERROR, onConnectError)
-                .on(LOCATION_KEY, onLocation)
-                .on(Socket.EVENT_DISCONNECT, args -> Log.d(TAG, "EVENT_DISCONNECT"));
-        mSocket.connect();
 
         mB1Manager = new BeaconManager(context);
         mB2Manager = new BeaconManager(context);
@@ -145,23 +130,11 @@ public class BeaconLocationManager {
         sendToServer(mB3, mB3Accuracy);
     }
 
-    private Emitter.Listener onConnectError = args -> {
-        Log.d(TAG, "EVENT_CONNECT_ERROR");
-        for (Object arg : args) {
-            Log.d(TAG, arg.toString());
-        }
+    public void onLocation(JSONObject jsonObject) {
         if (mLocationCallback != null) {
-            mLocationCallback.onConnectionError();
+            mLocationCallback.onLocationUpdate(jsonObject.toString());
         }
-    };
-
-    private Emitter.Listener onLocation = args -> {
-        if (mLocationCallback != null) {
-            for (Object o : args) {
-                mLocationCallback.onLocationUpdate(o.toString());
-            }
-        }
-    };
+    }
 
     /**
      * http://developer.estimote.com/android/tutorial/part-2-background-monitoring/
@@ -187,16 +160,18 @@ public class BeaconLocationManager {
     private void sendToServer(FutuBeacon beacon, double accuracy) {
         JSONObject jo = new JSONObject();
         try {
+            jo.put(Constants.TYPE_KEY, BEACON_KEY);
             jo.put(BEACON_KEY_ID, beacon.identifier + "-" + beacon.major + "-" + beacon.minor);
             jo.put(BEACON_KEY_DISTANCE, accuracy);
             jo.put(BEACON_KEY_USER_IDENTIFIER, preferences.getString(SettingsActivity.EMAIL_KEY,
                     context.getString(R.string.pref_my_email_default)));
             jo.put(BEACON_KEY_FLOOR, beacon.floor);
+            jo.put(BEACON_TEMPERATURE_KEY, 19.4f);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         Log.d(TAG, "Sending " + jo.toString());
-        mSocket.emit(BEACON_KEY, jo);
+        HereAndNowApplication.getSocket().emit(Constants.MESSAGE_KEY, jo);
     }
 
     private static class FutuBeacon {

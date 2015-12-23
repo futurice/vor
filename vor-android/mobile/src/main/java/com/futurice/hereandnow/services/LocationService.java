@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.futurice.hereandnow.HereAndNowApplication;
 import com.futurice.hereandnow.utils.BeaconLocationManager;
 
 public class LocationService extends Service {
@@ -20,8 +21,7 @@ public class LocationService extends Service {
     @Override
     public void onCreate() {
         mIsRunning = false;
-        mBeaconLocationManager = new BeaconLocationManager(this);
-        mBeaconLocationManager.initialize();
+        mBeaconLocationManager = HereAndNowApplication.getBeaconLocationManager();
         mHandler = new Handler();
         Log.d(TAG, "LocationService created");
     }
@@ -48,7 +48,7 @@ public class LocationService extends Service {
         if (mIsRunning) {
             mIsRunning = false;
             mHandler = null;
-            mBeaconLocationManager.destroy();
+            mBeaconLocationManager.pause();
             super.onDestroy();
         }
     }
@@ -59,8 +59,10 @@ public class LocationService extends Service {
     private Runnable locationUpdate = new Runnable() {
         @Override
         public void run() {
-            mBeaconLocationManager.sendLocation();
-            mHandler.postDelayed(this, DELAY);
+            if (mHandler != null) {
+                mBeaconLocationManager.sendLocation();
+                mHandler.postDelayed(this, DELAY);
+            }
         }
     };
 }

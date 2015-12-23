@@ -3,6 +3,7 @@ package com.futurice.hereandnow;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
@@ -13,8 +14,8 @@ import com.futurice.cascade.AsyncBuilder;
 import com.futurice.hereandnow.activity.SettingsActivity;
 import com.futurice.hereandnow.services.LocationService;
 import com.futurice.hereandnow.utils.SharedPreferencesManager;
+import com.futurice.hereandnow.utils.BeaconLocationManager;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
@@ -30,6 +31,7 @@ public class HereAndNowApplication extends Application {
 
     private static Context sContext;
     private static Socket sSocket;
+    private static BeaconLocationManager beaconLocationManager;
 
     /**
      * Reference to the service.
@@ -48,7 +50,6 @@ public class HereAndNowApplication extends Application {
     public final void onCreate() {
         super.onCreate();
         // LeakCanary.install(this);
-
         sContext = getApplicationContext();
 
         new AsyncBuilder(this)
@@ -77,6 +78,9 @@ public class HereAndNowApplication extends Application {
                 .on(Socket.EVENT_DISCONNECT, args -> Log.d(TAG, "EVENT_DISCONNECT"));
         sSocket.connect();
 
+        beaconLocationManager = new BeaconLocationManager(this);
+        beaconLocationManager.initialize();
+
         // Start the service for updating location if connected to the correct network.
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -92,5 +96,9 @@ public class HereAndNowApplication extends Application {
 
     public static Socket getSocket() {
         return sSocket;
+    }
+
+    public static BeaconLocationManager getBeaconLocationManager() {
+        return beaconLocationManager;
     }
 }

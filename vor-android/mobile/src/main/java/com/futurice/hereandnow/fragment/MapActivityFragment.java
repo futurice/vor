@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.futurice.hereandnow.HereAndNowApplication;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.activity.SettingsActivity;
 import com.futurice.hereandnow.utils.BeaconLocationManager;
@@ -23,8 +24,6 @@ import com.futurice.hereandnow.Constants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -97,8 +96,7 @@ public class MapActivityFragment extends Fragment {
         mAttacher.setOnMatrixChangeListener(new MapChangedListener());
         mAttacher.setOnScaleChangeListener(new MapScaleListener());
 
-        beaconLocationManager = new BeaconLocationManager(getContext());
-        beaconLocationManager.initialize();
+        beaconLocationManager = HereAndNowApplication.getBeaconLocationManager();
 
         peopleManager = new PeopleManager();
 
@@ -109,7 +107,6 @@ public class MapActivityFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        beaconLocationManager.resume();
         beaconLocationManager.setOnLocationUpdateListener(new BeaconLocationManager.OnLocationUpdateListener() {
             @Override
             public void onLocationUpdate(String position) {
@@ -200,18 +197,6 @@ public class MapActivityFragment extends Fragment {
                 closestPerson.setClicked(!closestPerson.isClicked());
             }
         });
-    }
-
-    @Override
-    public void onPause() {
-        beaconLocationManager.pause();
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        beaconLocationManager.destroy();
     }
 
     private class MapScaleListener implements PhotoViewAttacher.OnScaleChangeListener {

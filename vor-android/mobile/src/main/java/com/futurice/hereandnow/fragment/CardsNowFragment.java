@@ -71,10 +71,12 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
         FrameLayout mFrameLayout = (FrameLayout) view.findViewById(R.id.now_cards_list);
         mFrameLayout.addView(getExpandableListView());
 
+        /*
         mSocket.on(Constants.EVENT_INIT, args -> {
             JSONArray jsonArray = (JSONArray) args[0];
             setupInitialView(jsonArray);
         });
+        */
 
         initTopicsAndCards(
                 createPreBuiltTopics(),
