@@ -3,11 +3,11 @@
 $fn = 16;
 
 length = 71.12;
-width = 22.86;
+width = 22.9;
 height = 1.3;
 header_length = 64;
-header_height = 9.2;
-button_radius = 2;
+header_height = 9.5;
+button_radius = 1.8;
 
 arduino_yun_mini();
 
@@ -16,11 +16,12 @@ module board() {
 }
 
 module usb_power() {
-    translate([-102, (width - 15) / 2, height - 4]) cube([105.5 + length, 15, 3 + 8]);
+    translate([-102, (width - 15) / 2, height - 5]) cube([105.5 + length, 15, 3 + 8]);
+    translate([0, 0, height - 5]) cube([5 + length, width, 16.5]);
 }
 
-module header(y = 0, z = 0) {
-    translate([2, y, z]) cube([header_length, 2.6, header_height]);
+module header(y = 0, z = 0, extra_height=0) {
+    translate([2, y, z]) cube([header_length, 3, header_height+extra_height]);
 }
 
 module leds() {
@@ -65,15 +66,9 @@ module arduino_yun_mini() {
          bottom_slot(y = width - 8);
     }
     color("black") hull() {
-        header(z = height, y = 0);
-        translate([0, 0, 2.6]) rotate([-90, 0, 0]) {
-            header(z = 0, y = 0);
-        }
-    }
-    color("black") hull() {
-        header(z = height, y = width - 2.6);
-        translate([0, width - 2.6, 0]) rotate([90, 0, 0]) {
-            header(z = 0, y = 0);
+        hull() {
+            header(z = height, y = 0, extra_height=2);
+            header(z = height, y = width - 2.6, extra_height=2);
         }
     }
     color("silver") header(z = -9.2, y = 0);

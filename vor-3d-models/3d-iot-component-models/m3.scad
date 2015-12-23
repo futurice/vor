@@ -2,7 +2,7 @@
 
 $fn=16;
 
-shaft_radius = 2.9/2;
+shaft_radius = 3.2/2;
 head_radius = 5.9/2;
 
 m3_bolt_space();

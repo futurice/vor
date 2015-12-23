@@ -12,7 +12,7 @@ yun_height = 1.3 + 2*64;
 yun_x = -yun_length/2;
 yun_y = -yun_width/2;
 yun_z = 13;
-yun_skin = .2;
+yun_skin = .3;
 
 toggle_length = 28;
 toggle_width = 16.55;
@@ -26,11 +26,9 @@ push_button();
 
 module push_button() {
     // Uncomment one of the following 3 lines at a time
-    body();
-//    left_half();
-//
-//    yun_moved();
-//    toggle_moved();
+//    body();
+    left_half();
+//    right_half();
 }
 
 module left_half() {
@@ -42,14 +40,14 @@ module left_half() {
             yun_hole();
         }
     }
-    color("pink") spike(x=-45);
-    color("pink") spike(x=40);
+    color("pink") spike(x=-50);
+    color("pink") spike(x=50);
     color("pink") spike(x=-30, z = 30);
 }
 
 module spike(x=0, skin=0, z = 0) {
-    translate([x - skin, -5 - skin, 1.6 + z])
-        cube([7 + 2*skin, 12 + 2*skin, 7 + 2*skin]);
+    translate([x - skin, -5 - skin, 2 + z])
+        cube([5 + 2*skin, 12 + 2*skin, 5 + 2*skin]);
 }
 
 module right_half() {
@@ -58,8 +56,8 @@ module right_half() {
         union() {
             translate([-2*cube_side, 0, -1])
                 cube([cube_side*4, cube_side*4, cube_side*2]);
-            spike(x=-45, skin=.2);
-            spike(x=40, skin=.2);
+            spike(x=-50, skin=.2);
+            spike(x=50, skin=.2);
             spike(x=-30, skin=.2, z = 30);
             }
     }
@@ -83,19 +81,27 @@ module body() {
 	        toggle_moved(dx=-yun_skin, dy=yun_skin, dz=-yun_skin);
 	        toggle_moved(dx=-yun_skin, dy=-yun_skin, dz=yun_skin);
 	        toggle_moved(dx=-yun_skin, dy=-yun_skin, dz=-yun_skin);
-            translate([-24, -9, 47]) rotate([90, 0, 0]) {
-                bolt();
-            }
-            translate([-24, 9, 47]) rotate([-90, 0, 0]) {
-                bolt();
-            }
-            translate([44, -10, 11]) rotate([90, 0, 0]) {
-                bolt();
-            }
-            translate([44, 10, 11]) rotate([-90, 0, 0]) {
-                bolt();
-            }
+            bolt_hole_low();
+            bolt_hole_high();            
 	    }
+    }
+}
+
+module bolt_hole_low() {
+    translate([47, -10, 8]) rotate([90, 0, 0]) {
+        bolt();
+    }
+    translate([47, 10, 8]) rotate([-90, 0, 0]) {
+        bolt();
+    }
+}
+
+module bolt_hole_high() {
+    translate([-24, -9, 47]) rotate([90, 0, 0]) {
+        bolt();
+    }
+    translate([-24, 9, 47]) rotate([-90, 0, 0]) {
+        bolt();
     }
 }
 
