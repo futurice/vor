@@ -256,7 +256,7 @@
     "description": "Image message sent by pool camera client",  
     "type": "object",  
     "properties": {  
-         "id": {  
+        "id": {  
             "description": "An unique identifier for a pool camera",  
             "type": "string"  
         },
@@ -294,7 +294,7 @@
     "description": "Image message sent by food camera client",   
     "type": "object",  
     "properties": {  
-         "id": {  
+        "id": {  
             "description": "An unique identifier for a food camera client",  
             "type": "string"  
         },
