@@ -27,7 +27,7 @@
 4. To push local vor-backend to Dokku, run in the project root folder (vor):<br/>``` git push dokku `git subtree split --prefix vor-backend <your branch>`:master```
 
 ###Connect to Dokku Redis
-Redis is used for caching events send by different
+Redis is used for caching events sent by different
 sensor devices in the network. 
 To access remote Dokku redis-cli:<br/>
 1. SSH to host server<br/>
