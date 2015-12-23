@@ -10,9 +10,10 @@
 [fswebcam](http://manpages.ubuntu.com/manpages/lucid/man1/fswebcam.1.html) in production. These can be changed in configs. 
 
 ### Local setup
-1. Install dependencies:```npm install```
-2. Start server and watch changes: ```npm run start```
-3. App runs in port 9000
+1. Start [vor-backend](https://github.com/futurice/vor/tree/develop/vor-backend)
+2. Install dependencies:```npm install```
+3. Start server and watch changes: ```npm run start```
+4. App will run in port 9000
 
 ### Other commands
 - To lint ESlint: ```npm run eslint```
