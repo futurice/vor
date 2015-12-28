@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.futurice.cascade.AsyncBuilder;
+import com.futurice.hereandnow.activity.SettingsActivity;
 import com.futurice.hereandnow.services.LocationService;
 
 import org.json.JSONException;
@@ -80,8 +82,11 @@ public class HereAndNowApplication extends Application {
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean serviceEnabled = preferences.getBoolean(SettingsActivity.BACKGROUND_SERVICE_KEY, true);
+
         //TODO Display a notification if the user is not connected to the right network.
-        if (wifiInfo.getSSID().equals(Constants.NETWORK_SSID)) {
+        if (wifiInfo.getSSID().equals(Constants.NETWORK_SSID) && serviceEnabled) {
             startService(new Intent(this, LocationService.class));
         }
     }

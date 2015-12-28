@@ -25,6 +25,7 @@
     <string name="pref_header_general">Settings</string>
     <string name="pref_my_email_title">My Email</string>
     <string name="pref_my_email_default">first.last@futurice.com</string>
+    <string name="pref_background_service_title">Send location</string>
 
     <!-- Tab cards titles -->
     <string name="tab_trending_title">Trending</string>
