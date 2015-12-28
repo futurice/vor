@@ -1,0 +1,13 @@
+# Site settings
+title: Vör
+email: paul.houghton@futurice.com
+description: > # this means to ignore newlines until "baseurl:"
+  Vör is open source software and hardware for turning your open office into an open,
+  real-time map for finding people, open work places and current events.
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://vor.space" # the base hostname & protocol for your site
+twitter_username: futurice
+github_username:  futurice
+
+# Build settings
+markdown: kramdown
