@@ -33,4 +33,9 @@
         android:singleLine="true"
         android:maxLines="1" />
 
+    <SwitchPreference
+        android:key="settings_background_service"
+        android:title="@string/pref_background_service_title"
+        android:defaultValue="true" />
+
 </PreferenceScreen>

@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 
 import com.futurice.hereandnow.R;
+import com.futurice.hereandnow.services.LocationService;
 
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class SettingsActivity extends PreferenceActivity {
     public static String ID_TAG_KEY = "settings_my_id_tag";
     public static String ABOUT_KEY = "settings_about_me";
     public static String EMAIL_KEY = "settings_my_email";
+    public static String BACKGROUND_SERVICE_KEY = "settings_background_service";
     private static Intent resultIntent;
     /**
      * A preference value change listener that updates the preference's summary
@@ -55,6 +57,21 @@ public class SettingsActivity extends PreferenceActivity {
 
         return true;
     };
+
+    /**
+     * Start LocationService if the value is set to true, stop it otherwise.
+     */
+    private Preference.OnPreferenceChangeListener runLocationServiceByValueListener = ((preference, newValue) -> {
+        final Intent intent = new Intent(this, LocationService.class);
+
+        if (Boolean.valueOf(newValue.toString())) {
+            getApplicationContext().startService(intent);
+        } else {
+            getApplicationContext().stopService(intent);
+        }
+
+       return true;
+    });
 
     /**
      * Helper method to determine if the device has an extra-large screen. For
@@ -97,6 +114,12 @@ public class SettingsActivity extends PreferenceActivity {
                 PreferenceManager
                         .getDefaultSharedPreferences(preference.getContext())
                         .getString(preference.getKey(), ""));
+    }
+
+
+    private void bindBackgroundServiceToPreference(@NonNull final Preference preference) {
+        // Set the listener to watch for value changes.
+        preference.setOnPreferenceChangeListener(runLocationServiceByValueListener);
     }
 
     @Override
@@ -149,6 +172,7 @@ public class SettingsActivity extends PreferenceActivity {
         //bindPreferenceSummaryToValue(findPreference(TAG_KEY));
         //bindPreferenceSummaryToValue(findPreference(ABOUT_KEY));
         bindPreferenceSummaryToValue(findPreference(EMAIL_KEY));
+        bindBackgroundServiceToPreference(findPreference(BACKGROUND_SERVICE_KEY));
     }
 
     /**
