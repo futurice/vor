@@ -22,6 +22,7 @@ public class Constants {
     public static final String LOCATION_KEY = "location";
     public static final String FLOOR_KEY = "floor";
     public static final String MESSAGE_KEY = "message";
+    public static final String INIT_BEACONS_KEY = "beacons";
 
     public static final String EVENT_INIT = "init";
 
