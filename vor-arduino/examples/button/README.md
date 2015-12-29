@@ -2,4 +2,4 @@
 
 ## Breadboard
 
-![alt tag](https://github.com/futurice/vor/blob/develop/vor-arduino/examples/button/button_bb.png)
+![](./button_bb.png =200x)
