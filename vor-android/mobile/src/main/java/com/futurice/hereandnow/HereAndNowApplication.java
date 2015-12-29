@@ -16,6 +16,7 @@ import com.futurice.hereandnow.services.LocationService;
 import com.futurice.hereandnow.utils.SharedPreferencesManager;
 import com.futurice.hereandnow.utils.BeaconLocationManager;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
@@ -73,7 +74,17 @@ public class HereAndNowApplication extends Application {
                 })
                 .on(Constants.LOCATION_KEY, args -> Log.d(TAG, "LOCATION RECEIVED"))
                 .on(Constants.MESSAGE_KEY, args -> {
-                    SharedPreferencesManager.saveToSharedPreferences((JSONObject) args[0], this);
+                    try {
+                        //
+                        JSONObject jsonObject = (JSONObject)args[0];
+                        if (jsonObject.getString(Constants.TYPE_KEY).equals(Constants.LOCATION_KEY)) {
+                            beaconLocationManager.onLocation(jsonObject);
+                        } else {
+                            SharedPreferencesManager.saveToSharedPreferences((JSONObject) args[0], this);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 })
                 .on(Socket.EVENT_DISCONNECT, args -> Log.d(TAG, "EVENT_DISCONNECT"));
         sSocket.connect();
@@ -87,7 +98,6 @@ public class HereAndNowApplication extends Application {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean serviceEnabled = preferences.getBoolean(SettingsActivity.BACKGROUND_SERVICE_KEY, true);
 
-        //TODO Display a notification if the user is not connected to the right network.
         if (wifiInfo.getSSID().equals(Constants.NETWORK_SSID) && serviceEnabled) {
             startService(new Intent(this, LocationService.class));
         }
