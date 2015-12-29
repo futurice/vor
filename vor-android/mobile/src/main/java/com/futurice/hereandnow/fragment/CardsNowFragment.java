@@ -19,6 +19,7 @@ import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.adapter.TopicListAdapter;
 import com.futurice.hereandnow.card.ITopic;
 import com.futurice.hereandnow.utils.SharedPreferencesManager;
+import com.futurice.hereandnow.utils.BeaconLocationManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +54,6 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
         super.onCreate(savedInstanceState);
 
         mSocket = HereAndNowApplication.getSocket();
-        mSocket.emit(Constants.EVENT_INIT); // Requests latest messages
 
         mTestSP = getActivity().getSharedPreferences(Constants.TEST_KEY, Context.MODE_PRIVATE);
         mFoodSP = getActivity().getSharedPreferences(Constants.FOOD_KEY, Context.MODE_PRIVATE);
@@ -72,9 +72,28 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
         mFrameLayout.addView(getExpandableListView());
 
         mSocket.on(Constants.EVENT_INIT, args -> {
-            JSONArray jsonArray = (JSONArray) args[0];
-            setupInitialView(jsonArray);
+            UI.execute(() -> {
+                JSONObject jsonObject = (JSONObject) args[0];
+
+                try {
+                    JSONArray jsonArray = jsonObject.getJSONArray(Constants.INIT_BEACONS_KEY);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject beacon = (JSONObject) jsonArray.get(i);
+                        String identifier = beacon.getString(BeaconLocationManager.BEACON_KEY_ID);
+                        int floor = beacon.getInt(BeaconLocationManager.BEACON_KEY_FLOOR);
+
+                        HereAndNowApplication.getBeaconLocationManager().addBeacon(identifier, floor, getContext());
+                    }
+
+                    // Start the manager.
+                    HereAndNowApplication.getBeaconLocationManager().resume();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            });
         });
+
+        mSocket.emit(Constants.EVENT_INIT); // Requests latest messages
 
         initTopicsAndCards(
                 createPreBuiltTopics(),
