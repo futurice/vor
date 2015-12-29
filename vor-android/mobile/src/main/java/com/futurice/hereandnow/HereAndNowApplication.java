@@ -89,7 +89,7 @@ public class HereAndNowApplication extends Application {
                 .on(Socket.EVENT_DISCONNECT, args -> Log.d(TAG, "EVENT_DISCONNECT"));
         sSocket.connect();
 
-        beaconLocationManager = new BeaconLocationManager(getApplicationContext());
+        beaconLocationManager = new BeaconLocationManager(sContext);
 
         // Start the service for updating location if connected to the correct network.
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);

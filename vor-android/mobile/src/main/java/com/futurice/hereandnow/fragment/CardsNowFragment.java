@@ -72,27 +72,25 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
         mFrameLayout.addView(getExpandableListView());
 
         mSocket.on(Constants.EVENT_INIT, args -> {
-            if (getActivity() != null) {
-                getActivity().runOnUiThread(() -> {
-                    JSONObject jsonObject = (JSONObject) args[0];
+            UI.execute(() -> {
+                JSONObject jsonObject = (JSONObject) args[0];
 
-                    try {
-                        JSONArray jsonArray = jsonObject.getJSONArray(Constants.INIT_BEACONS_KEY);
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject beacon = (JSONObject) jsonArray.get(i);
-                            String identifier = beacon.getString(BeaconLocationManager.BEACON_KEY_ID);
-                            int floor = beacon.getInt(BeaconLocationManager.BEACON_KEY_FLOOR);
+                try {
+                    JSONArray jsonArray = jsonObject.getJSONArray(Constants.INIT_BEACONS_KEY);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject beacon = (JSONObject) jsonArray.get(i);
+                        String identifier = beacon.getString(BeaconLocationManager.BEACON_KEY_ID);
+                        int floor = beacon.getInt(BeaconLocationManager.BEACON_KEY_FLOOR);
 
-                            HereAndNowApplication.getBeaconLocationManager().addBeacon(identifier, floor, getContext());
-                        }
-
-                        // Start the manager.
-                        HereAndNowApplication.getBeaconLocationManager().resume();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        HereAndNowApplication.getBeaconLocationManager().addBeacon(identifier, floor, getContext());
                     }
-                });
-            }
+
+                    // Start the manager.
+                    HereAndNowApplication.getBeaconLocationManager().resume();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            });
         });
 
         mSocket.emit(Constants.EVENT_INIT); // Requests latest messages
