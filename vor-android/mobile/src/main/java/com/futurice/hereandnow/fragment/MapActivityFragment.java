@@ -29,6 +29,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
+import static com.futurice.cascade.Async.UI;
+
 public class MapActivityFragment extends Fragment {
     // Real life dimensions for the map in meters.
     private static final float FLOOR8_WIDTH = 51.9670588235f;
@@ -142,7 +144,7 @@ public class MapActivityFragment extends Fragment {
                     // Set the new location for the person.
                     selectedPerson.setLocation((location[0] * scaleFactor), (location[1] * scaleFactor));
 
-                    getActivity().runOnUiThread(() -> {
+                    UI.execute(() -> {
                         // Invalidate the picture to make it draw the canvas again.
                         mImageView.invalidate();
                         for (PeopleManager.Person person : peopleManager.getPeople()) {
@@ -161,9 +163,7 @@ public class MapActivityFragment extends Fragment {
                     return;
                 }
 
-                getActivity().runOnUiThread(() -> {
-                    Toast.makeText(getContext(), R.string.error_connect, Toast.LENGTH_SHORT).show();
-                });
+                UI.execute(() -> Toast.makeText(getContext(), R.string.error_connect, Toast.LENGTH_SHORT).show());
             }
         });
 
