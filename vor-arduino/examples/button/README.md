@@ -2,4 +2,4 @@
 
 ## Breadboard
 
-![](button_bb.png =200x)
+<img src="button_bb.png" width="200">
