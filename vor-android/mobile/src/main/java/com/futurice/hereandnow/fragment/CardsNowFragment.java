@@ -87,6 +87,10 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
 
                     // Start the manager.
                     HereAndNowApplication.getBeaconLocationManager().resume();
+
+                    // Initialize cards.
+                    JSONArray cardsArray = jsonObject.getJSONArray(Constants.INIT_MESSAGES_KEY);
+                    setupInitialView(cardsArray);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
