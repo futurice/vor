@@ -6,16 +6,40 @@ length = 28;
 width = 16.55;
 height = 19.12;
 
+plate_thickness = 1;
+
 toggle_switch_with_cover();
+
+cover_z = 6.82;
+
+module toggle_switch_with_cover() {
+    translate([0, 0, -height - cover_z]) 
+        union() {
+            base();
+            color("silver") prong1();
+            color("orange") prong2();
+            color("green") prong3();
+            color("black") shaft();
+            color("silver") plate();
+            color("red") toggle();
+            color("red") cover();
+        }
+}
 
 module base() {
     cube([length, width, height]);
 }
 
-module prongs() {
+module prong1() {
     translate([1.5, width/5, -10.6]) cube([4, 3*width/5, 10.6]);
+}
+
+module prong2() {
     translate([length-1.5-4, width/5, -10.6]) cube([4, 3*width/5, 10.6]);
-    translate([-9, 1.5, -10.5]) cube([12, width/2 - 1.5, 26.5]);
+}
+
+module prong3() {
+    translate([-9, 0, -10.6]) cube([12, 4*width/5, 26.5]);
 }
 
 module shaft() {
@@ -24,7 +48,7 @@ module shaft() {
 }
 
 module plate() {
-    translate([0, 0, height + 6]) cube([40.6, 17, .9]);
+    translate([0, 0, height + 6]) cube([40.6, 17, plate_thickness]);
 }
 
 module toggle() {
@@ -36,16 +60,4 @@ module toggle() {
 module cover() {
     color("red") translate([0, 0, height + 6.82])
         cube([40.6, width, 43.9 - 17.56]);
-}
-
-module toggle_switch_with_cover() {
-    translate([0, 0, -height - .82 - 6]) 
-        union() {
-            base();
-            color("silver") prongs();
-            color("black") shaft();
-            color("silver") plate();
-            color("red") toggle();
-            color("red") cover();
-        }
 }
