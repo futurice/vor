@@ -26,8 +26,8 @@ push_button();
 
 module push_button() {
     // Uncomment one of the following 3 lines at a time
-//    body();
-    left_half();
+    body();
+//    left_half();
 //    right_half();
 }
 
@@ -40,14 +40,7 @@ module left_half() {
             yun_hole();
         }
     }
-    color("pink") spike(x=-50);
-    color("pink") spike(x=50);
-    color("pink") spike(x=-30, z = 30);
-}
-
-module spike(x=0, skin=0, z = 0) {
-    translate([x - skin, -5 - skin, 2 + z])
-        cube([5 + 2*skin, 12 + 2*skin, 5 + 2*skin]);
+    color("pink") spikes();
 }
 
 module right_half() {
@@ -56,11 +49,20 @@ module right_half() {
         union() {
             translate([-2*cube_side, 0, -1])
                 cube([cube_side*4, cube_side*4, cube_side*2]);
-            spike(x=-50, skin=.2);
-            spike(x=50, skin=.2);
-            spike(x=-30, skin=.2, z = 30);
-            }
+            spikes(skin_thickness=.2);
+        }
     }
+}
+
+module spikes(skin_thickness=0) {
+    spike(x=-50, skin=skin_thickness);
+    spike(x=50, skin=skin_thickness);
+    spike(x=-30, skin=skin_thickness, z = 30);
+}
+
+module spike(x=0, skin=0, z = 0) {
+    translate([x - skin, -5 - skin, 2 + z])
+        cube([5 + 2*skin, 12 + 2*skin, 5 + 2*skin]);
 }
 
 module body() {

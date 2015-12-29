@@ -1,29 +1,35 @@
 // A toggle switch ordered from https://www.sparkfun.com/products/11310
 
-$fn = 16;
+$fn = 64;
 
 length = 28;
-width = 16.55;
+width = 17;
 height = 19.12;
 
 plate_thickness = 1;
-
-toggle_switch_with_cover();
-
 cover_z = 6.82;
 
-module toggle_switch_with_cover() {
+toggle_switch();
+toggle_cover();
+
+module toggle_switch() {
     translate([0, 0, -height - cover_z]) 
         union() {
             base();
             color("silver") prong1();
-            color("orange") prong2();
-            color("green") prong3();
+            color("orange") hull() {
+                prong2();
+                prong3();
+            }
             color("black") shaft();
             color("silver") plate();
             color("red") toggle();
-            color("red") cover();
-        }
+         }
+}
+
+module toggle_cover() {
+    translate([0, 0, -height - cover_z]) 
+cover();
 }
 
 module base() {
@@ -31,15 +37,23 @@ module base() {
 }
 
 module prong1() {
-    translate([1.5, width/5, -10.6]) cube([4, 3*width/5, 10.6]);
-}
-
-module prong2() {
     translate([length-1.5-4, width/5, -10.6]) cube([4, 3*width/5, 10.6]);
 }
 
+module prong2() {
+    translate([1.5, width/5, -10.6]) cube([4, 3*width/5, 10.6]);
+}
+
 module prong3() {
-    translate([-9, 0, -10.6]) cube([12, 4*width/5, 26.5]);
+    corner = 7;
+    fudge = .266;
+    translate([-9 + corner/2, corner/2 - fudge, -11 + corner/2])
+    minkowski() {
+        cube([12 - corner, 4*width/5 - corner + fudge, 27 - corner]);
+        rotate([0, 45, 0]) {
+        sphere($fn=8, r = corner/2);
+       }
+    }
 }
 
 module shaft() {
@@ -58,6 +72,6 @@ module toggle() {
 }
 
 module cover() {
-    color("red") translate([0, 0, height + 6.82])
+    color("red") translate([0, 0, height + cover_z])
         cube([40.6, width, 43.9 - 17.56]);
 }

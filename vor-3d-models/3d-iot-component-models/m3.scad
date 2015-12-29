@@ -1,6 +1,6 @@
 // m3 bolt negative space
 
-$fn=16;
+$fn=64;
 
 shaft_radius = 3.2/2;
 head_radius = 5.9/2;

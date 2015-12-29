@@ -1,6 +1,6 @@
 // Arduino Yun Mini 3D model for planning
 
-$fn = 16;
+$fn = 64;
 
 length = 71.12;
 width = 22.9;
@@ -23,7 +23,6 @@ module arduino_yun_mini() {
 
     color("magenta") usb_power();
     color("yellow") board_space();
-    color("pink") end_space();
     color("red") leds();
     color("blue") button(y = 6.5);
     color("blue") button(y = 10.3);
@@ -47,11 +46,10 @@ module usb_power() {
 }
 
 module board_space() {
-    translate([0, 0, height - 5]) cube([length, width, 16.5]);
-}
-
-module end_space() {
-//    translate([0, 0, height - 5]) cube([5 + length, width, 16.5]);
+    hull() {
+        translate([0, 0, height - 5]) cube([length, width, 16.5]);
+        translate([length, (width-5)/2, height-5]) cube([8, 5, 10]);
+    }
 }
 
 module header(x=2, y=0, z=0) {
