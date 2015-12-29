@@ -18,7 +18,6 @@
 #define MSG_FORMAT "{\"id\":\"button-food\",\"type\":\"button\"}"
 
 #define SWITCH_PIN 2
-#define LED_PIN 3
 
 YunClient client;
 HttpClient http(client);
@@ -34,14 +33,12 @@ void setup() {
     led.turnOn();
     Bridge.begin();
     led.turnOff();
-    analogWrite(LED_PIN, 255);
 }
 
 void loop() {
     int value = vorSwitch.read();
 
     uint64_t now = millis();
-
     if (state != value || now - intervalTime > INTERVAL) {
         state = value;
         intervalTime = now;
@@ -70,4 +67,5 @@ void post() {
         }
     }
     http.stop();
+    Serial.println();
 }
