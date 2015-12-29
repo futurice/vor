@@ -25,15 +25,15 @@ VorRgbLed::~VorRgbLed() {
 }
 
 void VorRgbLed::writeRed(int value) {
-    _red->write(MAX_ANALOG_OUTPUT_VALUE - value);
+    _red->write(pgm_read_byte(&GAMMA[MAX_ANALOG_OUTPUT_VALUE - value]));
 }
 
 void VorRgbLed::writeGreen(int value) {
-    _green->write(MAX_ANALOG_OUTPUT_VALUE - value);
+    _green->write(pgm_read_byte(&GAMMA[MAX_ANALOG_OUTPUT_VALUE - value]));
 }
 
 void VorRgbLed::writeBlue(int value) {
-    _blue->write(MAX_ANALOG_OUTPUT_VALUE - value);
+    _blue->write(pgm_read_byte(&GAMMA[MAX_ANALOG_OUTPUT_VALUE - value]));
 }
 
 void VorRgbLed::write(int red, int green, int blue) {
