@@ -2,4 +2,4 @@
 
 ## Breadboard
 
-<img src="button_bb.png" width="200">
+<img src="button_bb.png" width="320">
