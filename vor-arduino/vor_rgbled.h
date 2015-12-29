@@ -7,15 +7,17 @@
 #define VOR_RGBLED_H
 
 #include "vor_actuator.h"
+#include "env.h"
 
 class VorRgbLed{
 public:
     VorRgbLed(int redPin, int greenPin, int bluePin);
     ~VorRgbLed();
 
-    VorActuator* getRedLed();
-    VorActuator* getGreenLed();
-    VorActuator* getBlueLed();
+    void writeRed(int value);
+    void writeGreen(int value);
+    void writeBlue(int value);
+    void write(int red, int green, int blue);
 
 private:
     VorActuator* _red;

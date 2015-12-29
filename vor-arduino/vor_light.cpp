@@ -19,6 +19,6 @@ float VorLight::process(int value) {
     // illuminance (lx) = 2000000 * (V / 10000 ohms)
     // this equation does not calculate illuminance correctly but the size of
     // the value should be about correct...
-    float illuminance = 2000.0 * (value / MAX_ANALOG_VALUE);
+    float illuminance = 2000.0 * (value / MAX_ANALOG_INPUT_VALUE);
     return illuminance;
 }
