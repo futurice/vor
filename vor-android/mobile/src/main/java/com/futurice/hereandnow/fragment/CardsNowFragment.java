@@ -18,7 +18,7 @@ import com.futurice.hereandnow.HereAndNowApplication;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.adapter.TopicListAdapter;
 import com.futurice.hereandnow.card.ITopic;
-import com.futurice.hereandnow.utils.Storing;
+import com.futurice.hereandnow.utils.SharedPreferencesManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -118,7 +118,7 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
                 Context context = HereAndNowApplication.getStaticContext();
                 switch (jsonObject.getString(Constants.TYPE_KEY)) {
                     case Constants.TOILET_KEY:
-                        Storing.saveToiletToSharedPreferences(
+                        SharedPreferencesManager.saveToSharedPreferences(
                                 jsonObject,
                                 HereAndNowApplication.getStaticContext());
                         break;
