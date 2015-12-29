@@ -37,6 +37,8 @@ public class BeaconLocationManager {
     public static final String BEACON_KEY_FLOOR = "floor";
     public static final String BEACON_TEMPERATURE_KEY = "temperature";
 
+    private boolean isRunning;
+
     private OnLocationUpdateListener mLocationCallback;
 
     private ArrayList<BeaconCollection> beacons;
@@ -48,6 +50,7 @@ public class BeaconLocationManager {
         this.context = c;
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         beacons = new ArrayList<BeaconCollection>();
+        isRunning = false;
     }
 
     public void resume() {
@@ -55,8 +58,11 @@ public class BeaconLocationManager {
             return;
         }
 
-        for (BeaconCollection collection : beacons) {
-            collection.manager.connect(() -> collection.manager.startRanging(collection.region));
+        if (!isRunning) {
+            for (BeaconCollection collection : beacons) {
+                collection.manager.connect(() -> collection.manager.startRanging(collection.region));
+            }
+            isRunning = true;
         }
     }
 
@@ -65,8 +71,11 @@ public class BeaconLocationManager {
             return;
         }
 
-        for (BeaconCollection collection : beacons) {
-            collection.manager.stopRanging(collection.region);
+        if (isRunning) {
+            for (BeaconCollection collection : beacons) {
+                collection.manager.stopRanging(collection.region);
+            }
+            isRunning = false;
         }
     }
 
