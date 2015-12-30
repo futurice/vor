@@ -50,8 +50,8 @@ public class PeopleNearbyAdapter extends RecyclerView.Adapter<PeopleNearbyAdapte
 
         PersonNearby personNearby = mPeopleNearby.get(position);
         personNameTextView.setText(personNearby.getName());
-        String distance = Integer.toString(personNearby.getDistance());
-        personDistanceTextView.setText(distance + "m");
+        String distance = String.format("%.2f", personNearby.getDistance());
+        personDistanceTextView.setText(String.format("%s%s", distance, "m"));
     }
 
     @Override
