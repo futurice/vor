@@ -27,9 +27,10 @@ push_button();
 
 module push_button() {
     // Uncomment one of the following 3 lines at a time
-//    body();
+    color("brown") mushroom(); // comment this line when generating right half
+    body();
+//    right_half();
 //    left_half();
-    right_half();
 }
 
 module left_half() {
@@ -46,24 +47,15 @@ module left_half() {
 
 module right_half() {
     difference() {
-        body();
+        union() {
+            body();
+        }
         union() {
             translate([-2*cube_side, 0, -1])
                 cube([cube_side*4, cube_side*4, cube_side*2]);
             spikes(skin_thickness=.2);
         }
     }
-}
-
-module spikes(skin_thickness=0) {
-    spike(x=-50, skin=skin_thickness);
-    spike(x=50, skin=skin_thickness);
-    spike(x=-30, skin=skin_thickness, z = 30);
-}
-
-module spike(x=0, skin=0, z = 0) {
-    translate([x - skin, -5 - skin, 2 + z])
-        cube([5 + 2*skin, 12 + 2*skin, 5 + 2*skin]);
 }
 
 module body() {
@@ -81,6 +73,32 @@ module body() {
             bolt_hole_high();            
 	    }
     }
+}
+
+module mushroom() {
+    button_height = 4.9;
+    flexure_length = 12;
+    flexure_width = 2;
+    rounding = 2;
+    translate([0, 0, toggle_z + button_height + rounding])
+         minkowski() {
+             cylinder($fn=64, r=15 - rounding, h = 5 - 2*rounding);
+             sphere($fn=64, r=rounding);
+         }
+    translate([-flexure_length/2, 9, toggle_z])
+         cube([flexure_length, flexure_width, button_height]);
+}
+
+module spikes(skin_thickness=0) {
+    spike(x=-50, skin=skin_thickness);
+    spike(x=50, skin=skin_thickness);
+    spike(x=-30, skin=skin_thickness, z = 30);
+    spike(x=-5/2, skin=skin_thickness, z = 45);
+}
+
+module spike(x=0, skin=0, z = 0) {
+    translate([x - skin, -5 - skin, 2 + z])
+        cube([5 + 2*skin, 12 + 2*skin, 5 + 2*skin]);
 }
 
 module bolt_hole_low() {
