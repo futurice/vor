@@ -136,27 +136,33 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 Context context = HereAndNowApplication.getStaticContext();
+                List<ITopic> cards = getSourceTopicModel();
                 switch (jsonObject.getString(Constants.TYPE_KEY)) {
                     case Constants.TOILET_KEY:
-                        SharedPreferencesManager.saveToSharedPreferences(
-                                jsonObject,
-                                HereAndNowApplication.getStaticContext());
+                        SharedPreferencesManager.saveToSharedPreferences(jsonObject, context);
                         break;
                     case Constants.POOL_KEY:
                         String poolImage = jsonObject.getString(Constants.IMAGE_KEY);
-                        getSourceTopicModel().add(Cards.pool(poolImage, context));
+                        cards.add(0, Cards.pool(poolImage, context));
+                        removeDuplicates(Constants.POOL_KEY, cards);
                         break;
                     case Constants.FOOD_KEY:
                         String foodImage = jsonObject.getString(Constants.IMAGE_KEY);
-                        getSourceTopicModel().add(0, Cards.food(foodImage, context));
+                        cards.add(0, Cards.food(foodImage, context));
+                        removeDuplicates(Constants.FOOD_KEY, cards);
+                        break;
+                    case Constants.TEST_KEY:
+                        String message = jsonObject.getString(Constants.MESSAGE_KEY);
+                        cards.add(0, Cards.test(message, context));
                         break;
                     case Constants.SAUNA_KEY:
-                        String status = jsonObject.getString("status");
-                        getSourceTopicModel().add(0, Cards.sauna(status, context));
+                        String status = jsonObject.getString(Constants.STATUS_KEY);
+                        cards.add(0, Cards.sauna(status, context));
+                        removeDuplicates(Constants.SAUNA_KEY, cards);
                         break;
                     case Constants.TRACK_ITEM_KEY:
-                        String item = jsonObject.getString("item");
-                        getSourceTopicModel().add(Cards.trackItem(item, context));
+                        String item = jsonObject.getString(Constants.ITEM_KEY);
+                        cards.add(0, Cards.trackItem(item, context));
                         break;
                     default:
                         break;
