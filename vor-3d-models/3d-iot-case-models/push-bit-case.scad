@@ -1,4 +1,4 @@
-// WIFI Toggle Switch 3D Model, Arduino Yun Mini version, http://vor.space
+// WIFI Push Switch 3D Model, Arduino Yun Mini version, http://vor.space
 // ©Futurice Oy, paul.houghton@futurice.com, CC-attribution-sharealike license, http://creativecommons.org/licenses/by-sa/4.0/
 
 $fn = 8;
@@ -27,9 +27,9 @@ push_button();
 
 module push_button() {
     // Uncomment one of the following 3 lines at a time
-    body();
+//    body();
 //    left_half();
-//    right_half();
+    right_half();
 }
 
 module left_half() {
@@ -76,15 +76,7 @@ module body() {
             color("orange") tip();
         }
         union() {
-            // A bit ugly poor-man's-minkowski to avoid crashing SCAD
-	        toggle_moved(dx=yun_skin, dy=yun_skin, dz=yun_skin);
-	        toggle_moved(dx=yun_skin, dy=yun_skin, dz=-yun_skin);
-	        toggle_moved(dx=yun_skin, dy=-yun_skin, dz=yun_skin);
-	        toggle_moved(dx=yun_skin, dy=-yun_skin, dz=-yun_skin);
-	        toggle_moved(dx=-yun_skin, dy=yun_skin, dz=yun_skin);
-	        toggle_moved(dx=-yun_skin, dy=yun_skin, dz=-yun_skin);
-	        toggle_moved(dx=-yun_skin, dy=-yun_skin, dz=yun_skin);
-	        toggle_moved(dx=-yun_skin, dy=-yun_skin, dz=-yun_skin);
+	        button_moved();
             bolt_hole_low();
             bolt_hole_high();            
 	    }
@@ -168,19 +160,17 @@ module box() {
     }
 }
 
-module toggle_moved(dx=0, dy=0, dz=0) {
-    rotate([0, 0, 180]) {
-        translate([-toggle_length/2 + dx, -toggle_width/2 + dy, toggle_z + dz])
-            toggle();
-    }
+module button_moved() {
+    translate([0, -6, toggle_z + 4.5])
+         button();
 }
 
 module yun() {
     include <../3d-iot-component-models/arduino-yun-mini.scad>
 }
 
-module toggle() {
-    include <../3d-iot-component-models/toggle-switch-with-cover.scad>
+module button() {
+    include <../3d-iot-component-models/push-button.scad>
 }
 
 module bolt() {

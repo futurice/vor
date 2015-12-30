@@ -1,4 +1,5 @@
-// Bathroom Sensor 3D Model with methane sensor, 2 motion sensors and Arduino Yun
+// Bathroom Sensor 3D Model with methane sensor, 2 motion sensors and Arduino Yun, http://vor.space
+// ©Futurice Oy, paul.houghton@futurice.com, CC-attribution-sharealike license, http://creativecommons.org/licenses/by-sa/4.0/
 
 $fn = 8;
 

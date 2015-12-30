@@ -1,4 +1,6 @@
 // m3 bolt negative space
+// Part of http://vor.space by Futurice
+// ©Futurice Oy, paul.houghton@futurice.com, CC-attribution-sharealike license, http://creativecommons.org/licenses/by-sa/4.0/
 
 $fn=64;
 
@@ -17,6 +19,9 @@ module push_button() {
     color("blue") base();
     color("black") button();
     color("silver") prongs();
+    color("green") translate([0,0,-prong_length]) hull() {
+        prongs(length=30);
+    }
 }
 
 module base() {
@@ -27,11 +32,11 @@ module button() {
     cylinder(r=button_radius, h=button_height);
 }
 
-module prongs() {
-    prong(-base_side/2 - prong_width);
-    prong(base_side/2);
+module prongs(length=prong_length) {
+    prong(x=-base_side/2 - prong_width,l=length);
+    prong(x=base_side/2,l=length);
 }
 
-module prong(x=0) {
-    translate([x,-base_side/2,-2*base_height/3 - prong_length]) cube([prong_width,base_side,prong_length]);
+module prong(x=0,l=prong_length) {
+    translate([x,-base_side/2,-2*base_height/3 - l]) cube([prong_width,base_side,l]);
 }

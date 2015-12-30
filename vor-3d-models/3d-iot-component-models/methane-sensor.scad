@@ -1,7 +1,8 @@
 // A CNG-Methane sensor MQ-4 ordered from https://www.sparkfun.com/products/9404
 // Part of http://vor.space by Futurice
+// ©Futurice Oy, paul.houghton@futurice.com, CC-attribution-sharealike license, http://creativecommons.org/licenses/by-sa/4.0/
 
-$fn = 16;
+$fn = 64;
 
 pin_length = 7.7;
 

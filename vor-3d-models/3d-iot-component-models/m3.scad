@@ -1,4 +1,6 @@
-// m3 bolt negative space
+// M3 bolt negative space for creating holes in 3D printable models
+// Part of http://vor.space
+// ©Futurice Oy, paul.houghton@futurice.com, CC-attribution-sharealike license, http://creativecommons.org/licenses/by-sa/4.0/
 
 $fn=64;
 

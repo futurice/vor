@@ -1,6 +1,7 @@
-// Arduino Yun Mini 3D model for planning
+// Arduino Yun Mini 3D model for planning, http://vor.space
+// ©Futurice Oy, paul.houghton@futurice.com, CC-attribution-sharealike license, http://creativecommons.org/licenses/by-sa/4.0/
 
-$fn = 16;
+$fn = 64;
 
 length = 73;
 width = 54;

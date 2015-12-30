@@ -1,6 +1,8 @@
 // A PIR motion sensor ordered from https://www.sparkfun.com/products/13285
+// Part of http://vor.space by Futurice
+// ©Futurice Oy, paul.houghton@futurice.com, CC-attribution-sharealike license, http://creativecommons.org/licenses/by-sa/4.0/
 
-$fn = 16;
+$fn = 64;
 
 length = 33.6;
 width = 28.6;

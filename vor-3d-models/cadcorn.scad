@@ -1,4 +1,5 @@
-// Cadcorn by Paul Houghton © 2015, CC BY-NC-AS license, https://creativecommons.org/licenses/
+// Cadcorn, a parametric model of a 3D-printable unicorn
+// ©2015 Paul Houghton, paul.houghton@futurice.com, CC-attribution-sharealike license, http://creativecommons.org/licenses/by-sa/4.0/
 low_poly = 8;
 high_poly = 64;
 low_poly_joint = 16;
