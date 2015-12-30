@@ -9,7 +9,7 @@
 
 #define INTERVAL 30000
 
-#define PAYLOAD_FORMAT "{\"id\":\"toilet8am\",\"type\":\"toilet\",\"reserved\":%s,\"methane\":%d}"
+#define PAYLOAD_FORMAT "{\"id\":\"toilet8am\",\"type\":\"toilet\",\"reserved\":%s,\"methane\":%s}"
 
 #define MOTION1_PIN 2
 #define MOTION2_PIN 3
@@ -44,18 +44,18 @@ void loop() {
 
     bool change = (prevMotion1Value != motion1Value || prevMotion2Value != motion2Value) && // some change
         ( (prevMotion1Value == HIGH && prevMotion2Value == HIGH) || // previously no motion
-          (motion1Value == HIGH && motion1Value == HIGH) ); // at the moment no motion
+          (motion1Value == HIGH && motion2Value == HIGH) ); // at the moment no motion
 
     prevMotion1Value = motion1Value;
     prevMotion2Value = motion2Value;
-    bool reservedValue = motion1Value == LOW && motion2Value == LOW;
+    bool reservedValue = motion1Value == LOW || motion2Value == LOW;
 
     if (change || now - intervalTime > INTERVAL) {
         intervalTime = now;
 
         const char* reserved = reservedValue ? "true" : "false";
         char methane[16];
-        dtostrf(methaneValue, 4, 2, methane);
+        dtostrf(methaneValue, 16, 2, methane);
         char message[128];
         sprintf(message, PAYLOAD_FORMAT, reserved, methane);
 
