@@ -18,8 +18,19 @@ abstract class BaseActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
 
-        checkForCrashes();
         checkForUpdates();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        UpdateManager.unregister();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkForCrashes();
     }
 
     @Nullable
