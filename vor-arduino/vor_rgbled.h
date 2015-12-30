@@ -7,7 +7,7 @@
 #define VOR_RGBLED_H
 
 #include "vor_actuator.h"
-#include "env.h"
+#include "vor_env.h"
 
 // Gamma correction lookup table
 // https://learn.adafruit.com/led-tricks-gamma-correction/the-quick-fix

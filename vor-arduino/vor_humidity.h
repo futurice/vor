@@ -6,7 +6,7 @@
 #define VOR_HUMIDITY_H
 
 #include "vor_sensor.h"
-#include "env.h"
+#include "vor_env.h"
 
 class VorHumidity : public VorSensor {
 public:
