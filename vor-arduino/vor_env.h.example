@@ -1,15 +1,15 @@
 /*
     Do not push this file to version control repository!
 
-    Rename a local copy this file to "env.h".
+    Rename a local copy this file to "vor_env.h".
 
     Define your variables (e.g. Wi-Fi credentials for LinkIt ONE board and
     Arduino Wi-Fi shields) here.
 
-    Use the defined variables in your code by putting the file "env.h" in the same
+    Use the defined variables in your code by putting the file "vor_env.h" in the same
     directory and including it in the code:
 
-    #include "env.h"
+    #include "vor_env.h"
 */
 
 #ifndef VOR_ENV_H
