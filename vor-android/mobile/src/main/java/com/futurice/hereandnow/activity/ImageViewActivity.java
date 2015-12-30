@@ -2,7 +2,7 @@ package com.futurice.hereandnow.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +14,9 @@ import com.futurice.hereandnow.Constants;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.utils.FileUtils;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ImageViewActivity extends Activity {
 
@@ -31,18 +34,23 @@ public class ImageViewActivity extends Activity {
         setContentView(R.layout.activity_imageview);
 
         final ImageView imageView = (ImageView) findViewById(R.id.image_view);
-        if (getIntent().hasExtra(IMAGE_URI)) {
-            Uri uri = Uri.parse(getIntent().getExtras().getString(IMAGE_URI));
+        Intent intent = getIntent();
+        if (intent.hasExtra(IMAGE_URI)) {
+            Uri uri = Uri.parse(intent.getExtras().getString(IMAGE_URI));
             Picasso.with(this)
                     .load(uri)
                     .fit()
                     .centerInside()
                     .into(imageView);
-        } else if (getIntent().hasExtra(Constants.TYPE_KEY)){
-            String type = getIntent().getExtras().getString(Constants.TYPE_KEY);
-            SharedPreferences sp = getSharedPreferences(type, Context.MODE_PRIVATE);
-            String base64 = sp.getString(Constants.IMAGE_KEY, "Failed");
-            imageView.setImageBitmap(FileUtils.base64ToBitmap(base64));
+        } else if (intent.hasExtra(Constants.TYPE_KEY)){
+            String type = intent.getExtras().getString(Constants.TYPE_KEY);
+            try {
+                String json = getSharedPreferences(type, Context.MODE_PRIVATE).getString(type, null);
+                String base64 = (new JSONObject(json)).getString(Constants.IMAGE_KEY);
+                imageView.setImageBitmap(FileUtils.base64ToBitmap(base64));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
