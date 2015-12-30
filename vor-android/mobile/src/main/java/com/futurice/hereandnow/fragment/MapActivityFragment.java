@@ -8,7 +8,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -24,6 +29,8 @@ import static com.futurice.hereandnow.Constants.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -46,6 +53,8 @@ public class MapActivityFragment extends Fragment {
     BeaconLocationManager beaconLocationManager;
     PeopleManager peopleManager;
 
+    String filter = "";
+
     SharedPreferences preferences;
 
     public MapActivityFragment() {}
@@ -56,6 +65,34 @@ public class MapActivityFragment extends Fragment {
         args.putInt(FLOOR_KEY, floor);
         activity.setArguments(args);
         return activity;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.map_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.map_filter);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filter = query;
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter = newText;
+                return false;
+            }
+        });
     }
 
     @Override
@@ -167,7 +204,21 @@ public class MapActivityFragment extends Fragment {
             }
         });
 
-        mImageView.setOnMapDrawListener(peopleManager::getPeople);
+        mImageView.setOnMapDrawListener(new MapView.OnMapDrawListener() {
+            @Override
+            public ArrayList<PeopleManager.Person> getPersons() {
+                return peopleManager.getPeople();
+            }
+
+            @Override
+            public ArrayList<PeopleManager.Person> getFilteredPersons() {
+                if (filter.isEmpty()) {
+                    return peopleManager.getPeople();
+                } else {
+                    return peopleManager.filterPeople(filter);
+                }
+            }
+        });
 
         mAttacher.setOnViewTapListener((view, x, y) -> {
             float errorMargin = 60f * mAttacher.getScale();

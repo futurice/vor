@@ -54,7 +54,6 @@ public class MapActivity extends BaseActivity {
                     fragment = MapActivityFragment.newInstance(MAP_7TH_FLOOR);
                     break;
                 case MAP_8TH_FLOOR:
-                    // TODO: Create fragment for the other map
                     fragment = MapActivityFragment.newInstance(MAP_8TH_FLOOR);
                     break;
                 default:

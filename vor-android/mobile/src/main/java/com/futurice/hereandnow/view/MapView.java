@@ -75,9 +75,12 @@ public class MapView extends PhotoView {
             return;
         }
 
+        // Update locations.
         for (PeopleManager.Person person : onMapDrawListener.getPersons()) {
             person.updateCurrentLocation(animationSpeed, updateRadius); // Animate the markers.
+        }
 
+        for (PeopleManager.Person person : onMapDrawListener.getFilteredPersons()) {
             if (person.getLocationOnScreenX() >= 0 && person.getLocationOnScreenY() >= 0) {
                 String text = HereAndNowUtils.getInitials(person.getEmail());
 
@@ -93,7 +96,7 @@ public class MapView extends PhotoView {
             }
         }
 
-        for (PeopleManager.Person person : onMapDrawListener.getPersons()) {
+        for (PeopleManager.Person person : onMapDrawListener.getFilteredPersons()) {
             if (person.isClicked()) {
                 String text = HereAndNowUtils.getName(person.getEmail());
 
@@ -147,6 +150,8 @@ public class MapView extends PhotoView {
 
     public interface OnMapDrawListener {
         ArrayList<PeopleManager.Person> getPersons();
+
+        ArrayList<PeopleManager.Person> getFilteredPersons();
     }
 
     public void setOnMapDrawListener(OnMapDrawListener listener) {
