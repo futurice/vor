@@ -141,7 +141,8 @@ public class DrawerActivity extends BaseActivity implements
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            // super.onBackPressed();
+            HereAndNowUtils.minimizeApp(this);
         }
     }
 

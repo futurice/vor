@@ -1,6 +1,7 @@
 package com.futurice.hereandnow.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static android.support.v4.app.ActivityCompat.startActivity;
 
 public final class HereAndNowUtils {
 
@@ -140,5 +143,16 @@ public final class HereAndNowUtils {
         } else {
             return email.substring(0, 2).toUpperCase();
         }
+    }
+
+    /**
+     * Minimizes the app
+     * @param context the context
+     */
+    public static void minimizeApp(Context context) {
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(startMain);
     }
 }
