@@ -33,17 +33,15 @@ import io.socket.client.Socket;
 import static com.futurice.cascade.Async.UI;
 
 public class CardsNowFragment extends BaseHereAndNowFragment {
-    private static final String TAG = CardsNowFragment.class.getSimpleName();
-
     Socket mSocket;
 
     SharedPreferences mTestSP;
     SharedPreferences mFoodSP;
     SharedPreferences mPoolSP;
 
-    OnSharedPreferenceChangeListener mTestCardListener = this::addTestCard;
-    OnSharedPreferenceChangeListener mFoodCardListener = this::addFoodCard;
-    OnSharedPreferenceChangeListener mPoolCardListener = this::addPoolCard;
+    OnSharedPreferenceChangeListener mTestCardListener = this::addCard;
+    OnSharedPreferenceChangeListener mFoodCardListener = this::addCard;
+    OnSharedPreferenceChangeListener mPoolCardListener = this::addCard;
 
     public CardsNowFragment() {
         // Required empty public constructor
@@ -82,7 +80,8 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
                         String identifier = beacon.getString(BeaconLocationManager.BEACON_KEY_ID);
                         int floor = beacon.getInt(BeaconLocationManager.BEACON_KEY_FLOOR);
 
-                        HereAndNowApplication.getBeaconLocationManager().addBeacon(identifier, floor, getContext());
+                        BeaconLocationManager bm = HereAndNowApplication.getBeaconLocationManager();
+                        bm.addBeacon(identifier, floor, getContext());
                     }
 
                     // Start the manager.
@@ -128,9 +127,7 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
         final ExpandableListView elv = new ExpandableListView(getActivity());
         setExpandableListView(elv);
 
-        TopicListAdapter tla = new TopicListAdapter(
-                getSourceTopicModel(),
-                "NowCardsListAdapter");
+        TopicListAdapter tla = new TopicListAdapter(getSourceTopicModel(), "NowCardsListAdapter");
         setTopicListAdapter(tla);
     }
 
@@ -180,61 +177,35 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
     }
 
     /**
-     * Adds the test card to the view
+     * Adds the card to the view
      *
      * @param sharedPreferences the shared preferences
      * @param key the key
      */
-    private void addTestCard(SharedPreferences sharedPreferences, String key) {
-        switch (key) {
-            case Constants.MESSAGE_KEY:
-                String message = sharedPreferences.getString(key, "Failed");
-                getSourceTopicModel().add(0, Cards.test(message, this.getActivity()));
+    private void addCard(SharedPreferences sharedPreferences, String key) {
+        String json = sharedPreferences.getString(key, null);
+        if (json != null) {
+            try {
+                JSONObject jsonData = new JSONObject(json);
+                if (jsonData.has(Constants.IMAGE_KEY)) {
+                    String image = jsonData.getString(Constants.IMAGE_KEY);
+                    List<ITopic> cards = getSourceTopicModel();
+                    if (key.equals(Constants.POOL_KEY)) {
+                        cards.add(0, Cards.pool(image, getActivity()));
+                        removeDuplicates(Constants.POOL_KEY, cards);
+                    } else if (key.equals(Constants.FOOD_KEY)) {
+                        cards.add(0, Cards.food(image, getActivity()));
+                        removeDuplicates(Constants.FOOD_KEY, cards);
+                    }
+                } else if (jsonData.has(Constants.MESSAGE_KEY)) {
+                    String message = jsonData.getString(Constants.MESSAGE_KEY);
+                    List<ITopic> cards = getSourceTopicModel();
+                    cards.add(0, Cards.test(message, getActivity()));
+                }
                 UI.execute(this::filterModel);
-                break;
-            default:
-                break;
-        }
-    }
-
-    /**
-     * Adds the pool card to the view
-     *
-     * @param sharedPreferences the shared preferences
-     * @param key the key
-     */
-    private void addPoolCard(SharedPreferences sharedPreferences, String key) {
-        switch (key) {
-            case Constants.IMAGE_KEY:
-                List<ITopic> cards = getSourceTopicModel();
-                String file = sharedPreferences.getString(key, "Failed");
-                cards.add(0, Cards.pool(file, getActivity()));
-                removeDuplicates(Constants.POOL_KEY, cards);
-                UI.execute(this::filterModel);
-                break;
-            default:
-                break;
-        }
-    }
-
-
-    /**
-     * Adds the food card to the view
-     *
-     * @param sharedPreferences the shared preferences
-     * @param key the key
-     */
-    private void addFoodCard(SharedPreferences sharedPreferences, String key) {
-        switch (key) {
-            case Constants.IMAGE_KEY:
-                List<ITopic> cards = getSourceTopicModel();
-                String file = sharedPreferences.getString(key, "Failed");
-                cards.add(0, Cards.food(file, this.getActivity()));
-                removeDuplicates(Constants.FOOD_KEY, cards);
-                UI.execute(this::filterModel);
-                break;
-            default:
-                break;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
