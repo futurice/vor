@@ -10,14 +10,14 @@ class Location {
     return stream
       .map(getConfig(this.beaconConfigs))
       .filter(([beaconMessage, config]) => !!config)
-      .map(mapWithConfig)
+      .map(([beaconMessage, config]) => Object.assign(beaconMessage, config)) // merge message with configured data
       .bufferWithCount(3)
       .map(([beacon1, beacon2, beacon3]) => {
         const position = calculatePosition(beacon1, beacon2, beacon3);
         const messageData = Object.assign({
-          email: beacon1.email, // get email from first beacon
-          floor: beacon1.floor, // get floor from first beacon
-          type: 'location' // constant for every message
+          email: beacon1.email, // get the email from the first beacon message
+          floor: beacon1.floor, // get the floor from the first beacon message
+          type: 'location' // constant for every location message
         }, position);
         const logBeacons = `${beacon1.id}, ${beacon2.id}, ${beacon3.id}`;
         console.log(`Server - location (${logBeacons}) : ${JSON.stringify(position)} : ${new Date}`);
@@ -31,17 +31,6 @@ const getConfig = beaconConfigs => beaconMessage => {
     .filter(config => config.id === beaconMessage.id)
     .filter(config => config.floor === beaconMessage.floor);
   return [ beaconMessage, config ];
-};
-
-const mapWithConfig = ([beaconMessage, config]) => {
-  return {
-    id: beaconMessage.id,
-    email: beaconMessage.email,
-    distance: beaconMessage.distance,
-    x: config.x,
-    y: config.y,
-    floor: config.floor
-  };
 };
 
 /*
