@@ -3,10 +3,12 @@ package com.futurice.hereandnow.activity;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
@@ -14,9 +16,11 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.services.LocationService;
+import com.futurice.hereandnow.utils.HereAndNowUtils;
 
 import java.util.List;
 
@@ -50,18 +54,30 @@ public class SettingsActivity extends PreferenceActivity {
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = (preference, value) -> {
-        String stringValue = value.toString();
-        preference.setSummary(stringValue);
-        resultIntent.putExtra(preference.getKey(), stringValue);
-
+    private static OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = (preference, value) -> {
+        if (preference.getKey().equals(SettingsActivity.EMAIL_KEY)) {
+            Context ctx = preference.getContext();
+            if (HereAndNowUtils.isEmailValid((String) value)) {
+                preference.setSummary((String) value);
+                resultIntent.putExtra(preference.getKey(), (String) value);
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
+                String oldValue = sp.getString(preference.getKey(), "");
+                if (!oldValue.equals(value)) {
+                    Toast.makeText(ctx, R.string.email_saved, Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            } else {
+                Toast.makeText(ctx, R.string.invalid_email, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
         return true;
     };
 
     /**
      * Start LocationService if the value is set to true, stop it otherwise.
      */
-    private Preference.OnPreferenceChangeListener runLocationServiceByValueListener = ((preference, newValue) -> {
+    private OnPreferenceChangeListener runLocationServiceByValueListener = ((preference, newValue) -> {
         final Intent intent = new Intent(this, LocationService.class);
 
         if (Boolean.valueOf(newValue.toString())) {

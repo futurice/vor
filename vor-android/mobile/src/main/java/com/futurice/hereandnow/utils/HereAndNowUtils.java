@@ -119,9 +119,13 @@ public final class HereAndNowUtils {
     }
 
     public static boolean isEmailValid(String email) {
-        Pattern pattern = Pattern.compile("^(.+\\..+)@futurice.com$");
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+        if (email != null && !email.trim().isEmpty()) {
+            Pattern pattern = Pattern.compile("^(.+\\..+)@futurice.com$");
+            Matcher matcher = pattern.matcher(email);
+            return matcher.matches();
+        } else {
+            return false;
+        }
     }
 
     public static String getName(String email) {
