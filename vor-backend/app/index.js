@@ -78,7 +78,7 @@ module.exports = function (app, router, configs, sharedConfigs) {
         console.log(`Server - emit ${message.type} : ${new Date}`);
       },
       error => console.error(`Error - message stream: ${error} : ${new Date}`)
-  );
+    );
 
   // the test page
   app.use('/', viewRoute(router));
