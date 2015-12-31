@@ -1,6 +1,6 @@
 # Humidity sensor
 
-[The humidity sensor](https://www.sparkfun.com/products/9569) reports relative humidity in percents. The output value of the sensor has to be adjusted with temperature value in celcius degrees according to the following equation:
+[The humidity sensor](https://www.sparkfun.com/products/9569) reports relative humidity in percents. The output value of the sensor has to be adjusted with temperature value in celcius degrees according to the following [equation (see page 2)](https://www.sparkfun.com/datasheets/Sensors/Weather/SEN-09569-HIH-4030-datasheet.pdf):
 
 float relativeHumidity = sensorValue / (1.0546 - 0.00216 * temperature);
 
