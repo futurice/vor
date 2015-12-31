@@ -33,8 +33,8 @@ import static com.futurice.cascade.Async.UI;
 
 public class MapActivityFragment extends Fragment {
     // Real life dimensions for the map in meters.
-    private static final float FLOOR8_WIDTH = 51.9670588235f;
-    private static final float FLOOR8_HEIGHT = 85.7766233766f;
+    private static final float FLOOR8_WIDTH = 46.1652873563f;
+    private static final float FLOOR8_HEIGHT = 39.2249350649f;
     private static final float FLOOR7_WIDTH = 16.2423255f;
     private static final float FLOOR7_HEIGHT = 28.4685258f;
 
