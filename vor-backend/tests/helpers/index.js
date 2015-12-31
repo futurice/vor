@@ -34,7 +34,7 @@ const helpers = {
   },
 
   flushCache: done => {
-    cacheClient.flushdb(err => done());
+    cacheClient.flushdb(cleared => done()); // clear db for every test case
   }
 
 };

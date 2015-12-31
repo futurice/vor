@@ -41,16 +41,15 @@ describe('App: on message event "location"', function () {
 
       clientA.on('location', message => {
         should(message).deepEqual(EXPECTED_A_LOCATION_MESSAGE);
+      });
+
+      clientB.on('message', message => {
+        should(message).deepEqual(EXPECTED_A_LOCATION_MESSAGE);
+        clientA.disconnect();
+        clientB.disconnect();
         done();
       });
 
-      clientA.disconnect();
-    });
-
-    clientB.on('message', message => {
-      should(message).deepEqual(EXPECTED_A_LOCATION_MESSAGE);
-      clientB.disconnect();
-      done();
     });
 
   });

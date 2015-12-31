@@ -29,7 +29,7 @@ describe('App: on message event', function () {
       should(message).deepEqual(TEST_MESSAGE);
       clientA.disconnect();
       clientB.disconnect();
-      done();
+      setTimeout(done, 10); // wait for B's 'message'
     });
 
   });
