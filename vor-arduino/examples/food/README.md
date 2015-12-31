@@ -1,12 +1,12 @@
 # Food switch
 
-[A toggle switch](https://www.sparkfun.com/products/11310) which sends a JSON message to the server via HTTP POST when it is turned on and every 30 seconds while it is on.
+[A toggle switch](https://www.sparkfun.com/products/11310) which sends a JSON string message to the server via HTTP POST when it is turned on and every 30 seconds while it is on.
 
 The purpose of the switch is to inform when there is some food to be grabbed on the kitchen table. A Raspberry Pi client that is connected to a webcam then reacts to the message sent by the switch and takes a picture of the food on the table.
 
 The switch has a signal output which is set to HIGH when the switch is on and LOW when the switch is off. The LED on the tip of the switch lights up when the when the switch is on.
 
-## Breadboard
+## Wiring example
 
 <img src="food_bb.png" width="320">
 

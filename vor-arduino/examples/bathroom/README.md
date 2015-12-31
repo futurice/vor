@@ -14,7 +14,7 @@ The methane sensor has to heat up for a few minutes after powering up for the me
 
 ## Code example
 
-The example sketch works on Arduino Yun and Yun Mini boards. The sketch sends a JSON message to the server via HTTP POST every 30 seconds. The message contains the current reserved state of the bathroom and the methane level. The message is also sent immediately when either of the motion sensors report movement after both reporting no movement previously (the bathroom became occupied) and when both of the motion sensors report no movement after either of them reporting movement previously (the bathroom became unoccupied).
+The example sketch works on Arduino Yun and Yun Mini boards. The sketch sends a JSON string message to the server via HTTP POST every 30 seconds. The message contains the current reserved state of the bathroom and the methane level. The message is also sent immediately when either of the motion sensors report movement after both reporting no movement previously (the bathroom became occupied) and when both of the motion sensors report no movement after either of them reporting movement previously (the bathroom became unoccupied).
 
 ```
 #include <Bridge.h>
