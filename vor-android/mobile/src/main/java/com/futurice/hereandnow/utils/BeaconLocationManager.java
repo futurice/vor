@@ -14,6 +14,7 @@ import com.futurice.hereandnow.HereAndNowApplication;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.activity.SettingsActivity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -113,9 +114,7 @@ public class BeaconLocationManager {
 
         List<Map.Entry<FutuBeacon, Double>> sorted = sortByDistance(tempMap);
         if (sorted.size() >= 3) {
-            sendToServer(sorted.get(0).getKey(), sorted.get(0).getValue());
-            sendToServer(sorted.get(1).getKey(), sorted.get(1).getValue());
-            sendToServer(sorted.get(2).getKey(), sorted.get(2).getValue());
+            sendToServer(sorted.subList(0, 3));
         }
     }
 
@@ -131,16 +130,28 @@ public class BeaconLocationManager {
         }
     }
 
-    private void sendToServer(FutuBeacon beacon, double accuracy) {
+    private void sendToServer(List<Map.Entry<FutuBeacon, Double>> sorted) {
         JSONObject jo = new JSONObject();
         try {
             jo.put(Constants.TYPE_KEY, BEACON_KEY);
-            jo.put(BEACON_KEY_ID, beacon.identifier + "-" + beacon.major + "-" + beacon.minor);
-            jo.put(BEACON_KEY_DISTANCE, accuracy);
             jo.put(BEACON_KEY_USER_IDENTIFIER, preferences.getString(SettingsActivity.EMAIL_KEY,
                     context.getString(R.string.pref_my_email_default)));
-            jo.put(BEACON_KEY_FLOOR, beacon.floor);
-            jo.put(BEACON_TEMPERATURE_KEY, 19.4f);
+
+            JSONArray beaconsArray = new JSONArray();
+            for (Map.Entry<FutuBeacon, Double> beaconEntry : sorted) {
+                JSONObject beaconObject = new JSONObject();
+                FutuBeacon beacon = beaconEntry.getKey();
+
+                beaconObject.put(BEACON_KEY_ID, beacon.identifier + "-" + beacon.major + "-" + beacon.minor);
+                beaconObject.put(BEACON_KEY_DISTANCE, beaconEntry.getValue());
+                beaconObject.put(BEACON_KEY_FLOOR, beacon.floor);
+                beaconObject.put(BEACON_TEMPERATURE_KEY, 19.4f);
+
+                beaconsArray.put(beaconObject);
+            }
+
+            jo.put("beacons", beaconsArray);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
