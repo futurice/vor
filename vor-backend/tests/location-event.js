@@ -5,7 +5,7 @@ const helpers = require('./helpers/index');
 
 describe('App: on message event "location"', function () {
 
-  before(() => {
+  beforeEach(() => {
     helpers.setupCache();
     const app = require('../bin/www');
   });
@@ -39,17 +39,15 @@ describe('App: on message event "location"', function () {
       clientA.emit('message', {type:'beacon', email: 'ClientA', id: 2, distance: 1, floor: 1});
       clientA.emit('message', {type:'beacon', email: 'ClientA', id: 3, distance: 1, floor: 1});
 
-      clientA.on('location', message => {
-        should(message).deepEqual(EXPECTED_A_LOCATION_MESSAGE);
+      clientA.on('message', messageForClientA => {
+        clientB.on('message', messageForClientB => {
+          should(messageForClientA).deepEqual(EXPECTED_A_LOCATION_MESSAGE);
+          should(messageForClientB).deepEqual(EXPECTED_A_LOCATION_MESSAGE);
+          clientA.disconnect(); // always disconnect connection
+          clientB.disconnect(); // always disconnect connection
+          done();
+        });
       });
-
-      clientB.on('message', message => {
-        should(message).deepEqual(EXPECTED_A_LOCATION_MESSAGE);
-        clientA.disconnect();
-        clientB.disconnect();
-        done();
-      });
-
     });
 
   });
