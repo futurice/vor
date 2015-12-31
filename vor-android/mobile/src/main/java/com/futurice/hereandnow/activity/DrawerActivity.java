@@ -218,6 +218,13 @@ public class DrawerActivity extends BaseActivity implements
             
             Intent intent = new Intent(this, OnboardingActivity.class);
             startActivity(intent);
+
+            for(String toiletId : Constants.TOILET_IDS) {
+                sp = getSharedPreferences(toiletId, Context.MODE_PRIVATE);
+                editor = sp.edit();
+                editor.clear();
+                editor.apply();
+            }
         }
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

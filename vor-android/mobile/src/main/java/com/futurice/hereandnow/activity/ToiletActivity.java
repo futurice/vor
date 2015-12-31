@@ -42,9 +42,9 @@ public class ToiletActivity extends BaseActivity {
 
     private void setupToiletViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Floor7Fragment(), "7th Floor");
-        adapter.addFragment(new Floor8Fragment(), "8th Floor");
-        adapter.addFragment(new ToiletMapFragment(), "Map");
+        adapter.addFragment(new Floor7Fragment(), getString(R.string.tab_map_7th_floor_title));
+        adapter.addFragment(new Floor8Fragment(), getString(R.string.tab_map_8th_floor_title));
+        adapter.addFragment(new ToiletMapFragment(), getString(R.string.title_activity_map));
         viewPager.setAdapter(adapter);
     }
 

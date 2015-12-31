@@ -43,6 +43,17 @@ public class Constants {
     public static final String SILENCE_KEY = "silence";
     public static final String LAST_PERSON_KEY = "last_person";
 
+    public static final String[] TOILET_IDS = {
+            "toilet7am",
+            "toilet7bm",
+            "toilet8am",
+            "toilet8aw",
+            "toilet8bm",
+            "toilet8bw",
+            "toilet8cm",
+            "toilet8cw"
+    };
+
     public static final String EMAIL = "email";
     public static final String DUMMY_EMAIL = "first.last@futurice.com";
 
