@@ -10,7 +10,7 @@ The purpose of the button is to create a video clip of the last 30 seconds of th
 
 ## Code example
 
-```
+```cpp
 #include <Bridge.h>
 #include <YunClient.h>
 

@@ -10,7 +10,7 @@ float relativeHumidity = sensorValue / (1.0546 - 0.00216 * temperature);
 
 ## Code example
 
-```
+```cpp
 #include "vor_humidity.h"
 #include "vor_led.h"
 
