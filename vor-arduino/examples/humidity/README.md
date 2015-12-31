@@ -1,5 +1,30 @@
 # Humidity sensor
 
-## Breadboard
+[The humidity sensor](https://www.sparkfun.com/products/9569) reports relative humidity in percents. The output value of the sensor has to be adjusted with temperature value in celcius degrees according to the following equation:
+
+float relativeHumidity = sensorValue / (1.0546 - 0.00216 * temperature);
+
+## Wiring example
 
 <img src="humidity_bb.png" width="320">
+
+## Code example
+
+```
+#include "vor_humidity.h"
+#include "vor_led.h"
+
+VorHumidity humidity(A0);
+VorLed led;
+
+void setup() {
+    Serial.begin(9600);
+    while (!Serial);
+}
+
+void loop() {
+    float value = humidity.readProcessed();
+    Serial.println(value);
+    delay(1000);
+}
+```
