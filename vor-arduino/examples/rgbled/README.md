@@ -1,6 +1,6 @@
 # RGB LED (common anode)
 
-[A common anode RGB LED](https://www.sparkfun.com/products/10820) in which the common anode is connected to the 5V pin and other leads are connected to digital pins (PWM pins for analog output) on Arduino. The analog output values are inverted when calling the setter functions of the class (writeRed, writeGreen, writeBlue and write) that is with 0 as a parameter value the LED is off and with 255 the LED is shining bright. The class uses [gamma correction lookup table](https://learn.adafruit.com/led-tricks-gamma-correction/the-quick-fix) to adjust the output values. In the example a 220 ohm voltage drop resistor is used with the red and blue LEDs and a 100 ohm resistor with the green LED for achieving approximately equal brightness for the LEDs.
+[A common anode RGB LED](https://www.sparkfun.com/products/10820) in which the common anode is connected to the 5V pin and other leads are connected to digital pins (PWM pins for analog output) on Arduino. The analog output values are inverted when calling the setter functions of the class (writeRed, writeGreen, writeBlue and write) that is with a parameter value 0 the LED is off and with 255 the LED is shining bright. The class uses [gamma correction lookup table](https://learn.adafruit.com/led-tricks-gamma-correction/the-quick-fix) to adjust the output values. In the example a 220 ohm voltage drop resistor is used with the red and blue LEDs and a 100 ohm resistor with the green LED in order to achieve approximately equal brightness for the LEDs.
 
 ## Wiring example
 
