@@ -26,16 +26,14 @@ describe('App: on message post', function () {
       .send(TEST_MESSAGE)
       .expect(200)
       .end(function (err, res) {
-        clientB.on('message', message => {
-
-          clientA.on('message', message => {
-            should(message).deepEqual(expectedResponse);
+        clientA.on('message', messageForClientA => {
+          clientB.on('message', messageForClientB => {
+            should(messageForClientA).deepEqual(expectedResponse);
+            should(messageForClientB).deepEqual(expectedResponse);
+            clientA.disconnect(); // always disconnect connection
+            clientB.disconnect(); // always disconnect connection
+            done();
           });
-
-          should(message).deepEqual(expectedResponse);
-          clientA.disconnect();
-          clientB.disconnect();
-          done();
         });
       });
 
