@@ -1,7 +1,5 @@
 'use strict';
 const Rx = require('rx');
-const redis = require('redis');
-const expressRedisCache = require('express-redis-cache');
 const Cache = require('app/cache');
 const Location = require('app/location');
 const viewRoute = require('app/views/routes');
