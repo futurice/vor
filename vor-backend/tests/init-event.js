@@ -13,7 +13,7 @@ describe('App: on "init" ', function () {
 
   afterEach(helpers.flushCache);
 
-  it('should send data from cache', done => {
+  it('should send data from cache for one client requesting for it', done => {
     var messagesForClientA;
     var messagesForClientB;
     const TEST_MESSAGE = helpers.TEST_MESSAGE;
@@ -25,15 +25,12 @@ describe('App: on "init" ', function () {
         clientB.emit('message', TEST_MESSAGE);
         clientA.emit('init');
 
-        clientB.on('init', messages => {
-          messagesForClientB = messages;
-        });
-
         clientA.on('init', initObject => {
+          clientB.on('init', messages => messagesForClientB = messages);
           messagesForClientA = initObject.messages;
           should(messagesForClientA[0]).deepEqual(TEST_MESSAGE);
-          should(messagesForClientB).equal(undefined);
-          setTimeout(done, 10);
+          should(messagesForClientB).equal(undefined); // B will not get any init message
+          setTimeout(done, 10); // wait for B's 'init' message which will never be happen
         });
       });
     });
@@ -47,7 +44,7 @@ describe('App: on "init" ', function () {
 
       client.on('init', initObject => {
         should(initObject.beacons).deepEqual(sharedConfig.BEACONS);
-        setTimeout(done, 10);
+        done();
       });
     });
   });
