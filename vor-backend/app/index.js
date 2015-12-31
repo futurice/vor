@@ -27,7 +27,8 @@ module.exports = function (app, router, configs, sharedConfigs) {
     .flatMap(socket => Rx.Observable.fromEvent(
       socket,
       'init',
-        event => socket) // we need socket to emit cache content only to one client
+      event => socket // we need socket to emit cache content only to one client
+    )
   );
 
   // Post interface for messages
@@ -54,16 +55,16 @@ module.exports = function (app, router, configs, sharedConfigs) {
       return Rx.Observable.zip(Rx.Observable.return(socket), cache.getAll());
     })
     .subscribe(
-    ([socket, messages]) => {
-      socket.emit('init',
-        {
-          beacons: sharedConfigs.BEACONS, // send configured beacons data
-          messages: messages
-        });
-      console.log(`Server - fetched ${messages.length} messages from cache : ${new Date}`);
-    },
+      ([socket, messages]) => {
+        socket.emit('init',
+          {
+            beacons: sharedConfigs.BEACONS, // send configured beacons data
+            messages: messages
+          });
+        console.log(`Server - fetched ${messages.length} messages from cache : ${new Date}`);
+      },
       error => console.error(`Error - init stream: ${error} : ${new Date}`)
-  );
+    );
 
   // subscribe messages
   postMessageSubject
@@ -73,9 +74,9 @@ module.exports = function (app, router, configs, sharedConfigs) {
     .merge(locationSource$) // merge location without storing it
     .subscribe(
       message => {
-      app.io.emit('message', message);
-      console.log(`Server - emit ${message.type} : ${new Date}`);
-    },
+        app.io.emit('message', message);
+        console.log(`Server - emit ${message.type} : ${new Date}`);
+      },
       error => console.error(`Error - message stream: ${error} : ${new Date}`)
   );
 
