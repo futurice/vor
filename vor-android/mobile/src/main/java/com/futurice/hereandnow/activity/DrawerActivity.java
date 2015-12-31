@@ -27,7 +27,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.futurice.cascade.functional.ImmutableValue;
 import com.futurice.cascade.i.IAsyncOrigin;
@@ -44,8 +43,6 @@ public class DrawerActivity extends BaseActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         IAsyncOrigin,
         SharedPreferences.OnSharedPreferenceChangeListener {
-    private static final String TAG = DrawerActivity.class.getSimpleName();
-
     public static final int SETTINGS_INTENT_RESULT = 12348;
 
     private final SparseArray<TextWatcher> mSearchWatchers = new SparseArray<>();
@@ -302,16 +299,8 @@ public class DrawerActivity extends BaseActivity implements
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(SettingsActivity.EMAIL_KEY)) {
             String email = sharedPreferences.getString(key, null);
-            if (email != null && !email.trim().isEmpty()) {
-                if (HereAndNowUtils.isEmailValid(email)) {
-                    mNameTextView.setText(HereAndNowUtils.getName(email));
-                    mEmailTextView.setText(email);
-                } else {
-                    Toast.makeText(this, R.string.invalid_email, Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(this, R.string.please_add_email, Toast.LENGTH_SHORT).show();
-            }
+            mNameTextView.setText(HereAndNowUtils.getName(email));
+            mEmailTextView.setText(email);
         }
     }
 }

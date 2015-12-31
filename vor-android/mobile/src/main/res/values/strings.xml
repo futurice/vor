@@ -81,6 +81,7 @@
     <string name="email">Email</string>
     <string name="please_add_email">Please add your email</string>
     <string name="invalid_email">Invalid email</string>
+    <string name="email_saved">Email saved!</string>
     <string name="enter">Enter</string>
     <string name="change_floor">Change floor</string>
     <string name="people_nearby">People Nearby</string>
