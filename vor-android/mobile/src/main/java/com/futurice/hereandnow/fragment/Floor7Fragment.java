@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.futurice.hereandnow.R;
+import com.futurice.hereandnow.Toilet;
 import com.futurice.hereandnow.utils.ToiletUtils;
 
 import butterknife.Bind;
@@ -21,9 +22,6 @@ import butterknife.ButterKnife;
 public class Floor7Fragment extends Fragment {
     @Bind(R.id.toilet7AM) RelativeLayout mToilet7AM;
     @Bind(R.id.toilet7BM) RelativeLayout mToilet7BM;
-
-    public static final String TOILET_7AM_ID = "toilet7am";
-    public static final String TOILET_7BM_ID = "toilet7bm";
 
     Activity mActivity;
 
@@ -46,8 +44,8 @@ public class Floor7Fragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mActivity = getActivity();
-        mToilet7amSP = mActivity.getSharedPreferences(TOILET_7AM_ID, Context.MODE_PRIVATE);
-        mToilet7bmSP = mActivity.getSharedPreferences(TOILET_7BM_ID, Context.MODE_PRIVATE);
+        mToilet7amSP = mActivity.getSharedPreferences(Toilet.AM7.getId(), Context.MODE_PRIVATE);
+        mToilet7bmSP = mActivity.getSharedPreferences(Toilet.BM7.getId(), Context.MODE_PRIVATE);
     }
 
     @Override
@@ -58,15 +56,17 @@ public class Floor7Fragment extends Fragment {
         ButterKnife.bind(this, view);
 
         mToilet7AM.setOnClickListener(v -> {
-            ToiletUtils.setClickListener(mToilet7amSP.getString(TOILET_7AM_ID, null), getActivity());
+            String id = mToilet7amSP.getString(Toilet.AM7.getId(), null);
+            ToiletUtils.setClickListener(id, getActivity());
         });
 
         mToilet7BM.setOnClickListener(v -> {
-            ToiletUtils.setClickListener(mToilet7bmSP.getString(TOILET_7BM_ID, null), getActivity());
+            String id = mToilet7amSP.getString(Toilet.BM7.getId(), null);
+            ToiletUtils.setClickListener(id, getActivity());
         });
 
-        ToiletUtils.updateView(mToilet7amSP, TOILET_7AM_ID, mToilet7AM, getActivity());
-        ToiletUtils.updateView(mToilet7bmSP, TOILET_7BM_ID, mToilet7BM, getActivity());
+        ToiletUtils.updateView(mToilet7amSP, Toilet.AM7.getId(), mToilet7AM, getActivity());
+        ToiletUtils.updateView(mToilet7bmSP, Toilet.BM7.getId(), mToilet7BM, getActivity());
 
         return view;
     }

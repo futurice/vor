@@ -20,7 +20,7 @@ import com.futurice.hereandnow.utils.BeaconLocationManager;
 import com.futurice.hereandnow.utils.HereAndNowUtils;
 import com.futurice.hereandnow.utils.PeopleManager;
 import com.futurice.hereandnow.view.MapView;
-import com.futurice.hereandnow.Constants;
+import static com.futurice.hereandnow.Constants.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,7 +53,7 @@ public class MapActivityFragment extends Fragment {
     public static MapActivityFragment newInstance(int floor) {
         MapActivityFragment activity = new MapActivityFragment();
         Bundle args = new Bundle();
-        args.putInt(Constants.FLOOR_KEY, floor);
+        args.putInt(FLOOR_KEY, floor);
         activity.setArguments(args);
         return activity;
     }
@@ -78,12 +78,12 @@ public class MapActivityFragment extends Fragment {
                     REQUEST_ACCESS_FINE_LOCATION);
         }
 
-        switch (getArguments().getInt(Constants.FLOOR_KEY, 0)) {
-            case Constants.MAP_7TH_FLOOR:
+        switch (getArguments().getInt(FLOOR_KEY, 0)) {
+            case MAP_7TH_FLOOR:
                 int map7th = R.drawable.map_general_7th_floor;
                 mImageView.setImageDrawable(ContextCompat.getDrawable(getContext(), map7th));
                 break;
-            case Constants.MAP_8TH_FLOOR:
+            case MAP_8TH_FLOOR:
                 int map8th = R.drawable.map_general_8th_floor;
                 mImageView.setImageDrawable(ContextCompat.getDrawable(getContext(), map8th));
                 break;
@@ -231,12 +231,12 @@ public class MapActivityFragment extends Fragment {
     private float[] convertToMapLocation(float x, float y) {
         float scaleFactorX, scaleFactorY;
 
-        switch (getArguments().getInt(Constants.FLOOR_KEY, 0)) {
-            case Constants.MAP_7TH_FLOOR:
+        switch (getArguments().getInt(FLOOR_KEY, 0)) {
+            case MAP_7TH_FLOOR:
                 scaleFactorX = x / FLOOR7_WIDTH;
                 scaleFactorY = y / FLOOR7_HEIGHT;
                 break;
-            case Constants.MAP_8TH_FLOOR:
+            case MAP_8TH_FLOOR:
                 scaleFactorX = x / FLOOR8_WIDTH;
                 scaleFactorY = y / FLOOR8_HEIGHT;
                 break;

@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.futurice.cascade.util.RCLog;
-import com.futurice.hereandnow.Constants;
+import static com.futurice.hereandnow.Constants.*;
 import com.futurice.hereandnow.HereAndNowApplication;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.activity.ImageViewActivity;
@@ -136,7 +136,7 @@ public class ImageCard extends BaseCard {
             cardImageView.setImageBitmap(getImageBitmap());
             cardImageView.setOnClickListener(v -> {
                 Intent viewImageIntent = new Intent(mContext, ImageViewActivity.class);
-                viewImageIntent.putExtra(Constants.TYPE_KEY, getCardType());
+                viewImageIntent.putExtra(TYPE_KEY, getCardType());
                 viewImageIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // FIXME Correct?
                 mContext.startActivity(viewImageIntent);
             });

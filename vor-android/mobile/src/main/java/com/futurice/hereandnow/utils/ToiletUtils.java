@@ -6,8 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Toast;
-
-import com.futurice.hereandnow.Constants;
+import static com.futurice.hereandnow.Constants.*;
 import com.futurice.hereandnow.R;
 
 import org.json.JSONException;
@@ -27,7 +26,7 @@ public class ToiletUtils {
         if (json != null) {
             try {
                 JSONObject jsonData = new JSONObject(json);
-                Integer methane = jsonData.getInt(Constants.METHANE_KEY);
+                Integer methane = jsonData.getInt(METHANE_KEY);
                 showMethaneToast(methane, context);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -40,7 +39,7 @@ public class ToiletUtils {
         if (json != null) {
             try {
                 JSONObject jsonData = new JSONObject(json);
-                updateToiletBackground(view, jsonData.getBoolean(Constants.RESERVED_KEY), context);
+                updateToiletBackground(view, jsonData.getBoolean(RESERVED_KEY), context);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

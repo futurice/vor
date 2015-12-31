@@ -33,8 +33,9 @@ import com.futurice.cascade.functional.ImmutableValue;
 import com.futurice.cascade.i.IAsyncOrigin;
 import com.futurice.cascade.reactive.ReactiveValue;
 import com.futurice.cascade.util.RCLog;
-import com.futurice.hereandnow.Constants;
+import static com.futurice.hereandnow.Constants.*;
 import com.futurice.hereandnow.R;
+import com.futurice.hereandnow.Toilet;
 import com.futurice.hereandnow.utils.HereAndNowUtils;
 
 import java.lang.reflect.Field;
@@ -90,7 +91,7 @@ public class DrawerActivity extends BaseActivity implements
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
-        String email = prefs.getString(SettingsActivity.EMAIL_KEY, Constants.DUMMY_EMAIL);
+        String email = prefs.getString(SettingsActivity.EMAIL_KEY, DUMMY_EMAIL);
 
         mBluetoothNotificationShowed = false;
         mWifiNotificationShowed = false;
@@ -123,7 +124,7 @@ public class DrawerActivity extends BaseActivity implements
         // Display a notification if the user is not connected to the correct wifi.
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        if (!wifiInfo.getSSID().equals(Constants.NETWORK_SSID) && !savedWifiState && !mWifiNotificationShowed) {
+        if (!wifiInfo.getSSID().equals(NETWORK_SSID) && !savedWifiState && !mWifiNotificationShowed) {
             notifyUserNotConnectedToWifi(preferences);
         }
     }
@@ -219,8 +220,8 @@ public class DrawerActivity extends BaseActivity implements
             Intent intent = new Intent(this, OnboardingActivity.class);
             startActivity(intent);
 
-            for(String toiletId : Constants.TOILET_IDS) {
-                sp = getSharedPreferences(toiletId, Context.MODE_PRIVATE);
+            for(Toilet toilet : Toilet.values()) {
+                sp = getSharedPreferences(toilet.getId(), Context.MODE_PRIVATE);
                 editor = sp.edit();
                 editor.clear();
                 editor.apply();
@@ -250,7 +251,7 @@ public class DrawerActivity extends BaseActivity implements
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setView(notificationView);
         alert.setTitle(getString(R.string.notification_wifi_title));
-        alert.setMessage(String.format(getString(R.string.notification_wifi_message), Constants.NETWORK_SSID));
+        alert.setMessage(String.format(getString(R.string.notification_wifi_message), NETWORK_SSID));
         alert.setCancelable(false);
         alert.setPositiveButton(getString(R.string.notification_close), (dialog, which) -> {
             mWifiNotificationShowed = true;

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.futurice.hereandnow.R;
+import com.futurice.hereandnow.Toilet;
 import com.futurice.hereandnow.utils.ToiletUtils;
 
 import java.util.ArrayList;
@@ -43,12 +44,12 @@ public class Floor8Fragment extends Fragment {
 
         mActivity = getActivity();
 
-        mIds.add("toilet8am");
-        mIds.add("toilet8aw");
-        mIds.add("toilet8bm");
-        mIds.add("toilet8bw");
-        mIds.add("toilet8cm");
-        mIds.add("toilet8cw");
+        mIds.add(Toilet.AM8.getId());
+        mIds.add(Toilet.AW8.getId());
+        mIds.add(Toilet.BM8.getId());
+        mIds.add(Toilet.BW8.getId());
+        mIds.add(Toilet.CM8.getId());
+        mIds.add(Toilet.CW8.getId());
 
         for (String id : mIds) {
             mSharedPreferences.add(mActivity.getSharedPreferences(id, Context.MODE_PRIVATE));
