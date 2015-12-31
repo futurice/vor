@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -246,8 +247,8 @@ public class MapActivityFragment extends Fragment {
 
         // Convert to map location.
         float[] result = new float[2];
-        result[0] = scaleFactorX * mImageView.getDisplayedWidth();
-        result[1] = scaleFactorY * mImageView.getDisplayedHeight();
+        result[0] = scaleFactorX * mImageView.getDisplayedWidth() + mImageView.getPositionLeft();
+        result[1] = scaleFactorY * mImageView.getDisplayedHeight() + mImageView.getPositionTop();
         return result;
     }
 }

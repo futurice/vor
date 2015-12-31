@@ -36,6 +36,8 @@ public class MapView extends PhotoView {
     Paint namePaint;
     Rect bounds;
 
+    float positionTop, positionLeft;
+
     private OnMapDrawListener onMapDrawListener;
 
     public MapView(Context context, AttributeSet attrs) {
@@ -130,6 +132,9 @@ public class MapView extends PhotoView {
 
         displayedWidth = originalWidth * scaleX;
         displayedHeight = originalHeight * scaleY;
+
+        positionTop = (getHeight() - displayedHeight) / 2;
+        positionLeft = (getWidth() - displayedWidth) / 2;
     }
 
     public float getDisplayedWidth() {
@@ -138,6 +143,14 @@ public class MapView extends PhotoView {
 
     public float getDisplayedHeight() {
         return this.displayedHeight;
+    }
+
+    public float getPositionTop() {
+        return this.positionTop;
+    }
+
+    public float getPositionLeft() {
+        return this.positionLeft;
     }
 
     public void scaleRadius(float scaleFactor) {
