@@ -277,19 +277,11 @@ public class ToiletMapFragment extends Fragment {
     }
 
     private void init() {
-        mToiletIds.add("toilet7am");
-        mToiletIds.add("toilet7bm");
-        mToiletIds.add("toilet8am");
-        mToiletIds.add("toilet8aw");
-        mToiletIds.add("toilet8bm");
-        mToiletIds.add("toilet8bw");
-        mToiletIds.add("toilet8cm");
-        mToiletIds.add("toilet8cw");
-
         mOnSharedPreferenceChangeListeners = new ArrayList<>();
-        for (String id : mToiletIds) {
+        for (String toiletId : Constants.TOILET_IDS) {
+            mToiletIds.add(toiletId);
             mOnSharedPreferenceChangeListeners.add((sharedPreferences, key) -> {
-                if (key.equals("toilet7am") || key.equals("toilet7bm")) {
+                if (key.equals(Constants.TOILET_IDS[0]) || key.equals(Constants.TOILET_IDS[1])) {
                     updateView7th();
                 } else {
                     updateView8th();
@@ -302,8 +294,10 @@ public class ToiletMapFragment extends Fragment {
         boolean status = false;
         SharedPreferences sp = getActivity().getSharedPreferences(id, Context.MODE_PRIVATE);
         try {
-            JSONObject jsonData = new JSONObject(sp.getString(id, null));
-            status = jsonData.getBoolean(Constants.RESERVED_KEY);
+            if (sp.contains(id)) {
+                JSONObject jsonData = new JSONObject(sp.getString(id, null));
+                status = jsonData.getBoolean(Constants.RESERVED_KEY);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
