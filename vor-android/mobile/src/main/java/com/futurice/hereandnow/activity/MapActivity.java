@@ -8,8 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-
-import com.futurice.hereandnow.Constants;
+import static com.futurice.hereandnow.Constants.*;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.fragment.MapActivityFragment;
 import com.futurice.hereandnow.view.CustomViewPager;
@@ -51,12 +50,12 @@ public class MapActivity extends BaseActivity {
         public Fragment getItem(int position) {
             Fragment fragment;
             switch (position) {
-                case Constants.MAP_7TH_FLOOR:
-                    fragment = MapActivityFragment.newInstance(Constants.MAP_7TH_FLOOR);
+                case MAP_7TH_FLOOR:
+                    fragment = MapActivityFragment.newInstance(MAP_7TH_FLOOR);
                     break;
-                case Constants.MAP_8TH_FLOOR:
+                case MAP_8TH_FLOOR:
                     // TODO: Create fragment for the other map
-                    fragment = MapActivityFragment.newInstance(Constants.MAP_8TH_FLOOR);
+                    fragment = MapActivityFragment.newInstance(MAP_8TH_FLOOR);
                     break;
                 default:
                     fragment = null;
@@ -67,7 +66,7 @@ public class MapActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            return Constants.MAPS_NUMBER_OF_TABS;
+            return MAPS_NUMBER_OF_TABS;
         }
 
         @Override
@@ -75,10 +74,10 @@ public class MapActivity extends BaseActivity {
             Resources resources = getApplicationContext().getResources();
             final CharSequence title;
             switch (position) {
-                case Constants.MAP_7TH_FLOOR:
+                case MAP_7TH_FLOOR:
                     title = resources.getString(R.string.tab_map_7th_floor_title);
                     break;
-                case Constants.MAP_8TH_FLOOR:
+                case MAP_8TH_FLOOR:
                     title = resources.getString(R.string.tab_map_8th_floor_title);
                     break;
                 default:

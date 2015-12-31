@@ -9,8 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.WindowManager;
 import android.widget.ImageView;
-
-import com.futurice.hereandnow.Constants;
+import static com.futurice.hereandnow.Constants.*;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.utils.FileUtils;
 import com.squareup.picasso.Picasso;
@@ -42,11 +41,11 @@ public class ImageViewActivity extends Activity {
                     .fit()
                     .centerInside()
                     .into(imageView);
-        } else if (intent.hasExtra(Constants.TYPE_KEY)){
-            String type = intent.getExtras().getString(Constants.TYPE_KEY);
+        } else if (intent.hasExtra(TYPE_KEY)){
+            String type = intent.getExtras().getString(TYPE_KEY);
             try {
                 String json = getSharedPreferences(type, Context.MODE_PRIVATE).getString(type, null);
-                String base64 = (new JSONObject(json)).getString(Constants.IMAGE_KEY);
+                String base64 = (new JSONObject(json)).getString(IMAGE_KEY);
                 imageView.setImageBitmap(FileUtils.base64ToBitmap(base64));
             } catch (JSONException e) {
                 e.printStackTrace();

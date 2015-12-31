@@ -13,7 +13,6 @@ import android.widget.FrameLayout;
 
 import com.futurice.cascade.i.CallOrigin;
 import com.futurice.hereandnow.Cards;
-import com.futurice.hereandnow.Constants;
 import com.futurice.hereandnow.HereAndNowApplication;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.adapter.TopicListAdapter;
@@ -31,6 +30,7 @@ import java.util.List;
 import io.socket.client.Socket;
 
 import static com.futurice.cascade.Async.UI;
+import static com.futurice.hereandnow.Constants.*;
 
 public class CardsNowFragment extends BaseHereAndNowFragment {
     Socket mSocket;
@@ -53,9 +53,9 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
 
         mSocket = HereAndNowApplication.getSocket();
 
-        mTestSP = getActivity().getSharedPreferences(Constants.TEST_KEY, Context.MODE_PRIVATE);
-        mFoodSP = getActivity().getSharedPreferences(Constants.FOOD_KEY, Context.MODE_PRIVATE);
-        mPoolSP = getActivity().getSharedPreferences(Constants.POOL_KEY, Context.MODE_PRIVATE);
+        mTestSP = getActivity().getSharedPreferences(TEST_KEY, Context.MODE_PRIVATE);
+        mFoodSP = getActivity().getSharedPreferences(FOOD_KEY, Context.MODE_PRIVATE);
+        mPoolSP = getActivity().getSharedPreferences(POOL_KEY, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -69,16 +69,16 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
         FrameLayout mFrameLayout = (FrameLayout) view.findViewById(R.id.now_cards_list);
         mFrameLayout.addView(getExpandableListView());
 
-        mSocket.on(Constants.EVENT_INIT, args -> {
+        mSocket.on(EVENT_INIT, args -> {
             UI.execute(() -> {
                 JSONObject jsonObject = (JSONObject) args[0];
 
                 try {
-                    JSONArray jsonArray = jsonObject.getJSONArray(Constants.INIT_BEACONS_KEY);
+                    JSONArray jsonArray = jsonObject.getJSONArray(INIT_BEACONS_KEY);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject beacon = (JSONObject) jsonArray.get(i);
-                        String identifier = beacon.getString(BeaconLocationManager.BEACON_KEY_ID);
-                        int floor = beacon.getInt(BeaconLocationManager.BEACON_KEY_FLOOR);
+                        String identifier = beacon.getString(ID_KEY);
+                        int floor = beacon.getInt(FLOOR_KEY);
 
                         BeaconLocationManager bm = HereAndNowApplication.getBeaconLocationManager();
                         bm.addBeacon(identifier, floor, getContext());
@@ -88,7 +88,7 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
                     HereAndNowApplication.getBeaconLocationManager().resume();
 
                     // Initialize cards.
-                    JSONArray cardsArray = jsonObject.getJSONArray(Constants.INIT_MESSAGES_KEY);
+                    JSONArray cardsArray = jsonObject.getJSONArray(INIT_MESSAGES_KEY);
                     setupInitialView(cardsArray);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -96,7 +96,7 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
             });
         });
 
-        mSocket.emit(Constants.EVENT_INIT); // Requests latest messages
+        mSocket.emit(EVENT_INIT); // Requests latest messages
 
         initTopicsAndCards(
                 createPreBuiltTopics(),
@@ -137,31 +137,31 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 Context context = HereAndNowApplication.getStaticContext();
                 List<ITopic> cards = getSourceTopicModel();
-                switch (jsonObject.getString(Constants.TYPE_KEY)) {
-                    case Constants.TOILET_KEY:
+                switch (jsonObject.getString(TYPE_KEY)) {
+                    case TOILET_KEY:
                         SharedPreferencesManager.saveToSharedPreferences(jsonObject, context);
                         break;
-                    case Constants.POOL_KEY:
-                        String poolImage = jsonObject.getString(Constants.IMAGE_KEY);
+                    case POOL_KEY:
+                        String poolImage = jsonObject.getString(IMAGE_KEY);
                         cards.add(0, Cards.pool(poolImage, context));
-                        removeDuplicates(Constants.POOL_KEY, cards);
+                        removeDuplicates(POOL_KEY, cards);
                         break;
-                    case Constants.FOOD_KEY:
-                        String foodImage = jsonObject.getString(Constants.IMAGE_KEY);
+                    case FOOD_KEY:
+                        String foodImage = jsonObject.getString(IMAGE_KEY);
                         cards.add(0, Cards.food(foodImage, context));
-                        removeDuplicates(Constants.FOOD_KEY, cards);
+                        removeDuplicates(FOOD_KEY, cards);
                         break;
-                    case Constants.TEST_KEY:
-                        String message = jsonObject.getString(Constants.MESSAGE_KEY);
+                    case TEST_KEY:
+                        String message = jsonObject.getString(MESSAGE_KEY);
                         cards.add(0, Cards.test(message, context));
                         break;
-                    case Constants.SAUNA_KEY:
-                        String status = jsonObject.getString(Constants.STATUS_KEY);
+                    case SAUNA_KEY:
+                        String status = jsonObject.getString(STATUS_KEY);
                         cards.add(0, Cards.sauna(status, context));
-                        removeDuplicates(Constants.SAUNA_KEY, cards);
+                        removeDuplicates(SAUNA_KEY, cards);
                         break;
-                    case Constants.TRACK_ITEM_KEY:
-                        String item = jsonObject.getString(Constants.ITEM_KEY);
+                    case TRACK_ITEM_KEY:
+                        String item = jsonObject.getString(ITEM_KEY);
                         cards.add(0, Cards.trackItem(item, context));
                         break;
                     default:
@@ -193,18 +193,18 @@ public class CardsNowFragment extends BaseHereAndNowFragment {
         if (json != null) {
             try {
                 JSONObject jsonData = new JSONObject(json);
-                if (jsonData.has(Constants.IMAGE_KEY)) {
-                    String image = jsonData.getString(Constants.IMAGE_KEY);
+                if (jsonData.has(IMAGE_KEY)) {
+                    String image = jsonData.getString(IMAGE_KEY);
                     List<ITopic> cards = getSourceTopicModel();
-                    if (key.equals(Constants.POOL_KEY)) {
+                    if (key.equals(POOL_KEY)) {
                         cards.add(0, Cards.pool(image, getActivity()));
-                        removeDuplicates(Constants.POOL_KEY, cards);
-                    } else if (key.equals(Constants.FOOD_KEY)) {
+                        removeDuplicates(POOL_KEY, cards);
+                    } else if (key.equals(FOOD_KEY)) {
                         cards.add(0, Cards.food(image, getActivity()));
-                        removeDuplicates(Constants.FOOD_KEY, cards);
+                        removeDuplicates(FOOD_KEY, cards);
                     }
-                } else if (jsonData.has(Constants.MESSAGE_KEY)) {
-                    String message = jsonData.getString(Constants.MESSAGE_KEY);
+                } else if (jsonData.has(MESSAGE_KEY)) {
+                    String message = jsonData.getString(MESSAGE_KEY);
                     List<ITopic> cards = getSourceTopicModel();
                     cards.add(0, Cards.test(message, getActivity()));
                 }

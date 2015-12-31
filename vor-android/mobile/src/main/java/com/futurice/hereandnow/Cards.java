@@ -11,6 +11,8 @@ import com.futurice.hereandnow.utils.HereAndNowUtils;
 import java.util.Date;
 import java.util.Random;
 
+import static com.futurice.hereandnow.Constants.*;
+
 public class Cards {
 
     /**
@@ -19,14 +21,14 @@ public class Cards {
      * @return the pool topic
      */
     public static ITopic pool(String file, Context context) {
-        final Topic topic = new Topic("Pool", 140, context, Constants.POOL_KEY);
+        final Topic topic = new Topic("Pool", 140, context, POOL_KEY);
         topic.setText("Are you up for a game?");
         topic.setIsPrebuiltTopic(true);
-        topic.setCardType(Constants.POOL_KEY);
+        topic.setCardType(POOL_KEY);
         topic.setImageUri(HereAndNowUtils.getResourceUri(R.raw.card_pool));
 
         ImageCard card = new ImageCard("__", 440, context);
-        card.setCardType(Constants.POOL_KEY);
+        card.setCardType(POOL_KEY);
         card.setText("Come and play!");
         card.setAuthor("Vör", "V001");
         card.setDate(new Date());
@@ -42,13 +44,13 @@ public class Cards {
      * @return the food topic
      */
     public static ITopic food(String file, Context context) {
-        final Topic topic = new Topic("Food", 240, context, Constants.FOOD_KEY);
+        final Topic topic = new Topic("Food", 240, context, FOOD_KEY);
         topic.setText("Check what's on FutuCafé table");
         topic.setIsPrebuiltTopic(true);
         topic.setImageUri(HereAndNowUtils.getResourceUri(R.raw.card_food));
 
         ImageCard card = new ImageCard("__", 540, context);
-        card.setCardType(Constants.FOOD_KEY);
+        card.setCardType(FOOD_KEY);
         card.setText("Bon Appétit!");
         card.setAuthor("Vör", "V001");
         card.setDate(new Date());
@@ -64,7 +66,7 @@ public class Cards {
      * @return the topic
      */
     public static ITopic sauna(String status, Context context) {
-        final Topic topic = new Topic("Sauna", 1250, context, Constants.SAUNA_KEY);
+        final Topic topic = new Topic("Sauna", 1250, context, SAUNA_KEY);
         topic.setText("Sauna is " + status);
         topic.setColor(R.color.blueDark);
         topic.setIsPrebuiltTopic(true);
@@ -84,7 +86,7 @@ public class Cards {
      * @return the topic
      */
     public static ITopic trackItem(String item, Context context) {
-        final Topic topic = new Topic("TrackItem", 1350, context, Constants.TRACK_ITEM_KEY);
+        final Topic topic = new Topic("TrackItem", 1350, context, TRACK_ITEM_KEY);
         topic.setText("Track the item " + item);
         topic.setColor(R.color.green);
         topic.setIsPrebuiltTopic(true);
@@ -105,7 +107,7 @@ public class Cards {
      * @return the workspace topic
      */
     public static ITopic workspace(String message, Context context) {
-        final Topic topic = new Topic("Workspace", 280, context, Constants.WORKSPACE_KEY);
+        final Topic topic = new Topic("Workspace", 280, context, WORKSPACE_KEY);
         topic.setText("One of your workspaces is now free");
         topic.setIsPrebuiltTopic(true);
 
@@ -126,7 +128,7 @@ public class Cards {
      * @return the test topic
      */
     public static ITopic test(String message, Context context) {
-        final Topic topic = new Topic("Test", 1450, context, Constants.TEST_KEY);
+        final Topic topic = new Topic("Test", 1450, context, TEST_KEY);
         topic.setText(message);
         topic.setColor(getRandomColor());
         topic.setIsPrebuiltTopic(true);
