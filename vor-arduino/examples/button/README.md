@@ -10,7 +10,7 @@ The button has a 100 milliseconds [software debouncing](http://playground.arduin
 
 ## Code example
 
-```
+```cpp
 #include "vor_button.h"
 #include "vor_led.h"
 

@@ -4,7 +4,7 @@ Arduino on-board LED that is connected to the digital pin 13.
 
 ## Code example
 
-```
+```cpp
 #include "vor_led.h"
 
 VorLed led;

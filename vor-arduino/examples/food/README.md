@@ -12,7 +12,7 @@ The switch has a signal output which is set to HIGH when the switch is on and LO
 
 ## Code example
 
-```
+```cpp
 #include <Bridge.h>
 #include <YunClient.h>
 

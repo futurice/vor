@@ -8,7 +8,7 @@
 
 ## Code example
 
-```
+```cpp
 #include "vor_light.h"
 #include "vor_led.h"
 
