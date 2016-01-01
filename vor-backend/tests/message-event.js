@@ -5,7 +5,7 @@ const helpers = require('./helpers/index');
 
 describe('App: on message event', function () {
 
-  before(() => {
+  beforeEach(() => {
     helpers.setupCache();
     const app = require('../bin/www');
   });
@@ -21,15 +21,14 @@ describe('App: on message event', function () {
       clientA.emit('message', TEST_MESSAGE);
     });
 
-    clientA.on('message', message => {
-      should(message).deepEqual(TEST_MESSAGE);
-    });
-
-    clientB.on('message', message => {
-      should(message).deepEqual(TEST_MESSAGE);
-      clientA.disconnect();
-      clientB.disconnect();
-      setTimeout(done, 10); // wait for B's 'message'
+    clientA.on('message', messageForClientA => {
+      clientB.on('message', messageForClientB => {
+        should(messageForClientA).deepEqual(TEST_MESSAGE);
+        should(messageForClientB).deepEqual(TEST_MESSAGE);
+        clientA.disconnect(); // always disconnect connection
+        clientB.disconnect(); // always disconnect connection
+        done();
+      });
     });
 
   });
