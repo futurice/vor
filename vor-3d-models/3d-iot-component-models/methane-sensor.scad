@@ -2,7 +2,7 @@
 // Part of http://vor.space by Futurice
 // ©Futurice Oy, paul.houghton@futurice.com, CC-attribution-sharealike license, http://creativecommons.org/licenses/by-sa/4.0/
 
-$fn = 16;
+$fn = 32;
 
 pin_length = 8;
 

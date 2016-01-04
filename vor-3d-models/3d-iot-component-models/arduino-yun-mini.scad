@@ -1,7 +1,7 @@
 // Arduino Yun Mini 3D model for planning, http://vor.space
 // ©Futurice Oy, paul.houghton@futurice.com, CC-attribution-sharealike license, http://creativecommons.org/licenses/by-sa/4.0/
 
-$fn = 8;
+$fn = 32;
 
 length = 71.12;
 width = 22.9;
