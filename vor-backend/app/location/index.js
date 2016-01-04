@@ -58,7 +58,7 @@ function calculatePosition(obj1, obj2, obj3) {
   let y = (W - 2 * x * (obj2.x - obj1.x)) / (2 * (obj2.y - obj1.y));
 
   if (!isValidPosition(y)) {
-    y = (Z - 2 * x * (obj3.x - obj2.x) / (2 * (obj3.y - obj2.y)));
+    y = (Z - 2 * x * (obj3.x - obj2.x)) / (2 * (obj3.y - obj2.y));
   }
 
   return {
