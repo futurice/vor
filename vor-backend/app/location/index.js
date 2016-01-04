@@ -10,12 +10,14 @@ class Location {
     return stream
       .map(getConfig(this.beaconConfigs))
       .filter(([beaconMessage, config]) => !!config)
-      .map(([beaconMessage, config]) => Object.assign(beaconMessage, config)) // merge message with configured data
-      .bufferWithCount(3)
-      .map(([beacon1, beacon2, beacon3]) => {
+      .map(([beaconMessage, beacons]) => [ beaconMessage.email,
+      Object.assign(beaconMessage.beacons[0], beacons[0]),
+      Object.assign(beaconMessage.beacons[1], beacons[1]),
+      Object.assign(beaconMessage.beacons[2], beacons[2])]) // merge beacons with the configured data.
+      .map(([email, beacon1, beacon2, beacon3]) => {
         const position = calculatePosition(beacon1, beacon2, beacon3);
         const messageData = Object.assign({
-          email: beacon1.email, // get the email from the first beacon message
+          email: email,
           floor: beacon1.floor, // get the floor from the first beacon message
           type: 'location' // constant for every location message
         }, position);
@@ -27,10 +29,19 @@ class Location {
 }
 
 const getConfig = beaconConfigs => beaconMessage => {
-  const [config] = beaconConfigs
-    .filter(config => config.id === beaconMessage.id)
-    .filter(config => config.floor === beaconMessage.floor);
-  return [ beaconMessage, config ];
+  const [beacon1] = beaconConfigs
+    .filter(config => config.id === beaconMessage.beacons[0].id)
+    .filter(config => config.floor === beaconMessage.beacons[0].floor);
+
+  const [beacon2] = beaconConfigs
+    .filter(config => config.id === beaconMessage.beacons[1].id)
+    .filter(config => config.floor === beaconMessage.beacons[1].floor);
+
+  const [beacon3] = beaconConfigs
+    .filter(config => config.id === beaconMessage.beacons[2].id)
+    .filter(config => config.floor === beaconMessage.beacons[2].floor);
+
+  return [beaconMessage, [ beacon1, beacon2, beacon3 ]];
 };
 
 /*

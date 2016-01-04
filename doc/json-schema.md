@@ -23,25 +23,31 @@
             "description": "A label for client", 
             "type": "string"  
         },
-        "id": {  
-            "description": "An unique identifier for a beacon",  
-            "type": "string"  
-        },
         "type": {  
             "description": "The type of the message",  
             "constant": "beacon"  
         },
-        "floor": {  
-            "description": "The floor where beacon locates",  
-            "type": "integer"  
-        },
-        "distance": {  
-            "description": "The distance of the client from beacon",  
-            "type": "float"  
-        },
-        "temperature": {
-            "description": "The temperature measured by beacon",
-            "type": "float"  
+        "beacons": {
+            "description": "A list of three closest beacons"
+            "type": "array"
+            "items": [
+                "id": {
+                    "description": "An unique identifier for a beacon",
+                    "type": "string"
+                },
+                "floor": {
+                    "description": "The floor where beacon locates",
+                    "type": "integer"
+                },
+                "distance": {
+                    "description": "The distance of the client from beacon",
+                    "type": "float"
+                },
+                "temperature": {
+                    "description": "The temperature measured by beacon",
+                    "type": "float"
+                }
+            ]
         }
     },  
     "required": ["email", "id", "type", "floor", "distance", "temperature"]
@@ -52,11 +58,26 @@
 ```
 {
     "email": "user@mail.com",
-    "id": "futu-b1-32095-19454",
-    "type": "beacon",
-    "floor": 7,
-    "distance": 8.132,
-    "temperature": 19.4
+    "beacons": [
+        {
+            "id": "futu-b001i-6495-40639",
+            "type": "beacon",
+            "floor": 7,
+            "distance": 8.132,
+            "temperature": 19.4
+        },
+        {
+            "id": "futu-b001m-10985-41879",
+            "floor": 7,
+            "distance": 7.321,
+            "temperature": 19.4
+        },
+        {
+            "id": "futu-b001b-9348-31980",
+            "floor": 7,
+            "distance": 1.234,
+            "temperature": 19.4
+        }]
 }
 ```
 

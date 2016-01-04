@@ -35,9 +35,27 @@ describe('App: on message event "location"', function () {
     const clientB = helpers.createSocketConnection();
 
     clientA.on('connect', () => {
-      clientA.emit('message', {type:'beacon', email: 'ClientA', id: 1, distance: 1, floor: 1});
-      clientA.emit('message', {type:'beacon', email: 'ClientA', id: 2, distance: 1, floor: 1});
-      clientA.emit('message', {type:'beacon', email: 'ClientA', id: 3, distance: 1, floor: 1});
+      clientA.emit('message',
+      {
+       type: 'beacon',
+       email: 'ClientA',
+       beacons: [
+        {
+          id: 1,
+          distance: 1,
+          floor: 1
+        },
+        {
+          id: 2,
+          distance: 1,
+          floor: 1
+        },
+        {
+          id: 3,
+          distance: 1,
+          floor: 1
+        }
+       ]});
 
       clientA.on('message', messageForClientA => {
         clientB.on('message', messageForClientB => {
