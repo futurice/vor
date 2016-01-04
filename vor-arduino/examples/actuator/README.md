@@ -53,7 +53,7 @@ Parameters:
 virtual void writeProcessed(float value);
 ```
 
-Function for outputting a converted value to a digital pin. Uses the process() function below by default and hence a class inheriting this class should implement the process() function.
+Function for outputting a converted value to a digital pin. Uses the ```process()``` function below by default and hence a class inheriting this class should implement the ```process()``` function.
 
 Parameters:
 - value: any value that is converted to either digital (HIGH or LOW) or analog (0 - 255) output value
