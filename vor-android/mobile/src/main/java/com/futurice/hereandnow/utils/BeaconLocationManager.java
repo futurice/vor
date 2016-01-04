@@ -9,7 +9,7 @@ import android.util.Log;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 import com.estimote.sdk.Utils;
-import com.futurice.hereandnow.Constants;
+import static com.futurice.hereandnow.Constants.*;
 import com.futurice.hereandnow.HereAndNowApplication;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.activity.SettingsActivity;
@@ -30,14 +30,6 @@ public class BeaconLocationManager {
     private static final String TAG = "BeaconLocation";
     public static final UUID proximityUUID = UUID.fromString("B9407F30-F5F8-466E-AFF9-25556B57FE6D");
 
-    public static final String BEACON_KEY = "beacon";
-
-    public static final String BEACON_KEY_ID = "id";
-    public static final String BEACON_KEY_DISTANCE = "distance";
-    public static final String BEACON_KEY_USER_IDENTIFIER = "email";
-    public static final String BEACON_KEY_FLOOR = "floor";
-    public static final String BEACON_TEMPERATURE_KEY = "temperature";
-
     private OnLocationUpdateListener mLocationCallback;
 
     private ArrayList<BeaconCollection> beacons;
@@ -48,7 +40,7 @@ public class BeaconLocationManager {
     public BeaconLocationManager(Context c) {
         this.context = c;
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        beacons = new ArrayList<BeaconCollection>();
+        beacons = new ArrayList<>();
     }
 
     public void resume() {
@@ -133,8 +125,8 @@ public class BeaconLocationManager {
     private void sendToServer(List<Map.Entry<FutuBeacon, Double>> sorted) {
         JSONObject jo = new JSONObject();
         try {
-            jo.put(Constants.TYPE_KEY, BEACON_KEY);
-            jo.put(BEACON_KEY_USER_IDENTIFIER, preferences.getString(SettingsActivity.EMAIL_KEY,
+            jo.put(TYPE_KEY, BEACON_KEY);
+            jo.put(EMAIL_KEY, preferences.getString(SettingsActivity.EMAIL_KEY,
                     context.getString(R.string.pref_my_email_default)));
 
             JSONArray beaconsArray = new JSONArray();
@@ -142,21 +134,20 @@ public class BeaconLocationManager {
                 JSONObject beaconObject = new JSONObject();
                 FutuBeacon beacon = beaconEntry.getKey();
 
-                beaconObject.put(BEACON_KEY_ID, beacon.identifier + "-" + beacon.major + "-" + beacon.minor);
-                beaconObject.put(BEACON_KEY_DISTANCE, beaconEntry.getValue());
-                beaconObject.put(BEACON_KEY_FLOOR, beacon.floor);
-                beaconObject.put(BEACON_TEMPERATURE_KEY, 19.4f);
+                beaconObject.put(ID_KEY, beacon.identifier + "-" + beacon.major + "-" + beacon.minor);
+                beaconObject.put(DISTANCE_KEY, beaconEntry.getValue());
+                beaconObject.put(FLOOR_KEY, beacon.floor);
+                beaconObject.put(TEMPERATURE_KEY, 19.4f);
 
                 beaconsArray.put(beaconObject);
             }
 
             jo.put("beacons", beaconsArray);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
         Log.d(TAG, "Sending " + jo.toString());
-        HereAndNowApplication.getSocket().emit(Constants.MESSAGE_KEY, jo);
+        HereAndNowApplication.getSocket().emit(MESSAGE_KEY, jo);
     }
 
     private static class FutuBeacon {

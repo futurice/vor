@@ -4,48 +4,40 @@ const assert = require('assert');
 const helpers = require('./helpers/index');
 const sharedConfig = require('../config/shared');
 
+const TEST_MESSAGE = helpers.TEST_MESSAGE;
+
 describe('App: on "init" ', function () {
 
-  before(() => {
+  beforeEach(() => {
     helpers.setupCache();
     const app = require('../bin/www');
   });
 
   afterEach(helpers.flushCache);
 
-  it('should send data from cache for one client requesting for it', done => {
-    var messagesForClientA;
-    var messagesForClientB;
-    const TEST_MESSAGE = helpers.TEST_MESSAGE;
+  it('should send data for single client(emitting "init")', done => {
     const clientA = helpers.createSocketConnection();
     const clientB = helpers.createSocketConnection();
-
     clientA.on('connect', () => {
       clientB.on('connect', () => {
         clientB.emit('message', TEST_MESSAGE);
         clientA.emit('init');
+        clientA.on('init', initForClientA => {
 
-        clientA.on('init', initObject => {
-          clientB.on('init', messages => messagesForClientB = messages);
-          messagesForClientA = initObject.messages;
-          should(messagesForClientA[0]).deepEqual(TEST_MESSAGE);
-          should(messagesForClientB).equal(undefined); // B will not get any init message
-          setTimeout(done, 10); // wait for B's 'init' message which will never be happen
+          should(initForClientA.beacons).deepEqual(sharedConfig.BEACONS);
+          should(initForClientA.messages[0]).deepEqual(TEST_MESSAGE);
+
+          let initForClientB;
+          clientB.on('init', init => initForClientB = init);
+          setTimeout(() => {
+            should(initForClientB).equal(undefined); // B will not get any init message
+            clientA.disconnect(); // always disconnect connection
+            clientB.disconnect(); // always disconnect connection
+            done();
+          }, 10);
         });
       });
     });
   });
 
-  it('should send shared configurations', done => {
-    const client = helpers.createSocketConnection();
-
-    client.on('connect', () => {
-      client.emit('init');
-
-      client.on('init', initObject => {
-        should(initObject.beacons).deepEqual(sharedConfig.BEACONS);
-        done();
-      });
-    });
-  });
 });

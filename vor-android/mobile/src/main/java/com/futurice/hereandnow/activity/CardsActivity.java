@@ -11,11 +11,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 
-import com.futurice.hereandnow.Constants;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.fragment.HappeningNowFragment;
 import com.futurice.hereandnow.fragment.MyCardsFragment;
 import com.futurice.hereandnow.fragment.TrendingFragment;
+
+import static com.futurice.hereandnow.Constants.*;
 
 public class CardsActivity extends BaseActivity {
 
@@ -54,13 +55,13 @@ public class CardsActivity extends BaseActivity {
         public Fragment getItem(int position) {
             Fragment fragment;
             switch (position) {
-                case Constants.CARDS_HAPPENING_NOW:
+                case CARDS_HAPPENING_NOW:
                     fragment = HappeningNowFragment.newInstance();
                     break;
-                case Constants.CARDS_TRENDING:
+                case CARDS_TRENDING:
                     fragment = TrendingFragment.newInstance();
                     break;
-                case Constants.CARDS_MY_CARDS:
+                case CARDS_MY_CARDS:
                     fragment = MyCardsFragment.newInstance();
                     break;
                 default:
@@ -72,7 +73,7 @@ public class CardsActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            return Constants.CARDS_NUMBER_OF_TABS;
+            return CARDS_NUMBER_OF_TABS;
         }
 
         @Override
@@ -80,13 +81,13 @@ public class CardsActivity extends BaseActivity {
             Resources resources = getApplicationContext().getResources();
             final CharSequence title;
             switch (position) {
-                case Constants.CARDS_HAPPENING_NOW:
+                case CARDS_HAPPENING_NOW:
                     title = resources.getString(R.string.tab_now_title);
                     break;
-                case Constants.CARDS_TRENDING:
+                case CARDS_TRENDING:
                     title = resources.getString(R.string.tab_trending_title);
                     break;
-                case Constants.CARDS_MY_CARDS:
+                case CARDS_MY_CARDS:
                     title = resources.getString(R.string.tab_my_cards_title);
                     break;
                 default:

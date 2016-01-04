@@ -12,10 +12,12 @@ ridge_height = 1;
 pin_length = 27;
 pin_width = 1;
 
-color("red") center();
-color("blue") ridge();
-color("white") lens();
-color("grey") pins();
+translate([0,0,-height]) union() {
+    color("red") center();
+    color("blue") ridge();
+    color("white") lens();
+    color("grey") pins();
+}
 
 module center() {
     cylinder(r=radius, h=height);

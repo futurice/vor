@@ -11,7 +11,7 @@ import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.futurice.hereandnow.Constants;
+import static com.futurice.hereandnow.Constants.*;
 import com.futurice.hereandnow.activity.SettingsActivity;
 
 public class WifiBroadcastReceiver extends BroadcastReceiver {
@@ -27,7 +27,7 @@ public class WifiBroadcastReceiver extends BroadcastReceiver {
 
                 if (networkInfo.getState() == NetworkInfo.State.CONNECTED) {
                     WifiInfo info = wifiManager.getConnectionInfo();
-                    if (info.getSSID().equals(Constants.NETWORK_SSID)) {
+                    if (info.getSSID().equals(NETWORK_SSID)) {
                         Log.d(TAG, "Connected to correct Wifi.");
 
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);

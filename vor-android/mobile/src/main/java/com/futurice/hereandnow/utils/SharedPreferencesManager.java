@@ -4,8 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.futurice.hereandnow.Constants;
-
+import static com.futurice.hereandnow.Constants.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,7 +22,7 @@ public class SharedPreferencesManager {
      */
     public static void saveToSharedPreferences(JSONObject jsonObject, Context context) {
         try {
-            String jsonObjectId = jsonObject.getString(Constants.ID_KEY);
+            String jsonObjectId = jsonObject.getString(ID_KEY);
             SharedPreferences sp = context.getSharedPreferences(jsonObjectId, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.putString(jsonObjectId, jsonObject.toString());

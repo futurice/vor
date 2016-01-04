@@ -15,6 +15,7 @@ import com.futurice.hereandnow.activity.SettingsActivity;
 import com.futurice.hereandnow.services.LocationService;
 import com.futurice.hereandnow.utils.SharedPreferencesManager;
 import com.futurice.hereandnow.utils.BeaconLocationManager;
+import static com.futurice.hereandnow.Constants.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,7 +59,7 @@ public class HereAndNowApplication extends Application {
                 .build();
 
         try {
-            sSocket = IO.socket(Constants.SERVER_URL);
+            sSocket = IO.socket(SERVER_URL);
             IO.setDefaultHostnameVerifier((hostname, session) -> true);
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -72,12 +73,12 @@ public class HereAndNowApplication extends Application {
                         Log.d(TAG, arg.toString());
                     }
                 })
-                .on(Constants.LOCATION_KEY, args -> Log.d(TAG, "LOCATION RECEIVED"))
-                .on(Constants.MESSAGE_KEY, args -> {
+                .on(LOCATION_KEY, args -> Log.d(TAG, "LOCATION RECEIVED"))
+                .on(MESSAGE_KEY, args -> {
                     try {
                         //
                         JSONObject jsonObject = (JSONObject)args[0];
-                        if (jsonObject.getString(Constants.TYPE_KEY).equals(Constants.LOCATION_KEY)) {
+                        if (jsonObject.getString(TYPE_KEY).equals(LOCATION_KEY)) {
                             beaconLocationManager.onLocation(jsonObject);
                         } else {
                             SharedPreferencesManager.saveToSharedPreferences((JSONObject) args[0], this);
@@ -98,7 +99,7 @@ public class HereAndNowApplication extends Application {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean serviceEnabled = preferences.getBoolean(SettingsActivity.BACKGROUND_SERVICE_KEY, true);
 
-        if (wifiInfo.getSSID().equals(Constants.NETWORK_SSID) && serviceEnabled) {
+        if (wifiInfo.getSSID().equals(NETWORK_SSID) && serviceEnabled) {
             startService(new Intent(this, LocationService.class));
         }
     }

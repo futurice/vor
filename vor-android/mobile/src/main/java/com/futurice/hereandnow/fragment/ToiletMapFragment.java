@@ -15,8 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.futurice.hereandnow.Constants;
 import com.futurice.hereandnow.R;
+import com.futurice.hereandnow.Toilet;
+import static com.futurice.hereandnow.Constants.*;
 import com.futurice.hereandnow.view.MapView;
 
 import org.json.JSONException;
@@ -278,10 +279,10 @@ public class ToiletMapFragment extends Fragment {
 
     private void init() {
         mOnSharedPreferenceChangeListeners = new ArrayList<>();
-        for (String toiletId : Constants.TOILET_IDS) {
-            mToiletIds.add(toiletId);
+        for (Toilet toilet : Toilet.values()) {
+            mToiletIds.add(toilet.getId());
             mOnSharedPreferenceChangeListeners.add((sharedPreferences, key) -> {
-                if (key.equals(Constants.TOILET_IDS[0]) || key.equals(Constants.TOILET_IDS[1])) {
+                if (key.equals(Toilet.AM7.getId()) || key.equals(Toilet.BM7.getId())) {
                     updateView7th();
                 } else {
                     updateView8th();
@@ -296,7 +297,7 @@ public class ToiletMapFragment extends Fragment {
         try {
             if (sp.contains(id)) {
                 JSONObject jsonData = new JSONObject(sp.getString(id, null));
-                status = jsonData.getBoolean(Constants.RESERVED_KEY);
+                status = jsonData.getBoolean(RESERVED_KEY);
             }
         } catch (JSONException e) {
             e.printStackTrace();
