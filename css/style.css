@@ -62,7 +62,7 @@
 		color: inherit;
 		font-weight: 300;
 		line-height: 1.75em;
-		margin-bottom: 1em;
+		margin-bottom: 0em;
 		text-transform: uppercase;
 	}
 
@@ -117,7 +117,7 @@
 	}
 
 	header.special {
-		margin-bottom: 5em;
+		margin-bottom: 2em;
 		padding-top: 7em;
 		position: relative;
 		text-align: center;
@@ -157,7 +157,7 @@
 			left: 0;
 			position: absolute;
 			text-align: center;
-			top: 1em;
+			top: 0.5em;
 			width: 100%;
 		}
 
@@ -1111,6 +1111,7 @@
     display: block;
     height: 200px;
     margin: 0 auto;
+    margin-bottom: 1em;
     width: 200px;
 }
 
@@ -1120,6 +1121,22 @@
 
 .ricardo {
     background-image: url("../images/ric_pic.png");
+}
+
+.luis {
+    background-image: url("../images/luis_pic.png");
+}
+
+.kenta {
+    background-image: url("../images/kenta_pic.png");
+}
+
+.ville {
+    background-image: url("../images/ville_pic.png");
+}
+
+.liva {
+    background-image: url("../images/liva_pic.png");
 }
 
 .person-name {
