@@ -59,10 +59,16 @@ There are different sensor packages designed for different locations inside the 
 - Download and install the [Arduino SDK](https://www.arduino.cc/en/Main/Software)
     - You may need to (find and) install USB drivers more or less manually
 - When you run the Arduino IDE you need to setup:
-    - Tools > Board (select the board you are developing for)
-    - Tools > Port
+    - Tools > Board (select the board you are developing for, e.g. "Arduino Yun" for Arduino Yun Mini)
+    - Tools > Port (select the USB serial port the board is connected to)
 - Upload a sketch (*.ino) to the board by clicking the arrow button in the toolbar
-- You may print debugging info to Tools > Serial Monitor
+- You may print debugging info to Tools > Serial Monitor with ```Serial.print()``` and ```Serial.println()``` functions
+
+### Vör Arduino library
+- Proceed to installing this library once you have installed the Arduino SDK above
+- Download this repository and copy this folder (vor/vor-arduino/) into your Arduino external libraries folder (Arduino/libraries/)
+- Launch the Arduino IDE and you should see this library in Sketch > Include Library > vor-arduino
+- You can find example sketches under File > Examples > vor-arduino
 
 ### LinkIt ONE
 - For installing LinkIt ONE SDK (on top of the Arduino SDK) follow [this guide](http://www.seeedstudio.com/wiki/LinkIt_ONE) or [this guide](http://labs.mediatek.com/forums/posts/list/559.page)
