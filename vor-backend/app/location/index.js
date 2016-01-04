@@ -11,9 +11,9 @@ class Location {
       .map(getConfig(this.beaconConfigs))
       .filter(([beaconMessage, config]) => !!config)
       .map(([beaconMessage, beacons]) => [ beaconMessage.email,
-      Object.assign(beaconMessage.beacons[0], beacons[0]),
-      Object.assign(beaconMessage.beacons[1], beacons[1]),
-      Object.assign(beaconMessage.beacons[2], beacons[2])]) // merge beacons with the configured data.
+        Object.assign(beaconMessage.beacons[0], beacons[0]),
+        Object.assign(beaconMessage.beacons[1], beacons[1]),
+        Object.assign(beaconMessage.beacons[2], beacons[2])]) // merge beacons with the configured data.
       .map(([email, beacon1, beacon2, beacon3]) => {
         const position = calculatePosition(beacon1, beacon2, beacon3);
         const messageData = Object.assign({
@@ -55,7 +55,11 @@ function calculatePosition(obj1, obj2, obj3) {
   const Z = getIntersectionPoint(obj2, obj3);
   const Y = (W * (obj3.y - obj2.y) - Z * (obj2.y - obj1.y));
   const x = Y / (2 * ((obj2.x - obj1.x) * (obj3.y - obj2.y) - (obj3.x - obj2.x) * (obj2.y - obj1.y)));
-  const y = (W - 2 * x * (obj2.x - obj1.x)) / (2 * (obj2.y - obj1.y));
+  let y = (W - 2 * x * (obj2.x - obj1.x)) / (2 * (obj2.y - obj1.y));
+
+  if (!isValidPosition(y)) {
+    y = (Z - 2 * x * (obj3.x - obj2.x) / (2 * (obj3.y - obj2.y)));
+  }
 
   return {
     x: isValidPosition(x) && x || 0,
