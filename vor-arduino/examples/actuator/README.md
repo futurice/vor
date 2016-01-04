@@ -62,7 +62,7 @@ Parameters:
 virtual int process(float value);
 ```
 
-Function for converting a value to be outputted to a digital pin (e.g. from a percentage value to an analog output value (0 - 255)). A class inheriting this class should implement this function if there is need to convert a value before outputting it.
+Function for converting a value to be outputted to a digital pin (e.g. from a percentage value to an analog output value (0 - 255)). A class inheriting this class should implement this function if there is a need to convert a value before outputting it.
 
 Parameters:
 - value: any value that is converted to either digital (HIGH or LOW) or analog (0 - 255) output value
