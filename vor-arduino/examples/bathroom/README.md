@@ -20,7 +20,8 @@ The example sketch works on Arduino Yun and Yun Mini boards. The sketch sends a 
 #include <Bridge.h>
 #include <YunClient.h>
 
-#include "vor_utils.h"
+#include "HttpClient.h"
+#include "vor_env.h"
 
 #include "vor_led.h"
 #include "vor_motion.h"
@@ -35,6 +36,7 @@ The example sketch works on Arduino Yun and Yun Mini boards. The sketch sends a 
 #define METHANE_PIN A0
 
 YunClient client;
+HttpClient http(client, SERVER_URL, SERVER_PATH, CLIENT_USERAGENT);
 
 VorLed led;
 VorMotion motion1(MOTION1_PIN);
@@ -78,9 +80,11 @@ void loop() {
         char message[128];
         sprintf(message, PAYLOAD_FORMAT, reserved, methane);
 
-        post(client, message);
+        http.post(message);
         Serial.println(message);
     }
+
+    http.postKeepAlive();
 }
 ```
 
@@ -94,7 +98,8 @@ The example sketch above treats the two motion sensors like a single sensor. The
 #include <Bridge.h>
 #include <YunClient.h>
 
-#include "vor_utils.h"
+#include "HttpClient.h"
+#include "vor_env.h"
 
 #include "vor_led.h"
 #include "vor_motion.h"
@@ -108,6 +113,7 @@ The example sketch above treats the two motion sensors like a single sensor. The
 #define METHANE_PIN A0
 
 YunClient client;
+HttpClient http(client, SERVER_URL, SERVER_PATH, CLIENT_USERAGENT);
 
 VorLed led;
 VorMotion motion(MOTION_PIN);
@@ -145,8 +151,10 @@ void loop() {
         char message[128];
         sprintf(message, PAYLOAD_FORMAT, reserved, methane);
 
-        post(client, message);
+        http.post(message);
         Serial.println(message);
     }
+
+    http.postKeepAlive();
 }
 ```
