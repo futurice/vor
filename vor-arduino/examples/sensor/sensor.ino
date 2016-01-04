@@ -16,16 +16,17 @@ void setup() {
 }
 
 void loop() {
-    Serial.println(button.getId());
-    Serial.println(button.getName());
-    Serial.println(button.getDescription());
-
     int value = button.read();
     uint64_t now = millis();
 
     if (now - debounceTime > DEBOUNCE && value != buttonValue) {
         debounceTime = now;
         buttonValue = value;
+
+        Serial.println(button.getId());
+        Serial.println(button.getName());
+        Serial.println(button.getDescription());
+
         if (LOW == buttonValue) {
             Serial.println("Button down");
         } else {

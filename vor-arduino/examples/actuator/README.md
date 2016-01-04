@@ -44,7 +44,7 @@ const char* getDescription()
 virtual void write(int value);
 ```
 
-Function for outputting a value to a digital pin.
+A function for outputting a value to a digital pin.
 
 Parameters:
 - value: either digital (HIGH or LOW) or analog (0 - 255) output value
@@ -53,7 +53,7 @@ Parameters:
 virtual void writeProcessed(float value);
 ```
 
-Function for outputting a converted value to a digital pin. Uses the ```process()``` function below by default and hence a class inheriting this class should implement the ```process()``` function.
+A function for outputting a converted value to a digital pin. Uses the ```process()``` function below by default and hence a class inheriting this class should implement the ```process()``` function.
 
 Parameters:
 - value: any value that is converted to either digital (HIGH or LOW) or analog (0 - 255) output value
@@ -62,7 +62,7 @@ Parameters:
 virtual int process(float value);
 ```
 
-Function for converting a value to be outputted to a digital pin (e.g. from a percentage value to an analog output value (0 - 255)). A class inheriting this class should implement this function if there is a need to convert a value before outputting it.
+A function for converting a value to be outputted to a digital pin (e.g. from a percentage value to an analog output value (0 - 255)). A class inheriting this class should implement this function if there is a need to convert a value before outputting it.
 
 Parameters:
 - value: any value that is converted to either digital (HIGH or LOW) or analog (0 - 255) output value

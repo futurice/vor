@@ -44,7 +44,7 @@ const char* getDescription()
 virtual int read();
 ```
 
-Function for reading an input value of a digital or analog pin.
+A function for reading an input value of a digital or analog pin.
 
 Returns:
 - either digital (HIGH or LOW) or analog (0 - 1023 in case of 10-bit resolution) input value
@@ -53,7 +53,7 @@ Returns:
 virtual float readProcessed();
 ```
 
-Function for reading a value converted from a raw digital or analog input. Uses the ```process()``` function below by default and hence a class inheriting this class should implement the ```process()``` function.
+A function for reading a value converted from a raw digital or analog input. Uses the ```process()``` function below by default and hence a class inheriting this class should implement the ```process()``` function.
 
 Returns:
 - any value that is converted from either digital or analog input value
@@ -62,7 +62,7 @@ Returns:
 virtual int peek();
 ```
 
-Function for getting the last read digital or analog input value.
+A function for getting the last read digital or analog input value.
 
 Returns:
 - either digital (HIGH or LOW) or analog (0 - 1023 in case of 10-bit resolution) input value
@@ -71,7 +71,7 @@ Returns:
 virtual float peekProcessed();
 ```
 
-Function for getting the last read and converted digital or analog input value.
+A function for getting the last read and converted digital or analog input value.
 
 Returns:
 - any value that is converted from either digital or analog input value
@@ -80,7 +80,7 @@ Returns:
 virtual float process(int value);
 ```
 
-Function for converting a raw digital (HIGH or LOW) or analog (0 - 1023 in case of 10-bit resolution) input value to a processed value (e.g. from an analog input value (0 - 1023) to a percentage value). A class inheriting this class should implement this function if there is a need to process an input value before using it.
+A function for converting a raw digital (HIGH or LOW) or analog (0 - 1023 in case of 10-bit resolution) input value to a processed value (e.g. from an analog input value (0 - 1023) to a percentage value). A class inheriting this class should implement this function if there is a need to process an input value before using it.
 
 Returns:
 - any value that is converted from either digital or analog input value
@@ -106,16 +106,17 @@ void setup() {
 }
 
 void loop() {
-    Serial.println(button.getId());
-    Serial.println(button.getName());
-    Serial.println(button.getDescription());
-
     int value = button.read();
     uint64_t now = millis();
 
     if (now - debounceTime > DEBOUNCE && value != buttonValue) {
         debounceTime = now;
         buttonValue = value;
+
+        Serial.println(button.getId());
+        Serial.println(button.getName());
+        Serial.println(button.getDescription());
+
         if (LOW == buttonValue) {
             Serial.println("Button down");
         } else {
