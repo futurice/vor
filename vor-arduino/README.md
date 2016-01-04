@@ -1,15 +1,16 @@
 # Vör Sensor and Actuator Resources
 
 ## Description
-- Microcontroller reads sensor data
-- Microcontroller processes the sensor data
-- Microcontroller sends the processed data to server with HTTP POST in JSON format
-- Microcontrollers have either (wired) Ethernet (room) or Wi-Fi (toilet) connectivity
-- Microcontrollers are powered from the grid or with PoE (Power over Ethernet)
+This part of the Vör project provides simple to use classes that wrap the handling of different sensors and actuators on Arduino based microcontrollers. This library uses some other external libraries to ease the use of [HTTP clients](https://github.com/amcewen/HttpClient), WebSocket clients (planned), [JSON messages](https://github.com/bblanchon/ArduinoJson) (planned) and [protothreads](https://github.com/ivanseidel/ArduinoThread) (or [this](http://dunkels.com/adam/pt/) or [this](http://playground.arduino.cc/Code/TimedAction), planned).
+
+The microcontrollers:
+- read raw sensor data, processes it and sends the processed data as a JSON formatted message to a server
+- have either (wired) Ethernet (room) or Wi-Fi (bathroom) connectivity
+- are powered mainly from the grid thus they require a stable power supply
 
 ## Microcontrollers
 
-Current work is mostly focused on the Yun Mini
+Current work is mostly focused on the Arduino Yun Mini board. Other boards we are testing include:
 
 - [Arduino Mega2560](http://www.arduino.org/products/boards/4-arduino-boards/arduino-mega-2560)
 - [Arduino Leonardo](http://www.arduino.org/products/boards/4-arduino-boards/arduino-leonardo)
@@ -19,34 +20,38 @@ Current work is mostly focused on the Yun Mini
 
 ## Sensors
 
-### Room
-- Temperature (beacons)
-- [Particle](https://www.sparkfun.com/products/9689) for air quality
-- [Humidity](https://www.sparkfun.com/products/9569) for moisture level
-- [Ambient light](https://www.sparkfun.com/products/8688) for light level
-- [Sound](https://www.sparkfun.com/products/12642) for noise level
+### Room sensor
+- Temperature ([Estimote](http://estimote.com/) beacons)
+- [Particle sensor](https://www.sparkfun.com/products/9689) for measuring air quality
+- [Humidity sensor](https://www.sparkfun.com/products/9569) for measuring relative humidity
+- [Ambient light sensor](https://www.sparkfun.com/products/8688) for measuring ambient light level
+- [Sound detector](https://www.sparkfun.com/products/12642) for measuring ambient noise level
 
-### Toilet
-- [Methane](https://www.sparkfun.com/products/9404) for air quality
-- [Motion](https://www.sparkfun.com/products/13285) for checking if it is occupied
+### Toilet sensor
+- [Methane sensor](https://www.sparkfun.com/products/9404) for measuring air quality
+- [Motion sensor](https://www.sparkfun.com/products/13285) for checking if the bathroom is occupied or not
 
-### Pool table
-- Button to notify that a player is needed
-- An ftp camera sends images directly to the backend. This is associated with this service, but not technically linked to the Arduino implementation
+### Pool table button
+- Push button that sends a message to the server
+- Camera near the pool table that records video the whole time reacts to the button message and creates a video clip of the last 30 seconds of the pool game
+- The camera is associated with Vör service, but is not technically linked to the Arduino implementation
 
-### Food table
-- Switch to notify if food is for everyone or reserved for an event
-- An ftp camera sends images directly to the backend. This is associated with this service, but not technically linked to the Arduino implementation
+### Food table switch
+- Switch to notify users if there is some food served on the kitchen table
+- Webcam attached to Raspberry Pi reacts to the switch message and takes a picture of the food and sends it to the server
+- The webcam is associated with Vör service, but is not technically linked to the Arduino implementation
 
 ### Sauna
-- [Electric current](https://www.sparkfun.com/products/11005)
+- [Electric current](https://www.sparkfun.com/products/11005) for checking if the sauna is turned on
+- Temperature sensor for checking if the sauna is warm
 
 ## Installation
-1. Buy an Arduino and sensors
-2. Burn the firmware
-3. 3D print the case
-4. Solder or wire-wrap the sensors and actuators
-5. Play
+1. Buy an Arduino Yun Mini board and sensors
+2. Upload a corresponding sketch to the board (modify the sketch if you want)
+3. 3D print a case for the sensors
+4. Solder or wire-wrap the sensors and put them inside the case
+5. Deploy the sensor
+6. Use the Vör app to use servises tied to the sensor
 
 ### Arduino SDK
 - Download and install the [Arduino SDK](https://www.arduino.cc/en/Main/Software)
