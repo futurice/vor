@@ -4,9 +4,9 @@
 This part of the Vör project provides simple to use classes that wrap the handling of different sensors and actuators on Arduino based microcontrollers. This library uses some other external libraries to ease the use of [HTTP clients](https://github.com/amcewen/HttpClient), WebSocket clients (planned), [JSON messages](https://github.com/bblanchon/ArduinoJson) (planned) and [protothreads](https://github.com/ivanseidel/ArduinoThread) (or [this](http://dunkels.com/adam/pt/) or [this](http://playground.arduino.cc/Code/TimedAction), planned).
 
 The microcontrollers:
-- read raw sensor data, processes it and sends the processed data as a JSON formatted message to a server
+- read raw sensor data, process it and sends the processed data as a JSON formatted message to a server
 - have either (wired) Ethernet (room) or Wi-Fi (bathroom) connectivity
-- are powered mainly from the grid thus they require a stable power supply
+- are powered mainly from the grid for easy maintainability thus they require a stable power supply
 
 ## Microcontrollers
 
@@ -19,13 +19,15 @@ Current work is mostly focused on the Arduino Yun Mini board. Other boards we ar
 - [MediaTek LinkIt ONE](http://www.seeedstudio.com/wiki/LinkIt_ONE)
 
 ## Sensors
+There are different sensor packages designed for different locations inside the office. Each package consist of a number of individual sensors which collect data that is meaningful in the context of a specific room's function.
 
-### Room sensor
+### Generic room sensor (e.g. meeting room)
 - Temperature ([Estimote](http://estimote.com/) beacons)
 - [Particle sensor](https://www.sparkfun.com/products/9689) for measuring air quality
 - [Humidity sensor](https://www.sparkfun.com/products/9569) for measuring relative humidity
 - [Ambient light sensor](https://www.sparkfun.com/products/8688) for measuring ambient light level
 - [Sound detector](https://www.sparkfun.com/products/12642) for measuring ambient noise level
+- [Motion sensor](https://www.sparkfun.com/products/13285) for checking if there is someone in the room
 
 ### Toilet sensor
 - [Methane sensor](https://www.sparkfun.com/products/9404) for measuring air quality
@@ -50,8 +52,8 @@ Current work is mostly focused on the Arduino Yun Mini board. Other boards we ar
 2. Upload a corresponding sketch to the board (modify the sketch if you want)
 3. 3D print a case for the sensors
 4. Solder or wire-wrap the sensors and put them inside the case
-5. Deploy the sensor
-6. Use the Vör app to use servises tied to the sensor
+5. Deploy the sensor package
+6. Use the Vör app to use servises tied to the sensor package
 
 ### Arduino SDK
 - Download and install the [Arduino SDK](https://www.arduino.cc/en/Main/Software)
