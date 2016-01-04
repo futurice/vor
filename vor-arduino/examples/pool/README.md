@@ -14,7 +14,8 @@ The purpose of the button is to create a video clip of the last 30 seconds of th
 #include <Bridge.h>
 #include <YunClient.h>
 
-#include "vor_utils.h"
+#include "HttpClient.h"
+#include "vor_env.h"
 
 #include "vor_led.h"
 #include "vor_button.h"
@@ -24,6 +25,7 @@ The purpose of the button is to create a video clip of the last 30 seconds of th
 #define BUTTON_PIN 2
 
 YunClient client;
+HttpClient http(client, SERVER_URL, SERVER_PATH, CLIENT_USERAGENT);
 
 VorLed led;
 VorButton button(BUTTON_PIN);
@@ -35,6 +37,8 @@ void setup() {
     led.turnOn();
     Bridge.begin();
     led.turnOff();
+
+    http.setClientId("button-pool");
 }
 
 void loop() {
@@ -44,8 +48,10 @@ void loop() {
         buttonValue = value;
 
         if (LOW == buttonValue) {
-            post(client, PAYLOAD);
+            http.post(PAYLOAD);
         }
     }
+
+    http.postKeepAlive();
 }
 ```

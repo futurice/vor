@@ -23,6 +23,8 @@ static const int HTTP_ERROR_TIMED_OUT =-3;
 // server?
 static const int HTTP_ERROR_INVALID_RESPONSE =-4;
 
+static const int KEEP_ALIVE_ERROR = -5;
+
 // Define some of the common methods and headers here
 // That lets other code reuse them without having to declare another copy
 // of them, so saves code space and RAM
@@ -39,6 +41,11 @@ static const int HTTP_ERROR_INVALID_RESPONSE =-4;
 #define TEXT_HTML "text/html"
 #define APPLICATION_URLENCODED "application/x-www-form-urlencoded"
 
+#define KEEP_ALIVE_MESSAGE_FORMAT "{\"type\":\"keep-alive\",\"id\":\"%s\"}"
+
+#define CLIENT_TIMEOUT 10000
+#define CLIENT_DELAY 500
+
 class HttpClient : public Client
 {
 public:
@@ -52,7 +59,13 @@ public:
 #ifdef PROXY_ENABLED // currently disabled as introduces dependency on Dns.h in Ethernet
     HttpClient(Client& aClient, const char* aProxy =NULL, uint16_t aProxyPort =0);
 #else
-    HttpClient(Client& aClient);
+    HttpClient(
+        Client& aClient,
+        const char* url,
+        const char* path,
+        const char* useragent = NULL,
+        const char* contentType = TEXT_PLAIN
+    );
 #endif
 
     /** Start a more complex request.
@@ -156,6 +169,31 @@ public:
              const char* contentType = NULL,
              const char* body = NULL)
       { return startRequest(aServerName, kHttpPort, aURLPath, HTTP_METHOD_POST, aUserAgent, contentType, body); }
+
+    // Convenient function for sending HTTP POST with body
+    // TODO: The implementation should be moved into the HttpClient.cpp file
+    int post(const char* body = NULL) {
+        Serial.println(_url);
+        Serial.println(_path);
+        Serial.println(_useragent);
+        Serial.println(_contentType);
+        Serial.println(body);
+        int res = startRequest(_url, kHttpPort, _path, HTTP_METHOD_POST, _useragent, _contentType, body);
+        if (HTTP_SUCCESS == res) {
+            skipResponseHeaders(); // This may be not needed
+            uint64_t now = millis();
+            while ((connected() || available()) && ((millis() - now) < CLIENT_TIMEOUT)) {
+                if (available()) {
+                    read();
+                    now = millis();
+                } else {
+                    delay(CLIENT_DELAY);
+                }
+            }
+        }
+        resetState(); // for some reason (and i am least interested to find out why) after sending message the API is in error state and calling this funtion clears the error
+        return res;
+    }
 
     /** Connect to the server and start to send a POST request.  This version connects
       doesn't perform a DNS lookup and just connects to the given IP address.
@@ -398,6 +436,42 @@ public:
     virtual operator bool() { return bool(iClient); };
     virtual uint32_t httpResponseTimeout() { return iHttpResponseTimeout; };
     virtual void setHttpResponseTimeout(uint32_t timeout) { iHttpResponseTimeout = timeout; };
+
+    void setKeepAliveEnabled(bool enabled) {
+        _keepAliveEnabled = enabled;
+    }
+
+    void setKeepAliveInterval(uint64_t interval) {
+       _keepAliveInterval = interval;
+    }
+
+    void setClientId(const char* id) {
+        _id = id;
+    }
+
+    void setKeepAliveMessage(const char* message) {
+        _keepAliveMessage = message;
+    }
+
+    // Sends a keep-alive message
+    // TODO: Has to be called by the program main loop
+    // TODO: This should be implemented with protothread so that this function is called automatically
+    int postKeepAlive() {
+        uint64_t now = millis();
+        if (_keepAliveEnabled && now - _keepAliveTimestamp > _keepAliveInterval) {
+            _keepAliveTimestamp = now;
+            if (_keepAliveMessage) {
+                return post(_keepAliveMessage);
+            } else {
+                char message[64];
+                sprintf(message, KEEP_ALIVE_MESSAGE_FORMAT, _id);
+                return post(message);
+            }
+        } else {
+            return KEEP_ALIVE_ERROR;
+        }
+    }
+
 protected:
     /** Reset internal state data back to the "just initialised" state
     */
@@ -463,6 +537,17 @@ protected:
     IPAddress iProxyAddress;
     uint16_t iProxyPort;
     uint32_t iHttpResponseTimeout;
+
+    bool _keepAliveEnabled = true;
+    uint64_t _keepAliveInterval = 30000; // milliseconds
+    uint64_t _keepAliveTimestamp = 0; // milliseconds
+    const char* _keepAliveMessage = NULL;
+
+    const char* _url;
+    const char* _path;
+    const char* _useragent;
+    const char* _contentType;
+    const char* _id;
 };
 
 #endif

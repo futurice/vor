@@ -16,7 +16,8 @@ The switch has a signal output which is set to HIGH when the switch is on and LO
 #include <Bridge.h>
 #include <YunClient.h>
 
-#include "vor_utils.h"
+#include "HttpClient.h"
+#include "vor_env.h"
 
 #include "vor_led.h"
 #include "vor_switch.h"
@@ -28,6 +29,7 @@ The switch has a signal output which is set to HIGH when the switch is on and LO
 #define SWITCH_PIN 2
 
 YunClient client;
+HttpClient http(client, SERVER_URL, SERVER_PATH, CLIENT_USERAGENT);
 
 VorLed led;
 VorSwitch vorSwitch(SWITCH_PIN);
@@ -40,18 +42,23 @@ void setup() {
     led.turnOn();
     Bridge.begin();
     led.turnOff();
+
+    http.setClientId("button-food");
 }
 
 void loop() {
     int value = vorSwitch.read();
-
     uint64_t now = millis();
+
     if (switchValue != value || now - intervalTime > INTERVAL) {
         switchValue = value;
         intervalTime = now;
+
         if (HIGH == switchValue) {
-            post(client, PAYLOAD);
+            http.post(PAYLOAD);
         }
     }
+
+    http.postKeepAlive();
 }
 ```

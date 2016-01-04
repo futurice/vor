@@ -28,8 +28,19 @@ HttpClient::HttpClient(Client& aClient, const char* aProxy, uint16_t aProxyPort)
   }
 }
 #else
-HttpClient::HttpClient(Client& aClient)
- : iClient(&aClient), iProxyPort(0)
+HttpClient::HttpClient(
+    Client& aClient,
+    const char* url,
+    const char* path,
+    const char* useragent,
+    const char* contentType
+) :
+    iClient(&aClient),
+    iProxyPort(0),
+    _url(url),
+    _path(path),
+    _useragent(useragent),
+    _contentType(contentType)
 {
   resetState();
 }
