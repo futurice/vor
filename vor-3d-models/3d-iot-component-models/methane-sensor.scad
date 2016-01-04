@@ -2,13 +2,13 @@
 // Part of http://vor.space by Futurice
 // ©Futurice Oy, paul.houghton@futurice.com, CC-attribution-sharealike license, http://creativecommons.org/licenses/by-sa/4.0/
 
-$fn = 8;
+$fn = 16;
 
-pin_length = 7.7;
+pin_length = 8;
 
 // Uncomment one or the other depending on the use case shape desired
-methane_sensor();
-//methane_sensor_space();
+//methane_sensor();
+methane_sensor_space();
 
 module center() {
     hull() {

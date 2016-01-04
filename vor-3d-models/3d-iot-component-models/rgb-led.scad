@@ -1,7 +1,7 @@
 // A RGB color LED
 // Part of http://vor.space by Futurice
 
-$fn = 16;
+$fn = 32;
 
 radius = 5/2;
 height = 7;

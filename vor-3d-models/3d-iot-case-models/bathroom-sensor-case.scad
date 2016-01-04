@@ -6,7 +6,7 @@ $fn = 8;
 cube_side = 140;
 cube_tip_clip = 10;
 wall_width = 29;  // Bathroom divider wall tunnel size
-side_clip_ratio = 2.5;
+side_clip_ratio = 2;
 left_wing_clip_height = 35;
 right_wing_clip_height = 35;
 
@@ -14,32 +14,36 @@ skin = 10;
 inner_skin = 8;
 thin_skin = 0.1;
 motion_skin = 0.2;
+yun_skin = 0.4;
 
+sensor_x=0;
+sensor_y=40;
+
+yun_x = 0;
 yun_y = -22.9/2;
 yun_z = -3;
 
-bathroom_sensor_shell();
+//bathroom_sensor_shell();
+bathroom_sensor_shell_left();
+//bathroom_sensor_shell_right();
 //bathroom_sensors_shown();
-color("green") yun_airgap_feet();
 
 module bathroom_sensor_shell_left() {
     difference() {
-        color("red") box();
-        union() {
-            methane_space_moved_skin();
-            motion_moved_skin(-40, 0);
-            motion_moved_skin(40, 90);
-        }
+        bathroom_sensor_shell();
+        translate([-50,0,-cube_side]) cube([cube_side*2, cube_side*2, cube_side*2]);
     }
-
-    color("blue") yun_holder();
 }
-
-sensor_y=40;
 
 module bathroom_sensor_shell() {
     difference() {
-        color("red") box();
+        union() {
+            color("red") box();
+            color("blue") yun_holder();
+            color("pink") translate([118,0,0]) rotate([0,90,0]) {
+                cylinder(r=14,h=15);
+    }
+        }
         union() {
             methane_space_moved_skin();
             motion_moved_skin(y=-sensor_y, theta=0, rot=120);
@@ -47,8 +51,7 @@ module bathroom_sensor_shell() {
             yun_moved_skin();
         }
     }
-
-    color("blue") yun_holder();
+    color("green") yun_airgap_feet();
 }
 
 module bathroom_sensors_shown() {
@@ -80,25 +83,25 @@ module motion_angle(angle = 0) {
 module yun_moved_skin() {
     minkowski() {
         yun_moved();
-        sphere(r=thin_skin);
+        sphere($fn=8, r=yun_skin);
     }
 }
 
 module yun_moved() {
-    translate([-skin, yun_y, yun_z])
-#        yun();
+    translate([yun_x, yun_y, yun_z])
+        yun();
 }
 
 module yun_holder() {
     translate([0, -wall_width/2, -13])
-        cube([55, wall_width, 5]);
+        cube([75, wall_width, 5]);
 }
 
 module yun_airgap_feet() {
-    translate([0, -wall_width/2, -17])
-        cube([120, 6, 3]);
-    translate([0, wall_width/2 - 6, -17])
-        cube([120, 6, 3]);
+    translate([-10, -wall_width/2, -17])
+        cube([130, 6, 3]);
+    translate([-10, wall_width/2 - 6, -17])
+        cube([130, 6, 3]);
 }
 
 module methane_moved_skin() {
@@ -116,27 +119,27 @@ module methane_space_moved_skin() {
 }
 
 module methane_space_moved() {
-    translate([cube_side + skin/2 - cube_tip_clip*2, 0, 0])
+    translate([cube_side + skin - cube_tip_clip*2 - 5, 0, 0])
         rotate([0, 90, 0]) {
             methane_space();
         }
 }
 
 module methane_moved() {
-    translate([cube_side + skin - cube_tip_clip*2, 0, 0])
+    translate([cube_side + skin - cube_tip_clip*2 - 5, 0, 0])
         rotate([0, 90, 0]) {
             methane();
         }
 }
 
-module poly(clip = 0) {
+module poly(clip=0, shorten=0) {
     difference() {
         polyhedron(
-            points=[[0,cube_side,0],
-                [0,0,-cube_side],
-                [0,-cube_side,0],
-                [0,0,cube_side],
-                [cube_side,0]],
+            points=[[shorten,cube_side,0],
+                [shorten,0,-cube_side],
+                [shorten,-cube_side,0],
+                [shorten,0,cube_side],
+                [cube_side,0,0]],
             faces=[[0,1,4],[1,2,4],[2,3,4],[3,0,4],[1,0,3],[2,1,3]]);
         union() {
             translate([-2*cube_side, -2*cube_side, clip/.85])
@@ -171,15 +174,15 @@ module box() {
         minkowski() {
             difference() {
                 union() {
-                    poly(cube_tip_clip);
+                    poly(clip=cube_tip_clip, shorten=0);
                     intersection() {
                         hull() {
-                            poly(cube_tip_clip);
+                            poly(clip=cube_tip_clip, shorten=0);
                         }
                         minkowski() {
                             wall_tunnel();
                             sphere(r=skin);
-                            }
+                        }
                     }
                 }
             }
@@ -190,7 +193,7 @@ module box() {
             difference() {
                 minkowski() {
                     translate([-skin, 0, 0])
-                        poly(cube_tip_clip/2);
+                        poly(clip=cube_tip_clip/2, shorten=10);
                     sphere(r=inner_skin);
                 }
                 minkowski() {
@@ -210,6 +213,13 @@ module side_block(y=0, theta=0) {
     }
 }
 
+module methane_space() {
+    minkowski() {
+        methane();
+        sphere(r=thin_skin);
+    }
+}
+
 module yun() {
     include <../3d-iot-component-models/arduino-yun-mini.scad>
 }
@@ -220,8 +230,4 @@ module methane() {
 
 module motion() {
     include <../3d-iot-component-models/pir-motion-sensor.scad>
-}
-
-module methane_space() {
-    import ("../3d-iot-component-models/methane-sensor-space.stl", convexity=3);
 }
