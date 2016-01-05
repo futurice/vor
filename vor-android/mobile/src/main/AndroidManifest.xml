@@ -50,12 +50,14 @@
         </activity>
         <activity
             android:name=".activity.SettingsActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_settings">
         </activity>
         <activity
             android:name=".activity.MapActivity"
             android:label="@string/title_activity_map"
             android:parentActivityName=".activity.DrawerActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -65,6 +67,7 @@
             android:name=".activity.ToiletActivity"
             android:label="@string/title_activity_toilet"
             android:parentActivityName=".activity.DrawerActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -74,6 +77,7 @@
             android:name=".activity.SpaceActivity"
             android:label="@string/title_activity_space"
             android:parentActivityName=".activity.DrawerActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -83,6 +87,7 @@
             android:name=".activity.CardsActivity"
             android:label="@string/title_activity_cards"
             android:parentActivityName=".activity.DrawerActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -92,6 +97,7 @@
             android:name=".activity.PeopleActivity"
             android:label="@string/title_activity_people"
             android:parentActivityName=".activity.DrawerActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
