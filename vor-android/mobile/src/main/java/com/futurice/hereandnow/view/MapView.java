@@ -22,6 +22,7 @@ public class MapView extends PhotoView {
     private static final float animationSpeed = .05f;
     private static final int FRAME_RATE = 30;
     private static final float updateRadius = 1.f;
+    private static final float DEFAULT_TEXT_SIZE = 32f;
 
     float markerRadius;
 
@@ -43,7 +44,7 @@ public class MapView extends PhotoView {
         this.context = context;
 
         markerRadius = 2.f;
-        textSize = 32f;
+        textSize = DEFAULT_TEXT_SIZE;
 
         namePaint = new Paint();
         namePaint.setColor(Color.WHITE);
@@ -75,9 +76,12 @@ public class MapView extends PhotoView {
             return;
         }
 
+        // Update locations.
         for (PeopleManager.Person person : onMapDrawListener.getPersons()) {
             person.updateCurrentLocation(animationSpeed, updateRadius); // Animate the markers.
+        }
 
+        for (PeopleManager.Person person : onMapDrawListener.getFilteredPersons()) {
             if (person.getLocationOnScreenX() >= 0 && person.getLocationOnScreenY() >= 0) {
                 String text = HereAndNowUtils.getInitials(person.getEmail());
 
@@ -93,7 +97,7 @@ public class MapView extends PhotoView {
             }
         }
 
-        for (PeopleManager.Person person : onMapDrawListener.getPersons()) {
+        for (PeopleManager.Person person : onMapDrawListener.getFilteredPersons()) {
             if (person.isClicked()) {
                 String text = HereAndNowUtils.getName(person.getEmail());
 
@@ -145,8 +149,15 @@ public class MapView extends PhotoView {
         namePaint.setTextSize(textSize);
     }
 
+    public void resetTextSize() {
+        textSize = DEFAULT_TEXT_SIZE;
+        namePaint.setTextSize(DEFAULT_TEXT_SIZE);
+    }
+
     public interface OnMapDrawListener {
         ArrayList<PeopleManager.Person> getPersons();
+
+        ArrayList<PeopleManager.Person> getFilteredPersons();
     }
 
     public void setOnMapDrawListener(OnMapDrawListener listener) {

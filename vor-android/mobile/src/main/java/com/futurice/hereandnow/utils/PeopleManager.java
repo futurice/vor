@@ -60,14 +60,15 @@ public class PeopleManager {
 
     /**
      * Filter people based on an argument.
-     * @param email What to search for.
+     * @param filter What to search for.
      * @return New list of people matching the argument.
      */
-    public ArrayList<Person> filterPeople(String email) {
+    public ArrayList<Person> filterPeople(String filter) {
         ArrayList<Person> filteredPeople = new ArrayList<>();
+        filter = filter.toLowerCase();
 
         for (Person person : people) {
-            if (person.getEmail().contains(email.toLowerCase())) {
+            if (HereAndNowUtils.getName(person.getEmail()).toLowerCase().contains(filter)) {
                 filteredPeople.add(person);
             }
         }
@@ -218,6 +219,16 @@ public class PeopleManager {
                     currentLocationY -= (animationSpeed * distanceY);
                 }
             }
+        }
+
+        /**
+         * Set current location on screen directly to a specific value.
+         * @param x New X coordinate.
+         * @param y New Y coordinate.
+         */
+        public void setCurrentLocation(float x, float y) {
+            currentLocationX = x;
+            currentLocationY = y;
         }
     }
 }

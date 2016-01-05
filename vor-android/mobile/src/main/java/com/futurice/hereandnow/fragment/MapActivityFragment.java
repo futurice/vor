@@ -8,7 +8,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -24,6 +29,8 @@ import static com.futurice.hereandnow.Constants.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -46,6 +53,8 @@ public class MapActivityFragment extends Fragment {
     BeaconLocationManager beaconLocationManager;
     PeopleManager peopleManager;
 
+    String mFilter = "";
+
     SharedPreferences preferences;
 
     public MapActivityFragment() {}
@@ -56,6 +65,71 @@ public class MapActivityFragment extends Fragment {
         args.putInt(FLOOR_KEY, floor);
         activity.setArguments(args);
         return activity;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.map_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.map_filter);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        /**
+         * The scale for the map resets automatically when the search icon is pressed.
+         * All the locations for the people needs to be reset as well.
+         */
+        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                resetImageView();
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                resetImageView();
+                return true;
+            }
+        });
+
+        /**
+         * Disable zooming while searching for people.
+         * Zooming while having the keyboard visible results in a change in the measured
+         * map width and height and therefore results in wrong coordinates for the locations.
+         */
+        searchView.setOnQueryTextFocusChangeListener((view, hasFocus) -> {
+            if (hasFocus) {
+                resetImageView();
+                mAttacher.setZoomable(false);
+            } else {
+                mAttacher.setZoomable(true);
+                mImageView.requestFocus(); // Change focus to the map.
+            }
+        });
+
+        /**
+         * Store the search query in the local variable mFilter.
+         */
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                mFilter = query;
+                searchView.clearFocus(); // Remove focus from the search bar.
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mFilter = newText;
+                return false;
+            }
+        });
     }
 
     @Override
@@ -167,7 +241,21 @@ public class MapActivityFragment extends Fragment {
             }
         });
 
-        mImageView.setOnMapDrawListener(peopleManager::getPeople);
+        mImageView.setOnMapDrawListener(new MapView.OnMapDrawListener() {
+            @Override
+            public ArrayList<PeopleManager.Person> getPersons() {
+                return peopleManager.getPeople();
+            }
+
+            @Override
+            public ArrayList<PeopleManager.Person> getFilteredPersons() {
+                if (mFilter.isEmpty()) {
+                    return peopleManager.getPeople();
+                } else {
+                    return peopleManager.filterPeople(mFilter);
+                }
+            }
+        });
 
         mAttacher.setOnViewTapListener((view, x, y) -> {
             float errorMargin = 60f * mAttacher.getScale();
@@ -249,5 +337,31 @@ public class MapActivityFragment extends Fragment {
         result[0] = scaleFactorX * mImageView.getDisplayedWidth();
         result[1] = scaleFactorY * mImageView.getDisplayedHeight();
         return result;
+    }
+
+    /**
+     * Return the map to its original zoom level
+     * and calculate new positions for the people accordingly.
+     */
+    private void resetImageView() {
+        float oldScale = mAttacher.getScale();
+        mAttacher.setScale(1f);
+        mImageView.resetTextSize();
+
+        UI.execute(() -> {
+            // Invalidate the picture to make it draw the canvas again.
+            mImageView.invalidate();
+
+            for (PeopleManager.Person person : peopleManager.getPeople()) {
+                person.setLocation(person.getMapLocationX() / oldScale, person.getMapLocationY() / oldScale);
+
+                RectF rect = mAttacher.getDisplayRect();
+                float newLocationX = person.getMapLocationX() + rect.left;
+                float newLocationY = person.getMapLocationY() + rect.top;
+
+                person.setDisplayedLocation(newLocationX, newLocationY, false);
+                person.setCurrentLocation(newLocationX, newLocationY);
+            }
+        });
     }
 }
