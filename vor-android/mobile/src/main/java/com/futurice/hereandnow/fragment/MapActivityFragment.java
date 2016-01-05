@@ -105,9 +105,11 @@ public class MapActivityFragment extends Fragment {
          */
         searchView.setOnQueryTextFocusChangeListener((view, hasFocus) -> {
             if (hasFocus) {
+                resetImageView();
                 mAttacher.setZoomable(false);
             } else {
                 mAttacher.setZoomable(true);
+                mImageView.requestFocus(); // Change focus to the map.
             }
         });
 
@@ -118,6 +120,7 @@ public class MapActivityFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 mFilter = query;
+                searchView.clearFocus(); // Remove focus from the search bar.
                 return false;
             }
 
