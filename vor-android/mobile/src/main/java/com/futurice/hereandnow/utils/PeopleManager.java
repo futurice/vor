@@ -220,5 +220,15 @@ public class PeopleManager {
                 }
             }
         }
+
+        /**
+         * Set current location on screen directly to a specific value.
+         * @param x New X coordinate.
+         * @param y New Y coordinate.
+         */
+        public void setCurrentLocation(float x, float y) {
+            currentLocationX = x;
+            currentLocationY = y;
+        }
     }
 }

@@ -22,6 +22,7 @@ public class MapView extends PhotoView {
     private static final float animationSpeed = .05f;
     private static final int FRAME_RATE = 30;
     private static final float updateRadius = 1.f;
+    private static final float DEFAULT_TEXT_SIZE = 32f;
 
     float markerRadius;
 
@@ -43,7 +44,7 @@ public class MapView extends PhotoView {
         this.context = context;
 
         markerRadius = 2.f;
-        textSize = 32f;
+        textSize = DEFAULT_TEXT_SIZE;
 
         namePaint = new Paint();
         namePaint.setColor(Color.WHITE);
@@ -146,6 +147,11 @@ public class MapView extends PhotoView {
     public void scaleRadius(float scaleFactor) {
         textSize *= scaleFactor;
         namePaint.setTextSize(textSize);
+    }
+
+    public void resetTextSize() {
+        textSize = DEFAULT_TEXT_SIZE;
+        namePaint.setTextSize(DEFAULT_TEXT_SIZE);
     }
 
     public interface OnMapDrawListener {

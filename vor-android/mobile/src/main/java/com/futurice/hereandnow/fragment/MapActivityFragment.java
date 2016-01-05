@@ -53,7 +53,7 @@ public class MapActivityFragment extends Fragment {
     BeaconLocationManager beaconLocationManager;
     PeopleManager peopleManager;
 
-    String filter = "";
+    String mFilter = "";
 
     SharedPreferences preferences;
 
@@ -80,16 +80,50 @@ public class MapActivityFragment extends Fragment {
         MenuItem searchItem = menu.findItem(R.id.map_filter);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
 
+        /**
+         * The scale for the map resets automatically when the search icon is pressed.
+         * All the locations for the people needs to be reset as well.
+         */
+        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                resetImageView();
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                resetImageView();
+                return true;
+            }
+        });
+
+        /**
+         * Disable zooming while searching for people.
+         * Zooming while having the keyboard visible results in a change in the measured
+         * map width and height and therefore results in wrong coordinates for the locations.
+         */
+        searchView.setOnQueryTextFocusChangeListener((view, hasFocus) -> {
+            if (hasFocus) {
+                mAttacher.setZoomable(false);
+            } else {
+                mAttacher.setZoomable(true);
+            }
+        });
+
+        /**
+         * Store the search query in the local variable mFilter.
+         */
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                filter = query;
+                mFilter = query;
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filter = newText;
+                mFilter = newText;
                 return false;
             }
         });
@@ -212,10 +246,10 @@ public class MapActivityFragment extends Fragment {
 
             @Override
             public ArrayList<PeopleManager.Person> getFilteredPersons() {
-                if (filter.isEmpty()) {
+                if (mFilter.isEmpty()) {
                     return peopleManager.getPeople();
                 } else {
-                    return peopleManager.filterPeople(filter);
+                    return peopleManager.filterPeople(mFilter);
                 }
             }
         });
@@ -300,5 +334,31 @@ public class MapActivityFragment extends Fragment {
         result[0] = scaleFactorX * mImageView.getDisplayedWidth();
         result[1] = scaleFactorY * mImageView.getDisplayedHeight();
         return result;
+    }
+
+    /**
+     * Return the map to its original zoom level
+     * and calculate new positions for the people accordingly.
+     */
+    private void resetImageView() {
+        float oldScale = mAttacher.getScale();
+        mAttacher.setScale(1f);
+        mImageView.resetTextSize();
+
+        UI.execute(() -> {
+            // Invalidate the picture to make it draw the canvas again.
+            mImageView.invalidate();
+
+            for (PeopleManager.Person person : peopleManager.getPeople()) {
+                person.setLocation(person.getMapLocationX() / oldScale, person.getMapLocationY() / oldScale);
+
+                RectF rect = mAttacher.getDisplayRect();
+                float newLocationX = person.getMapLocationX() + rect.left;
+                float newLocationY = person.getMapLocationY() + rect.top;
+
+                person.setDisplayedLocation(newLocationX, newLocationY, false);
+                person.setCurrentLocation(newLocationX, newLocationY);
+            }
+        });
     }
 }
