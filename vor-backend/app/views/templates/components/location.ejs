@@ -58,17 +58,26 @@
       var user = $('#location-user').val();
       var floor = $('#location-floor').val();
       var $distances = $('.new-distance');
+      var beacons = [];
+
       $distances.each(function (i, el) {
         var id = $(el).data('id');
         var val = $(el).val();
-        socket.emit('message', {
+
+        beacons.push({
           id: id,
-          email: user,
-          type: 'beacon',
           floor: parseInt(floor, 10),
           distance: val === "" ? 0 : parseFloat(val)
         });
       });
+
+      var data = {
+        type: 'beacon',
+        email: user,
+        beacons: beacons
+      };
+      socket.emit('message', data);
+
     });
 
     socket.on('message', function (message) {
