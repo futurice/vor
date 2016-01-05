@@ -153,10 +153,12 @@ public class SettingsActivity extends PreferenceActivity {
         resultIntent = this.getIntent();
         this.setResult(RESULT_OK, resultIntent);
 
-        setContentView(R.layout.activity_settings);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        toolbar.setTitle(R.string.action_settings);
-        toolbar.setNavigationOnClickListener(v -> finish());
+        if (!onIsMultiPane()) {
+            setContentView(R.layout.activity_settings);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+            toolbar.setTitle(R.string.action_settings);
+            toolbar.setNavigationOnClickListener(v -> finish());
+        }
     }
 
     /**
