@@ -54,6 +54,8 @@ void setup() {
     led.turnOn();
     Bridge.begin();
     led.turnOff();
+
+    http.setClientId("toilet8am");
 }
 
 void loop() {
@@ -81,7 +83,6 @@ void loop() {
         sprintf(message, PAYLOAD_FORMAT, reserved, methane);
 
         http.post(message);
-        Serial.println(message);
     }
 
     http.postKeepAlive();
@@ -129,6 +130,8 @@ void setup() {
     led.turnOn();
     Bridge.begin();
     led.turnOff();
+
+    http.setClientId("toilet8am");
 }
 
 void loop() {
@@ -152,7 +155,6 @@ void loop() {
         sprintf(message, PAYLOAD_FORMAT, reserved, methane);
 
         http.post(message);
-        Serial.println(message);
     }
 
     http.postKeepAlive();
