@@ -82,16 +82,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
         </activity>
-        <activity
-            android:name=".activity.PeopleActivity"
-            android:label="@string/title_activity_people"
-            android:parentActivityName=".activity.DrawerActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
-        </activity>
 
         <service android:name=".services.LocationService">
         </service>
