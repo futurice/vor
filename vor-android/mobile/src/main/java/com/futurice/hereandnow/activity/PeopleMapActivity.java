@@ -65,6 +65,11 @@ public class PeopleMapActivity extends BaseActivity {
 
         @Override
         public Fragment getItem(int position) {
+            if (position == 0) {
+                position = 1;
+            } else if (position == 1) {
+                position = 0;
+            }
             return mFragmentList.get(position);
         }
 
@@ -75,6 +80,11 @@ public class PeopleMapActivity extends BaseActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
+            if (position == 0) {
+                position = 1;
+            } else if (position == 1) {
+                position = 0;
+            }
             return mFragmentTitleList.get(position);
         }
 
