@@ -29,6 +29,10 @@ class Location {
 }
 
 const getConfig = beaconConfigs => beaconMessage => {
+  if (!beaconMessage.beacons || beaconMessage.beacons.length < 3) {
+    return [beaconMessage];
+  }
+
   const [beacon1] = beaconConfigs
     .filter(config => config.id === beaconMessage.beacons[0].id)
     .filter(config => config.floor === beaconMessage.beacons[0].floor);
