@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     android:id="@+id/main_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -6,13 +7,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".activity.MapActivity">
+    tools:context=".activity.PeopleMapActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/appbar_padding_top"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
@@ -23,7 +22,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
         <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
+            android:id="@+id/peopleMapTabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#F0F0F0"
@@ -31,14 +30,14 @@
             app:tabSelectedTextColor="@color/colorPrimary"
             app:tabTextColor="@color/selectedTabText"
             app:tabMode="fixed"
-            app:tabGravity="fill"/>
+            app:tabGravity="fill" />
 
     </android.support.design.widget.AppBarLayout>
 
     <com.futurice.hereandnow.view.CustomViewPager
-        android:id="@+id/container"
+        android:id="@+id/peopleMapViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </android.support.design.widget.CoordinatorLayout>

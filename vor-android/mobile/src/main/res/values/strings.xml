@@ -85,4 +85,5 @@
     <string name="enter">Enter</string>
     <string name="change_floor">Change floor</string>
     <string name="people_nearby">People Nearby</string>
+    <string name="title_activity_people_map">People</string>
 </resources>
