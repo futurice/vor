@@ -23,14 +23,21 @@ tip_surround_width = 3;
 tip_width = toggle_width + 2*tip_surround_width;
 tip_length = 46;
 
+button_height = 4 + 4.8;
+flexure_length = 24.9;
+flexure_width = 6;
+rounding = 4;
+
 push_button();
 
 module push_button() {
-    // Uncomment one of the following 3 lines at a time
-    color("brown") mushroom(); // comment this line when generating right half
-    body();
+    // Uncomment one of the following for left side
+    color("brown") mushroom();
+//    color("grey") 8_ball();
+
+    // Uncomment one of the following
 //    right_half();
-//    left_half();
+    left_half();
 }
 
 module left_half() {
@@ -40,6 +47,7 @@ module left_half() {
             translate([-2*cube_side, -4*cube_side, -1])
                 cube([cube_side*4, cube_side*4, cube_side*2]);        
             yun_hole();
+            logo_moved(theta=180,y=22);
         }
     }
     color("pink") spikes();
@@ -47,13 +55,12 @@ module left_half() {
 
 module right_half() {
     difference() {
-        union() {
-            body();
-        }
+        body();
         union() {
             translate([-2*cube_side, 0, -1])
                 cube([cube_side*4, cube_side*4, cube_side*2]);
             spikes(skin_thickness=.2);
+            logo_moved(theta=0,y=-22);
         }
     }
 }
@@ -76,17 +83,30 @@ module body() {
 }
 
 module mushroom() {
-    button_height = 4.9;
-    flexure_length = 12;
-    flexure_width = 2;
-    rounding = 2;
+    translate([-flexure_length/2, 12, toggle_z -5])
+         cube([flexure_length, flexure_width, button_height+5]);
+
     translate([0, 0, toggle_z + button_height + rounding])
          minkowski() {
-             cylinder($fn=64, r=15 - rounding, h = 5 - 2*rounding);
+             cylinder($fn=64, r=25 - rounding, h = 10 - 2*rounding);
              sphere($fn=64, r=rounding);
          }
-    translate([-flexure_length/2, 9, toggle_z])
-         cube([flexure_length, flexure_width, button_height]);
+}
+
+module 8_ball() {
+    translate([-flexure_length*sin(45), 12, toggle_z + button_height])
+         rotate([0,45,0]) {
+             cube([flexure_length, flexure_width, flexure_length]);
+         }
+
+    translate([0, 0, toggle_z + button_height])
+        difference() {
+            sphere($fn=64, r=25);
+            union() {
+                translate([0, 0, -25]) cube(size=50,center=true);
+                text_8();
+            }
+        }
 }
 
 module spikes(skin_thickness=0) {
@@ -181,6 +201,25 @@ module box() {
 module button_moved() {
     translate([0, -6, toggle_z + 4.5])
          button();
+}
+
+module text_8() {
+    translate([20,15,18]) rotate([15,15,50+90]) {
+        translate([0,9,0]) scale([2.2,2.2,1]) linear_extrude(height=6) {
+            text("8");
+        }
+    }
+}
+
+module logo_moved(theta=0, y=0) {
+    s=.2;
+    translate([0, y, 22]) rotate([90,0,theta]) {
+        scale([s,s,s]) logo();
+    }
+}
+
+module logo() {
+    import("vor-logo-negative.stl", convexity=10);
 }
 
 module yun() {
