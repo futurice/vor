@@ -84,7 +84,7 @@ public class PeopleFragment extends BaseHereAndNowFragment {
                     } else {
                         PeopleManager.Person selectedPerson = peopleManager.getPerson(email);
                         selectedPerson.setLocation(Float.valueOf(jsonObject.getString("x")),
-                                Float.valueOf(jsonObject.getString("y")));
+                                Float.valueOf(jsonObject.getString("y")), true);
                     }
 
                     updateNameList();
