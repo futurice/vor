@@ -804,7 +804,7 @@
 	#banner {
 		background-attachment: scroll, scroll, scroll, fixed;
 		background-color: #645862;
-		background-image: url("images/light-bl.svg"), url("images/light-br.svg"), url("images/overlay.png"), url("../images/banner.jpg");
+		background-image: url("images/light-bl.svg"), url("images/light-br.svg"), url("images/overlay.png"), url("../images/banner.png");
 		background-position: bottom left, bottom right, top left, top center;
 		background-repeat: no-repeat, no-repeat, repeat, no-repeat;
 		background-size: 25em, 25em, auto, cover;
@@ -825,7 +825,7 @@
 			-o-animation-fill-mode: forwards;
 			-ms-animation-fill-mode: forwards;
 			animation-fill-mode: forwards;
-			background: rgba(52, 27, 43, 0.5);
+			background: rgba(0, 0, 0, 1);
 			color: white;
 			display: inline-block;
 			opacity: 0;
@@ -835,23 +835,9 @@
 
 			#banner .inner header {
 				display: inline-block;
-				border-bottom: solid 2px;
-				border-top: solid 2px;
-				margin: 0 0 2em 0;
+				margin: 0 0 1em 0;
 				padding: 3px 0 3px 0;
 			}
-
-				#banner .inner header h2 {
-					border-bottom: solid 2px;
-					border-top: solid 2px;
-					font-size: 2.5em;
-					font-weight: 900;
-					letter-spacing: 0.2em;
-					margin: 0;
-					padding-left: 0.05em;
-					position: relative;
-					text-transform: uppercase;
-				}
 
 			#banner .inner p {
 				letter-spacing: 0.1em;
@@ -861,6 +847,12 @@
 
 				#banner .inner p a {
 					color: inherit;
+					font-weight: 600;
+					text-decoration: none;
+				}
+
+				#banner .inner span.larger {
+					font-size: 1.5em;
 					font-weight: 400;
 					text-decoration: none;
 				}
