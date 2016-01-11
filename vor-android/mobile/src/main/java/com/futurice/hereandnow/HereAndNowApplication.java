@@ -76,12 +76,17 @@ public class HereAndNowApplication extends Application {
                 .on(LOCATION_KEY, args -> Log.d(TAG, "LOCATION RECEIVED"))
                 .on(MESSAGE_KEY, args -> {
                     try {
-                        //
                         JSONObject jsonObject = (JSONObject)args[0];
-                        if (jsonObject.getString(TYPE_KEY).equals(LOCATION_KEY)) {
-                            beaconLocationManager.onLocation(jsonObject);
-                        } else {
-                            SharedPreferencesManager.saveToSharedPreferences((JSONObject) args[0], this);
+                        switch (jsonObject.getString(TYPE_KEY)) {
+                            case LOCATION_KEY:
+                                beaconLocationManager.onLocation(jsonObject);
+                                break;
+                            case KEEP_ALIVE_KEY:
+                                // TODO Deal with the keep alive message
+                                break;
+                            default:
+                                SharedPreferencesManager.saveToSharedPreferences(jsonObject, this);
+                                break;
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
