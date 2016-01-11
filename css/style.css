@@ -572,6 +572,17 @@
 			padding: 0;
 		}
 
+		.wrapper.style1 h1 {
+			font-size: 2.5em;
+			font-weight: 600;
+		}
+
+		.wrapper.style1 h2 {
+			font-size: 1.5em;
+			font-weight: 400;
+			margin-bottom: 3em;
+		}
+
 		.wrapper.style2 {
 			background-color: #83d3c9;
 			background-image: url("images/light-bl.svg"), url("images/light-br.svg");
