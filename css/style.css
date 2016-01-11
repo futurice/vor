@@ -1109,27 +1109,23 @@
 }
 
 .paul {
-    background-image: url("../images/paul_pic.png");
-}
-
-.ricardo {
-    background-image: url("../images/ric_pic.png");
+    background-image: url("../images/paul.png");
 }
 
 .luis {
-    background-image: url("../images/luis_pic.png");
+    background-image: url("../images/luis.png");
 }
 
 .kenta {
-    background-image: url("../images/kenta_pic.png");
+    background-image: url("../images/kenta.png");
 }
 
 .ville {
-    background-image: url("../images/ville_pic.png");
+    background-image: url("../images/ville.png");
 }
 
 .liva {
-    background-image: url("../images/liva_pic.png");
+    background-image: url("../images/liva.png");
 }
 
 .person-name {
