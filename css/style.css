@@ -110,11 +110,6 @@
 
 	section.special, article.special {
 		text-align: center;
-		color: #EE5D3F;
-	}
-
-	section.special h2 {
-		margin-bottom: 1em;
 	}
 
 	header.major {
@@ -123,14 +118,13 @@
 
 	header.special {
 		margin-bottom: 2em;
-		padding-top: 7em;
+		padding-top: 2em;
+		color: #EE5D3F;
 		position: relative;
 		text-align: center;
 	}
 
 		header.special:before, header.special:after {
-			border-bottom: solid 1.5px;
-			border-top: solid 1.5px;
 			content: '';
 			height: 7px;
 			opacity: 0.1;
