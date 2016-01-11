@@ -32,12 +32,12 @@ push_button();
 
 module push_button() {
     // Uncomment one of the following for left side
-    color("brown") mushroom();
+//    color("brown") mushroom();
 //    color("grey") 8_ball();
 
     // Uncomment one of the following
-//    right_half();
-    left_half();
+    right_half();
+//    left_half();
 }
 
 module left_half() {
