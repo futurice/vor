@@ -110,6 +110,11 @@
 
 	section.special, article.special {
 		text-align: center;
+		color: #EE5D3F;
+	}
+
+	section.special h2 {
+		margin-bottom: 1em;
 	}
 
 	header.major {
