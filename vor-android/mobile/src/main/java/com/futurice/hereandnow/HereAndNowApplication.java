@@ -80,6 +80,8 @@ public class HereAndNowApplication extends Application {
                         JSONObject jsonObject = (JSONObject)args[0];
                         if (jsonObject.getString(TYPE_KEY).equals(LOCATION_KEY)) {
                             beaconLocationManager.onLocation(jsonObject);
+                        } else if (jsonObject.getString(TYPE_KEY).equals(KEEP_ALIVE_KEY)) {
+                            // TODO Deal with the keep alive message
                         } else {
                             SharedPreferencesManager.saveToSharedPreferences((JSONObject) args[0], this);
                         }
