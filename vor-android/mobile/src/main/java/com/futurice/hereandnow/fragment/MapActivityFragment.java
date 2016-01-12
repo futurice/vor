@@ -216,7 +216,7 @@ public class MapActivityFragment extends Fragment {
                     RectF rect = mAttacher.getDisplayRect();
 
                     // Set the new location for the person.
-                    selectedPerson.setLocation((location[0] * scaleFactor), (location[1] * scaleFactor));
+                    selectedPerson.setLocation((location[0] * scaleFactor), (location[1] * scaleFactor), true);
 
                     UI.execute(() -> {
                         // Invalidate the picture to make it draw the canvas again.
@@ -297,7 +297,7 @@ public class MapActivityFragment extends Fragment {
             for (PeopleManager.Person person : peopleManager.getPeople()) {
                 float oldX = person.getMapLocationX();
                 float oldY = person.getMapLocationY();
-                person.setLocation((oldX * scaleFactor), (oldY * scaleFactor));
+                person.setLocation((oldX * scaleFactor), (oldY * scaleFactor), false);
             }
         }
     }
@@ -353,7 +353,7 @@ public class MapActivityFragment extends Fragment {
             mImageView.invalidate();
 
             for (PeopleManager.Person person : peopleManager.getPeople()) {
-                person.setLocation(person.getMapLocationX() / oldScale, person.getMapLocationY() / oldScale);
+                person.setLocation(person.getMapLocationX() / oldScale, person.getMapLocationY() / oldScale, false);
 
                 RectF rect = mAttacher.getDisplayRect();
                 float newLocationX = person.getMapLocationX() + rect.left;

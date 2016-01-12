@@ -81,6 +81,10 @@ public class PeopleManager {
      *
      */
     public class Person {
+        private static final float OLD_LOCATION_AVERAGE_FACTOR = 0.7f;
+        private static final float NEW_LOCATION_AVERAGE_FACTOR = 0.3f;
+        private static final float MAXIMUM_WALKING_DISTANCE = 300f;
+
         private int id;
         private String email;
         private Integer color;
@@ -95,6 +99,8 @@ public class PeopleManager {
 
         // Current location on the screen (for animation)
         float currentLocationX, currentLocationY;
+
+        float previousLocationOnScreenX, previousLocationOnScreenY;
 
         public Person(int id, String email) {
             this.id = id;
@@ -116,11 +122,6 @@ public class PeopleManager {
 
         public int getId() {
             return this.id;
-        }
-
-        public void setLocation(float newX, float newY) {
-            this.mapLocationX = newX;
-            this.mapLocationY = newY;
         }
 
         public void setClicked(boolean clicked) {
@@ -168,6 +169,51 @@ public class PeopleManager {
         }
 
         /**
+         * Set new location for the map. Apply basic filtering for the received location.
+         * @param newX X coordinate of the new location.
+         * @param newY Y coordinate of the new location.
+         * @param moveEvent True if the event is called with a new location, otherwise (e.g. zooming)
+         *                  false.
+         */
+        public void setLocation(float newX, float newY, boolean moveEvent) {
+            if ((previousLocationOnScreenX <= 0 && previousLocationOnScreenY <= 0) || !moveEvent) {
+                mapLocationX = newX;
+                mapLocationY = newY;
+                return;
+            }
+
+            previousLocationOnScreenX = mapLocationX;
+            previousLocationOnScreenY = mapLocationY;
+
+            final float[] averagedValues = calculateAverageLocation(newX, newY);
+
+            final float differenceX = Math.abs(averagedValues[0] - previousLocationOnScreenX);
+            final float differenceY = Math.abs(averagedValues[1] - previousLocationOnScreenY);
+
+            if (differenceX > MAXIMUM_WALKING_DISTANCE) {
+                if (averagedValues[0] > previousLocationOnScreenX) {
+                    mapLocationX += MAXIMUM_WALKING_DISTANCE;
+                } else if (averagedValues[0] < previousLocationOnScreenX) {
+                    mapLocationX -= MAXIMUM_WALKING_DISTANCE;
+                }
+
+            } else {
+                mapLocationX = averagedValues[0];
+            }
+
+            if (differenceY > MAXIMUM_WALKING_DISTANCE) {
+                if (averagedValues[1] > previousLocationOnScreenY) {
+                    mapLocationY += MAXIMUM_WALKING_DISTANCE;
+                } else if (averagedValues[1] < previousLocationOnScreenY) {
+                    mapLocationY -= MAXIMUM_WALKING_DISTANCE;
+                }
+
+            } else {
+                mapLocationY = averagedValues[1];
+            }
+        }
+
+        /**
          * Calculate new location on the display.
          * @param newX the new X coordinate.
          * @param newY the new Y coordinate.
@@ -175,8 +221,8 @@ public class PeopleManager {
          */
         public void setDisplayedLocation(float newX, float newY, Boolean moveEvent) {
             if (moveEvent) {
-                float differenceX = Math.abs(newX - locationOnScreenX);
-                float differenceY = Math.abs(newY - locationOnScreenY);
+                final float differenceX = Math.abs(newX - locationOnScreenX);
+                final float differenceY = Math.abs(newY - locationOnScreenY);
 
                 if (newX > locationOnScreenX) {
                     currentLocationX += differenceX;
@@ -229,6 +275,25 @@ public class PeopleManager {
         public void setCurrentLocation(float x, float y) {
             currentLocationX = x;
             currentLocationY = y;
+        }
+
+        /**
+         * Calculate a weighted average of the location.
+         * @param newX X coordinate of the new location.
+         * @param newY Y coordinate of the new location.
+         */
+        private float[] calculateAverageLocation(float newX, float newY) {
+            // No previous location set, so return just the new one.
+            if (previousLocationOnScreenX <= 0 || previousLocationOnScreenY <= 0) {
+                return new float[] { newX, newY };
+            }
+
+            final float averagedX = OLD_LOCATION_AVERAGE_FACTOR * previousLocationOnScreenX
+                    + NEW_LOCATION_AVERAGE_FACTOR * newX;
+            final float averagedY = OLD_LOCATION_AVERAGE_FACTOR * previousLocationOnScreenY
+                    + NEW_LOCATION_AVERAGE_FACTOR * newY;
+
+            return new float[] { averagedX, averagedY };
         }
     }
 }
