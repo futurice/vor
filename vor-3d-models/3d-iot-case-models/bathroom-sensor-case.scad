@@ -34,10 +34,10 @@ spike_z1 = 23;
 spike_z2 = 51;
 dx=1;
 
-//bathroom_sensor_shell();
+bathroom_sensor_shell();
 //bathroom_sensor_shell_left();
-bathroom_sensor_shell_right();
-//bathroom_sensors_shown();
+//bathroom_sensor_shell_right();
+bathroom_sensors_shown();
 
 module bathroom_sensor_shell_left() {
     difference() {
