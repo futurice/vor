@@ -60,11 +60,11 @@ public class MapActivityFragment extends Fragment {
     public MapActivityFragment() {}
 
     public static MapActivityFragment newInstance(int floor) {
-        MapActivityFragment activity = new MapActivityFragment();
+        MapActivityFragment fragment = new MapActivityFragment();
         Bundle args = new Bundle();
         args.putInt(FLOOR_KEY, floor);
-        activity.setArguments(args);
-        return activity;
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -183,108 +183,108 @@ public class MapActivityFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        beaconLocationManager.setOnLocationUpdateListener(new BeaconLocationManager.OnLocationUpdateListener() {
-            @Override
-            public void onLocationUpdate(String position) {
-                if (getActivity() == null) {
-                    return;
-                }
-
-                try {
-                    JSONObject jsonObject = new JSONObject(position);
-                    String email = jsonObject.getString("email");
-
-                    // Check if this is a new person not initialized yet.
-                    if (!peopleManager.exists(email)) {
-                        peopleManager.addPerson(email);
-                    }
-                    PeopleManager.Person selectedPerson = peopleManager.getPerson(email);
-                    if (selectedPerson.getColor() == null) {
-                        if (selectedPerson.getEmail().equals(preferences.getString(SettingsActivity.EMAIL_KEY, ""))) {
-                            selectedPerson.setColor(ContextCompat.getColor(getContext(), R.color.orange));
-                        } else {
-                            selectedPerson.setColor(ContextCompat.getColor(getContext(), R.color.green));
-                        }
-                    }
-
-                    // Calculate a new location for the person.
-                    float location[] = convertToMapLocation(
-                            Float.valueOf(jsonObject.getString("x")),
-                            Float.valueOf(jsonObject.getString("y")));
-
-                    float scaleFactor = mAttacher.getScale();
-                    RectF rect = mAttacher.getDisplayRect();
-
-                    // Set the new location for the person.
-                    selectedPerson.setLocation((location[0] * scaleFactor), (location[1] * scaleFactor));
-
-                    UI.execute(() -> {
-                        // Invalidate the picture to make it draw the canvas again.
-                        mImageView.invalidate();
-                        for (PeopleManager.Person person : peopleManager.getPeople()) {
-                            person.setDisplayedLocation(person.getMapLocationX() + rect.left, person.getMapLocationY()+ rect.top, false);
-                        }
-                    });
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onConnectionError() {
-                if (getActivity() == null) {
-                    return;
-                }
-
-                UI.execute(() -> Toast.makeText(getContext(), R.string.error_connect, Toast.LENGTH_SHORT).show());
-            }
-        });
-
-        mImageView.setOnMapDrawListener(new MapView.OnMapDrawListener() {
-            @Override
-            public ArrayList<PeopleManager.Person> getPersons() {
-                return peopleManager.getPeople();
-            }
-
-            @Override
-            public ArrayList<PeopleManager.Person> getFilteredPersons() {
-                if (mFilter.isEmpty()) {
-                    return peopleManager.getPeople();
-                } else {
-                    return peopleManager.filterPeople(mFilter);
-                }
-            }
-        });
-
-        mAttacher.setOnViewTapListener((view, x, y) -> {
-            float errorMargin = 60f * mAttacher.getScale();
-            float marginX, marginY;
-
-            PeopleManager.Person closestPerson = null;
-            float closestValue = 0f;
-
-            for (PeopleManager.Person person : peopleManager.getPeople()) {
-                marginX = Math.abs(x - person.getCurrentLocationX());
-                marginY = Math.abs(y - person.getLocationOnScreenY());
-
-                if (marginX < errorMargin && marginY < errorMargin) {
-                    if (closestPerson == null) {
-                        closestPerson = person;
-                        closestValue = marginX + marginY;
-                    } else {
-                        if ((marginX + marginY) < closestValue) {
-                            closestPerson = person;
-                            closestValue = marginX + marginY;
-                        }
-                    }
-                }
-            }
-
-            if (closestPerson != null) {
-                closestPerson.setClicked(!closestPerson.isClicked());
-            }
-        });
+//        beaconLocationManager.setOnLocationUpdateListener(new BeaconLocationManager.OnLocationUpdateListener() {
+//            @Override
+//            public void onLocationUpdate(String position) {
+//                if (getActivity() == null) {
+//                    return;
+//                }
+//
+//                try {
+//                    JSONObject jsonObject = new JSONObject(position);
+//                    String email = jsonObject.getString("email");
+//
+//                    // Check if this is a new person not initialized yet.
+//                    if (!peopleManager.exists(email)) {
+//                        peopleManager.addPerson(email);
+//                    }
+//                    PeopleManager.Person selectedPerson = peopleManager.getPerson(email);
+//                    if (selectedPerson.getColor() == null) {
+//                        if (selectedPerson.getEmail().equals(preferences.getString(SettingsActivity.EMAIL_KEY, ""))) {
+//                            selectedPerson.setColor(ContextCompat.getColor(getContext(), R.color.orange));
+//                        } else {
+//                            selectedPerson.setColor(ContextCompat.getColor(getContext(), R.color.green));
+//                        }
+//                    }
+//
+//                    // Calculate a new location for the person.
+//                    float location[] = convertToMapLocation(
+//                            Float.valueOf(jsonObject.getString("x")),
+//                            Float.valueOf(jsonObject.getString("y")));
+//
+//                    float scaleFactor = mAttacher.getScale();
+//                    RectF rect = mAttacher.getDisplayRect();
+//
+//                    // Set the new location for the person.
+//                    selectedPerson.setLocation((location[0] * scaleFactor), (location[1] * scaleFactor));
+//
+//                    UI.execute(() -> {
+//                        // Invalidate the picture to make it draw the canvas again.
+//                        mImageView.invalidate();
+//                        for (PeopleManager.Person person : peopleManager.getPeople()) {
+//                            person.setDisplayedLocation(person.getMapLocationX() + rect.left, person.getMapLocationY()+ rect.top, false);
+//                        }
+//                    });
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onConnectionError() {
+//                if (getActivity() == null) {
+//                    return;
+//                }
+//
+//                UI.execute(() -> Toast.makeText(getContext(), R.string.error_connect, Toast.LENGTH_SHORT).show());
+//            }
+//        });
+//
+//        mImageView.setOnMapDrawListener(new MapView.OnMapDrawListener() {
+//            @Override
+//            public ArrayList<PeopleManager.Person> getPersons() {
+//                return peopleManager.getPeople();
+//            }
+//
+//            @Override
+//            public ArrayList<PeopleManager.Person> getFilteredPersons() {
+//                if (mFilter.isEmpty()) {
+//                    return peopleManager.getPeople();
+//                } else {
+//                    return peopleManager.filterPeople(mFilter);
+//                }
+//            }
+//        });
+//
+//        mAttacher.setOnViewTapListener((view, x, y) -> {
+//            float errorMargin = 60f * mAttacher.getScale();
+//            float marginX, marginY;
+//
+//            PeopleManager.Person closestPerson = null;
+//            float closestValue = 0f;
+//
+//            for (PeopleManager.Person person : peopleManager.getPeople()) {
+//                marginX = Math.abs(x - person.getCurrentLocationX());
+//                marginY = Math.abs(y - person.getLocationOnScreenY());
+//
+//                if (marginX < errorMargin && marginY < errorMargin) {
+//                    if (closestPerson == null) {
+//                        closestPerson = person;
+//                        closestValue = marginX + marginY;
+//                    } else {
+//                        if ((marginX + marginY) < closestValue) {
+//                            closestPerson = person;
+//                            closestValue = marginX + marginY;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            if (closestPerson != null) {
+//                closestPerson.setClicked(!closestPerson.isClicked());
+//            }
+//        });
     }
 
     private class MapScaleListener implements PhotoViewAttacher.OnScaleChangeListener {

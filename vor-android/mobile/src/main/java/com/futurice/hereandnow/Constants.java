@@ -41,6 +41,7 @@ public class Constants {
 
     public static final int MAP_7TH_FLOOR = 0;
     public static final int MAP_8TH_FLOOR = 1;
+    public static final int PEOPLE_TAB_INDEX = 2;
 
     public static final String EVENT_INIT = "init";
 
