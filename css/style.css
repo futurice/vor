@@ -843,6 +843,7 @@
 			opacity: 0;
 			padding: 3em;
 			text-align: center;
+			border-radius: 14px;
 		}
 
 			#banner .inner header {
