@@ -816,10 +816,10 @@
 	#banner {
 		background-attachment: scroll, scroll, scroll, fixed;
 		background-color: #645862;
-		background-image: url("images/light-bl.svg"), url("images/light-br.svg"), url("images/overlay.png"), url("../images/banner.png");
-		background-position: bottom left, bottom right, top left, top center;
-		background-repeat: no-repeat, no-repeat, repeat, no-repeat;
-		background-size: 25em, 25em, auto, cover;
+		background-image: url("../images/banner.png");
+		background-position: top center;
+		background-repeat: no-repeat;
+		background-size: cover;
 		color: white;
 		cursor: default;
 		padding: 6em 0;
@@ -837,7 +837,7 @@
 			-o-animation-fill-mode: forwards;
 			-ms-animation-fill-mode: forwards;
 			animation-fill-mode: forwards;
-			background: rgba(0, 0, 0, 1);
+			background: rgba(39, 50, 55, 1);
 			color: white;
 			display: inline-block;
 			opacity: 0;
@@ -853,21 +853,30 @@
 			}
 
 			#banner .inner p {
-				letter-spacing: 0.1em;
+				font-family: 'Roboto', sans-serif;
+				font-weight: 300;
 				margin: 0;
 				text-transform: uppercase;
 			}
 
 				#banner .inner p a {
+					font-family: 'Roboto', sans-serif;
+					font-weight: 300;
 					color: inherit;
-					font-weight: 600;
 					text-decoration: none;
 				}
 
 				#banner .inner span.larger {
+					font-family: 'Roboto', sans-serif;
 					font-size: 1.5em;
-					font-weight: 400;
+					font-weight: 700;
 					text-decoration: none;
+				}
+
+				#banner footer ul li a {
+					font-family: 'Roboto', sans-serif;
+					font-weight: 300;
+					border-radius: 5px;
 				}
 
 			#banner .inner footer {
