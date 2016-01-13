@@ -27,7 +27,7 @@
 	}
 
 	body, input, select, textarea {
-		color: #09161D;
+		color: #111F26;
 		font-family: 'Lato', sans-serif;
 		font-size: 15pt;
 		font-weight: 300;
@@ -119,7 +119,7 @@
 	header.special {
 		margin-bottom: 2em;
 		padding-top: 2em;
-		color: #EE5D3F;
+		color: #ED614B;
 		position: relative;
 		text-align: center;
 	}
