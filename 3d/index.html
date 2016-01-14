@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>three.js webgl - loaders - STL loader</title>
+		<title>Vör Bathroom Sensor in 3D</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
@@ -81,15 +81,34 @@
 
 				scene.add( camera );
 
-				// light
+				// lights
 
-				var dirLight = new THREE.DirectionalLight( 0xffffff );
-				dirLight.position.set( 400, 200, 1000 ).normalize();
+				var lights = [
+					{
+						x: 400,
+						y: 1000,
+						z: 1000,
+						color: 0xffffff,
+						intensity: 1.0,
+					},
+					{
+						x: -400,
+						y: -200,
+						z: 1000,
+						color: 0xffffff,
+						intensity: 0.4,
+					},
+				];
 
-				camera.add( dirLight );
-				camera.add( dirLight.target );
+				lights.forEach(function(light) {
+					var dirLight = new THREE.DirectionalLight(light.color);
+					dirLight.position.set(light.x, light.y, light.z).normalize();
 
-				var caseColor = 0x83D3C9;
+					camera.add( dirLight );
+					camera.add( dirLight.target );
+				});
+
+				var caseColor = 0x645862;
 				var motionSensorColor = 0xffffff;
 				var methaneSensorColor = 0xf0f0ff;
 
@@ -147,7 +166,7 @@
 							opts.envMap = model.envMap
 						}
 
-						var material = new THREE.MeshLambertMaterial(opts);
+						var material = new THREE.MeshPhongMaterial(opts);
 
 						var mesh = new THREE.Mesh( geometry, material );
 						mesh.position.x = offsets.x;
@@ -163,7 +182,7 @@
 				// separating the halves
 
 				explode = {
-					'models': [ models[0], models[3] ],
+					'models': [ models[1], models[4] ],
 					'separation': 0,
 					'animationStart': 0,
 					'animationDirection': 0,
@@ -261,9 +280,9 @@
 					return;
 				}
 
-				var separation = explode.animationDirection * timeDiff * (animationDistance/animationTime);
+				var separation = -1 * explode.animationDirection * timeDiff * (animationDistance/animationTime);
 				if (explode.exploded) {
-					separation += animationDistance;
+					separation -= animationDistance;
 				}
 
 				explode.separation = separation;
