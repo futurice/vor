@@ -618,6 +618,10 @@
 			padding: 4em;
 		}
 
+		.wrapper.style5 {
+			margin-bottom: 0em;
+		}
+
 /* Header */
 	@-moz-keyframes reveal-header { 0% { top: -5em; } 100% { top: 0; } }
 	@-webkit-keyframes reveal-header { 0% { top: -5em; } 100% { top: 0; } }
@@ -992,6 +996,68 @@
 					font-weight: 700;
 					text-decoration: none;
 				}
+
+	#banner-futurice {
+		background-color: #3D9B35;
+		background-position: top center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		color: white;
+		cursor: default;
+		padding: 0;
+		text-align: center;
+	}
+
+		#banner-futurice .inner {
+			-moz-animation: reveal-banner 1s 0.25s ease-in-out;
+			-webkit-animation: reveal-banner 1s 0.25s ease-in-out;
+			-o-animation: reveal-banner 1s 0.25s ease-in-out;
+			-ms-animation: reveal-banner 1s 0.25s ease-in-out;
+			animation: reveal-banner 1s 0.25s ease-in-out;
+			-moz-animation-fill-mode: forwards;
+			-webkit-animation-fill-mode: forwards;
+			-o-animation-fill-mode: forwards;
+			-ms-animation-fill-mode: forwards;
+			animation-fill-mode: forwards;
+			color: white;
+			display: inline-block;
+			opacity: 0;
+			padding: 3em;
+			width: 50%;
+			text-align: center;
+			border-radius: 14px;
+		}
+
+			#banner-futurice .inner p {
+				font-family: 'Roboto', sans-serif;
+				font-weight: 300;
+				margin: 0;
+			}
+
+				#banner-futurice .inner p a {
+					font-family: 'Roboto', sans-serif;
+					font-weight: 300;
+					color: inherit;
+					text-decoration: none;
+				}
+
+				#banner-futurice .inner span.larger {
+					font-family: 'Roboto', sans-serif;
+					font-size: 1.5em;
+					font-weight: 700;
+					text-decoration: none;
+				}
+
+				#banner-futurice footer ul li a {
+					font-family: 'Roboto', sans-serif;
+					font-weight: 300;
+					border-radius: 5px;
+					text-transform: none;
+				}
+
+			#banner-futurice .inner footer {
+				margin: 2em 0 0 0;
+			}
 
 /* Main */
 
