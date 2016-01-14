@@ -1106,11 +1106,15 @@
 /* Footer */
 
 	#footer {
-		background: #e8eef4;
-		color: #7c8081;
+		background: #12262E;
+		color: #FFFFFF;
 		padding: 5em 5em 10em 5em;
 		text-align: center;
 	}
+
+		#footer h1 {
+			margin-bottom: 2em;
+		}
 
 		#footer .copyright {
 			font-size: 0.8em;
