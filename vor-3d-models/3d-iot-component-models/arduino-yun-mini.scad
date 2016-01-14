@@ -22,16 +22,16 @@ module arduino_yun_mini() {
         }
     }
 
-    color("magenta") usb_power();
-    color("yellow") board_space();
+//    color("magenta") usb_power();
+//    color("yellow") board_space();
     color("red") leds();
     color("blue") button(y = 6.5);
     color("blue") button(y = 10.3);
     color("violet") bottom_button(y = 10.3);
-    color("orange") hull() {
-         bottom_slot(y = 8);
-         bottom_slot(y = width - 8);
-    }
+//    color("orange") hull() {
+//         bottom_slot(y = 8);
+//         bottom_slot(y = width - 8);
+//    }
     color("black") header(x=2, z=height, y=0);
     color("black") header(x=2, z=height, y=width-header_width);
     color("silver") header(x=2, z=-9.2, y=0);
@@ -62,11 +62,11 @@ module leds() {
 }
 
 module button(y = 0) {
-    translate([length - 2.75, y, height]) cylinder(r=button_radius, h=100);    
+    translate([length - 2.75, y, height]) cylinder(r=button_radius, h=1);    
 }
 
 module bottom_button(bx = length - 2, by = 7.5) {
-    translate([bx, by, -100]) cylinder(r=button_radius, h=100); 
+    translate([bx, by, -1]) cylinder(r=button_radius, h=1); 
 }
 
 module bottom_slot(y = 0) {

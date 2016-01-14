@@ -11,14 +11,14 @@ base_height = 15*scale/100;
 center_x = 75*scale/100;
 center_y = 30*scale/100;
 surround_radius = 90*scale/100;
-litho_cone_height = 3*1.6*surround_radius*scale/100;
+litho_cone_height = 8*surround_radius*scale/100;
 led_length = 7;
 
 // Uncomment one of the following at a time
 //plate_logo();
 //negative_logo();
 //lithophane_negative_logo(thickness=.5);
-lithophane_negative_rgb_cone(thickness=.5);
+lithophane_negative_rgb_cone(thickness=.1);
 
 module plate_logo() {
     logo_text(z=base_height);
@@ -35,7 +35,7 @@ module negative_logo() {
 module lithophane_negative_logo(thickness=.5*100/scale) {
     difference() {
         base();
-        logo_text(z=-thickness);
+#        logo_text(z=-.4);
     }
 }
 
@@ -60,7 +60,7 @@ module lithophane_negative_rgb_cone(thickness=.5) {
 
 module logo_text(z=0) {
     intersection() {
-        translate([-center_x, -center_y, z])     resize([135*scale/100, 69*scale/100,logo_height])
+        translate([-center_x, -center_y, z]) resize([135*scale/100, 69*scale/100,logo_height])
 linear_extrude(height = logo_height, center = false, convexity = 10) import (file = "logo_vor.dxf");
         translate([0,0,-500]) cylinder(r=surround_radius, h = 1000);
     }

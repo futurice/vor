@@ -20,7 +20,7 @@ yun_skin = 0.4;
 sensor_x=94;
 sensor_y=40;
 
-yun_x = 0;
+yun_x = 7;
 yun_y = -22.9/2;
 yun_z = -3;
 
@@ -32,11 +32,16 @@ text_spread=32;
 
 spike_z1 = 23;
 spike_z2 = 51;
+spike_height=3.5;
+spike_length=7.5;
+spike_angle=45;
+spike_offset_x=-4.5;
+spike_offset_y=-(spike_length/sin(spike_angle) + spike_height/cos(spike_angle))/4;
 dx=1;
 
-bathroom_sensor_shell();
+//bathroom_sensor_shell();
 //bathroom_sensor_shell_left();
-//bathroom_sensor_shell_right();
+bathroom_sensor_shell_right();
 bathroom_sensors_shown();
 
 module bathroom_sensor_shell_left() {
@@ -66,18 +71,18 @@ module bathroom_sensor_shell_right() {
 }
 
 module spike(z=0, skin=0) {
-    translate([-5+dx,-4.3,z+skin/2]) rotate([0,0,45]) {
+    translate([spike_offset_x+dx,spike_offset_y,z+skin/2]) rotate([0,0,spike_angle]) {
         minkowski() {
-            cube([8,4,3]);
+            cube([spike_length,spike_height,spike_height]);
             sphere(r=skin);
         }
     }
 }
 
 module unspike(z=0, skin=0) {
-    translate([1+dx,-4.3,z+skin/2]) rotate([0,0,45]) {
+    translate([spike_offset_x+((spike_height+skin)/sin(spike_angle))+dx,spike_offset_y,z]) rotate([0,0,spike_angle]) {
         minkowski() {
-            cube([8,4,3]);
+            cube([spike_length,spike_height,spike_height]);
             sphere(r=skin);
         }
     }
@@ -100,10 +105,10 @@ module bathroom_sensor_shell() {
                 logo_moved(theta=180, y=logo_spread);
             }
             union() {
-                methane_space_moved_skin();
+                methane_space_moved();
                 motion_moved_skin(y=-sensor_y, theta=0, rot=120);
                 motion_moved_skin(y=sensor_y, theta=90, rot=120+180);
-                yun_moved_skin();
+                yun_space_moved_skin();
                 translate([129,-7,14]) rotate([90,0,0]) m3();
                 translate([129,7,14]) rotate([-90,0,0]) m3();
             }
@@ -114,6 +119,7 @@ module bathroom_sensor_shell() {
 
 module bathroom_sensors_shown() {
     translate([0,0,36]) union() {
+        yun_moved();
         methane_moved();
         motion_moved(y=-sensor_y, theta=0, rot=120);
         motion_moved(y=sensor_y, theta=90, rot=120+180);
@@ -140,11 +146,16 @@ module motion_angle(angle = 0) {
     }
 }
 
-module yun_moved_skin() {
+module yun_space_moved_skin() {
     minkowski() {
-        yun_moved();
+        yun_space_moved();
         sphere(r=yun_skin);
     }
+}
+
+module yun_space_moved() {
+    translate([yun_x, yun_y, yun_z])
+        yun_space();
 }
 
 module yun_moved() {
@@ -158,24 +169,10 @@ module yun_holder() {
 }
 
 module yun_airgap_feet() {
-    translate([-10, -wall_width/2, -17])
+    translate([-9.2, -wall_width/2, -17])
         cube([130, 6, 3]);
-    translate([-10, wall_width/2 - 6, -17])
+    translate([-9.2, wall_width/2 - 6, -17])
         cube([130, 6, 3]);
-}
-
-module methane_moved_skin() {
-    minkowski() {
-        methane_moved();
-        sphere(r=thin_skin);
-    }
-}
-
-module methane_space_moved_skin() {
-    minkowski() {
-        methane_space_moved();
-        sphere(r=thin_skin);
-    }
 }
 
 module methane_space_moved() {
@@ -183,6 +180,13 @@ module methane_space_moved() {
         rotate([0, 90, 0]) {
             methane_space();
         }
+}
+
+module methane_space() {
+    minkowski() {
+        methane_whitespace();
+        sphere(r=thin_skin);
+    }
 }
 
 module methane_moved() {
@@ -273,13 +277,6 @@ module side_block(y=0, theta=0) {
     }
 }
 
-module methane_space() {
-    minkowski() {
-        methane();
-        sphere(r=thin_skin);
-    }
-}
-
 module text_imprint(theta=0,x=0,y=0) {
     translate([x+40,y,0]) rotate([180,0,theta]) {
         translate([0,9,0]) scale([.6,.6,1]) text("http://vor.space");
@@ -302,8 +299,16 @@ module yun() {
     include <../3d-iot-component-models/arduino-yun-mini.scad>
 }
 
+module yun_space() {
+    include <../3d-iot-component-models/arduino-yun-mini-negative-space.scad>
+}
+
 module methane() {
     include <../3d-iot-component-models/methane-sensor.scad>
+}
+
+module methane_whitespace() {
+    include <../3d-iot-component-models/methane-sensor-space.scad>
 }
 
 module motion() {

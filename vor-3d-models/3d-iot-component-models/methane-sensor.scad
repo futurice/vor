@@ -7,8 +7,8 @@ $fn = 32;
 pin_length = 8;
 
 // Uncomment one or the other depending on the use case shape desired
-//methane_sensor();
-methane_sensor_space();
+methane_sensor();
+//methane_sensor_space();
 
 module center() {
     hull() {

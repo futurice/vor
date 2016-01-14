@@ -32,12 +32,12 @@ push_button();
 
 module push_button() {
     // Uncomment one of the following for left side
-//    color("brown") mushroom();
+    color("brown") mushroom();
 //    color("grey") 8_ball();
 
     // Uncomment one of the following
-    right_half();
-//    left_half();
+//    right_half();
+    left_half();
 }
 
 module left_half() {
@@ -47,7 +47,6 @@ module left_half() {
             translate([-2*cube_side, -4*cube_side, -1])
                 cube([cube_side*4, cube_side*4, cube_side*2]);        
             yun_hole();
-            logo_moved(theta=180,y=22);
         }
     }
     color("pink") spikes();
@@ -78,35 +77,61 @@ module body() {
 	        button_moved();
             bolt_hole_low();
             bolt_hole_high();            
+             logo_moved(theta=0,y=-22); // Right
+           logo_moved(theta=180,y=22); // Left
 	    }
     }
 }
 
 module mushroom() {
-    translate([-flexure_length/2, 12, toggle_z -5])
-         cube([flexure_length, flexure_width, button_height+5]);
+    flexure();
+//    translate([-flexure_length/2, 12, toggle_z -5])
+//         cube([flexure_length, flexure_width, button_height+5]);
 
     translate([0, 0, toggle_z + button_height + rounding])
          minkowski() {
-             cylinder($fn=64, r=25 - rounding, h = 10 - 2*rounding);
-             sphere($fn=64, r=rounding);
+             cylinder($fn=128, r=25 - rounding, h = 10 - 2*rounding);
+             sphere($fn=128, r=rounding);
          }
 }
 
 module 8_ball() {
-    translate([-flexure_length*sin(45), 12, toggle_z + button_height])
-         rotate([0,45,0]) {
-             cube([flexure_length, flexure_width, flexure_length]);
-         }
+    flexure();
 
     translate([0, 0, toggle_z + button_height])
         difference() {
-            sphere($fn=64, r=25);
+            sphere($fn=128, r=25);
             union() {
                 translate([0, 0, -25]) cube(size=50,center=true);
                 text_8();
             }
         }
+}
+
+module flexure() {
+    fat_width = 12;
+
+    difference() {    
+        intersection() {
+            translate([-flexure_length*sin(45), 0, toggle_z + button_height]) rotate([0,45,0]) cube([flexure_length, flexure_width + fat_width, flexure_length]);
+            translate([0,0,45]) cube(size=45,center=true);
+        }
+#        translate([0,0,0]) union() {
+            flexure_cut_right();
+            flexure_cut_left();
+        }
+    }
+}
+
+flexure_cut_depth=12;
+
+module flexture_cut_right() {
+    cube([40,40,3]);
+    // Continue here
+}
+
+module flexture_cut_left() {
+    
 }
 
 module spikes(skin_thickness=0) {
@@ -223,7 +248,7 @@ module logo() {
 }
 
 module yun() {
-    include <../3d-iot-component-models/arduino-yun-mini.scad>
+    include <../3d-iot-component-models/arduino-yun-mini-negative-space.scad>
 }
 
 module button() {
