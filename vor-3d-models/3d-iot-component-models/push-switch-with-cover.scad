@@ -1,6 +1,6 @@
 // A push switch cover from https://www.sparkfun.com/products/9278
 
-$fn = 16;
+$fn = 256;
 
 length = 15;
 width = 16.55;
@@ -22,7 +22,7 @@ module shaft() {
 
 module plate() {
     translate([0, 0, height + plate_height]) cube([40.6, 17, .9]);
-}
+} 
 
 module button() {
     translate([length/2 + shaft_offset, width/2, height])
@@ -30,8 +30,12 @@ module button() {
 }
 
 module cover() {
-    color("red") translate([40.6 - 17.56, 0, height])
+    skin=1;
+    color("red") translate([40.6 - 17.56, 0, height+.9])
+//    difference() {
         cube([17.56, width, 43.9 - 17.56]);
+//        translate([0,skin,skin]) cube([17.56-skin, width-2*skin, 43.9 - 17.56-2*skin]);
+//    }
 }
 
 module toggle_switch_with_cover() {

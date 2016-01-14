@@ -38,12 +38,6 @@ module arduino_yun_mini() {
          bottom_slot(y = 8);
          bottom_slot(y = width - 8);
     }
-    translate([0,-50,0]) color("white") hull() {
-            header(x=2, z=height, y=0);
-            header(x=2, z=height, y=width-header_width);
-            header(x=2, z=-9.2, y=0);
-            header(x=2, z=-9.2, y=width-header_width);
-    }
 
     color("black") minkowski() {
         translate([header_top_clearance,header_top_clearance,-header_top_clearance-4]) cube([71-2*header_top_clearance, 22.9-2*header_top_clearance, 27-header_top_clearance]);

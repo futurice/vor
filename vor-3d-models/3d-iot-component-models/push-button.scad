@@ -2,7 +2,7 @@
 // Part of http://vor.space by Futurice
 // ©Futurice Oy, paul.houghton@futurice.com, CC-attribution-sharealike license, http://creativecommons.org/licenses/by-sa/4.0/
 
-$fn=64;
+$fn=32;
 
 base_side = 12;
 base_height = 3.2;

@@ -15,10 +15,10 @@ skin = 10;
 inner_skin = 8;
 thin_skin = 0.1;
 motion_skin = 0.2;
-yun_skin = 0.4;
+yun_skin = 0.3;
 
 sensor_x=94;
-sensor_y=40;
+sensor_y=42;
 
 yun_x = 7;
 yun_y = -22.9/2;
@@ -32,11 +32,7 @@ text_spread=32;
 
 spike_z1 = 23;
 spike_z2 = 51;
-spike_height=3.5;
-spike_length=7.5;
-spike_angle=45;
-spike_offset_x=-4.5;
-spike_offset_y=-(spike_length/sin(spike_angle) + spike_height/cos(spike_angle))/4;
+spike_skin = .2;
 dx=1;
 
 //bathroom_sensor_shell();
@@ -49,8 +45,8 @@ module bathroom_sensor_shell_left() {
         bathroom_sensor_shell();
         union() {
             translate([-50,0,-cube_side]) cube([cube_side*2, cube_side*2, cube_side*2]);
-            unspike(z=spike_z1,skin=.2);
-            unspike(z=spike_z2,skin=.2);
+            unspike(z=spike_z1,skin=spike_skin);
+            unspike(z=spike_z2,skin=spike_skin);
         }
     }
     spike(z=spike_z1);
@@ -62,8 +58,8 @@ module bathroom_sensor_shell_right() {
         bathroom_sensor_shell();
         union() {
             translate([-50,-cube_side*2,-cube_side]) cube([cube_side*2, cube_side*2, cube_side*2]);
-            spike(z=spike_z1,skin=.2);
-            spike(z=spike_z2,skin=.2);
+            spike(z=spike_z1,skin=spike_skin);
+            spike(z=spike_z2,skin=spike_skin);
         }
     }
     unspike(z=spike_z1);
@@ -71,18 +67,18 @@ module bathroom_sensor_shell_right() {
 }
 
 module spike(z=0, skin=0) {
-    translate([spike_offset_x+dx,spike_offset_y,z+skin/2]) rotate([0,0,spike_angle]) {
+    translate([-3+dx,-4.3,z+skin/2]) rotate([0,0,45]) {
         minkowski() {
-            cube([spike_length,spike_height,spike_height]);
+            cube([8,4,3.5]);
             sphere(r=skin);
         }
     }
 }
 
 module unspike(z=0, skin=0) {
-    translate([spike_offset_x+((spike_height+skin)/sin(spike_angle))+dx,spike_offset_y,z]) rotate([0,0,spike_angle]) {
+    translate([4+dx,-4.3,z+skin/2]) rotate([0,0,45]) {
         minkowski() {
-            cube([spike_length,spike_height,spike_height]);
+            cube([8,4,3.5]);
             sphere(r=skin);
         }
     }
@@ -169,31 +165,23 @@ module yun_holder() {
 }
 
 module yun_airgap_feet() {
-    translate([-9.2, -wall_width/2, -17])
+    translate([-9.9, -wall_width/2, -17])
         cube([130, 6, 3]);
-    translate([-9.2, wall_width/2 - 6, -17])
+    translate([-9.9, wall_width/2 - 6, -17])
         cube([130, 6, 3]);
 }
 
 module methane_space_moved() {
     translate([cube_side + skin - cube_tip_clip*2 - 5, 0, 0])
-        rotate([0, 90, 0]) {
+        rotate([0, 90, 0]) minkowski() {
             methane_space();
+            sphere(r=thin_skin);
         }
-}
-
-module methane_space() {
-    minkowski() {
-        methane_whitespace();
-        sphere(r=thin_skin);
-    }
 }
 
 module methane_moved() {
     translate([cube_side + skin - cube_tip_clip*2 - 5, 0, 0])
-        rotate([0, 90, 0]) {
-            methane();
-        }
+        rotate([0, 90, 0]) methane();
 }
 
 module poly(clip=0, shorten=0) {
@@ -253,7 +241,7 @@ module box() {
             sphere(r=skin);
         }
         union() {
-            methane_moved_skin();
+            methane_space_moved();
             difference() {
                 minkowski() {
                     translate([-skin, 0, 0])
@@ -274,6 +262,13 @@ module side_block(y=0, theta=0) {
     rotate([theta, 0, 0]) {
         translate([-2*cube_side, y, -2*cube_side])
             cube([4*cube_side, 3*wall_width, 4*cube_side]);
+    }
+}
+
+module methane_space() {
+    minkowski() {
+        methane_whitespace();
+        sphere(r=thin_skin);
     }
 }
 

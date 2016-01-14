@@ -90,8 +90,8 @@ module mushroom() {
 
     translate([0, 0, toggle_z + button_height + rounding])
          minkowski() {
-             cylinder($fn=128, r=25 - rounding, h = 10 - 2*rounding);
-             sphere($fn=128, r=rounding);
+             cylinder($fn=256, r=25 - rounding, h = 10 - 2*rounding);
+             sphere($fn=256, r=rounding);
          }
 }
 
@@ -100,7 +100,7 @@ module 8_ball() {
 
     translate([0, 0, toggle_z + button_height])
         difference() {
-            sphere($fn=128, r=25);
+            sphere($fn=256, r=25);
             union() {
                 translate([0, 0, -25]) cube(size=50,center=true);
                 text_8();

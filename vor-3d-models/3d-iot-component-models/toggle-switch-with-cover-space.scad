@@ -17,8 +17,10 @@ module toggle_switch() {
         union() {
             base();
             color("silver") prong1();
-            color("silver") prong2();
-            color("silver") prong3();
+            color("orange") hull() {
+                prong2();
+                prong3();
+            }
             color("black") shaft();
             color("silver") plate();
             color("red") toggle();
@@ -26,12 +28,8 @@ module toggle_switch() {
 }
 
 module toggle_cover() {
-    skin=1;
-    color("red") translate([40.6 - 17.56, 0, 0])
-    difference() {
-        cube([17.56, width, 43.9 - 17.56]);
-        translate([0,skin,skin]) cube([17.56-skin, width-2*skin, 43.9 - 17.56-2*skin]);
-    }
+    translate([0, 0, -height - cover_z]) 
+cover();
 }
 
 module base() {
@@ -48,8 +46,14 @@ module prong2() {
 
 module prong3() {
     corner = 7;
-    translate([-12 + corner/2, corner/2 - fudge, -11 + corner/2])
-        cube([16 - corner, width/2, 1.5]);
+    fudge = .266;
+    translate([-9 + corner/2, corner/2 - fudge, -11 + corner/2])
+    minkowski() {
+        cube([12 - corner, 4*width/5 - corner + fudge, 27 - corner]);
+        rotate([0, 45, 0]) {
+        sphere($fn=8, r = corner/2);
+       }
+    }
 }
 
 module shaft() {
