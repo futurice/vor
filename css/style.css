@@ -946,6 +946,53 @@
 			#banner-iot .inner footer {
 				margin: 2em 0 0 0;
 			}
+
+
+
+	#banner-sponsors {
+		background-color: #645862;
+		background-image: url("../images/sponsors.png");
+		background-position: top center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		color: white;
+		cursor: default;
+		padding: 6em 0;
+		text-align: center;
+	}
+
+		#banner-sponsors .inner {
+			-moz-animation: reveal-banner 1s 0.25s ease-in-out;
+			-webkit-animation: reveal-banner 1s 0.25s ease-in-out;
+			-o-animation: reveal-banner 1s 0.25s ease-in-out;
+			-ms-animation: reveal-banner 1s 0.25s ease-in-out;
+			animation: reveal-banner 1s 0.25s ease-in-out;
+			-moz-animation-fill-mode: forwards;
+			-webkit-animation-fill-mode: forwards;
+			-o-animation-fill-mode: forwards;
+			-ms-animation-fill-mode: forwards;
+			animation-fill-mode: forwards;
+			color: white;
+			display: inline-block;
+			opacity: 0;
+			padding: 3em;
+			text-align: center;
+			border-radius: 14px;
+		}
+
+			#banner-sponsors .inner p {
+				font-family: 'Roboto', sans-serif;
+				font-weight: 300;
+				margin: 0;
+			}
+
+				#banner-sponsors .inner span.larger {
+					font-family: 'Roboto', sans-serif;
+					font-size: 1.5em;
+					font-weight: 700;
+					text-decoration: none;
+				}
+
 /* Main */
 
 	#main {
