@@ -1113,6 +1113,9 @@
 	}
 
 		#footer h1 {
+			margin-bottom: 1em;
+		}
+		#footer ul.icons {
 			margin-bottom: 2em;
 		}
 
