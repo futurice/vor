@@ -84,37 +84,70 @@
 				// light
 
 				var dirLight = new THREE.DirectionalLight( 0xffffff );
-				dirLight.position.set( 200, 200, 1000 ).normalize();
+				dirLight.position.set( 400, 200, 1000 ).normalize();
 
 				camera.add( dirLight );
 				camera.add( dirLight.target );
 
 				var caseColor = 0x83D3C9;
 				var motionSensorColor = 0xffffff;
-				var methaneSensorColor = 0xFFEE62;
+				var methaneSensorColor = 0xf0f0ff;
 
-				var models = [
-					['../vor-3d-models/3d-iot-case-models/bathroom-sensor-case-left.stl', caseColor],   // half of the actual box
-					['../vor-3d-models/3d-iot-case-models/bathroom-sensor-case-right.stl', caseColor],
-					['../vor-3d-models/3d-iot-case-models/bathroom-sensor-case-methane-sensor.stl', methaneSensorColor],    // the "nose"
-					['../vor-3d-models/3d-iot-case-models/bathroom-sensor-case-right-motion-sensor.stl', motionSensorColor],
-					['../vor-3d-models/3d-iot-case-models/bathroom-sensor-case-left-motion-sensor.stl', motionSensorColor], // the "eyes"
-					// ['../vor-3d-models/3d-iot-component-models/arduino-yun-mini.stl', motionSensorColor], // the micro-computer
+				var imgPath = 'img/';
+				var imgFormat = '.png';
+				var urls = [
+					imgPath + 'wall_with_logo' + imgFormat, imgPath + 'wall_with_logo' + imgFormat,
+					imgPath + 'ceiling' + imgFormat, imgPath + 'floor' + imgFormat,
+					imgPath + 'wall_with_logo' + imgFormat, imgPath + 'wall_with_logo' + imgFormat
 				];
 
 				var loader = new THREE.STLLoader();
+				var textureCube = THREE.ImageUtils.loadTextureCube( urls );
+
+				var sensorPath = '../vor-3d-models/3d-iot-case-models/bathroom-sensor-case-';
+
+				var models = [
+					{ // half of the actual box
+						path: sensorPath+'left.stl',
+						color: caseColor,
+					},
+					{ // half of the actual box
+						path: sensorPath+'right.stl',
+						color: caseColor,
+					},
+					{ // the "nose"
+						path: sensorPath+'methane-sensor.stl',
+						color: methaneSensorColor,
+						envMap: textureCube,
+					},
+					{ // the "eyes"
+						path: sensorPath+'right-motion-sensor.stl',
+						color: motionSensorColor,
+					},
+					{
+						path: sensorPath+'left-motion-sensor.stl',
+						color: motionSensorColor,
+					},
+					// {
+					// 	path: '../vor-3d-models/3d-iot-component-models/arduino-yun-mini.stl',
+					// 	color: motionSensorColor
+					// },
+				];
 
 				models.forEach(function(model, index) {
-					var path = model[0];
-
-					loader.load(path , function ( geometry ) {
+					loader.load(model.path , function ( geometry ) {
 
 						geometry.computeVertexNormals();
 
-						var material = new THREE.MeshLambertMaterial({
-							color: model[1],
-							side: THREE.DoubleSide
-						});
+						var opts = {
+							color: model.color
+						};
+
+						if (model.envMap) {
+							opts.envMap = model.envMap
+						}
+
+						var material = new THREE.MeshLambertMaterial(opts);
 
 						var mesh = new THREE.Mesh( geometry, material );
 						mesh.position.x = offsets.x;
@@ -122,7 +155,7 @@
 						mesh.position.z = offsets.z;
 						scene.add( mesh );
 
-						model[2] = mesh;
+						model.mesh = mesh;
 
 					});
 				});
@@ -136,6 +169,22 @@
 					'animationDirection': 0,
 					'exploded': false,
 				};
+
+				var shader = THREE.ShaderLib[ "cube" ];
+				shader.uniforms[ "tCube" ].value = textureCube;
+
+				var material = new THREE.ShaderMaterial( {
+
+					fragmentShader: shader.fragmentShader,
+					vertexShader: shader.vertexShader,
+					uniforms: shader.uniforms,
+					depthWrite: false,
+					side: THREE.BackSide
+
+				} ),
+
+				mesh = new THREE.Mesh( new THREE.BoxGeometry( 1000, 1000, 1000 ), material );
+				scene.add( mesh );
 
 				// renderer
 
@@ -172,8 +221,8 @@
 
 			function separateBy(models, n) {
 				models.forEach(function(it) {
-					it[2].position.x = offsets.x - n;
-					it[2].position.y = offsets.y - n;
+					it.mesh.position.x = offsets.x - n;
+					it.mesh.position.y = offsets.y - n;
 				});
 			}
 
