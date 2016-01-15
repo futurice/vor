@@ -40,9 +40,14 @@ public class Constants {
     public static final String LAST_PERSON_KEY = "last_person";
     public static final String TEST_KEY = "test";
 
+    public static final String LOCATION_EMAIL_KEY = "email";
+    public static final String LOCATION_X_KEY = "x";
+    public static final String LOCATION_Y_KEY = "y";
+    public static final String LOCATION_FLOOR_KEY = "floor";
+
     public static final int MAP_7TH_FLOOR = 0;
     public static final int MAP_8TH_FLOOR = 1;
-    public static final int MAPS_NUMBER_OF_TABS = 2;
+    public static final int PEOPLE_TAB_INDEX = 2;
 
     public static final String EVENT_INIT = "init";
 

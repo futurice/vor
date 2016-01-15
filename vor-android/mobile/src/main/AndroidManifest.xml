@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.futurice.hereandnow"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest package="com.futurice.hereandnow"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -22,7 +21,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:allowBackup">
-        <activity android:name="net.hockeyapp.android.UpdateActivity" />
+        <activity android:name="net.hockeyapp.android.UpdateActivity"/>
         <activity
             android:name=".activity.OnboardingActivity"
             android:label="@string/app_name"
@@ -30,6 +29,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -38,7 +38,6 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
@@ -50,18 +49,8 @@
         </activity>
         <activity
             android:name=".activity.SettingsActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_settings">
-        </activity>
-        <activity
-            android:name=".activity.MapActivity"
-            android:label="@string/title_activity_map"
-            android:parentActivityName=".activity.DrawerActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.ToiletActivity"
@@ -93,25 +82,26 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
         </activity>
+
+        <service android:name=".services.LocationService">
+        </service>
+
+        <receiver android:name=".services.WifiBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE"/>
+                <action android:name="android.net.wifi.STATE_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
         <activity
-            android:name=".activity.PeopleActivity"
-            android:label="@string/title_activity_people"
+            android:name=".activity.PeopleMapActivity"
+            android:label="@string/title_activity_people_map"
             android:parentActivityName=".activity.DrawerActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
         </activity>
-        <service
-            android:name=".services.LocationService">
-        </service>
-        <receiver android:name=".services.WifiBroadcastReceiver">
-            <intent-filter>
-                <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE" />
-                <action android:name="android.net.wifi.STATE_CHANGE" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>

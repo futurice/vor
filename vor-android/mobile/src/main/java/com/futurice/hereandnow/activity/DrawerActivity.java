@@ -27,12 +27,14 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.futurice.cascade.functional.ImmutableValue;
 import com.futurice.cascade.i.IAsyncOrigin;
 import com.futurice.cascade.reactive.ReactiveValue;
 import com.futurice.cascade.util.RCLog;
 import static com.futurice.hereandnow.Constants.*;
+
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.Toilet;
 import com.futurice.hereandnow.utils.HereAndNowUtils;
@@ -197,9 +199,9 @@ public class DrawerActivity extends BaseActivity implements
         if (id == R.id.nav_my_cards) {
             startActivity(new Intent(this, CardsActivity.class));
         } else if (id == R.id.nav_people) {
-            startActivity(new Intent(this, PeopleActivity.class));
+            startActivity(new Intent(this, PeopleMapActivity.class));
         } else if (id == R.id.nav_heat_map) {
-            startActivity(new Intent(this, MapActivity.class));
+            Toast.makeText(this, "Not yet implemented. Sorry!", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_space) {
             startActivity(new Intent(this, SpaceActivity.class));
         } else if (id == R.id.nav_toilets) {
