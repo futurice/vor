@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -18,9 +19,7 @@ import com.futurice.hereandnow.HereAndNowApplication;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.fragment.MapActivityFragment;
 import com.futurice.hereandnow.fragment.PeopleFragment;
-import com.futurice.hereandnow.pojo.PersonNearby;
 import com.futurice.hereandnow.utils.BeaconLocationManager;
-import com.futurice.hereandnow.utils.HereAndNowUtils;
 import com.futurice.hereandnow.utils.PeopleManager;
 import com.futurice.hereandnow.view.CustomViewPager;
 
@@ -28,21 +27,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import static com.futurice.hereandnow.Constants.MAP_7TH_FLOOR;
-import static com.futurice.hereandnow.Constants.MAP_8TH_FLOOR;
-import static com.futurice.hereandnow.Constants.PEOPLE_TAB_INDEX;
+import static com.futurice.hereandnow.Constants.*;
 
 public class PeopleMapActivity extends BaseActivity {
 
     BeaconLocationManager mBeaconLocationManager;
     SharedPreferences mPreferences;
-    PeopleManager mPeopleManager;
+    public static PeopleManager mPeopleManager;
     CustomViewPager mViewPager;
-
-    private float mOwnX, mOwnY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,27 +71,49 @@ public class PeopleMapActivity extends BaseActivity {
             public void onLocationUpdate(String position) {
                 try {
                     JSONObject jsonObject = new JSONObject(position);
-                    String email = jsonObject.getString("email");
-                    int index = mViewPager.getCurrentItem();
-                    if (index == MAP_8TH_FLOOR) {
-                        // TODO 8th floor map
-                    } else if (index == PEOPLE_TAB_INDEX) {
-                        String userEmail = mPreferences.getString(SettingsActivity.EMAIL_KEY, "");
-                        if (!mPeopleManager.exists(email) && !email.equals(userEmail)) {
-                            mPeopleManager.addPerson(email);
-                        }
+                    final String email = jsonObject.getString(LOCATION_EMAIL_KEY);
+                    final float meterLocationX = Float.valueOf(jsonObject.getString(LOCATION_X_KEY));
+                    final float meterLocationY = Float.valueOf(jsonObject.getString(LOCATION_Y_KEY));
+                    final int floor = Integer.valueOf(jsonObject.getString(LOCATION_FLOOR_KEY));
 
-                        if (email.equals((mPreferences.getString(SettingsActivity.EMAIL_KEY, "")))) {
-                            mOwnX = Float.valueOf(jsonObject.getString("x"));
-                            mOwnY = Float.valueOf(jsonObject.getString("y"));
-                        } else {
-                            PeopleManager.Person selectedPerson = mPeopleManager.getPerson(email);
-                            selectedPerson.setLocation(Float.valueOf(jsonObject.getString("x")),
-                                    Float.valueOf(jsonObject.getString("y")));
-                        }
-
-                        updateNameList();
+                    // If this is the first location received from the user, add it to the manager.
+                    if (!mPeopleManager.exists(email)) {
+                        mPeopleManager.addPerson(email);
                     }
+                    PeopleManager.Person person = mPeopleManager.getPerson(email);
+
+                    if (person.getColor() == null) {
+                        if (person.getEmail().equals(mPreferences.getString(SettingsActivity.EMAIL_KEY, ""))) {
+                            person.setColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
+                        } else {
+                            person.setColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                        }
+                    }
+
+                    // Set the values for the person.
+                    person.setFloor(floor);
+                    person.setLocationInMeters(meterLocationX, meterLocationY);
+
+                    SectionsPagerAdapter adapter = (SectionsPagerAdapter) mViewPager.getAdapter();
+
+                    int index = mViewPager.getCurrentItem();
+                    switch (index) {
+                        case MAP_8TH_FLOOR:
+                            MapActivityFragment fragment8th = (MapActivityFragment) adapter.getItem(MAP_8TH_FLOOR);
+                            fragment8th.updateView(person);
+                            break;
+                        case MAP_7TH_FLOOR:
+                            MapActivityFragment fragment7th = (MapActivityFragment) adapter.getItem(MAP_7TH_FLOOR);
+                            fragment7th.updateView(person);
+                            break;
+                        case PEOPLE_TAB_INDEX:
+                            PeopleFragment peopleFragment = (PeopleFragment) adapter.getItem(PEOPLE_TAB_INDEX);
+                            peopleFragment.updateView();
+                            break;
+                        default:
+                            break;
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -106,33 +122,6 @@ public class PeopleMapActivity extends BaseActivity {
             @Override
             public void onConnectionError() {
                 Toast.makeText(PeopleMapActivity.this, R.string.error_connect, Toast.LENGTH_SHORT).show();
-            }
-
-            private void updateNameList() {
-                // Invalid values for the client's own location so do not update the view.
-                if (mOwnX <= 0 || mOwnY <= 0) {
-                    return;
-                }
-
-                ArrayList<PersonNearby> listValues = new ArrayList<>();
-
-                for (PeopleManager.Person person : mPeopleManager.getPeople()) {
-                    float personX = person.getMapLocationX();
-                    float personY = person.getMapLocationY();
-
-                    double distance = Math.sqrt(Math.pow(personX - mOwnX, 2) + Math.pow(personY - mOwnY, 2));
-                    PersonNearby personNearby = new PersonNearby(HereAndNowUtils.getName(person.getEmail()),
-                            distance);
-                    listValues.add(personNearby);
-                }
-
-                // Sort the values.
-                Collections.sort(listValues, new PersonNearby.PersonComparator());
-
-                // Update the view.
-                SectionsPagerAdapter adapter = (SectionsPagerAdapter) mViewPager.getAdapter();
-                PeopleFragment fragment = (PeopleFragment) adapter.getItem(PEOPLE_TAB_INDEX);
-                fragment.updateView(listValues);
             }
         });
     }

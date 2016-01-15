@@ -1,5 +1,7 @@
 package com.futurice.hereandnow.fragment;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,16 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.futurice.hereandnow.R;
+import com.futurice.hereandnow.activity.PeopleMapActivity;
+import com.futurice.hereandnow.activity.SettingsActivity;
 import com.futurice.hereandnow.adapter.PeopleNearbyAdapter;
 import com.futurice.hereandnow.pojo.PersonNearby;
+import com.futurice.hereandnow.utils.HereAndNowUtils;
+import com.futurice.hereandnow.utils.PeopleManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static com.futurice.cascade.Async.UI;
 
 public class PeopleFragment extends BaseHereAndNowFragment {
 
     private RecyclerView mRecyclerView;
+    SharedPreferences preferences;
 
     public static PeopleFragment newInstance() {
         final PeopleFragment fragment = new PeopleFragment();
@@ -38,15 +46,43 @@ public class PeopleFragment extends BaseHereAndNowFragment {
         mRecyclerView.setAdapter(new PeopleNearbyAdapter(new ArrayList<>()));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
         return v;
     }
 
-    public void updateView(ArrayList<PersonNearby> listValues) {
+    public void updateView() {
+        String userEmail = preferences.getString(SettingsActivity.EMAIL_KEY, "");
+        PeopleManager.Person user = PeopleMapActivity.mPeopleManager.getPerson(userEmail);
+        if (user == null || (user.getMeterLocationX() <= 0 || user.getMapLocationY() <= 0)) {
+            return;
+        }
+
+        ArrayList<PersonNearby> listValues = new ArrayList<>();
+
+        for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeople()) {
+            if (person.getEmail().equals(userEmail)) {
+                continue;
+            }
+
+            final float personX = person.getMeterLocationX();
+            final float personY = person.getMeterLocationY();
+
+            final double distance = Math.sqrt(Math.pow(personX - user.getMeterLocationX(), 2)
+                    + Math.pow(personY - user.getMeterLocationY(), 2));
+            PersonNearby personNearby = new PersonNearby(HereAndNowUtils.getName(person.getEmail()),
+                    distance);
+            listValues.add(personNearby);
+        }
+
+        // Sort the values.
+        Collections.sort(listValues, new PersonNearby.PersonComparator());
+
+        // Update the view.
         UI.execute(() -> {
             mRecyclerView.invalidate();
             mRecyclerView.setAdapter(new PeopleNearbyAdapter(listValues));
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         });
     }
-
 }

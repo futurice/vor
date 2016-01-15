@@ -96,6 +96,12 @@ public class PeopleManager {
         // Current location on the screen (for animation)
         float currentLocationX, currentLocationY;
 
+        // The real location in meters for calculating distances to other people.
+        float meterLocationX, meterLocationY;
+
+        // Current floor for the person.
+        int floor;
+
         public Person(int id, String email) {
             this.id = id;
             this.email = email;
@@ -123,8 +129,17 @@ public class PeopleManager {
             this.mapLocationY = newY;
         }
 
+        public void setLocationInMeters(float newX, float newY) {
+            this.meterLocationX = newX;
+            this.meterLocationY = newY;
+        }
+
         public void setClicked(boolean clicked) {
             this.clicked = clicked;
+        }
+
+        public void setFloor(int floor) {
+            this.floor = floor;
         }
 
         public float getMapLocationX() {
@@ -150,6 +165,12 @@ public class PeopleManager {
         public float getCurrentLocationY() {
             return this.currentLocationY;
         }
+
+        public float getMeterLocationX() { return this.meterLocationX; }
+
+        public float getMeterLocationY() { return this.meterLocationY; }
+
+        public int getFloor() { return this.floor; }
 
         public String getEmail() {
             return this.email;

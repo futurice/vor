@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.futurice.hereandnow.HereAndNowApplication;
 import com.futurice.hereandnow.R;
+import com.futurice.hereandnow.activity.PeopleMapActivity;
 import com.futurice.hereandnow.activity.SettingsActivity;
 import com.futurice.hereandnow.utils.BeaconLocationManager;
 import com.futurice.hereandnow.utils.HereAndNowUtils;
@@ -240,51 +241,69 @@ public class MapActivityFragment extends Fragment {
 //                UI.execute(() -> Toast.makeText(getContext(), R.string.error_connect, Toast.LENGTH_SHORT).show());
 //            }
 //        });
-//
-//        mImageView.setOnMapDrawListener(new MapView.OnMapDrawListener() {
-//            @Override
-//            public ArrayList<PeopleManager.Person> getPersons() {
-//                return peopleManager.getPeople();
-//            }
-//
-//            @Override
-//            public ArrayList<PeopleManager.Person> getFilteredPersons() {
-//                if (mFilter.isEmpty()) {
-//                    return peopleManager.getPeople();
-//                } else {
-//                    return peopleManager.filterPeople(mFilter);
-//                }
-//            }
-//        });
-//
-//        mAttacher.setOnViewTapListener((view, x, y) -> {
-//            float errorMargin = 60f * mAttacher.getScale();
-//            float marginX, marginY;
-//
-//            PeopleManager.Person closestPerson = null;
-//            float closestValue = 0f;
-//
-//            for (PeopleManager.Person person : peopleManager.getPeople()) {
-//                marginX = Math.abs(x - person.getCurrentLocationX());
-//                marginY = Math.abs(y - person.getLocationOnScreenY());
-//
-//                if (marginX < errorMargin && marginY < errorMargin) {
-//                    if (closestPerson == null) {
-//                        closestPerson = person;
-//                        closestValue = marginX + marginY;
-//                    } else {
-//                        if ((marginX + marginY) < closestValue) {
-//                            closestPerson = person;
-//                            closestValue = marginX + marginY;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            if (closestPerson != null) {
-//                closestPerson.setClicked(!closestPerson.isClicked());
-//            }
-//        });
+
+        mImageView.setOnMapDrawListener(new MapView.OnMapDrawListener() {
+            @Override
+            public ArrayList<PeopleManager.Person> getPersons() {
+                return PeopleMapActivity.mPeopleManager.getPeople();
+            }
+
+            @Override
+            public ArrayList<PeopleManager.Person> getFilteredPersons() {
+                if (mFilter.isEmpty()) {
+                    return PeopleMapActivity.mPeopleManager.getPeople();
+                } else {
+                    return PeopleMapActivity.mPeopleManager.filterPeople(mFilter);
+                }
+            }
+        });
+
+        mAttacher.setOnViewTapListener((view, x, y) -> {
+            float errorMargin = 60f * mAttacher.getScale();
+            float marginX, marginY;
+
+            PeopleManager.Person closestPerson = null;
+            float closestValue = 0f;
+
+            for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeople()) {
+                marginX = Math.abs(x - person.getCurrentLocationX());
+                marginY = Math.abs(y - person.getLocationOnScreenY());
+
+                if (marginX < errorMargin && marginY < errorMargin) {
+                    if (closestPerson == null) {
+                        closestPerson = person;
+                        closestValue = marginX + marginY;
+                    } else {
+                        if ((marginX + marginY) < closestValue) {
+                            closestPerson = person;
+                            closestValue = marginX + marginY;
+                        }
+                    }
+                }
+            }
+
+            if (closestPerson != null) {
+                closestPerson.setClicked(!closestPerson.isClicked());
+            }
+        });
+    }
+
+    public void updateView(PeopleManager.Person recentlyUpdatedPerson) {
+        float location[] = convertToMapLocation(recentlyUpdatedPerson.getMeterLocationX(),
+                recentlyUpdatedPerson.getMeterLocationY());
+        float scaleFactor = mAttacher.getScale();
+
+        // Set the new location for the person.
+        recentlyUpdatedPerson.setLocation((location[0] * scaleFactor), (location[1] * scaleFactor));
+
+        UI.execute(() -> {
+            // Invalidate the picture to make it draw the canvas again.
+            mImageView.invalidate();
+            RectF rect = mAttacher.getDisplayRect();
+            for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeople()) {
+                person.setDisplayedLocation(person.getMapLocationX() + rect.left, person.getMapLocationY()+ rect.top, false);
+            }
+        });
     }
 
     private class MapScaleListener implements PhotoViewAttacher.OnScaleChangeListener {
@@ -294,7 +313,7 @@ public class MapActivityFragment extends Fragment {
         public void onScaleChange(float scaleFactor, float focusX, float focusY) {
             mImageView.scaleRadius(scaleFactor);
 
-            for (PeopleManager.Person person : peopleManager.getPeople()) {
+            for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeople()) {
                 float oldX = person.getMapLocationX();
                 float oldY = person.getMapLocationY();
                 person.setLocation((oldX * scaleFactor), (oldY * scaleFactor));
@@ -308,7 +327,7 @@ public class MapActivityFragment extends Fragment {
         @Override
         public void onMatrixChanged(RectF rect) {
 
-            for (PeopleManager.Person person : peopleManager.getPeople()) {
+            for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeople()) {
                 float newX = person.getMapLocationX() + rect.left;
                 float newY = person.getMapLocationY() + rect.top;
                 person.setDisplayedLocation(newX, newY, true);
@@ -329,7 +348,7 @@ public class MapActivityFragment extends Fragment {
                 scaleFactorY = y / FLOOR8_HEIGHT;
                 break;
             default:
-                return new float[] {-1f, -1f};
+                return new float[] { -1f, -1f };
         }
 
         // Convert to map location.
@@ -352,7 +371,7 @@ public class MapActivityFragment extends Fragment {
             // Invalidate the picture to make it draw the canvas again.
             mImageView.invalidate();
 
-            for (PeopleManager.Person person : peopleManager.getPeople()) {
+            for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeople()) {
                 person.setLocation(person.getMapLocationX() / oldScale, person.getMapLocationY() / oldScale);
 
                 RectF rect = mAttacher.getDisplayRect();
