@@ -10,7 +10,7 @@ import com.futurice.hereandnow.HereAndNowApplication;
 import com.futurice.hereandnow.utils.BeaconLocationManager;
 
 public class LocationService extends Service {
-    private static final int DELAY = 5000;
+    private static final int DELAY = 3000;
     private static final String TAG = "LocationService";
 
     private boolean mIsRunning;

@@ -45,8 +45,11 @@ public class ImageViewActivity extends Activity {
             String type = intent.getExtras().getString(TYPE_KEY);
             try {
                 String json = getSharedPreferences(type, Context.MODE_PRIVATE).getString(type, null);
-                String base64 = (new JSONObject(json)).getString(IMAGE_KEY);
-                imageView.setImageBitmap(FileUtils.base64ToBitmap(base64));
+                JSONObject jsonObject = new JSONObject(json);
+                if (jsonObject.has(IMAGE_KEY)) {
+                    String base64 = jsonObject.getString(IMAGE_KEY);
+                    imageView.setImageBitmap(FileUtils.base64ToBitmap(base64));
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

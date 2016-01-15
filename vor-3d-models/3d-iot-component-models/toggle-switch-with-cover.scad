@@ -1,6 +1,6 @@
 // A toggle switch ordered from https://www.sparkfun.com/products/11310
 
-$fn = 64;
+$fn = 32;
 
 length = 28;
 width = 17;
@@ -17,10 +17,8 @@ module toggle_switch() {
         union() {
             base();
             color("silver") prong1();
-            color("orange") hull() {
-                prong2();
-                prong3();
-            }
+            color("silver") prong2();
+            color("silver") prong3();
             color("black") shaft();
             color("silver") plate();
             color("red") toggle();
@@ -28,8 +26,12 @@ module toggle_switch() {
 }
 
 module toggle_cover() {
-    translate([0, 0, -height - cover_z]) 
-cover();
+    skin=1;
+    color("red") translate([40.6 - 17.56, 0, 0])
+    difference() {
+        cube([17.56, width, 43.9 - 17.56]);
+        translate([0,skin,skin]) cube([17.56-skin, width-2*skin, 43.9 - 17.56-2*skin]);
+    }
 }
 
 module base() {
@@ -46,14 +48,8 @@ module prong2() {
 
 module prong3() {
     corner = 7;
-    fudge = .266;
-    translate([-9 + corner/2, corner/2 - fudge, -11 + corner/2])
-    minkowski() {
-        cube([12 - corner, 4*width/5 - corner + fudge, 27 - corner]);
-        rotate([0, 45, 0]) {
-        sphere($fn=8, r = corner/2);
-       }
-    }
+    translate([-12 + corner/2, corner/2 - fudge, -11 + corner/2])
+        cube([16 - corner, width/2, 1.5]);
 }
 
 module shaft() {

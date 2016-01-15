@@ -1,8 +1,8 @@
 // A toggle switch ordered from https://www.sparkfun.com/products/11310
-// Part of http://vor.space
+// Part of Vör, http://vor.space
 // ©Futurice Oy, paul.houghton@futurice.com, CC-attribution-sharealike license, http://creativecommons.org/licenses/by-sa/4.0/
 
-$fn = 64;
+$fn = 256;
 
 length = 71.2;
 width = 14.4;

@@ -27,9 +27,9 @@ push_button();
 
 module push_button() {
     // Uncomment one of the following 3 lines at a time
-    body();
+//    body();
 //    left_half();
-//    right_half();
+    right_half();
 }
 
 module left_half() {
@@ -86,7 +86,9 @@ module body() {
 	        toggle_moved(dx=-yun_skin, dy=-yun_skin, dz=yun_skin);
 	        toggle_moved(dx=-yun_skin, dy=-yun_skin, dz=-yun_skin);
             bolt_hole_low();
-            bolt_hole_high();            
+            bolt_hole_high();
+            logo_moved(theta=0,y=-22); // Right
+            logo_moved(theta=180,y=22); // Left
 	    }
     }
 }
@@ -175,8 +177,15 @@ module toggle_moved(dx=0, dy=0, dz=0) {
     }
 }
 
+module logo_moved(theta=0, y=0) {
+    s=.2;
+    translate([0, y, 22]) rotate([90,0,theta]) {
+        scale([s,s,s]) logo();
+    }
+}
+
 module yun() {
-    include <../3d-iot-component-models/arduino-yun-mini.scad>
+    include <../3d-iot-component-models/arduino-yun-mini-negative-space.scad>
 }
 
 module toggle() {
@@ -187,3 +196,6 @@ module bolt() {
     include <../3d-iot-component-models/m3.scad>
 }
 
+module logo() {
+    import("vor-logo-negative.stl", convexity=10);
+}

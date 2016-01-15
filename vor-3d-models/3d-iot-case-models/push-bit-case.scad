@@ -23,14 +23,21 @@ tip_surround_width = 3;
 tip_width = toggle_width + 2*tip_surround_width;
 tip_length = 46;
 
+button_height = 4 + 4.8;
+flexure_length = 24.9;
+flexure_width = 6;
+rounding = 4;
+
 push_button();
 
 module push_button() {
-    // Uncomment one of the following 3 lines at a time
-    color("brown") mushroom(); // comment this line when generating right half
-    body();
-//    right_half();
-//    left_half();
+    // Uncomment one of the following for left side
+//    color("brown") mushroom();
+    color("grey") 8_ball();
+
+    // Uncomment one of the following
+    right_half();
+    left_half();
 }
 
 module left_half() {
@@ -47,13 +54,12 @@ module left_half() {
 
 module right_half() {
     difference() {
-        union() {
-            body();
-        }
+        body();
         union() {
             translate([-2*cube_side, 0, -1])
                 cube([cube_side*4, cube_side*4, cube_side*2]);
             spikes(skin_thickness=.2);
+            logo_moved(theta=0,y=-22);
         }
     }
 }
@@ -71,22 +77,61 @@ module body() {
 	        button_moved();
             bolt_hole_low();
             bolt_hole_high();            
+             logo_moved(theta=0,y=-22); // Right
+           logo_moved(theta=180,y=22); // Left
 	    }
     }
 }
 
 module mushroom() {
-    button_height = 4.9;
-    flexure_length = 12;
-    flexure_width = 2;
-    rounding = 2;
+    flexure();
+//    translate([-flexure_length/2, 12, toggle_z -5])
+//         cube([flexure_length, flexure_width, button_height+5]);
+
     translate([0, 0, toggle_z + button_height + rounding])
          minkowski() {
-             cylinder($fn=64, r=15 - rounding, h = 5 - 2*rounding);
-             sphere($fn=64, r=rounding);
+             cylinder($fn=256, r=25 - rounding, h = 10 - 2*rounding);
+             sphere($fn=256, r=rounding);
          }
-    translate([-flexure_length/2, 9, toggle_z])
-         cube([flexure_length, flexure_width, button_height]);
+}
+
+module 8_ball() {
+    flexure();
+
+    translate([0, 0, toggle_z + button_height])
+        difference() {
+            sphere($fn=256, r=25);
+            union() {
+                translate([0, 0, -25]) cube(size=50,center=true);
+                text_8();
+            }
+        }
+}
+
+module flexure() {
+    fat_width = 12;
+
+    difference() {    
+        intersection() {
+            translate([-flexure_length*sin(45), 0, toggle_z + button_height]) rotate([0,45,0]) cube([flexure_length, flexure_width + fat_width, flexure_length]);
+            translate([0,0,45]) cube(size=45,center=true);
+        }
+#        translate([0,0,0]) union() {
+            flexure_cut_right();
+            flexure_cut_left();
+        }
+    }
+}
+
+flexure_cut_depth=12;
+
+module flexture_cut_right() {
+    cube([40,40,3]);
+    // Continue here
+}
+
+module flexture_cut_left() {
+    
 }
 
 module spikes(skin_thickness=0) {
@@ -183,8 +228,27 @@ module button_moved() {
          button();
 }
 
+module text_8() {
+    translate([20,15,18]) rotate([15,15,50+90]) {
+        translate([0,9,0]) scale([2.2,2.2,1]) linear_extrude(height=6) {
+            text("8");
+        }
+    }
+}
+
+module logo_moved(theta=0, y=0) {
+    s=.2;
+    translate([0, y, 22]) rotate([90,0,theta]) {
+        scale([s,s,s]) logo();
+    }
+}
+
+module logo() {
+    import("vor-logo-negative.stl", convexity=10);
+}
+
 module yun() {
-    include <../3d-iot-component-models/arduino-yun-mini.scad>
+    include <../3d-iot-component-models/arduino-yun-mini-negative-space.scad>
 }
 
 module button() {

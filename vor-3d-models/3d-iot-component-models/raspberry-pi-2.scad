@@ -1,6 +1,6 @@
 // A toggle switch ordered from https://www.sparkfun.com/products/11310
 
-$fn = 16;
+$fn = 256;
 
 length = 85;
 width = 56;

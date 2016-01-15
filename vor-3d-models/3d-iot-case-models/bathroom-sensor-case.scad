@@ -15,12 +15,12 @@ skin = 10;
 inner_skin = 8;
 thin_skin = 0.1;
 motion_skin = 0.2;
-yun_skin = 0.4;
+yun_skin = 0.3;
 
 sensor_x=94;
-sensor_y=40;
+sensor_y=42;
 
-yun_x = 0;
+yun_x = 7;
 yun_y = -22.9/2;
 yun_z = -3;
 
@@ -32,20 +32,21 @@ text_spread=32;
 
 spike_z1 = 23;
 spike_z2 = 51;
+spike_skin = .2;
 dx=1;
 
 //bathroom_sensor_shell();
 //bathroom_sensor_shell_left();
 bathroom_sensor_shell_right();
-//bathroom_sensors_shown();
+bathroom_sensors_shown();
 
 module bathroom_sensor_shell_left() {
     difference() {
         bathroom_sensor_shell();
         union() {
             translate([-50,0,-cube_side]) cube([cube_side*2, cube_side*2, cube_side*2]);
-            unspike(z=spike_z1,skin=.2);
-            unspike(z=spike_z2,skin=.2);
+            unspike(z=spike_z1,skin=spike_skin);
+            unspike(z=spike_z2,skin=spike_skin);
         }
     }
     spike(z=spike_z1);
@@ -57,8 +58,8 @@ module bathroom_sensor_shell_right() {
         bathroom_sensor_shell();
         union() {
             translate([-50,-cube_side*2,-cube_side]) cube([cube_side*2, cube_side*2, cube_side*2]);
-            spike(z=spike_z1,skin=.2);
-            spike(z=spike_z2,skin=.2);
+            spike(z=spike_z1,skin=spike_skin);
+            spike(z=spike_z2,skin=spike_skin);
         }
     }
     unspike(z=spike_z1);
@@ -66,18 +67,18 @@ module bathroom_sensor_shell_right() {
 }
 
 module spike(z=0, skin=0) {
-    translate([-5+dx,-4.3,z+skin/2]) rotate([0,0,45]) {
+    translate([-3+dx,-4.3,z+skin/2]) rotate([0,0,45]) {
         minkowski() {
-            cube([8,4,3]);
+            cube([8,4,3.5]);
             sphere(r=skin);
         }
     }
 }
 
 module unspike(z=0, skin=0) {
-    translate([1+dx,-4.3,z+skin/2]) rotate([0,0,45]) {
+    translate([4+dx,-4.3,z+skin/2]) rotate([0,0,45]) {
         minkowski() {
-            cube([8,4,3]);
+            cube([8,4,3.5]);
             sphere(r=skin);
         }
     }
@@ -100,10 +101,10 @@ module bathroom_sensor_shell() {
                 logo_moved(theta=180, y=logo_spread);
             }
             union() {
-                methane_space_moved_skin();
+                methane_space_moved();
                 motion_moved_skin(y=-sensor_y, theta=0, rot=120);
                 motion_moved_skin(y=sensor_y, theta=90, rot=120+180);
-                yun_moved_skin();
+                yun_space_moved_skin();
                 translate([129,-7,14]) rotate([90,0,0]) m3();
                 translate([129,7,14]) rotate([-90,0,0]) m3();
             }
@@ -114,6 +115,7 @@ module bathroom_sensor_shell() {
 
 module bathroom_sensors_shown() {
     translate([0,0,36]) union() {
+        yun_moved();
         methane_moved();
         motion_moved(y=-sensor_y, theta=0, rot=120);
         motion_moved(y=sensor_y, theta=90, rot=120+180);
@@ -140,11 +142,16 @@ module motion_angle(angle = 0) {
     }
 }
 
-module yun_moved_skin() {
+module yun_space_moved_skin() {
     minkowski() {
-        yun_moved();
+        yun_space_moved();
         sphere(r=yun_skin);
     }
+}
+
+module yun_space_moved() {
+    translate([yun_x, yun_y, yun_z])
+        yun_space();
 }
 
 module yun_moved() {
@@ -158,38 +165,23 @@ module yun_holder() {
 }
 
 module yun_airgap_feet() {
-    translate([-10, -wall_width/2, -17])
+    translate([-9.9, -wall_width/2, -17])
         cube([130, 6, 3]);
-    translate([-10, wall_width/2 - 6, -17])
+    translate([-9.9, wall_width/2 - 6, -17])
         cube([130, 6, 3]);
-}
-
-module methane_moved_skin() {
-    minkowski() {
-        methane_moved();
-        sphere(r=thin_skin);
-    }
-}
-
-module methane_space_moved_skin() {
-    minkowski() {
-        methane_space_moved();
-        sphere(r=thin_skin);
-    }
 }
 
 module methane_space_moved() {
     translate([cube_side + skin - cube_tip_clip*2 - 5, 0, 0])
-        rotate([0, 90, 0]) {
+        rotate([0, 90, 0]) minkowski() {
             methane_space();
+            sphere(r=thin_skin);
         }
 }
 
 module methane_moved() {
     translate([cube_side + skin - cube_tip_clip*2 - 5, 0, 0])
-        rotate([0, 90, 0]) {
-            methane();
-        }
+        rotate([0, 90, 0]) methane();
 }
 
 module poly(clip=0, shorten=0) {
@@ -249,7 +241,7 @@ module box() {
             sphere(r=skin);
         }
         union() {
-            methane_moved_skin();
+            methane_space_moved();
             difference() {
                 minkowski() {
                     translate([-skin, 0, 0])
@@ -275,7 +267,7 @@ module side_block(y=0, theta=0) {
 
 module methane_space() {
     minkowski() {
-        methane();
+        methane_whitespace();
         sphere(r=thin_skin);
     }
 }
@@ -302,8 +294,16 @@ module yun() {
     include <../3d-iot-component-models/arduino-yun-mini.scad>
 }
 
+module yun_space() {
+    include <../3d-iot-component-models/arduino-yun-mini-negative-space.scad>
+}
+
 module methane() {
     include <../3d-iot-component-models/methane-sensor.scad>
+}
+
+module methane_whitespace() {
+    include <../3d-iot-component-models/methane-sensor-space.scad>
 }
 
 module motion() {

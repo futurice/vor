@@ -253,7 +253,7 @@ public class MapActivityFragment extends Fragment {
             for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeople()) {
                 float oldX = person.getMapLocationX();
                 float oldY = person.getMapLocationY();
-                person.setLocation((oldX * scaleFactor), (oldY * scaleFactor));
+                person.setLocation((oldX * scaleFactor), (oldY * scaleFactor), false);
             }
         }
     }
@@ -309,7 +309,7 @@ public class MapActivityFragment extends Fragment {
             mImageView.invalidate();
 
             for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeople()) {
-                person.setLocation(person.getMapLocationX() / oldScale, person.getMapLocationY() / oldScale);
+                person.setLocation(person.getMapLocationX() / oldScale, person.getMapLocationY() / oldScale, false);
 
                 RectF rect = mAttacher.getDisplayRect();
                 float newLocationX = person.getMapLocationX() + rect.left;

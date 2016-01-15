@@ -20,6 +20,7 @@ public class Constants {
     public static final String TEMPERATURE_KEY = "temperature";
     public static final String TYPE_KEY = "type";
     public static final String LOCATION_KEY = "location";
+    public static final String KEEP_ALIVE_KEY = "keep-alive";
     public static final String MESSAGE_KEY = "message";
     public static final String INIT_BEACONS_KEY = "beacons";
     public static final String INIT_MESSAGES_KEY = "messages";

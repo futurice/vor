@@ -2,7 +2,7 @@
 // Part of http://vor.space
 // ©Futurice Oy, paul.houghton@futurice.com, CC-attribution-sharealike license, http://creativecommons.org/licenses/by-sa/4.0/
 
-$fn=64;
+$fn=256;
 
 shaft_radius = 3.2/2;
 head_radius = 5.9/2;
