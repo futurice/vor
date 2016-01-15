@@ -16,20 +16,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.futurice.hereandnow.HereAndNowApplication;
 import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.activity.PeopleMapActivity;
-import com.futurice.hereandnow.activity.SettingsActivity;
 import com.futurice.hereandnow.utils.BeaconLocationManager;
 import com.futurice.hereandnow.utils.HereAndNowUtils;
 import com.futurice.hereandnow.utils.PeopleManager;
 import com.futurice.hereandnow.view.MapView;
 import static com.futurice.hereandnow.Constants.*;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -183,64 +178,6 @@ public class MapActivityFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-//        beaconLocationManager.setOnLocationUpdateListener(new BeaconLocationManager.OnLocationUpdateListener() {
-//            @Override
-//            public void onLocationUpdate(String position) {
-//                if (getActivity() == null) {
-//                    return;
-//                }
-//
-//                try {
-//                    JSONObject jsonObject = new JSONObject(position);
-//                    String email = jsonObject.getString("email");
-//
-//                    // Check if this is a new person not initialized yet.
-//                    if (!peopleManager.exists(email)) {
-//                        peopleManager.addPerson(email);
-//                    }
-//                    PeopleManager.Person selectedPerson = peopleManager.getPerson(email);
-//                    if (selectedPerson.getColor() == null) {
-//                        if (selectedPerson.getEmail().equals(preferences.getString(SettingsActivity.EMAIL_KEY, ""))) {
-//                            selectedPerson.setColor(ContextCompat.getColor(getContext(), R.color.orange));
-//                        } else {
-//                            selectedPerson.setColor(ContextCompat.getColor(getContext(), R.color.green));
-//                        }
-//                    }
-//
-//                    // Calculate a new location for the person.
-//                    float location[] = convertToMapLocation(
-//                            Float.valueOf(jsonObject.getString("x")),
-//                            Float.valueOf(jsonObject.getString("y")));
-//
-//                    float scaleFactor = mAttacher.getScale();
-//                    RectF rect = mAttacher.getDisplayRect();
-//
-//                    // Set the new location for the person.
-//                    selectedPerson.setLocation((location[0] * scaleFactor), (location[1] * scaleFactor));
-//
-//                    UI.execute(() -> {
-//                        // Invalidate the picture to make it draw the canvas again.
-//                        mImageView.invalidate();
-//                        for (PeopleManager.Person person : peopleManager.getPeople()) {
-//                            person.setDisplayedLocation(person.getMapLocationX() + rect.left, person.getMapLocationY()+ rect.top, false);
-//                        }
-//                    });
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            public void onConnectionError() {
-//                if (getActivity() == null) {
-//                    return;
-//                }
-//
-//                UI.execute(() -> Toast.makeText(getContext(), R.string.error_connect, Toast.LENGTH_SHORT).show());
-//            }
-//        });
 
         mImageView.setOnMapDrawListener(new MapView.OnMapDrawListener() {
             @Override
