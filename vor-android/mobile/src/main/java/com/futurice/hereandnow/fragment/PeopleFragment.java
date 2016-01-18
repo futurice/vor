@@ -14,6 +14,7 @@ import com.futurice.hereandnow.R;
 import com.futurice.hereandnow.activity.PeopleMapActivity;
 import com.futurice.hereandnow.activity.SettingsActivity;
 import com.futurice.hereandnow.adapter.PeopleNearbyAdapter;
+import com.futurice.hereandnow.interfaces.FragmentLifecycle;
 import com.futurice.hereandnow.pojo.PersonNearby;
 import com.futurice.hereandnow.utils.HereAndNowUtils;
 import com.futurice.hereandnow.utils.PeopleManager;
@@ -23,7 +24,7 @@ import java.util.Collections;
 
 import static com.futurice.cascade.Async.UI;
 
-public class PeopleFragment extends BaseHereAndNowFragment {
+public class PeopleFragment extends BaseHereAndNowFragment implements FragmentLifecycle {
 
     private RecyclerView mRecyclerView;
     SharedPreferences preferences;
@@ -51,17 +52,22 @@ public class PeopleFragment extends BaseHereAndNowFragment {
         return v;
     }
 
+    @Override
+    public void onResumeFragment() {
+        updateView();
+    }
+
     public void updateView() {
         String userEmail = preferences.getString(SettingsActivity.EMAIL_KEY, "");
         PeopleManager.Person user = PeopleMapActivity.mPeopleManager.getPerson(userEmail);
-        if (user == null || (user.getMeterLocationX() <= 0 || user.getMapLocationY() <= 0)) {
+        if (user == null) {
             return;
         }
 
         ArrayList<PersonNearby> listValues = new ArrayList<>();
 
         for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeople()) {
-            if (person.getEmail().equals(userEmail)) {
+            if (person.getEmail().equals(userEmail) || person.getFloor() != user.getFloor()) {
                 continue;
             }
 
