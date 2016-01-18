@@ -11,7 +11,7 @@
 
     <fragment
         android:id="@+id/viewer"
-        android:name="com.futurice.hereandnow.fragment.CardsNowFragment"
+        android:name="com.futurice.vor.fragment.CardsNowFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

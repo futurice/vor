@@ -3,7 +3,7 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="com.futurice.hereandnow.activity.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="com.futurice.vor.activity.SettingsActivity$GeneralPreferenceFragment"
         android:title="Preferences" />
 
 </preference-headers>
