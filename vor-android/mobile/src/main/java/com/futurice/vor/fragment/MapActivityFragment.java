@@ -24,6 +24,7 @@ import com.futurice.vor.utils.BeaconLocationManager;
 import com.futurice.vor.utils.VorUtils;
 import com.futurice.vor.utils.PeopleManager;
 import com.futurice.vor.view.MapView;
+import com.futurice.vor.interfaces.FragmentLifecycle;
 import static com.futurice.vor.Constants.*;
 
 import java.util.ArrayList;
@@ -34,12 +35,13 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 import static com.futurice.cascade.Async.UI;
 
-public class MapActivityFragment extends Fragment {
+public class MapActivityFragment extends Fragment implements FragmentLifecycle {
     // Real life dimensions for the map in meters.
     private static final float FLOOR8_WIDTH = 46.1652873563f;
     private static final float FLOOR8_HEIGHT = 39.2249350649f;
     private static final float FLOOR7_WIDTH = 16.2423255f;
     private static final float FLOOR7_HEIGHT = 28.4685258f;
+    private static final int FLOOR_NUMBER_OFFSET = 7;
 
     private static final int REQUEST_ACCESS_COARSE_LOCATION = 71;
     private static final int REQUEST_ACCESS_FINE_LOCATION = 72;
@@ -52,6 +54,8 @@ public class MapActivityFragment extends Fragment {
     String mFilter = "";
 
     SharedPreferences preferences;
+
+    int currentFloor;
 
     public MapActivityFragment() {}
 
@@ -67,6 +71,7 @@ public class MapActivityFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        currentFloor = getArguments().getInt(FLOOR_KEY, 0) + FLOOR_NUMBER_OFFSET;
     }
 
     @Override
@@ -182,19 +187,22 @@ public class MapActivityFragment extends Fragment {
         mImageView.setOnMapDrawListener(new MapView.OnMapDrawListener() {
             @Override
             public ArrayList<PeopleManager.Person> getPersons() {
-                return PeopleMapActivity.mPeopleManager.getPeople();
+                return PeopleMapActivity.mPeopleManager.getPeopleWithFloor(currentFloor);
             }
 
             @Override
             public ArrayList<PeopleManager.Person> getFilteredPersons() {
                 if (mFilter.isEmpty()) {
-                    return PeopleMapActivity.mPeopleManager.getPeople();
+                    return PeopleMapActivity.mPeopleManager.getPeopleWithFloor(currentFloor);
                 } else {
-                    return PeopleMapActivity.mPeopleManager.filterPeople(mFilter);
+                    return PeopleMapActivity.mPeopleManager.filterPeopleWithFloor(mFilter, currentFloor);
                 }
             }
         });
 
+        /**
+         * Search for the closest person related to the click and set its state accordingly.
+         */
         mAttacher.setOnViewTapListener((view, x, y) -> {
             float errorMargin = 60f * mAttacher.getScale();
             float marginX, marginY;
@@ -202,7 +210,7 @@ public class MapActivityFragment extends Fragment {
             PeopleManager.Person closestPerson = null;
             float closestValue = 0f;
 
-            for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeople()) {
+            for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeopleWithFloor(currentFloor)) {
                 marginX = Math.abs(x - person.getCurrentLocationX());
                 marginY = Math.abs(y - person.getLocationOnScreenY());
 
@@ -226,6 +234,10 @@ public class MapActivityFragment extends Fragment {
     }
 
     public void updateView(PeopleManager.Person recentlyUpdatedPerson) {
+        if (recentlyUpdatedPerson.getFloor() != currentFloor) {
+            return;
+        }
+
         float location[] = convertToMapLocation(recentlyUpdatedPerson.getMeterLocationX(),
                 recentlyUpdatedPerson.getMeterLocationY());
         float scaleFactor = mAttacher.getScale();
@@ -237,10 +249,16 @@ public class MapActivityFragment extends Fragment {
             // Invalidate the picture to make it draw the canvas again.
             mImageView.invalidate();
             RectF rect = mAttacher.getDisplayRect();
-            for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeople()) {
+            for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeopleWithFloor(currentFloor)) {
                 person.setDisplayedLocation(person.getMapLocationX() + rect.left, person.getMapLocationY()+ rect.top, false);
             }
         });
+    }
+
+    @Override
+    public void onResumeFragment() {
+        mImageView.requestLayout(); // Force re-calculating the dimensions.
+        redrawMarkers();
     }
 
     private class MapScaleListener implements PhotoViewAttacher.OnScaleChangeListener {
@@ -250,7 +268,7 @@ public class MapActivityFragment extends Fragment {
         public void onScaleChange(float scaleFactor, float focusX, float focusY) {
             mImageView.scaleRadius(scaleFactor);
 
-            for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeople()) {
+            for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeopleWithFloor(currentFloor)) {
                 float oldX = person.getMapLocationX();
                 float oldY = person.getMapLocationY();
                 person.setLocation((oldX * scaleFactor), (oldY * scaleFactor), false);
@@ -264,7 +282,7 @@ public class MapActivityFragment extends Fragment {
         @Override
         public void onMatrixChanged(RectF rect) {
 
-            for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeople()) {
+            for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeopleWithFloor(currentFloor)) {
                 float newX = person.getMapLocationX() + rect.left;
                 float newY = person.getMapLocationY() + rect.top;
                 person.setDisplayedLocation(newX, newY, true);
@@ -308,10 +326,35 @@ public class MapActivityFragment extends Fragment {
             // Invalidate the picture to make it draw the canvas again.
             mImageView.invalidate();
 
-            for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeople()) {
+            for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeopleWithFloor(currentFloor)) {
                 person.setLocation(person.getMapLocationX() / oldScale, person.getMapLocationY() / oldScale, false);
 
                 RectF rect = mAttacher.getDisplayRect();
+                float newLocationX = person.getMapLocationX() + rect.left;
+                float newLocationY = person.getMapLocationY() + rect.top;
+
+                person.setDisplayedLocation(newLocationX, newLocationY, false);
+                person.setCurrentLocation(newLocationX, newLocationY);
+            }
+        });
+    }
+
+    /**
+     * Redraw all markers and set them straight to their current locations without animations.
+     */
+    private void redrawMarkers() {
+        UI.execute(() -> {
+            mImageView.requestLayout(); // Force re-calculating dimensions.
+            mImageView.invalidate();
+
+            final float scaleFactor = mAttacher.getScale();
+            RectF rect = mAttacher.getDisplayRect();
+
+            for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeopleWithFloor(currentFloor)) {
+                float[] screenLocations = convertToMapLocation(person.getMeterLocationX(),
+                        person.getMeterLocationY());
+                person.setLocation(screenLocations[0] * scaleFactor, screenLocations[1] * scaleFactor);
+
                 float newLocationX = person.getMapLocationX() + rect.left;
                 float newLocationY = person.getMapLocationY() + rect.top;
 

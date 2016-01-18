@@ -77,13 +77,50 @@ public class PeopleManager {
     }
 
     /**
+     * Get people that are located in a given floor.
+     * @param floor floor number.
+     * @return A new list of people located in the floor.
+     */
+    public ArrayList<Person> getPeopleWithFloor(int floor) {
+        ArrayList<Person> filteredPeople = new ArrayList<>();
+
+        for (Person person: people) {
+            if (person.getFloor() == floor) {
+                filteredPeople.add(person);
+            }
+        }
+
+        return filteredPeople;
+    }
+
+    /**
+     * Filter people based on an argument
+     * @param filter What to search floor.
+     * @param floor In which floor.
+     * @return New list of people matching the arguments.
+     */
+    public ArrayList<Person> filterPeopleWithFloor(String filter, int floor) {
+        ArrayList<Person> filteredPeople = new ArrayList<>();
+        filter = filter.toLowerCase();
+
+        for (Person person : people) {
+            if (VorUtils.getName(person.getEmail()).toLowerCase().contains(filter)
+                    && person.getFloor() == floor) {
+                filteredPeople.add(person);
+            }
+        }
+
+        return filteredPeople;
+    }
+
+    /**
      * Class for keeping track of a person's location and color on the map.
      *
      */
     public class Person {
         private static final float OLD_LOCATION_AVERAGE_FACTOR = 0.7f;
         private static final float NEW_LOCATION_AVERAGE_FACTOR = 0.3f;
-        private static final float MAXIMUM_WALKING_DISTANCE = 300f;
+        private static final float MAXIMUM_WALKING_DISTANCE = 200f;
 
         private int id;
         private String email;
