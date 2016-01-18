@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:padding="30dp"
-    tools:context="com.futurice.hereandnow.activity.OnboardingActivity">
+    tools:context="com.futurice.vor.activity.OnboardingActivity">
 
     <ImageView
         android:id="@+id/logoOnboarding"

@@ -4,5 +4,5 @@
     android:id="@+id/now_cards_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.futurice.hereandnow.fragment.CardsNowFragment"
+    tools:context="com.futurice.vor.fragment.CardsNowFragment"
     />

@@ -7,7 +7,7 @@
     android:background="@color/background_grey"
     android:padding="@dimen/margin_small">
 
-    <com.futurice.hereandnow.view.MapView
+    <com.futurice.vor.view.MapView
         android:id="@+id/toiletMap"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

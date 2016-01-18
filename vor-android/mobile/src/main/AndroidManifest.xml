@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.futurice.hereandnow"
+<manifest package="com.futurice.vor"
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools">
 
@@ -14,7 +14,7 @@
         android:required="false"/>
 
     <application
-        android:name=".HereAndNowApplication"
+        android:name=".VorApplication"
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
@@ -23,7 +23,7 @@
         tools:replace="android:icon, android:allowBackup">
         <activity android:name="net.hockeyapp.android.UpdateActivity"/>
         <activity
-            android:name=".activity.OnboardingActivity"
+            android:name="com.futurice.vor.activity.OnboardingActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.DrawerActivity"
+            android:name="com.futurice.vor.activity.DrawerActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -42,51 +42,51 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
         </activity>
-        <activity android:name=".activity.ImageViewActivity">
+        <activity android:name="com.futurice.vor.activity.ImageViewActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.DrawerActivity"/>
+                android:value="com.futurice.vor.activity.DrawerActivity"/>
         </activity>
         <activity
-            android:name=".activity.SettingsActivity"
+            android:name="com.futurice.vor.activity.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activity.ToiletActivity"
+            android:name="com.futurice.vor.activity.ToiletActivity"
             android:label="@string/title_activity_toilet"
-            android:parentActivityName=".activity.DrawerActivity"
+            android:parentActivityName="com.futurice.vor.activity.DrawerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
+                android:value="com.futurice.vor.activity.DrawerActivity"/>
         </activity>
         <activity
-            android:name=".activity.SpaceActivity"
+            android:name="com.futurice.vor.activity.SpaceActivity"
             android:label="@string/title_activity_space"
-            android:parentActivityName=".activity.DrawerActivity"
+            android:parentActivityName="com.futurice.vor.activity.DrawerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
+                android:value="com.futurice.vor.activity.DrawerActivity"/>
         </activity>
         <activity
-            android:name=".activity.CardsActivity"
+            android:name="com.futurice.vor.activity.CardsActivity"
             android:label="@string/title_activity_cards"
-            android:parentActivityName=".activity.DrawerActivity"
+            android:parentActivityName="com.futurice.vor.activity.DrawerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
+                android:value="com.futurice.vor.activity.DrawerActivity"/>
         </activity>
 
-        <service android:name=".services.LocationService">
+        <service android:name="com.futurice.vor.services.LocationService">
         </service>
 
-        <receiver android:name=".services.WifiBroadcastReceiver">
+        <receiver android:name="com.futurice.vor.services.WifiBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE"/>
                 <action android:name="android.net.wifi.STATE_CHANGE"/>
@@ -94,13 +94,13 @@
         </receiver>
 
         <activity
-            android:name=".activity.PeopleMapActivity"
+            android:name="com.futurice.vor.activity.PeopleMapActivity"
             android:label="@string/title_activity_people_map"
-            android:parentActivityName=".activity.DrawerActivity"
+            android:parentActivityName="com.futurice.vor.activity.DrawerActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.futurice.hereandnow.activity.DrawerActivity"/>
+                android:value="com.futurice.vor.activity.DrawerActivity"/>
         </activity>
     </application>
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.futurice.hereandnow.activity.ToiletActivity">
+    tools:context="com.futurice.vor.activity.ToiletActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <com.futurice.hereandnow.view.CustomViewPager
+    <com.futurice.vor.view.CustomViewPager
         android:id="@+id/toiletViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
