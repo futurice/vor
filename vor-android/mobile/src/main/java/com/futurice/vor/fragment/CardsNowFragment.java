@@ -79,9 +79,11 @@ public class CardsNowFragment extends BaseVorFragment {
                         JSONObject beacon = (JSONObject) jsonArray.get(i);
                         String identifier = beacon.getString(ID_KEY);
                         int floor = beacon.getInt(FLOOR_KEY);
+                        float x = (float) beacon.getDouble(LOCATION_X_KEY);
+                        float y = (float) beacon.getDouble(LOCATION_Y_KEY);
 
                         BeaconLocationManager bm = VorApplication.getBeaconLocationManager();
-                        bm.addBeacon(identifier, floor, getContext());
+                        bm.addBeacon(identifier, floor, x, y, getContext());
                     }
 
                     // Start the manager.
