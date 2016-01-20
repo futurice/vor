@@ -179,6 +179,7 @@ public class CardsNowFragment extends BaseVorFragment {
     @NonNull
     protected List<ITopic> createPreBuiltTopics() {
         final List<ITopic> list = new ArrayList<>();
+//        list.add(Cards.printer3d(getActivity()));
         return list;
     }
 

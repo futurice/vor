@@ -16,6 +16,29 @@ import static com.futurice.vor.Constants.*;
 public class Cards {
 
     /**
+     * 3D printing card
+     * @param context the context
+     * @return the 3d printing topic
+     */
+    public static ITopic printer3d(Context context) {
+        final Topic topic = new Topic("3D Printing", 110, context, PRINTER_3D_KEY);
+        topic.setText("What we are 3D printing");
+        topic.setIsPrebuiltTopic(true);
+        topic.setCardType(PRINTER_3D_KEY);
+        topic.setImageUri(VorUtils.getResourceUri(R.raw.card_3d));
+
+        ImageCard card = new ImageCard("__", 110, context);
+        card.setCardType(PRINTER_3D_KEY);
+        card.setText("3D Printer");
+        card.setAuthor("Vör", "V001");
+        card.setDate(new Date());
+//        card.setImageBase64(file);
+
+        topic.addCard(card);
+        return topic;
+    }
+
+    /**
      * Pool card
      * @param file the file in Base64
      * @return the pool topic

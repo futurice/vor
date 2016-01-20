@@ -31,6 +31,7 @@ public class Constants {
     public static final String ITEM_KEY = "item";
     public static final String STATUS_KEY = "status";
     public static final String POOL_KEY = "pool";
+    public static final String PRINTER_3D_KEY = "3d";
     public static final String TRACK_ITEM_KEY = "track";
     public static final String RESERVED_KEY = "reserved";
     public static final String METHANE_KEY = "methane";
