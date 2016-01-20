@@ -63,7 +63,11 @@ public class BeaconLocationManager {
         }
     }
 
-    public void addBeacon(@NonNull final String id, @NonNull final int floor, Context c) {
+    public void addBeacon(@NonNull final String id,
+                          @NonNull final int floor,
+                          @NonNull final float x,
+                          @NonNull final float y,
+                          Context c) {
         String[] splitted = id.split("-");
         String identifier = String.format("%s-%s", splitted[0], splitted[1]);
         int major = Integer.valueOf(splitted[2]);
@@ -78,7 +82,7 @@ public class BeaconLocationManager {
             }
         }
 
-        FutuBeacon beacon = new FutuBeacon(identifier, major, minor, floor);
+        FutuBeacon beacon = new FutuBeacon(identifier, major, minor, floor, x, y);
         BeaconManager manager = new BeaconManager(c);
         Region beaconRegion = new Region(beacon.identifier, proximityUUID, beacon.major, beacon.minor);
         BeaconCollection collection = new BeaconCollection(beacon, manager, beaconRegion);
@@ -155,12 +159,16 @@ public class BeaconLocationManager {
         Integer major;
         Integer minor;
         Integer floor;
+        Float x;
+        Float y;
 
-        private FutuBeacon(String identifier, Integer major, Integer minor, Integer floor) {
+        private FutuBeacon(String identifier, Integer major, Integer minor, Integer floor, Float x, Float y) {
             this.identifier = identifier;
             this.major = major;
             this.minor = minor;
             this.floor = floor;
+            this.x = x;
+            this.y = y;
         }
     }
 
