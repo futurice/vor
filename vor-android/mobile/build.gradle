@@ -117,4 +117,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
+dependencies {
+    compile 'com.android.support:support-v4:23.+'
+}
 

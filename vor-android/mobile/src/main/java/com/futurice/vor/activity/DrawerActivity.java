@@ -201,7 +201,7 @@ public class DrawerActivity extends BaseActivity implements
         } else if (id == R.id.nav_people) {
             startActivity(new Intent(this, PeopleMapActivity.class));
         } else if (id == R.id.nav_heat_map) {
-            Toast.makeText(this, "Not yet implemented. Sorry!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, HeatMapActivity.class));
         } else if (id == R.id.nav_space) {
             startActivity(new Intent(this, SpaceActivity.class));
         } else if (id == R.id.nav_toilets) {

@@ -86,4 +86,5 @@
     <string name="change_floor">Change floor</string>
     <string name="people_nearby">People Nearby</string>
     <string name="title_activity_people_map">People</string>
+    <string name="title_activity_heat_map">Heat Map</string>
 </resources>
