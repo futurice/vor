@@ -374,6 +374,10 @@ public class MapActivityFragment extends Fragment implements FragmentLifecycle {
     private ArrayList<DrawableBeacon> createDrawableBeacons(
             List<Map.Entry<BeaconLocationManager.FutuBeacon, Double>> beacons) {
         ArrayList<DrawableBeacon> filteredBeacons = new ArrayList<>();
+        if (beacons == null) {
+            return filteredBeacons;
+        }
+
         RectF rect = mAttacher.getDisplayRect();
 
         for (Map.Entry<BeaconLocationManager.FutuBeacon, Double> beaconEntry : beacons) {

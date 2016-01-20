@@ -102,6 +102,8 @@ public class BeaconLocationManager {
             return;
         }
         sendToServer(sorted);
+
+        flushBeaconDistances();
     }
 
     private static List<Map.Entry<FutuBeacon, Double>> sortByDistance(Map<FutuBeacon, Double> unsorted) {
@@ -162,6 +164,15 @@ public class BeaconLocationManager {
             return null;
         }
         return sorted.subList(0, 3);
+    }
+
+    /**
+     * Flush the accuracy periodically so that no old values are left behind.
+     */
+    private void flushBeaconDistances() {
+        for (BeaconCollection collection : beacons) {
+            collection.accuracy = 0;
+        }
     }
 
     public static class FutuBeacon {
