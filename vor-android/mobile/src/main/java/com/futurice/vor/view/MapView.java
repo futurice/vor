@@ -11,6 +11,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 
+import com.futurice.vor.fragment.MapActivityFragment;
+import com.futurice.vor.utils.BeaconLocationManager;
 import com.futurice.vor.utils.VorUtils;
 import com.futurice.vor.utils.PeopleManager;
 
@@ -34,7 +36,7 @@ public class MapView extends PhotoView {
     Bitmap mBitmap;
     Canvas mCanvas;
     Context context;
-    Paint namePaint;
+    Paint namePaint, distancePaint;
     Rect bounds;
 
     private OnMapDrawListener onMapDrawListener;
@@ -52,6 +54,12 @@ public class MapView extends PhotoView {
         namePaint.setAntiAlias(true);
         namePaint.setTextAlign(Paint.Align.CENTER);
         namePaint.setStyle(Paint.Style.FILL);
+
+        distancePaint = new Paint();
+        distancePaint.setColor(Color.BLACK);
+        distancePaint.setTextSize(textSize);
+        distancePaint.setAntiAlias(true);
+        distancePaint.setStyle(Paint.Style.STROKE);
 
         bounds = new Rect();
 
@@ -115,6 +123,19 @@ public class MapView extends PhotoView {
             }
         }
 
+        /**
+         * Display distance to the three closest beacons.
+         */
+        for (MapActivityFragment.DrawableBeacon beacon : onMapDrawListener.getBeacons()) {
+            String distanceAsText = String.format("%.2f", beacon.distance);
+            distancePaint.getTextBounds(distanceAsText, 0, distanceAsText.length(), bounds);
+
+            canvas.drawText(distanceAsText,
+                    beacon.x - (bounds.width() / 2),
+                    beacon.y,
+                    distancePaint);
+        }
+
         h.postDelayed(runnable, FRAME_RATE);
     }
 
@@ -147,6 +168,7 @@ public class MapView extends PhotoView {
     public void scaleRadius(float scaleFactor) {
         textSize *= scaleFactor;
         namePaint.setTextSize(textSize);
+        distancePaint.setTextSize(textSize);
     }
 
     public void resetTextSize() {
@@ -158,6 +180,8 @@ public class MapView extends PhotoView {
         ArrayList<PeopleManager.Person> getPersons();
 
         ArrayList<PeopleManager.Person> getFilteredPersons();
+
+        ArrayList<MapActivityFragment.DrawableBeacon> getBeacons();
     }
 
     public void setOnMapDrawListener(OnMapDrawListener listener) {

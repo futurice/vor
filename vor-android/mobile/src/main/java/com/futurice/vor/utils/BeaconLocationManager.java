@@ -96,22 +96,12 @@ public class BeaconLocationManager {
     }
 
     public void sendLocation() {
-        if (beacons == null) {
+        List<Map.Entry<FutuBeacon, Double>> sorted = getThreeClosestBeacons();
+
+        if (sorted == null) {
             return;
         }
-
-        // Send three closest beacon locations to the server.
-        Map<FutuBeacon, Double> tempMap = new HashMap<>();
-        for (BeaconCollection collection : beacons) {
-            if (collection.accuracy > 0) {
-                tempMap.put(collection.beacon, collection.accuracy);
-            }
-        }
-
-        List<Map.Entry<FutuBeacon, Double>> sorted = sortByDistance(tempMap);
-        if (sorted.size() >= 3) {
-            sendToServer(sorted.subList(0, 3));
-        }
+        sendToServer(sorted);
     }
 
     private static List<Map.Entry<FutuBeacon, Double>> sortByDistance(Map<FutuBeacon, Double> unsorted) {
@@ -146,7 +136,7 @@ public class BeaconLocationManager {
                 beaconsArray.put(beaconObject);
             }
 
-            jo.put("beacons", beaconsArray);
+            jo.put(LOCATION_BEACONS_KEY, beaconsArray);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -154,15 +144,35 @@ public class BeaconLocationManager {
         VorApplication.getSocket().emit(MESSAGE_KEY, jo);
     }
 
-    private static class FutuBeacon {
-        String identifier;
-        Integer major;
-        Integer minor;
-        Integer floor;
-        Float x;
-        Float y;
+    public List<Map.Entry<FutuBeacon, Double>> getThreeClosestBeacons() {
+        if (beacons == null) {
+            return null;
+        }
 
-        private FutuBeacon(String identifier, Integer major, Integer minor, Integer floor, Float x, Float y) {
+        // Send three closest beacon locations to the server.
+        Map<FutuBeacon, Double> tempMap = new HashMap<>();
+        for (BeaconCollection collection : beacons) {
+            if (collection.accuracy > 0) {
+                tempMap.put(collection.beacon, collection.accuracy);
+            }
+        }
+
+        List<Map.Entry<FutuBeacon, Double>> sorted = sortByDistance(tempMap);
+        if (sorted.size() < 3) {
+            return null;
+        }
+        return sorted.subList(0, 3);
+    }
+
+    public static class FutuBeacon {
+        public String identifier;
+        public Integer major;
+        public Integer minor;
+        public Integer floor;
+        public Float x;
+        public Float y;
+
+        public FutuBeacon(String identifier, Integer major, Integer minor, Integer floor, Float x, Float y) {
             this.identifier = identifier;
             this.major = major;
             this.minor = minor;

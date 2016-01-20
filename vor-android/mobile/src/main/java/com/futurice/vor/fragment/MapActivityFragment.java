@@ -28,6 +28,8 @@ import com.futurice.vor.interfaces.FragmentLifecycle;
 import static com.futurice.vor.Constants.*;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -198,6 +200,11 @@ public class MapActivityFragment extends Fragment implements FragmentLifecycle {
                     return PeopleMapActivity.mPeopleManager.filterPeopleWithFloor(mFilter, currentFloor);
                 }
             }
+
+            @Override
+            public ArrayList<DrawableBeacon> getBeacons() {
+                return createDrawableBeacons(VorApplication.getBeaconLocationManager().getThreeClosestBeacons());
+            }
         });
 
         /**
@@ -362,5 +369,39 @@ public class MapActivityFragment extends Fragment implements FragmentLifecycle {
                 person.setCurrentLocation(newLocationX, newLocationY);
             }
         });
+    }
+
+    private ArrayList<DrawableBeacon> createDrawableBeacons(
+            List<Map.Entry<BeaconLocationManager.FutuBeacon, Double>> beacons) {
+        ArrayList<DrawableBeacon> filteredBeacons = new ArrayList<>();
+        RectF rect = mAttacher.getDisplayRect();
+
+        for (Map.Entry<BeaconLocationManager.FutuBeacon, Double> beaconEntry : beacons) {
+            BeaconLocationManager.FutuBeacon beacon = beaconEntry.getKey();
+            if (beacon.floor == currentFloor) {
+                float[] mapLocation = convertToMapLocation(beacon.x, beacon.y);
+
+                DrawableBeacon newBeacon = new DrawableBeacon(
+                        (mapLocation[0] * mAttacher.getScale()) + rect.left,
+                        (mapLocation[1] * mAttacher.getScale()) + rect.top,
+                        beaconEntry.getValue()
+                );
+
+                filteredBeacons.add(newBeacon);
+            }
+        }
+        return filteredBeacons;
+    }
+
+    public static class DrawableBeacon {
+        public float x;
+        public float y;
+        public double distance;
+
+        public DrawableBeacon(float x, float y, double distance) {
+            this.x = x;
+            this.y = y;
+            this.distance = distance;
+        }
     }
 }
