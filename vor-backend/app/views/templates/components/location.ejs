@@ -18,25 +18,22 @@
                  value=8>
         </div>
         <div class="input-group">
-          <span class="input-group-addon">Beacon 1</span>
-          <input class="form-control new-distance"
-                 data-id="futu-b001i-6495-40639"
+          <span class="input-group-addon">X</span>
+          <input id="location-x"
                  type="number"
-                 placeholder="Distance meters">
+                 step="0.01"
+                 class="form-control"
+                 placeholder="Default 10"
+                 value=10.0>
         </div>
         <div class="input-group">
-          <span class="input-group-addon">Beacon 2</span>
-          <input class="form-control new-distance"
-                 data-id="futu-b001m-10985-41879"
+          <span class="input-group-addon">Y</span>
+          <input id="location-y"
                  type="number"
-                 placeholder="Distance meters">
-        </div>
-        <div class="input-group">
-          <span class="input-group-addon">Beacon 3</span>
-          <input class="form-control new-distance"
-                 data-id="futu-b001b-9348-31980"
-                 type="number"
-                 placeholder="Distance meters">
+                 step="0.01"
+                 class="form-control"
+                 placeholder="Default 10"
+                 value=10.0>
         </div>
       </div>
       <button id="send-location" class="btn btn-primary" type="submit">Send data of beacons</button>
@@ -57,27 +54,18 @@
       event.preventDefault();
       var user = $('#location-user').val();
       var floor = $('#location-floor').val();
-      var $distances = $('.new-distance');
-      var beacons = [];
-
-      $distances.each(function (i, el) {
-        var id = $(el).data('id');
-        var val = $(el).val();
-
-        beacons.push({
-          id: id,
-          floor: parseInt(floor, 10),
-          distance: val === "" ? 0 : parseFloat(val)
-        });
-      });
+      var x = $('#location-x').val();
+      var y = $('#location-y').val();
 
       var data = {
-        type: 'beacon',
+        type: 'location',
         email: user,
-        beacons: beacons
+        floor: parseInt(floor, 10),
+        x: parseFloat(x, 10.0),
+        y: parseFloat(y, 10.0)
       };
-      socket.emit('message', data);
 
+      socket.emit('message', data);
     });
 
     socket.on('message', function (message) {

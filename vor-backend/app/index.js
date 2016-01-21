@@ -1,7 +1,6 @@
 'use strict';
 const Rx = require('rx');
 const Cache = require('app/cache');
-const Location = require('app/location');
 const viewRoute = require('app/views/routes');
 const views = require('app/views');
 
@@ -16,11 +15,7 @@ module.exports = function (app, router, configs, sharedConfigs) {
 
   // split location messages
   let [ deviceSource$, messageSource$ ] = socketMessageSource$
-    .partition(message => message.type === 'beacon');
-
-  // set up location stream
-  const location = new Location(sharedConfigs.BEACONS);
-  const locationSource$ = location.fromDeviceStream(deviceSource$);
+    .partition(message => message.type === 'location');
 
   // listen socket 'init' messages
   const socketInitSource$ = socketConnectionSource$
@@ -71,7 +66,7 @@ module.exports = function (app, router, configs, sharedConfigs) {
     .merge(messageSource$)
     .flatMap(message => cache.store(message))
     .do(message => console.log(`Server - stored ${message.type} : ${new Date}`))
-    .merge(locationSource$) // merge location without storing it
+    .merge(deviceSource$) // merge location without storing it
     .subscribe(
       message => {
         app.io.emit('message', message);
