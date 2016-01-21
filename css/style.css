@@ -58,6 +58,14 @@
 		margin: 0 0 2em 0;
 	}
 
+	.red {
+		color: #FF0000;
+	}
+
+	.page-content-services{
+		margin-top: 7em;
+	}
+
 	h1, h2, h3, h4, h5, h6 {
 		color: inherit;
 		font-weight: 300;
@@ -73,8 +81,8 @@
 		}
 
 	h2 {
-		font-size: 1.5em;
-		letter-spacing: 0.1em;
+		font-size: 1.1em;
+		font-weight: bold;
 	}
 
 	h3 {

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="HockeySDK-3.6.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/mobile/libs/HockeySDK-3.6.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
