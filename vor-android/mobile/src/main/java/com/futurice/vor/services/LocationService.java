@@ -60,7 +60,7 @@ public class LocationService extends Service {
         @Override
         public void run() {
             if (mHandler != null) {
-                mBeaconLocationManager.sendLocation();
+                mBeaconLocationManager.calculateLocation(true);
                 mHandler.postDelayed(this, DELAY);
             }
         }
