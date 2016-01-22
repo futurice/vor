@@ -2,6 +2,7 @@ package com.futurice.vor.activity;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -122,41 +123,67 @@ public class PeopleMapActivity extends BaseActivity {
                 final float meterLocationY = Float.valueOf(jsonObject.getString(LOCATION_Y_KEY));
                 final int floor = Integer.valueOf(jsonObject.getString(LOCATION_FLOOR_KEY));
 
-                // If this is the first location received from the user, add it to the manager.
-                if (!mPeopleManager.exists(email)) {
-                    mPeopleManager.addPerson(email);
-                }
-                PeopleManager.Person person = mPeopleManager.getPerson(email);
-
-                if (person.getColor() == null) {
-                    if (person.getEmail().equals(mPreferences.getString(SettingsActivity.EMAIL_KEY, ""))) {
-                        person.setColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
-                    } else {
-                        person.setColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
-                    }
-                }
-
-                // Set the values for the person.
-                person.setFloor(floor);
-                person.setLocationInMeters(meterLocationX, meterLocationY);
-
-                Fragment activeFragment = getCurrentFragment();
-                if (activeFragment instanceof MapActivityFragment) {
-                    ((MapActivityFragment) activeFragment).updateView(person);
-                } else if (activeFragment instanceof PeopleFragment) {
-                    ((PeopleFragment) activeFragment).updateView();
-                }
-
+                PeopleManager.Person person = getPersonWithEmail(email);
+                updateLocationForPerson(person, meterLocationX, meterLocationY, floor);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
         @Override
-        public void onConnectionError() {
-            Toast.makeText(PeopleMapActivity.this, R.string.error_connect, Toast.LENGTH_SHORT).show();
+        public void onOwnPositionUpdate(float meterLocationX, float meterLocationY, int floor) {
+            String email = mPreferences.getString(SettingsActivity.EMAIL_KEY,
+                    getString(R.string.pref_my_email_default));
+
+            PeopleManager.Person person = getPersonWithEmail(email);
+            updateLocationForPerson(person, meterLocationX, meterLocationY, floor);
         }
     };
+
+    /**
+     * Retrieve a person object with a given email. Create a new person object to the person manager
+     * if no person exists with the given email.
+     * @param email Email of the user.
+     * @return Person object.
+     */
+    private PeopleManager.Person getPersonWithEmail(String email) {
+        if (!mPeopleManager.exists(email)) {
+            mPeopleManager.addPerson(email);
+        }
+        PeopleManager.Person person = mPeopleManager.getPerson(email);
+
+        if (person.getColor() == null) {
+            if (person.getEmail().equals(mPreferences.getString(SettingsActivity.EMAIL_KEY, ""))) {
+                person.setColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
+            } else {
+                person.setColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+            }
+        }
+
+        return person;
+    }
+
+    /**
+     * Store the given values to the person object and update the current active view.
+     * @param person Person object to be updated.
+     * @param meterLocationX New X coordinate in meters.
+     * @param meterLocationY New Y coordinate in meters.
+     * @param floor Current floor for the user.
+     */
+    private void updateLocationForPerson(@NonNull PeopleManager.Person person,
+                                         float meterLocationX,
+                                         float meterLocationY,
+                                         int floor) {
+        person.setFloor(floor);
+        person.setLocationInMeters(meterLocationX, meterLocationY);
+
+        Fragment activeFragment = getCurrentFragment();
+        if (activeFragment instanceof MapActivityFragment) {
+            ((MapActivityFragment) activeFragment).updateView(person);
+        } else if (activeFragment instanceof PeopleFragment) {
+            ((PeopleFragment) activeFragment).updateView();
+        }
+    }
 
     private ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
         int currentPosition = 0;
