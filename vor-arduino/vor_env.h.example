@@ -16,6 +16,16 @@
 #define VOR_ENV_H
 
 #define WIFI_SSID "your_wifi_ssid"
+/*
+    https://github.com/sambrenner/yun-easy-wifi-switch/blob/master/wifi.cfg
+
+    psk  - wpa personal
+    psk2 - wpa2 personal
+    wpa  - wpa enterprise
+    wpa2 - wpa2 enterprise
+    none - unencrypted network
+*/
+#define WIFI_ENCRYPTION "psk"
 #define WIFI_PASSWORD "your_wifi_password"
 
 #define SERVER_URL "your.server.url"
