@@ -17,6 +17,9 @@ module.exports = function (app, router, configs, sharedConfigs) {
   let [ deviceSource$, messageSource$ ] = socketMessageSource$
     .partition(message => message.type === 'location');
 
+  // Add timestamp to every location message.
+  deviceSource$.subscribe(message => message.date = (new Date()).toJSON());
+
   // listen socket 'init' messages
   const socketInitSource$ = socketConnectionSource$
     .flatMap(socket => Rx.Observable.fromEvent(
