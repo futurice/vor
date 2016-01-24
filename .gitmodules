@@ -1,3 +1,6 @@
 [submodule "vor-arduino/ArduinoJson"]
 	path = vor-arduino/ArduinoJson
 	url = https://github.com/bblanchon/ArduinoJson.git
+[submodule "vor-arduino/socket.io-arduino-client"]
+	path = vor-arduino/socket.io-arduino-client
+	url = https://github.com/billroy/socket.io-arduino-client.git
