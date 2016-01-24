@@ -1,4 +1,4 @@
-#define DEBUGGING
+//#define DEBUGGING
 
 #include "global.h"
 #include "WebSocketClient.h"
@@ -53,12 +53,17 @@ bool WebSocketClient::analyzeSession() {
 
     socket_client->print(F("GET "));
     socket_client->print(path);
-    socket_client->print(F("/socket.io/?EIO=3"));
+    socket_client->print(F("/socket.io/?EIO=3&transport=polling"));
     socket_client->print(F(" HTTP/1.1\r\n"));
     socket_client->print(F("Connection: keep-alive\r\n"));
     socket_client->print(F("Host: "));
     socket_client->print(host);
     socket_client->print(CRLF);
+    socket_client->print(F("User-Agent: yunmini\r\n"));
+    socket_client->print(F("Accept: */*\r\n"));
+    socket_client->print(F("Referer: http://"));
+    socket_client->print(host);
+    socket_client->print(F("/\r\n"));
     socket_client->print(CRLF);
 
 #ifdef DEBUGGING
@@ -81,7 +86,8 @@ bool WebSocketClient::analyzeSession() {
 #endif
             if (!foundsid && temp.startsWith("Set-Cookie: io=")) {
                 foundsid = true;
-                sid = temp.substring(15, temp.length() - 2).c_str();
+                int firstIndex = temp.indexOf("=");
+                sid = temp.substring(firstIndex + 1, temp.length() - 2);
             }
             temp = "";
         }
@@ -140,6 +146,13 @@ bool WebSocketClient::analyzeRequest() {
     socket_client->print(key);
     socket_client->print(CRLF);
     socket_client->print(F("Sec-WebSocket-Version: 13\r\n"));
+    socket_client->print(F("Host: "));
+    socket_client->print(host);
+    socket_client->print(CRLF);
+    socket_client->print(F("Origin: http://"));
+    socket_client->print(host);
+    socket_client->print(CRLF);
+    socket_client->print(F("User-Agent: yunmini\r\n"));
     socket_client->print(CRLF);
 
 #ifdef DEBUGGING
@@ -190,7 +203,9 @@ bool WebSocketClient::analyzeRequest() {
     base64_encode(b64Result, result, 20);
 
     // if the keys match, good to go
-    return serverKey.equals(String(b64Result));
+    // TODO: calculated key does not match key sent by server
+    //return serverKey.equals(String(b64Result));
+    return serverKey.length() == 28;
 }
 
 

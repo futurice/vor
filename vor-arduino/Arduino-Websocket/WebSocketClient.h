@@ -102,7 +102,7 @@ public:
     const char *path;
     const char *host;
     const char *protocol;
-    const char *sid;
+    String sid;
 
 private:
     Client *socket_client;
