@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/noCards"
+    android:background="#E1E1E1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/noCardsImageView"
+        android:src="@drawable/no_cards"
+        android:layout_marginTop="150dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/noCardsHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        android:textColor="@android:color/white"
+        android:layout_below="@+id/noCardsImageView"
+        android:text="@string/office_seems_calm"/>
+
+    <TextView
+        android:id="@+id/noCardsSubHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:layout_below="@+id/noCardsHeader"
+        android:text="@string/no_cards_available"/>
+</RelativeLayout>

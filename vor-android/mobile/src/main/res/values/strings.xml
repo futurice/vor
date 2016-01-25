@@ -87,4 +87,6 @@
     <string name="people_nearby">People Nearby</string>
     <string name="title_activity_people_map">People</string>
     <string name="title_activity_heat_map">Heat Map</string>
+    <string name="office_seems_calm">Office seems calm</string>
+    <string name="no_cards_available">no cards available</string>
 </resources>
