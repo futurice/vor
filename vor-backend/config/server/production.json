@@ -1,4 +1,4 @@
 {
   "CACHE_PREFIX": "vor",
-  "CACHE_TTL": 28800
+  "CACHE_TTL": 172800
 }
