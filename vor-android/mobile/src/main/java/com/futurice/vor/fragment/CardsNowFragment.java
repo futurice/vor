@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.futurice.cascade.i.CallOrigin;
 import com.futurice.vor.Cards;
@@ -66,8 +67,13 @@ public class CardsNowFragment extends BaseVorFragment {
         initViewsAndAdapters();
         initListView();
 
-        FrameLayout mFrameLayout = (FrameLayout) view.findViewById(R.id.now_cards_list);
-        mFrameLayout.addView(getExpandableListView());
+        RelativeLayout emptyView = (RelativeLayout) inflater.inflate(R.layout.no_cards_view, null);
+
+        ExpandableListView expandableListView = getExpandableListView();
+        setEmptyExpandableListView(getActivity(), emptyView);
+
+        FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.now_cards_list);
+        frameLayout.addView(expandableListView);
 
         mSocket.on(EVENT_INIT, args -> {
             UI.execute(() -> {
