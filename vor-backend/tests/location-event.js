@@ -3,6 +3,11 @@ const should = require('should');
 const assert = require('assert');
 const helpers = require('./helpers/index');
 
+function messageWithoutTimestamp(messageObject) {
+  delete messageObject.timestamp;
+  return messageObject;
+}
+
 describe('App: on message type "location"', function () {
 
   beforeEach(() => {
@@ -22,8 +27,10 @@ describe('App: on message type "location"', function () {
 
     clientA.on('message', messageForClientA => {
       clientB.on('message', messageForClientB => {
-        should(messageForClientA).deepEqual(EXPECTED_A_LOCATION_MESSAGE);
-        should(messageForClientB).deepEqual(EXPECTED_A_LOCATION_MESSAGE);
+        should(messageWithoutTimestamp(messageForClientA))
+          .deepEqual(EXPECTED_A_LOCATION_MESSAGE);
+        should(messageWithoutTimestamp(messageForClientB))
+          .deepEqual(EXPECTED_A_LOCATION_MESSAGE);
         clientA.disconnect();
         clientB.disconnect();
         done();
