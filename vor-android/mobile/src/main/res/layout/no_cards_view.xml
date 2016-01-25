@@ -6,27 +6,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/noCardsImageView"
-        android:src="@drawable/no_cards"
-        android:layout_marginTop="150dp"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_centerHorizontal="true"
-        />
-
     <TextView
         android:id="@+id/noCardsHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:layout_centerInParent="true"
         android:textSize="22sp"
         android:textStyle="bold"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
-        android:layout_below="@+id/noCardsImageView"
         android:text="@string/office_seems_calm"/>
+
+    <ImageView
+        android:id="@+id/noCardsImageView"
+        android:src="@drawable/no_cards"
+        android:layout_width="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
+        android:paddingRight="0dp"
+        android:paddingEnd="0dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_above="@id/noCardsHeader"
+        android:layout_centerHorizontal="true"
+        />
 
     <TextView
         android:id="@+id/noCardsSubHeader"
