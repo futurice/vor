@@ -49,7 +49,6 @@ public class MapActivityFragment extends Fragment implements FragmentLifecycle {
     @Bind(R.id.futumap) MapView mImageView;
     PhotoViewAttacher mAttacher;
     BeaconLocationManager beaconLocationManager;
-    PeopleManager peopleManager;
 
     String mFilter = "";
 
@@ -174,8 +173,6 @@ public class MapActivityFragment extends Fragment implements FragmentLifecycle {
         mAttacher.setOnScaleChangeListener(new MapScaleListener());
 
         beaconLocationManager = VorApplication.getBeaconLocationManager();
-
-        peopleManager = new PeopleManager();
 
         return view;
     }
