@@ -12,7 +12,21 @@
     <script src="/js/jquery.scrollgress.min.js"></script>
     <script src="/js/skel.min.js"></script>
     <script src="/js/skel-layers.min.js"></script>
+    <link rel="stylesheet" href="/fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+    <script type="text/javascript" src="/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script type="text/javascript" src="/fancybox/source/helpers/jquery.fancybox-media.js?v=1.0.6"></script>
     <script src="/js/init.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.fancybox-media').fancybox({
+                openEffect  : 'none',
+                closeEffect : 'none',
+                helpers : {
+                    media : {}
+                }
+            });
+        });
+    </script>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300,100,500,900' rel='stylesheet' type='text/css'>
     <noscript>
         <link rel="stylesheet" href="/css/skel.css" />
