@@ -159,6 +159,8 @@ public class PeopleMapActivity extends BaseActivity {
                     getString(R.string.pref_my_email_default));
 
             PeopleManager.Person person = getPersonWithEmail(email);
+            person.setLastUpdated(System.currentTimeMillis());
+
             updateLocationForPerson(person, meterLocationX, meterLocationY, floor);
         }
     };
