@@ -10,8 +10,8 @@ android {
         applicationId "com.futurice.vor"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 6
-        versionName "1.6"
+        versionCode 7
+        versionName "1.7"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
