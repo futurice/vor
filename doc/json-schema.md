@@ -36,7 +36,11 @@
         "floor":{  
             "description": "The floor where beacons locate",  
             "type": "integer"  
-        } 
+        },
+        "timestamp":{
+            "description": "Unix timestamp when the location is received",
+            "type": "long"
+        }
     },  
     "required": ["email", "type", "x", "y", "floor"]
 }
@@ -50,7 +54,8 @@
     "type": "location",
     "x": 2.453, 
     "y": 1.224,
-    "floor": 8
+    "floor": 8,
+    "timestamp": 1453734586035
 }
 ```
 
