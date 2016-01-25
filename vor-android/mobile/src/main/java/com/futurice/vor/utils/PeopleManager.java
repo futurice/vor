@@ -5,6 +5,8 @@ import android.graphics.Paint;
 import java.util.ArrayList;
 
 public class PeopleManager {
+    private static final long ONE_MINUTE = 60 * 1000;
+
     ArrayList<Person> people;
 
     public PeopleManager() {
@@ -114,6 +116,20 @@ public class PeopleManager {
     }
 
     /**
+     * Remove persons that haven't updated in two minutes.
+     */
+    public void removeInactivePeople() {
+        long currentTime = System.currentTimeMillis();
+
+        for (Person person : people) {
+            long difference = currentTime - person.getLastUpdated();
+            if (difference > ONE_MINUTE) {
+                people.remove(person);
+            }
+        }
+    }
+
+    /**
      * Class for keeping track of a person's location and color on the map.
      *
      */
@@ -143,7 +159,11 @@ public class PeopleManager {
         // Current floor for the person.
         int floor;
 
+        // Last location update for filtering the data.
         float previousLocationOnScreenX, previousLocationOnScreenY;
+
+        // Time since last updated.
+        long lastUpdated;
 
         public Person(int id, String email) {
             this.id = id;
@@ -185,6 +205,8 @@ public class PeopleManager {
             this.floor = floor;
         }
 
+        public void setLastUpdated(long update) { this.lastUpdated = update; }
+
         public float getMapLocationX() {
             return this.mapLocationX;
         }
@@ -214,6 +236,8 @@ public class PeopleManager {
         public float getMeterLocationY() { return this.meterLocationY; }
 
         public int getFloor() { return this.floor; }
+
+        public long getLastUpdated() { return this.lastUpdated; }
 
         public String getEmail() {
             return this.email;
