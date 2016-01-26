@@ -1361,3 +1361,9 @@
     font-weight: 300;
     margin: 0 0 16px 0;
 }
+
+.center-vertically {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
