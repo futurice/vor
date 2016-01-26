@@ -1361,3 +1361,9 @@
     font-weight: 300;
     margin: 0 0 16px 0;
 }
+
+@media (min-width: 1200px) {
+	.services-align-right {
+		text-align: right;
+	}
+}
