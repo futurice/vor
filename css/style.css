@@ -125,7 +125,7 @@
 	}
 
 	header.special {
-		margin-bottom: 2em;
+		padding-bottom: 2em;
 		padding-top: 2em;
 		color: #ED614B;
 		position: relative;
