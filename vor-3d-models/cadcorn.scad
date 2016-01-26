@@ -5,8 +5,8 @@ high_poly = 64;
 low_poly_joint = 16;
 high_poly_joint = 64;
 
-$fn=low_poly;
-joint_poly = low_poly_joint;
+$fn=low_poly; // low_poly or high_poly
+joint_poly = low_poly_joint; // low_poly_join or high_poly_joint
 scale = 1;
 
 head_big_radius = 10*scale;
