@@ -28,19 +28,25 @@ flexure_length = 24.9;
 flexure_width = 6;
 rounding = 4;
 
-push_button();
-
-module push_button() {
-    // Uncomment one of the following for left side
-//    color("brown") mushroom();
-    color("grey") 8_ball();
-
-    // Uncomment one of the following
-    right_half();
-    left_half();
+// "mode" variable is passed in from command line invocation during a batch build
+// "mode" variable can be set manually for testing
+if (mode=="left") {
+    left_half();    
+} else if (mode=="right") {
+    right_half();    
+} else if (mode=="hide") {    
+} else {
+    left_half();    
+    right_half();    
 }
 
 module left_half() {
+    if (button=="mushroom") {
+        color("brown") mushroom();
+    } else {
+        color("grey") 8_ball();    
+    }
+
     difference() {
         body();
         union() {
@@ -77,8 +83,8 @@ module body() {
 	        button_moved();
             bolt_hole_low();
             bolt_hole_high();            
-             logo_moved(theta=0,y=-22); // Right
-           logo_moved(theta=180,y=22); // Left
+            logo_moved(theta=0,y=-22); // Right
+            logo_moved(theta=180,y=22); // Left
 	    }
     }
 }
@@ -234,12 +240,12 @@ module text_8() {
 }
 
 module logo_moved(theta=0, y=0) {
-    s=.2;
+    s=.8;
     translate([0, y, 22]) rotate([90,0,theta]) scale([s,s,s]) logo();
 }
 
 module logo() {
-    import("vor-logo-negative.stl", convexity=10);
+    import("vor-logo-space.stl", convexity=10);
 }
 
 module yun() {

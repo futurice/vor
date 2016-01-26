@@ -27,10 +27,15 @@ tip_length = 46;
 // "mode" variable can be set manually for testing
 if (mode=="left") {
     left_half();    
-} else if (mode="right") {
+} else if (mode=="right") {
     right_half();    
+} else if (mode=="hide") {
 } else {
     body();
+}
+
+if (toggle=="show") {
+    toggle_moved();
 }
 
 module left_half() {
@@ -78,14 +83,14 @@ module body() {
         }
         union() {
             // A bit ugly poor-man's-minkowski to avoid crashing SCAD
-	        toggle_moved(dx=yun_skin, dy=yun_skin, dz=yun_skin);
-	        toggle_moved(dx=yun_skin, dy=yun_skin, dz=-yun_skin);
-	        toggle_moved(dx=yun_skin, dy=-yun_skin, dz=yun_skin);
-	        toggle_moved(dx=yun_skin, dy=-yun_skin, dz=-yun_skin);
-	        toggle_moved(dx=-yun_skin, dy=yun_skin, dz=yun_skin);
-	        toggle_moved(dx=-yun_skin, dy=yun_skin, dz=-yun_skin);
-	        toggle_moved(dx=-yun_skin, dy=-yun_skin, dz=yun_skin);
-	        toggle_moved(dx=-yun_skin, dy=-yun_skin, dz=-yun_skin);
+	        toggle_space_moved(dx=yun_skin, dy=yun_skin, dz=yun_skin);
+	        toggle_space_moved(dx=yun_skin, dy=yun_skin, dz=-yun_skin);
+	        toggle_space_moved(dx=yun_skin, dy=-yun_skin, dz=yun_skin);
+	        toggle_space_moved(dx=yun_skin, dy=-yun_skin, dz=-yun_skin);
+	        toggle_space_moved(dx=-yun_skin, dy=yun_skin, dz=yun_skin);
+	        toggle_space_moved(dx=-yun_skin, dy=yun_skin, dz=-yun_skin);
+	        toggle_space_moved(dx=-yun_skin, dy=-yun_skin, dz=yun_skin);
+	        toggle_space_moved(dx=-yun_skin, dy=-yun_skin, dz=-yun_skin);
             bolt_hole_low();
             bolt_hole_high();
             logo_moved(theta=0,y=-22); // Right
@@ -178,8 +183,15 @@ module toggle_moved(dx=0, dy=0, dz=0) {
     }
 }
 
+module toggle_space_moved(dx=0, dy=0, dz=0) {
+    rotate([0, 0, 180]) {
+        translate([-toggle_length/2 + dx, -toggle_width/2 + dy, toggle_z + dz])
+            toggle_space();
+    }
+}
+
 module logo_moved(theta=0, y=0) {
-    s=.2;
+    s=.8;
     translate([0, y, 22]) rotate([90,0,theta]) {
         scale([s,s,s]) logo();
     }
@@ -191,6 +203,10 @@ module yun() {
 
 module toggle() {
     include <toggle-switch-with-cover.scad>
+}
+
+module toggle_space() {
+    include <toggle-switch-with-cover-space.scad>
 }
 
 module bolt() {

@@ -45,3 +45,36 @@ echo
 Get-Date
 echo "Render right toggle bit case"
 openscad -o toggle-bit-case-right.stl -D 'mode="""right"""' toggle-bit-case.scad
+
+echo
+Get-Date
+echo "Render  toggle bit case"
+openscad -o toggle-bit-case.stl -D 'toggle="""show"""' toggle-bit-case.scad
+
+echo
+Get-Date
+echo "Render  toggle bit case"
+openscad -o toggle-bit-case-switch.stl -D 'toggle="""show""" mode="""hide"""' toggle-bit-case.scad
+
+#------------------ Push Bit Case
+
+echo
+Get-Date
+echo "Render left push bit case"
+openscad -o push-bit-case-left.stl -D 'mode="""left"""' push-bit-case.scad
+
+echo
+Get-Date
+echo "Render right push bit case"
+openscad -o push-bit-case-right.stl -D 'mode="""right"""' push-bit-case.scad
+
+echo
+Get-Date
+echo "Render push bit case"
+openscad -o push-bit-case.stl -D 'switch="""show"""' push-bit-case.scad
+
+echo
+Get-Date
+echo "Render push bit case switch"
+openscad -o push-bit-case-switch.stl -D 'switch="""show""" mode="""hide"""' push-bit-case.scad
+

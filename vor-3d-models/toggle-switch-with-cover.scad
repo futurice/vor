@@ -8,6 +8,7 @@ height = 19.12;
 
 plate_thickness = 1;
 cover_z = 6.82;
+fudge = .01;
 
 toggle_switch();
 toggle_cover();
