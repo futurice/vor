@@ -16,7 +16,7 @@ console.log(`Client envs set:
    : ${new Date()}`);
 
 if(!SOCKET_SERVER || !LISTEN_TYPE || !LISTEN_ID || !SEND_TYPE || !SEND_ID || !UPDATE_TIME) {
-  console.log(`Error - missing reguired environment varaibles  : ${new Date()}`);
+  console.log(`Error - missing required environment variables  : ${new Date()}`);
   process.exit(0);
 }
 
