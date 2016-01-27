@@ -121,7 +121,9 @@
 	}
 
 	header.major {
-		padding-bottom: 2em;
+		font-size: 1em;
+		font-weight: 700;
+		text-decoration: none;
 	}
 
 	header.special {
@@ -151,9 +153,8 @@
 
 		header.special h2 {
 			font-family: 'Roboto', sans-serif;
-			font-size: 1.5em;
+			font-size: 0.5em;
 			font-weight: 700;
-			text-decoration: none;
 		}
 
 		header.special h2 + p {
@@ -590,9 +591,10 @@
 		}
 
 		.wrapper.style1 h2 {
+			font-family: 'Roboto', sans-serif;
 			font-size: 1.5em;
-			font-weight: 400;
-			margin-bottom: 1em;
+			font-weight: 700;
+			margin-bottom: 0.5em;
 		}
 
 		.wrapper.style2 {
