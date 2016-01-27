@@ -12,10 +12,12 @@ const io = socketIO();
 
 const LISTEN_TYPE = 'button';
 const LISTEN_ID = 'button-1';
-const SEND_TYPE = 'pool';
-const SEND_ID = 'pool-1';
+const SEND_TYPE = '3D';
+const SEND_ID = '3D';
+const UPDATE_TIME = 100;
 
 describe(`App: on socket event`, function () {
+  this.timeout(UPDATE_TIME * 2);
 
   before((done) => {
 
@@ -24,6 +26,7 @@ describe(`App: on socket event`, function () {
     process.env.LISTEN_ID = LISTEN_ID;
     process.env.SEND_TYPE = SEND_TYPE;
     process.env.SEND_ID = SEND_ID;
+    process.env.UPDATE_TIME = UPDATE_TIME;
 
     io.attach(server);
     io.on('error', (error => console.log(`Socket connection error: ${error}`)));
@@ -33,14 +36,8 @@ describe(`App: on socket event`, function () {
     done();
   });
 
-  it('should send an image message', done => {
+  it('should receive a single image within the time period', done => {
     io.on('connection', socketServer => {
-
-      socketServer.emit('message', {
-        type: LISTEN_TYPE,
-        id: LISTEN_ID
-      });
-
       socketServer.on('message', message => {
         should(message.id).equal(SEND_ID);
         should(message.type).equal(SEND_TYPE);

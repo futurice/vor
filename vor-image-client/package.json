@@ -17,7 +17,7 @@
     "test": "NODE_PATH=. PORT=9090 SOCKET_SERVER=http://localhost:5000 npm run mocha || exit 0",
     "test-watch": "nodemon -x 'npm run eslint && npm run test'",
     "eslint": "eslint app",
-    "start": "SOCKET_SERVER=http://localhost:8080 LISTEN_TYPE=button LISTEN_ID=button-1 SEND_TYPE=pool SEND_ID=pool npm run server",
+    "start": "SOCKET_SERVER=http://localhost:8080 LISTEN_TYPE=button LISTEN_ID=button-1 SEND_TYPE=3D SEND_ID=3D UPDATE_TIME=5000 npm run server",
     "watch": "nodemon  -x 'npm run eslint && npm run start'",
     "serve": "NODE_ENV=production npm run server"
   },
