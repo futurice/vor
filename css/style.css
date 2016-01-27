@@ -1134,7 +1134,7 @@
 			line-height: 1em;
 		}
 
-		#footer ul li a {
+		#footer .button {
 			font-family: 'Roboto', sans-serif;
 			font-weight: 300;
 			border-radius: 5px;
