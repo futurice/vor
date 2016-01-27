@@ -17,10 +17,11 @@ public class Cards {
 
     /**
      * 3D printing card
+     * @param file the file in base64
      * @param context the context
      * @return the 3d printing topic
      */
-    public static ITopic printer3d(Context context) {
+    public static ITopic printer3d(String file, Context context) {
         final Topic topic = new Topic("3D Printing", 110, context, PRINTER_3D_KEY);
         topic.setText("What we are 3D printing");
         topic.setIsPrebuiltTopic(true);
@@ -32,7 +33,7 @@ public class Cards {
         card.setText("3D Printer");
         card.setAuthor("Vör", "V001");
         card.setDate(new Date());
-//        card.setImageBase64(file);
+        card.setImageBase64(file);
 
         topic.addCard(card);
         return topic;

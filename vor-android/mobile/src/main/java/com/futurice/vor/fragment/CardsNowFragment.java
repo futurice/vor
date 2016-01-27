@@ -39,10 +39,12 @@ public class CardsNowFragment extends BaseVorFragment {
     SharedPreferences mTestSP;
     SharedPreferences mFoodSP;
     SharedPreferences mPoolSP;
+    SharedPreferences m3dPrinterSP;
 
     OnSharedPreferenceChangeListener mTestCardListener = this::addCard;
     OnSharedPreferenceChangeListener mFoodCardListener = this::addCard;
     OnSharedPreferenceChangeListener mPoolCardListener = this::addCard;
+    OnSharedPreferenceChangeListener m3dPrinterCardListener = this::addCard;
 
     public CardsNowFragment() {
         // Required empty public constructor
@@ -57,6 +59,7 @@ public class CardsNowFragment extends BaseVorFragment {
         mTestSP = getActivity().getSharedPreferences(TEST_KEY, Context.MODE_PRIVATE);
         mFoodSP = getActivity().getSharedPreferences(FOOD_KEY, Context.MODE_PRIVATE);
         mPoolSP = getActivity().getSharedPreferences(POOL_KEY, Context.MODE_PRIVATE);
+        m3dPrinterSP = getActivity().getSharedPreferences(PRINTER_3D_KEY, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -121,6 +124,7 @@ public class CardsNowFragment extends BaseVorFragment {
         mTestSP.registerOnSharedPreferenceChangeListener(mTestCardListener);
         mFoodSP.registerOnSharedPreferenceChangeListener(mFoodCardListener);
         mPoolSP.registerOnSharedPreferenceChangeListener(mPoolCardListener);
+        m3dPrinterSP.registerOnSharedPreferenceChangeListener(m3dPrinterCardListener);
     }
 
     @Override
@@ -129,6 +133,7 @@ public class CardsNowFragment extends BaseVorFragment {
         mTestSP.unregisterOnSharedPreferenceChangeListener(mTestCardListener);
         mFoodSP.unregisterOnSharedPreferenceChangeListener(mFoodCardListener);
         mPoolSP.unregisterOnSharedPreferenceChangeListener(mPoolCardListener);
+        m3dPrinterSP.unregisterOnSharedPreferenceChangeListener(m3dPrinterCardListener);
     }
 
     protected void initViewsAndAdapters() {
@@ -153,6 +158,11 @@ public class CardsNowFragment extends BaseVorFragment {
                         String poolImage = jsonObject.getString(IMAGE_KEY);
                         cards.add(0, Cards.pool(poolImage, context));
                         removeDuplicates(POOL_KEY, cards);
+                        break;
+                    case PRINTER_3D_KEY:
+                        String image3d = jsonObject.getString(IMAGE_KEY);
+                        cards.add(0, Cards.printer3d(image3d, context));
+                        removeDuplicates(PRINTER_3D_KEY, cards);
                         break;
                     case FOOD_KEY:
                         String foodImage = jsonObject.getString(IMAGE_KEY);
@@ -211,6 +221,9 @@ public class CardsNowFragment extends BaseVorFragment {
                     } else if (key.equals(FOOD_KEY)) {
                         cards.add(0, Cards.food(image, getActivity()));
                         removeDuplicates(FOOD_KEY, cards);
+                    } else if (key.equals(PRINTER_3D_KEY)) {
+                        cards.add(0, Cards.printer3d(image, getActivity()));
+                        removeDuplicates(PRINTER_3D_KEY, cards);
                     }
                 } else if (jsonData.has(MESSAGE_KEY)) {
                     String message = jsonData.getString(MESSAGE_KEY);
