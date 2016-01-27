@@ -121,7 +121,7 @@
 	}
 
 	header.major {
-		font-size: 1em;
+		font-size: 1.5em;
 		font-weight: 700;
 		text-decoration: none;
 	}
@@ -152,9 +152,7 @@
 		}
 
 		header.special h2 {
-			font-family: 'Roboto', sans-serif;
-			font-size: 0.5em;
-			font-weight: 700;
+			margin-bottom: 0;
 		}
 
 		header.special h2 + p {
@@ -592,9 +590,10 @@
 
 		.wrapper.style1 h2 {
 			font-family: 'Roboto', sans-serif;
-			font-size: 1.5em;
-			font-weight: 700;
-			margin-bottom: 0.5em;
+		    font-size: 1em;
+		    font-weight: 700;
+		    text-decoration: none;
+		    margin-bottom: 1em;
 		}
 
 		.wrapper.style2 {
@@ -1371,4 +1370,9 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.larger {
+	display:inline-block;
+	margin-bottom: 0.5em;
 }
