@@ -5,16 +5,17 @@ const socketIO = require('socket.io-client');
 const camera = require('app/camera');
 
 // get envs
-const { SOCKET_SERVER, LISTEN_TYPE, LISTEN_ID, SEND_TYPE, SEND_ID } = process.env;
+const { SOCKET_SERVER, LISTEN_TYPE, LISTEN_ID, SEND_TYPE, SEND_ID, UPDATE_TIME } = process.env;
 console.log(`Client envs set:
       SOCKET_SERVER: ${SOCKET_SERVER},
       LISTEN_TYPE: ${LISTEN_TYPE},
       LISTEN_ID: ${LISTEN_ID},
       SEND_TYPE: ${SEND_TYPE},
-      SEND_ID: ${SEND_ID}
+      SEND_ID: ${SEND_ID},
+      UPDATE_TIME: ${UPDATE_TIME}
    : ${new Date()}`);
 
-if(!SOCKET_SERVER || !LISTEN_TYPE || !LISTEN_ID || !SEND_TYPE || !SEND_ID) {
+if(!SOCKET_SERVER || !LISTEN_TYPE || !LISTEN_ID || !SEND_TYPE || !SEND_ID || !UPDATE_TIME) {
   console.log(`Error - missing reguired environment varaibles  : ${new Date()}`);
   process.exit(0);
 }
@@ -35,15 +36,10 @@ client.on('disconnect', () => console.log(`Client socket disconnected ${SOCKET_S
 client.on('reconnect_attempt', error => console.error(`Error - cannot connect to ${SOCKET_SERVER} : ${error} : ${new Date()}`));
 client.on('error', error => console.error(`Error - socket connection: ${error} : ${new Date()}`));
 
-// listen socket messages
-const socketMessageSource$ = Rx.Observable.fromEvent(client, 'message');
-
-const triggerCameraSource$ = socketMessageSource$
-  .filter(message => message.type === LISTEN_TYPE)
-  .filter(message => message.id === LISTEN_ID);
-
-triggerCameraSource$
+// Trigger camera frequently.
+const triggerCameraSource$ = Rx.Observable.interval(UPDATE_TIME)
   .flatMap(camera.takePicture)
+  .retry()
   .subscribe(
     imageString => {
       client.emit('message', {
