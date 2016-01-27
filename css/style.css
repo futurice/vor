@@ -150,7 +150,10 @@
 		}
 
 		header.special h2 {
-			margin-bottom: 0;
+			font-family: 'Roboto', sans-serif;
+			font-size: 1.5em;
+			font-weight: 700;
+			text-decoration: none;
 		}
 
 		header.special h2 + p {
