@@ -2,7 +2,7 @@
 
 ## A light-weight node.js client(server) installed in Raspberry PI 1 or 2 
 - connects to backend using websockets
-- takes a picture on socket event
+- takes a picture frequently
 
 ### Requirements
 - Node.js 5.0.0 [node.js homepage](https://nodejs.org/en/)
@@ -37,6 +37,7 @@
   LISTEN_ID=<socket message id to listen>
   SEND_TYPE=<the type property of message to be sent>
   SEND_ID=<the id property of message to be sent>
+  UPDATE_TIME=<how frequently the client will send an image in milliseconds>
   NODE_PATH=/var/vor/vor-image-client/
   NODE_ENV=production
   ```
