@@ -12,8 +12,8 @@ const io = socketIO();
 
 const LISTEN_TYPE = 'button';
 const LISTEN_ID = 'button-1';
-const SEND_TYPE = 'pool';
-const SEND_ID = 'pool-1';
+const SEND_TYPE = '3D';
+const SEND_ID = '3D';
 
 describe(`App: on socket event`, function () {
 
