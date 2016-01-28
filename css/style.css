@@ -1388,3 +1388,8 @@
 	display:inline-block;
 	margin-bottom: 0.5em;
 }
+
+#first-header {
+	margin-bottom: 5px;
+	padding-top: 60px;
+}
