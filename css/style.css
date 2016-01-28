@@ -121,7 +121,9 @@
 	}
 
 	header.major {
-		padding-bottom: 2em;
+		font-size: 1.5em;
+		font-weight: 700;
+		text-decoration: none;
 	}
 
 	header.special {
@@ -371,7 +373,7 @@
 		.icon.featured {
 			cursor: default;
 			display: block;
-			margin: 0 0 1.5em 0;
+			margin: 0 0 0.5em 0;
 			text-align: center;
 		}
 
@@ -587,9 +589,11 @@
 		}
 
 		.wrapper.style1 h2 {
-			font-size: 1.5em;
-			font-weight: 400;
-			margin-bottom: 1em;
+			font-family: 'Roboto', sans-serif;
+		    font-size: 1em;
+		    font-weight: 700;
+		    text-decoration: none;
+		    margin-bottom: 1em;
 		}
 
 		.wrapper.style2 {
@@ -666,7 +670,7 @@
 			position: absolute;
 			right: 1.5em;
 			text-transform: uppercase;
-			top: 0.75em;
+			top: 1em;
 		}
 
 			#header nav ul li {
@@ -837,6 +841,7 @@
 		cursor: default;
 		padding: 6em 0;
 		text-align: center;
+		margin-top: 3em;
 	}
 
 		#banner .inner {
@@ -1134,7 +1139,7 @@
 			line-height: 1em;
 		}
 
-		#footer ul li a {
+		#footer .button {
 			font-family: 'Roboto', sans-serif;
 			font-weight: 300;
 			border-radius: 5px;
@@ -1370,4 +1375,15 @@
 
 .services-header {
 	line-height: 1.1em;
+}
+
+.center-vertically {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.larger {
+	display:inline-block;
+	margin-bottom: 0.5em;
 }
