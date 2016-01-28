@@ -27,3 +27,5 @@ proguard/
 *.log
 
 .DS_Store
+_site
+.jekyll-metadata

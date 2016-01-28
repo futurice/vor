@@ -1367,6 +1367,16 @@
     margin: 0 0 16px 0;
 }
 
+@media (min-width: 1200px) {
+	.services-align-right {
+		text-align: right;
+	}
+}
+
+.services-header {
+	line-height: 1.1em;
+}
+
 .center-vertically {
 	display: flex;
 	justify-content: center;
