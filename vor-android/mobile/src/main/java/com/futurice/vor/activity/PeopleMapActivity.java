@@ -224,6 +224,9 @@ public class PeopleMapActivity extends BaseActivity {
             FragmentLifecycle fragmentToShow = (FragmentLifecycle)adapter.getItem(position);
             fragmentToShow.onResumeFragment();
 
+            FragmentLifecycle fragmentToHide = (FragmentLifecycle)adapter.getItem(currentPosition);
+            fragmentToHide.onPauseFragment();
+
             currentPosition = position;
         }
 

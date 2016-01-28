@@ -57,6 +57,11 @@ public class PeopleFragment extends BaseVorFragment implements FragmentLifecycle
         updateView();
     }
 
+    @Override
+    public void onPauseFragment() {
+        //Empty function
+    }
+
     public void updateView() {
         String userEmail = preferences.getString(SettingsActivity.EMAIL_KEY, "");
         PeopleManager.Person user = PeopleMapActivity.mPeopleManager.getPerson(userEmail);
