@@ -1,5 +1,4 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
         jcenter()
@@ -8,26 +7,22 @@ buildscript {
         classpath 'com.android.tools.build:gradle:1.5.0'
 //        classpath 'com.android.tools.build:gradle:2.0.0-alpha2'
         classpath 'me.tatarka:gradle-retrolambda:3.2.4'
- //       classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
+        //       classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
     }
     // Exclude the version that the android plugin depends on.
 //    configurations.classpath.exclude group: 'com.android.tools.external.lombok'
 }
-
 allprojects {
     repositories {
         jcenter()
     }
 }
-
 ext {
     compileSdkVersion = 23
     buildToolsVersion = "23.0.2"
 }
-
 project.ext.preDexLibs = !project.hasProperty('disablePreDex')
-
 subprojects {
     project.plugins.whenPluginAdded { plugin ->
         if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name)) {
@@ -36,4 +31,14 @@ subprojects {
             project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
         }
     }
+}
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.2'
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+}
+dependencies {
 }

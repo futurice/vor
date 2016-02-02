@@ -1,6 +1,11 @@
 // WIFI Push Switch 3D Model, Arduino Yun Mini version, http://vor.space
 // ©Futurice Oy, paul.houghton@futurice.com, CC-attribution-sharealike license, http://creativecommons.org/licenses/by-sa/4.0/
 
+use <m3.scad>;
+use <vor-logo.scad>;
+use <push-button.scad>;
+use <arduino-yun-mini-negative-space.scad>;
+
 $fn = 8;
 
 cube_side = 72;
@@ -27,6 +32,8 @@ button_height = 4 + 4.8;
 flexure_length = 24.9;
 flexure_width = 6;
 rounding = 4;
+
+mode="left";
 
 // "mode" variable is passed in from command line invocation during a batch build
 // "mode" variable can be set manually for testing
@@ -96,8 +103,8 @@ module mushroom() {
 
     translate([0, 0, toggle_z + button_height + rounding])
          minkowski() {
-             cylinder($fn=256, r=25 - rounding, h = 10 - 2*rounding);
-             sphere($fn=256, r=rounding);
+             cylinder($fn=128, r=25 - rounding, h = 10 - 2*rounding);
+             sphere($fn=128, r=rounding);
          }
 }
 
@@ -122,7 +129,7 @@ module flexure() {
             translate([-flexure_length*sin(45), 0, toggle_z + button_height]) rotate([0,45,0]) cube([flexure_length, flexure_width + fat_width, flexure_length]);
             translate([0,0,45]) cube(size=45,center=true);
         }
-#        translate([0,0,0]) union() {
+        translate([0,0,0]) union() {
             flexure_cut_right();
             flexure_cut_left();
         }
@@ -131,12 +138,12 @@ module flexure() {
 
 flexure_cut_depth=12;
 
-module flexture_cut_right() {
+module flexure_cut_right() {
     cube([40,40,3]);
     // Continue here
 }
 
-module flexture_cut_left() {
+module flexure_cut_left() {
     
 }
 
@@ -154,25 +161,25 @@ module spike(x=0, skin=0, z = 0) {
 
 module bolt_hole_low() {
     translate([47, -10, 8]) rotate([90, 0, 0]) {
-        bolt();
+        m3_bolt_space();
     }
     translate([47, 10, 8]) rotate([-90, 0, 0]) {
-        bolt();
+        m3_bolt_space();
     }
 }
 
 module bolt_hole_high() {
     translate([-24, -9, 47]) rotate([90, 0, 0]) {
-        bolt();
+        m3_bolt_space();
     }
     translate([-24, 9, 47]) rotate([-90, 0, 0]) {
-        bolt();
+        m3_bolt_space();
     }
 }
 
 module yun_moved() {
     translate([yun_x, yun_y, yun_z])
-        yun();
+        arduino_yun_mini_negative_space();
 }
 
 module yun_hole() {
@@ -182,11 +189,6 @@ module yun_hole() {
         yun_moved();
         sphere(r=yun_skin);
     }
-}
-
-module yun_holder() {
-    translate([yun_x, yun_y, yun_z])
-        yun();    
 }
 
 module tip() {
@@ -225,38 +227,22 @@ module poly() {
 module box() {
     difference() {
         poly();
-        yun_holder();
+        yun_moved();
     }
 }
 
 module button_moved() {
-    translate([0, -6, toggle_z + 4.5]) button();
+    translate([0, -6, toggle_z + 4.5]) push_button();
 }
 
 module text_8() {
     translate([20,15,18]) rotate([15,15,50+90]) {
-        translate([0,9,0]) scale([2.2,2.2,1]) linear_extrude(height=6) text("8");
+        translate([0,9,0]) scale([2.2,2.2,6]) linear_extrude(height=1) text("8");
     }
 }
 
 module logo_moved(theta=0, y=0) {
     s=.8;
-    translate([0, y, 22]) rotate([90,0,theta]) scale([s,s,s]) logo();
-}
-
-module logo() {
-    import("vor-logo-space.stl", convexity=10);
-}
-
-module yun() {
-    include <arduino-yun-mini-negative-space.scad>
-}
-
-module button() {
-    include <push-button.scad>
-}
-
-module bolt() {
-    include <m3.scad>
+    translate([0, y, 22]) rotate([90,0,theta]) scale([s,s,s]) embossed_logo();
 }
 

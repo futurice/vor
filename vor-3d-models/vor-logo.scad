@@ -4,7 +4,7 @@
 
 // Print lithophane test fixture with .2mm layer height and 
 
-$fn = 256;
+$fn = 128;
 
 scale=20; // Percent reduction of the entire lithophane diameter, 100=full size
 
@@ -15,8 +15,6 @@ center_y = 30*scale/100;
 surround_radius = 90*scale/100;
 litho_cone_height = 8*surround_radius*scale/100;
 led_length = 7;
-
-mode="";
 
 if (mode=="space") {
     // A disk useful for boolean operations to clear room for a litho in your model

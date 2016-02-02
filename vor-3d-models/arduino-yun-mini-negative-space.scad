@@ -1,7 +1,7 @@
 // Arduino Yun Mini 3D model for planning, http://vor.space
 // ©Futurice Oy, paul.houghton@futurice.com, CC-attribution-sharealike license, http://creativecommons.org/licenses/by-sa/4.0/
 
-$fn = 32;
+$fn = 128;
 
 length = 71.12;
 width = 22.9;
@@ -12,14 +12,14 @@ header_height = 9.5;
 header_top_clearance = 5;
 button_radius = 1.8;
 
-arduino_yun_mini();
+arduino_yun_mini_negative_space();
 
 module top_space(s=10) {
     polyhedron(points=[[s,s,0],[s,-s,0],[-s,-s,0],[-s,s,0],[0,0,s]],
     faces=[[0,1,4],[1,2,4],[2,3,4],[3,0,4],[1,0,3],[2,1,3]]);
 }
 
-module arduino_yun_mini() {
+module arduino_yun_mini_negative_space() {
     difference() {
         color("green") board();
         union() {

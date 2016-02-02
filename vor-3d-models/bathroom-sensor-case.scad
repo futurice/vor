@@ -274,8 +274,8 @@ module methane_space() {
 
 module text_imprint(theta=0,x=0,y=0) {
     translate([x+40,y,0]) rotate([180,0,theta]) {
-        translate([0,9,0]) scale([.6,.6,1]) text("http://vor.space");
-        scale(.6,.6,1) text("by futurice");
+        translate([0,9,0]) scale([.6,.6,1]) linear_extrude(1) text("http://vor.space");
+        scale(.6,.6,1) linear_extrude(1) text("by futurice");
     }
 }
 
