@@ -1,62 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?><!-- CHILD -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_base"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="top"
-    android:background="@color/lightest_grey"
-    android:orientation="vertical"
-    android:padding="@dimen/color_padding"
-    android:paddingTop="0dip"
-    android:stretchColumns="1">
+    android:paddingTop="20dp"
+    android:paddingLeft="20dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="10dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="10dp"
+    android:background="@color/darker_grey"
+    android:orientation="vertical">
 
-    <!-- Main image of the card -->
-
-    <!-- Card text content -->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:orientation="vertical"
-        android:padding="@dimen/color_padding">
-
-        <TextView
-            android:id="@+id/card_text"
-            style="@style/CardTitle"
-            android:layout_gravity="start|center_vertical"
-            android:text="@string/card_title_placeholder"
-            android:textColor="@color/colorPrimary"
-        android:textIsSelectable="false"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:layout_marginBottom="5dp"/>
-
-        <!-- Author and date -->
-        <TextView
-            android:id="@+id/card_author"
-            style="@style/CardTitle"
-            android:layout_gravity="start|center_vertical"
-            android:textColor="@color/light_grey_text"
-            android:textSize="12sp"
-            android:gravity="end"/>
-    </LinearLayout>
-
-    <!-- Send to big screen, in case of videos -->
-    <FrameLayout
-        android:id="@+id/replaceable_card_content"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_weight="0"
-        android:padding="@dimen/color_padding">
+        >
 
         <ImageView
             android:id="@+id/card_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
             />
 
-    </FrameLayout>
+        <ImageView
+            android:id="@+id/fullscreen_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:adjustViewBounds="true"
+            android:padding="10dp"
+            android:src="@drawable/ic_fullscreen"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/card_author"
+        style="@style/CardTitle"
+        />
 
 </LinearLayout>

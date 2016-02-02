@@ -109,7 +109,6 @@ public class ImageCard extends BaseCard {
     public void updateView(@NonNull View view) {
         super.updateView(view);
 
-        final TextView cardTextView = (TextView) view.findViewById(R.id.card_text);
         final TextView cardAuthorTextView = (TextView) view.findViewById(R.id.card_author);
         final ImageView cardImageView = (ImageView) view.findViewById(R.id.card_image);
 
@@ -142,7 +141,6 @@ public class ImageCard extends BaseCard {
             });
         }
 
-        cardTextView.setText(getText());
         cardAuthorTextView.setText(date);
     }
 

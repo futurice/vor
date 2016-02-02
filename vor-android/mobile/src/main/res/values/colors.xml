@@ -8,6 +8,7 @@
     <color name="grey">#303030</color>
     <color name="light_grey">#eeeeee</color>
     <color name="lightest_grey">#F0F0F0</color>
+    <color name="darker_grey">#353e42</color>
 
     <color name="background_grey">#D8D8D8</color>
     <color name="light_grey_space">#DFDFDF</color>

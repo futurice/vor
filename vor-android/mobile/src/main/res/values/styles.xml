@@ -71,9 +71,11 @@
         parent="BaseTextFillWidth">
     </style>
 
-    <style name="CardTitle"
-           parent="BaseTextFillWidth">
-        <item name="android:textSize">16sp</item>
+    <style name="CardTitle" parent="BaseTextFillWidth">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:gravity">end</item>
     </style>
 
     <style name="ToastText"
