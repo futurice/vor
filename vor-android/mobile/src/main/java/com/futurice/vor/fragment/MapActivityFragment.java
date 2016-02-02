@@ -258,6 +258,11 @@ public class MapActivityFragment extends Fragment implements FragmentLifecycle {
         redrawMarkers();
     }
 
+    @Override
+    public void onPauseFragment() {
+        resetImageView();
+    }
+
     private class MapScaleListener implements PhotoViewAttacher.OnScaleChangeListener {
 
         // Redefine the position for the marker after the user scales the image.

@@ -5,4 +5,5 @@ package com.futurice.vor.interfaces;
  */
 public interface FragmentLifecycle {
     void onResumeFragment();
+    void onPauseFragment();
 }
