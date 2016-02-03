@@ -50,11 +50,9 @@ public final class Topic extends BaseTopic {
     public void updateView(@NonNull final View view, final boolean isExpanded) {
         ImageView topicIconImageView = (ImageView) view.findViewById(R.id.topic_icon);
         TextView topicTitleTextView = (TextView) view.findViewById(R.id.topic_title);
-        RelativeLayout topicLayout = (RelativeLayout) view.findViewById(R.id.topic_linear_layout);
 
         topicIconImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         topicTitleTextView.setText(mText);
-        topicLayout.setBackgroundColor(mColor);
 
         Picasso.with(context)
                 .load(mImageUri)
