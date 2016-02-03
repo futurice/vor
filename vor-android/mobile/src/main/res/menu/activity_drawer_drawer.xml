@@ -5,10 +5,6 @@
         android:id="@+id/menu_top"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_my_cards"
-            android:icon="@drawable/ic_cards_white_48dp"
-            android:title="@string/nav_my_cards" />
-        <item
             android:id="@+id/nav_people"
             android:icon="@drawable/ic_people_white_48dp"
             android:title="@string/nav_people" />

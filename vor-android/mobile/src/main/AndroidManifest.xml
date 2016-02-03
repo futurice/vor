@@ -72,16 +72,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.futurice.vor.activity.DrawerActivity"/>
         </activity>
-        <activity
-            android:name=".activity.CardsActivity"
-            android:label="@string/title_activity_cards"
-            android:parentActivityName=".activity.DrawerActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.futurice.vor.activity.DrawerActivity"/>
-        </activity>
 
         <service android:name=".services.LocationService">
         </service>

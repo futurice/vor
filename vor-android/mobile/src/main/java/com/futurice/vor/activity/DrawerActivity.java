@@ -196,9 +196,7 @@ public class DrawerActivity extends BaseActivity implements
     public boolean onNavigationItemSelected(MenuItem item) {
         final int id = item.getItemId();
 
-        if (id == R.id.nav_my_cards) {
-            startActivity(new Intent(this, CardsActivity.class));
-        } else if (id == R.id.nav_people) {
+        if (id == R.id.nav_people) {
             startActivity(new Intent(this, PeopleMapActivity.class));
         } else if (id == R.id.nav_heat_map) {
             startActivity(new Intent(this, HeatMapActivity.class));
