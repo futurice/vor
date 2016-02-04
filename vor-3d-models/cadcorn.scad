@@ -46,7 +46,7 @@ tail_x = 2*body_x + body_length - tail_radius;
 tail_height = -body_z + 1.7*tail_radius;
 tail_tip_length = 29*scale;
 
-base_thickness = 20*scale;
+base_thickness = 10*scale;
 base_width = 40*scale;
 base_corner_radius = 5*scale;
 base_length = 60*scale;
@@ -258,7 +258,7 @@ module tail(p=high_poly) {
 }
 
 module base(p=high_poly) {
-    translate([body_x + .5*body_length, 0, -leg_length - body_z- 7])
+    translate([body_x + .5*body_length, 0, -leg_length - body_z - 2])
         minkowski() {
             cylinder($fn=p, h = base_thickness / 3, r = base_corner_radius);
             cube([base_length, base_width - 2*base_corner_radius, base_thickness/3], center = true);

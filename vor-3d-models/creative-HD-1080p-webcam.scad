@@ -28,9 +28,12 @@ module lens_space() {
 
 module camera() {
     intersection() {
-        cube([length, width, height]);        
+        union() {
+            cube([length, width, height]);
+            cube([length, width+8,8]);
+        }
         translate([length/2, 0, height/2]) rotate([-90, 0, 0]) {
-            cylinder(h = width, r = length/2);
+            cylinder(h = width+8, r = length/2);
         }
     }
 }
@@ -42,7 +45,7 @@ module lens() {
 }
 
 module cable() {
-    translate([length/2, width, 4]) rotate([-90, 0, 0]) {
+    translate([length/2, width, 17.5]) rotate([-90, 0, 0]) {
         cylinder(h = 100, r = 3.3/2);
     }
 }
