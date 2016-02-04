@@ -177,3 +177,8 @@
 			padding: 0;
 			border: 0;
 		}
+
+.larger {
+	display: inline-block;
+	text-align: center;
+}

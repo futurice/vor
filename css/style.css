@@ -1402,3 +1402,17 @@
 #home-link {
 	visibility: hidden;
 }
+
+@media (max-width: 736px) {
+	#banner-sponsors .inner {
+		width: 100%;
+		text-align: center;
+	}
+}
+
+@media (max-width: 736px) {
+	#banner-futurice .inner {
+		width: 100%;
+		text-align: center;
+	}
+}
