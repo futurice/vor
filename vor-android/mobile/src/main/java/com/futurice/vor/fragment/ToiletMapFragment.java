@@ -40,11 +40,19 @@ public class ToiletMapFragment extends Fragment {
     public ToiletMapFragment() {
     }
 
+    public static ToiletMapFragment newInstance(int floor) {
+        ToiletMapFragment fragment = new ToiletMapFragment();
+        Bundle args = new Bundle();
+        args.putInt(FLOOR_KEY, floor);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mCurrentFloor = 7;
+        mCurrentFloor = getArguments().getInt(FLOOR_KEY, 8);
         init();
     }
 
@@ -53,7 +61,12 @@ public class ToiletMapFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map_toilet, container, false);
         ButterKnife.bind(this, view);
-        updateView7th();
+
+        if (mCurrentFloor == 7) {
+            updateView7th();
+        } else if (mCurrentFloor == 8) {
+            updateView8th();
+        }
         return view;
     }
 
@@ -67,34 +80,6 @@ public class ToiletMapFragment extends Fragment {
     public void onPause() {
         unregisterListeners();
         super.onPause();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_toilet_map, menu);
-        MenuItem changeFloorAction = menu.findItem(R.id.action_change_floor);
-        int floorResourceId = mCurrentFloor == 7 ? R.string.map_8th_floor : R.string.map_7th_floor;
-        changeFloorAction.setTitle(getString(floorResourceId));
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_change_floor:
-                if (mCurrentFloor == 7) {
-                    updateView8th();
-                    item.setTitle(getString(R.string.map_7th_floor));
-                    mCurrentFloor = 8;
-                } else {
-                    updateView7th();
-                    item.setTitle(getString(R.string.map_8th_floor));
-                    mCurrentFloor = 7;
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     private void setToiletMapImageView(int id) {
@@ -283,9 +268,13 @@ public class ToiletMapFragment extends Fragment {
             mToiletIds.add(toilet.getId());
             mOnSharedPreferenceChangeListeners.add((sharedPreferences, key) -> {
                 if (key.equals(Toilet.AM7.getId()) || key.equals(Toilet.BM7.getId())) {
-                    updateView7th();
+                    if (mCurrentFloor == 7) {
+                        updateView7th();
+                    }
                 } else {
-                    updateView8th();
+                    if (mCurrentFloor == 8) {
+                        updateView8th();
+                    }
                 }
             });
         }

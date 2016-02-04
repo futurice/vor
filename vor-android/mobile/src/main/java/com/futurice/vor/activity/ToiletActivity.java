@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.futurice.vor.R;
-import com.futurice.vor.fragment.Floor7Fragment;
-import com.futurice.vor.fragment.Floor8Fragment;
 import com.futurice.vor.fragment.ToiletMapFragment;
 import com.futurice.vor.view.CustomViewPager;
 
@@ -42,9 +40,8 @@ public class ToiletActivity extends BaseActivity {
 
     private void setupToiletViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Floor7Fragment(), getString(R.string.tab_map_7th_floor_title));
-        adapter.addFragment(new Floor8Fragment(), getString(R.string.tab_map_8th_floor_title));
-        adapter.addFragment(new ToiletMapFragment(), getString(R.string.title_activity_map));
+        adapter.addFragment(ToiletMapFragment.newInstance(8), getString(R.string.tab_map_8th_floor_title));
+        adapter.addFragment(ToiletMapFragment.newInstance(7), getString(R.string.tab_map_7th_floor_title));
         viewPager.setAdapter(adapter);
     }
 
