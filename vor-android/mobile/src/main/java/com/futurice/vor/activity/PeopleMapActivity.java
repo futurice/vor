@@ -1,7 +1,6 @@
 package com.futurice.vor.activity;
 
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -33,14 +32,11 @@ import java.util.List;
 import static com.futurice.vor.Constants.*;
 
 public class PeopleMapActivity extends BaseActivity {
-    public static final int DELAY = 10000;
 
     BeaconLocationManager mBeaconLocationManager;
     SharedPreferences mPreferences;
     public static PeopleManager mPeopleManager;
     CustomViewPager mViewPager;
-    private Handler inactivePeopleHandler;
-    private Runnable inactivePeopleRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,14 +62,6 @@ public class PeopleMapActivity extends BaseActivity {
         mPeopleManager = new PeopleManager();
 
         mViewPager.addOnPageChangeListener(pageChangeListener);
-
-        inactivePeopleHandler = new Handler();
-        inactivePeopleRunnable = () -> {
-          if (mPeopleManager != null) {
-              mPeopleManager.removeInactivePeople();
-              inactivePeopleHandler.postDelayed(inactivePeopleRunnable, DELAY);
-          }
-        };
     }
 
     @Override
@@ -81,15 +69,6 @@ public class PeopleMapActivity extends BaseActivity {
         super.onResume();
 
         mBeaconLocationManager.setOnLocationUpdateListener(onLocationUpdateListener);
-
-        // Remove inactive people periodically from the manager.
-        inactivePeopleHandler.postDelayed(inactivePeopleRunnable, DELAY);
-    }
-
-    @Override
-    public void onPause() {
-        inactivePeopleHandler.removeCallbacks(inactivePeopleRunnable);
-        super.onPause();
     }
 
     private void setupPeopleMapViewPager(ViewPager viewPager) {

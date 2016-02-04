@@ -116,20 +116,6 @@ public class PeopleManager {
     }
 
     /**
-     * Remove persons that haven't updated in two minutes.
-     */
-    public void removeInactivePeople() {
-        long currentTime = System.currentTimeMillis();
-
-        for (Person person : people) {
-            long difference = currentTime - person.getLastUpdated();
-            if (difference > ONE_MINUTE) {
-                people.remove(person);
-            }
-        }
-    }
-
-    /**
      * Class for keeping track of a person's location and color on the map.
      *
      */
@@ -143,6 +129,7 @@ public class PeopleManager {
         private Integer color;
         private Paint paint;
         boolean clicked;
+        boolean freshLocationValue;
 
         // Pixel coordinates in the map.
         float mapLocationX, mapLocationY;
@@ -168,6 +155,7 @@ public class PeopleManager {
         public Person(int id, String email) {
             this.id = id;
             this.email = email;
+            freshLocationValue = true;
             mapLocationX = mapLocationY = -1f;
             locationOnScreenX = locationOnScreenY = -1f;
             currentLocationX = currentLocationY = -1f;
@@ -237,8 +225,6 @@ public class PeopleManager {
 
         public int getFloor() { return this.floor; }
 
-        public long getLastUpdated() { return this.lastUpdated; }
-
         public String getEmail() {
             return this.email;
         }
@@ -253,6 +239,10 @@ public class PeopleManager {
 
         public boolean isClicked() {
             return this.clicked;
+        }
+
+        public boolean isFreshLocationValue() {
+            return this.freshLocationValue;
         }
 
         /**
@@ -352,6 +342,12 @@ public class PeopleManager {
                     currentLocationY -= (animationSpeed * distanceY);
                 }
             }
+
+            if (updateValueIsOld()) {
+                freshLocationValue = false;
+            } else {
+                freshLocationValue = true;
+            }
         }
 
         /**
@@ -381,6 +377,11 @@ public class PeopleManager {
                     + NEW_LOCATION_AVERAGE_FACTOR * newY;
 
             return new float[] { averagedX, averagedY };
+        }
+
+        private boolean updateValueIsOld() {
+            long difference = System.currentTimeMillis() - lastUpdated;
+            return difference > ONE_MINUTE;
         }
     }
 }

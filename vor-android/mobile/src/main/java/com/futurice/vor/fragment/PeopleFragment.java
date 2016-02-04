@@ -72,7 +72,9 @@ public class PeopleFragment extends BaseVorFragment implements FragmentLifecycle
         ArrayList<PersonNearby> listValues = new ArrayList<>();
 
         for (PeopleManager.Person person : PeopleMapActivity.mPeopleManager.getPeople()) {
-            if (person.getEmail().equals(userEmail) || person.getFloor() != user.getFloor()) {
+            if (person.getEmail().equals(userEmail)
+                    || person.getFloor() != user.getFloor()
+                    || !person.isFreshLocationValue()) {
                 continue;
             }
 

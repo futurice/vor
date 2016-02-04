@@ -82,7 +82,8 @@ public class MapView extends PhotoView {
         }
 
         for (PeopleManager.Person person : onMapDrawListener.getFilteredPersons()) {
-            if (person.getLocationOnScreenX() >= 0 && person.getLocationOnScreenY() >= 0) {
+            if (person.getLocationOnScreenX() >= 0 && person.getLocationOnScreenY() >= 0
+                    && person.isFreshLocationValue()) {
                 String text = VorUtils.getInitials(person.getEmail());
 
                 namePaint.getTextBounds(text, 0, text.length(), bounds);
@@ -98,7 +99,7 @@ public class MapView extends PhotoView {
         }
 
         for (PeopleManager.Person person : onMapDrawListener.getFilteredPersons()) {
-            if (person.isClicked()) {
+            if (person.isClicked() && person.isFreshLocationValue()) {
                 String text = VorUtils.getName(person.getEmail());
 
                 namePaint.getTextBounds(text, 0, text.length(), bounds);
