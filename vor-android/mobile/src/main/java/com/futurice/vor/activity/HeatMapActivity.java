@@ -13,14 +13,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class HeatMapActivity extends BaseActivity {
-    @Bind(R.id.futumap) MapView mImageView;
+    // @Bind(R.id.futumap) MapView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_heat_map);
 
-        ButterKnife.bind(this);
+        // ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -30,7 +30,7 @@ public class HeatMapActivity extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.map_general_8th_floor);
-        mImageView.setImageDrawable(drawable);
+        // Drawable drawable = ContextCompat.getDrawable(this, R.drawable.map_general_8th_floor);
+        // mImageView.setImageDrawable(drawable);
     }
 }

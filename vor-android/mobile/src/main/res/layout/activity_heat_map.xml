@@ -29,11 +29,12 @@
         android:background="@color/background_grey"
         android:padding="@dimen/margin_small">
 
-        <com.futurice.vor.view.MapView
-            android:id="@+id/futumap"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/futurice_map"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@raw/map_general_8th_floor_heat_map"
+            android:layout_gravity="center"/>
     </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

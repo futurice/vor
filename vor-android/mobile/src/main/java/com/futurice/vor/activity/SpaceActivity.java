@@ -73,11 +73,11 @@ public class SpaceActivity extends BaseActivity {
             if (sectionNumber == 1) {
                 spaceMapImageView.setImageDrawable(ContextCompat.getDrawable(
                         getContext(),
-                        R.drawable.map_space_7th_floor));
+                        R.drawable.map_space_7th_floor_coming_soon));
             } else if (sectionNumber == 2) {
                 spaceMapImageView.setImageDrawable(ContextCompat.getDrawable(
                         getContext(),
-                        R.drawable.map_space_8th_floor));
+                        R.drawable.map_space_8th_floor_coming_soon));
             }
 
             return rootView;
