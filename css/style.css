@@ -1398,3 +1398,7 @@
 	text-align: center;
 	margin: 0;
 }
+
+#home-link {
+	visibility: hidden;
+}
