@@ -87,6 +87,7 @@
             android:name=".activity.PeopleMapActivity"
             android:label="@string/title_activity_people_map"
             android:parentActivityName=".activity.DrawerActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -96,6 +97,7 @@
             android:name=".activity.HeatMapActivity"
             android:label="@string/title_activity_heat_map"
             android:parentActivityName=".activity.DrawerActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
