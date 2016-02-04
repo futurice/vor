@@ -1393,3 +1393,30 @@
 	margin-bottom: 5px;
 	padding-top: 60px;
 }
+
+.title-center {
+	text-align: center;
+	margin: 0;
+}
+
+#home-link {
+	visibility: hidden;
+}
+
+@media (max-width: 736px) {
+	#banner-sponsors .inner {
+		width: 100%;
+		text-align: center;
+	}
+}
+
+@media (max-width: 736px) {
+	#banner-futurice .inner {
+		width: 100%;
+		text-align: center;
+	}
+}
+
+#services-title {
+	margin-bottom: 0.7em;
+}

@@ -122,7 +122,6 @@
 /* Banner */
 
 	#banner {
-		background-size: 10em, 10em, auto, cover;
 		padding: 6em 0;
 	}
 
@@ -178,3 +177,8 @@
 			padding: 0;
 			border: 0;
 		}
+
+.larger {
+	display: inline-block;
+	text-align: center;
+}
