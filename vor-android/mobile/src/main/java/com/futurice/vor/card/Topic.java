@@ -37,16 +37,6 @@ public final class Topic extends BaseTopic {
     }
 
     @Override
-    public void addCard(@NonNull final ICard card) {
-        super.addCard(card);
-
-        // Set the topic icon to the first image added to the topic
-        if (mImageUri == Uri.EMPTY && card instanceof ImageCard) {
-            setImageUri(((ImageCard) card).getThumbnailUri());
-        }
-    }
-
-    @Override
     public void updateView(@NonNull final View view, final boolean isExpanded) {
         ImageView topicIconImageView = (ImageView) view.findViewById(R.id.topic_icon);
         TextView topicTitleTextView = (TextView) view.findViewById(R.id.topic_title);

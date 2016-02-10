@@ -4,27 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.futurice.cascade.util.RCLog;
 import static com.futurice.vor.Constants.*;
 import com.futurice.vor.R;
-import com.futurice.vor.VorApplication;
 import com.futurice.vor.activity.ImageViewActivity;
 import com.futurice.vor.utils.FileUtils;
-import com.futurice.vor.utils.ImageUtils;
-import com.squareup.picasso.Picasso;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * Card that matches the EIT demo card.
@@ -44,65 +33,8 @@ public class ImageCard extends BaseCard {
     private Uri mImageUri = Uri.EMPTY;
     private String mImageBase64;
 
-    @NonNull
-    private Uri mThumbnailUri = Uri.EMPTY;
-
     public ImageCard(final String name, final long uid, final Context context) {
         super(name, uid, context, R.layout.card_layout);
-    }
-
-    /**
-     * Helper function for saving a local thumbnail of the image file.
-     *
-     * @param imageFile
-     * @return
-     */
-    @NonNull
-    public static Uri createThumbnail(@NonNull final Uri imageFile) {
-        // For resource content we'll just use the main image as thumbnail
-        if (imageFile.toString().startsWith("android.resource")) {
-            return imageFile;
-        }
-
-        try {
-            Context context = VorApplication.getStaticContext();
-            final String filePath = FileUtils.getPath(context, imageFile);
-            if (filePath == null) {
-                throw new IllegalArgumentException("Can not find path to file: " + imageFile);
-            }
-
-            final File localImageFile = new File(filePath);
-            int thumbnailSize = MediaStore.Video.Thumbnails.MICRO_KIND;
-            final Bitmap bmThumbnail = ImageUtils.createImageThumbnail(filePath, thumbnailSize);
-
-            if (bmThumbnail != null) {
-                String path = Environment.getExternalStorageDirectory() + "/image_thumbnails/";
-                final File directory = new File(path);
-                if (!directory.exists() && !directory.mkdirs()) {
-                    throw new IllegalStateException("Can not create external storage directory for thumbnails: " + imageFile);
-                }
-
-                final File file = new File(directory.getAbsolutePath() + "/" + localImageFile.getName() + ".jpg");
-                final OutputStream outStream = new FileOutputStream(file);
-
-                try {
-                    bmThumbnail.compress(Bitmap.CompressFormat.JPEG, 90, outStream);
-                    outStream.flush();
-                } catch (NullPointerException e) {
-                    RCLog.e(ImageCard.class.getSimpleName(), "Can not compress thumbnail", e);
-                } finally {
-                    outStream.close();
-                }
-
-                return Uri.fromFile(file);
-            } else {
-                RCLog.i(TAG, "Can not create bitmap: " + imageFile);
-            }
-        } catch (IOException e) {
-            RCLog.e(BaseCard.class.getSimpleName(), "Problem writing thumbnail", e);
-        }
-
-        return Uri.EMPTY;
     }
 
     @Override
@@ -118,28 +50,13 @@ public class ImageCard extends BaseCard {
                 DateUtils.WEEK_IN_MILLIS,
                 0).toString();
 
-        if (getImageUri() != Uri.EMPTY) {
-            Picasso.with(mContext)
-                    .load(getImageUri())
-                    .resize(500, 500) // Downscale huge images first
-                    .onlyScaleDown()
-                    .centerInside() // To keep the aspect ratio on resize
-                    .into(cardImageView);
-            cardImageView.setOnClickListener(v -> {
-                Intent viewImageIntent = new Intent(mContext, ImageViewActivity.class);
-                viewImageIntent.putExtra(ImageViewActivity.IMAGE_URI, getImageUri().toString());
-                viewImageIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // FIXME Correct?
-                mContext.startActivity(viewImageIntent);
-            });
-        } else if (mImageBase64 != null){
-            cardImageView.setImageBitmap(getImageBitmap());
-            cardImageView.setOnClickListener(v -> {
-                Intent viewImageIntent = new Intent(mContext, ImageViewActivity.class);
-                viewImageIntent.putExtra(TYPE_KEY, getCardType());
-                viewImageIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // FIXME Correct?
-                mContext.startActivity(viewImageIntent);
-            });
-        }
+        cardImageView.setImageBitmap(getImageBitmap());
+        cardImageView.setOnClickListener(v -> {
+            Intent viewImageIntent = new Intent(mContext, ImageViewActivity.class);
+            viewImageIntent.putExtra(TYPE_KEY, getCardType());
+            viewImageIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // FIXME Correct?
+            mContext.startActivity(viewImageIntent);
+        });
 
         cardAuthorTextView.setText(date);
     }
@@ -179,7 +96,6 @@ public class ImageCard extends BaseCard {
 
     public void setImageUri(@NonNull final Uri imageUri) {
         mImageUri = imageUri;
-        setThumbnailUri(createThumbnail(mImageUri));
     }
 
     @NonNull
@@ -189,14 +105,5 @@ public class ImageCard extends BaseCard {
 
     public void setImageBase64(@NonNull final String base64) {
         mImageBase64 = base64;
-    }
-
-    @NonNull
-    public Uri getThumbnailUri() {
-        return mThumbnailUri;
-    }
-
-    public void setThumbnailUri(@NonNull final Uri thumbnailUri) {
-        mThumbnailUri = thumbnailUri;
     }
 }

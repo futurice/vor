@@ -124,27 +124,6 @@ public class Cards {
         return topic;
     }
 
-
-    /**
-     * Workspace card
-     * @param message the message (?)
-     * @return the workspace topic
-     */
-    public static ITopic workspace(String message, Context context) {
-        final Topic topic = new Topic("Workspace", 280, context, WORKSPACE_KEY);
-        topic.setText("One of your workspaces is now free");
-        topic.setIsPrebuiltTopic(true);
-
-        ImageCard card = new ImageCard("__", 580, context);
-        card.setText("One of your workspaces is now free");
-        card.setAuthor("Futu2", "Futu2");
-        card.setDate(new Date());
-        card.setImageUri(VorUtils.getResourceUri(R.raw.card_workspace));
-
-        topic.addCard(card);
-        return topic;
-    }
-
     /**
      * Test card, to be removed
      * Example JSON: { type: "test", message: "Hello World!" }
