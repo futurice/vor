@@ -157,4 +157,20 @@ public final class VorUtils {
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(startMain);
     }
+
+    /**
+     * Extracts ID from the video url
+     * @param youtubeUrl the video url
+     * @return the ID of the video
+     */
+    public static String extractYouTubeVideoId(String youtubeUrl) {
+        String pattern = "(?<=youtu.be/|watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(youtubeUrl);
+        if(matcher.find()){
+            return matcher.group();
+        } else {
+            return "H7B1NhceHEg";
+        }
+    }
 }

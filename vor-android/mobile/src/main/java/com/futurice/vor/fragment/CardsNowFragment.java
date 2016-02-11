@@ -14,12 +14,14 @@ import android.widget.RelativeLayout;
 
 import com.futurice.cascade.i.CallOrigin;
 import com.futurice.vor.Cards;
+import com.futurice.vor.Config;
 import com.futurice.vor.R;
 import com.futurice.vor.VorApplication;
 import com.futurice.vor.adapter.TopicListAdapter;
 import com.futurice.vor.card.ITopic;
 import com.futurice.vor.utils.SharedPreferencesManager;
 import com.futurice.vor.utils.BeaconLocationManager;
+import com.futurice.vor.utils.VorUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,19 +34,43 @@ import io.socket.client.Socket;
 
 import static com.futurice.cascade.Async.UI;
 import static com.futurice.vor.Constants.*;
+import static com.google.android.youtube.player.YouTubeStandalonePlayer.createVideoIntent;
 
 public class CardsNowFragment extends BaseVorFragment {
+    private static final String TAG = CardsNowFragment.class.getSimpleName();
     Socket mSocket;
+
+    ExpandableListView mElv;
+
+    String mGreatShotUrl;
 
     SharedPreferences mTestSP;
     SharedPreferences mFoodSP;
     SharedPreferences mPoolSP;
+    SharedPreferences mPoolVideoSP;
     SharedPreferences m3dPrinterSP;
 
     OnSharedPreferenceChangeListener mTestCardListener = this::addCard;
     OnSharedPreferenceChangeListener mFoodCardListener = this::addCard;
     OnSharedPreferenceChangeListener mPoolCardListener = this::addCard;
+    OnSharedPreferenceChangeListener mPoolVideoCardListener = this::addCard;
     OnSharedPreferenceChangeListener m3dPrinterCardListener = this::addCard;
+
+    ExpandableListView.OnGroupClickListener greatShotListener = (parent, v, groupPosition, id) -> {
+        if (id == 340) { // ID of the great shot
+            startActivity(createVideoIntent(
+                    getActivity(),
+                    Config.YOUTUBE_API_KEY,
+                    VorUtils.extractYouTubeVideoId(mGreatShotUrl),
+                    0,
+                    true,
+                    true));
+            parent.collapseGroup(groupPosition);
+            return true;
+        }
+        return false;
+    };
+
 
     public CardsNowFragment() {
         // Required empty public constructor
@@ -59,6 +85,7 @@ public class CardsNowFragment extends BaseVorFragment {
         mTestSP = getActivity().getSharedPreferences(TEST_KEY, Context.MODE_PRIVATE);
         mFoodSP = getActivity().getSharedPreferences(FOOD_KEY, Context.MODE_PRIVATE);
         mPoolSP = getActivity().getSharedPreferences(POOL_KEY, Context.MODE_PRIVATE);
+        mPoolVideoSP = getActivity().getSharedPreferences(POOL_KEY, Context.MODE_PRIVATE);
         m3dPrinterSP = getActivity().getSharedPreferences(PRINTER_3D_KEY, Context.MODE_PRIVATE);
     }
 
@@ -124,6 +151,7 @@ public class CardsNowFragment extends BaseVorFragment {
         mTestSP.registerOnSharedPreferenceChangeListener(mTestCardListener);
         mFoodSP.registerOnSharedPreferenceChangeListener(mFoodCardListener);
         mPoolSP.registerOnSharedPreferenceChangeListener(mPoolCardListener);
+        mPoolVideoSP.registerOnSharedPreferenceChangeListener(mPoolVideoCardListener);
         m3dPrinterSP.registerOnSharedPreferenceChangeListener(m3dPrinterCardListener);
     }
 
@@ -133,12 +161,13 @@ public class CardsNowFragment extends BaseVorFragment {
         mTestSP.unregisterOnSharedPreferenceChangeListener(mTestCardListener);
         mFoodSP.unregisterOnSharedPreferenceChangeListener(mFoodCardListener);
         mPoolSP.unregisterOnSharedPreferenceChangeListener(mPoolCardListener);
+        mPoolVideoSP.unregisterOnSharedPreferenceChangeListener(mPoolVideoCardListener);
         m3dPrinterSP.unregisterOnSharedPreferenceChangeListener(m3dPrinterCardListener);
     }
 
     protected void initViewsAndAdapters() {
-        final ExpandableListView elv = new ExpandableListView(getActivity());
-        setExpandableListView(elv);
+        mElv = new ExpandableListView(getActivity());
+        setExpandableListView(mElv);
 
         TopicListAdapter tla = new TopicListAdapter(getSourceTopicModel(), "NowCardsListAdapter");
         setTopicListAdapter(tla);
@@ -148,6 +177,9 @@ public class CardsNowFragment extends BaseVorFragment {
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
+                if (!jsonObject.has(TYPE_KEY)) {
+                    continue; // Not a valid card if doesn't have type
+                }
                 Context context = VorApplication.getStaticContext();
                 List<ITopic> cards = getSourceTopicModel();
                 switch (jsonObject.getString(TYPE_KEY)) {
@@ -168,6 +200,16 @@ public class CardsNowFragment extends BaseVorFragment {
                         String foodImage = jsonObject.getString(IMAGE_KEY);
                         cards.add(0, Cards.food(foodImage, context));
                         removeDuplicates(FOOD_KEY, cards);
+                        break;
+                    case VIDEO_KEY:
+                        switch (jsonObject.getString(ID_KEY)) {
+                            case POOL_CAMERA_ID:
+                                mGreatShotUrl = jsonObject.getString(URL_KEY);
+                                mElv.setOnGroupClickListener(greatShotListener);
+                                cards.add(0, Cards.poolVideo(mGreatShotUrl, context));
+                                removeDuplicates(VIDEO_KEY, cards);
+                                break;
+                        }
                         break;
                     case TEST_KEY:
                         String message = jsonObject.getString(MESSAGE_KEY);
@@ -215,15 +257,29 @@ public class CardsNowFragment extends BaseVorFragment {
                 if (jsonData.has(IMAGE_KEY)) {
                     String image = jsonData.getString(IMAGE_KEY);
                     List<ITopic> cards = getSourceTopicModel();
-                    if (key.equals(POOL_KEY)) {
-                        cards.add(0, Cards.pool(image, getActivity()));
-                        removeDuplicates(POOL_KEY, cards);
-                    } else if (key.equals(FOOD_KEY)) {
-                        cards.add(0, Cards.food(image, getActivity()));
-                        removeDuplicates(FOOD_KEY, cards);
-                    } else if (key.equals(PRINTER_3D_KEY)) {
-                        cards.add(0, Cards.printer3d(image, getActivity()));
-                        removeDuplicates(PRINTER_3D_KEY, cards);
+                    switch (key) {
+                        case POOL_KEY:
+                            cards.add(0, Cards.pool(image, getActivity()));
+                            removeDuplicates(POOL_KEY, cards);
+                            break;
+                        case VIDEO_KEY:
+                            switch (jsonData.getString(ID_KEY)) {
+                                case POOL_CAMERA_ID:
+                                    mGreatShotUrl = jsonData.getString(URL_KEY);
+                                    mElv.setOnGroupClickListener(greatShotListener);
+                                    cards.add(0, Cards.poolVideo(mGreatShotUrl, getActivity()));
+                                    removeDuplicates(VIDEO_KEY, cards);
+                                    break;
+                            }
+                            break;
+                        case FOOD_KEY:
+                            cards.add(0, Cards.food(image, getActivity()));
+                            removeDuplicates(FOOD_KEY, cards);
+                            break;
+                        case PRINTER_3D_KEY:
+                            cards.add(0, Cards.printer3d(image, getActivity()));
+                            removeDuplicates(PRINTER_3D_KEY, cards);
+                            break;
                     }
                 } else if (jsonData.has(MESSAGE_KEY)) {
                     String message = jsonData.getString(MESSAGE_KEY);

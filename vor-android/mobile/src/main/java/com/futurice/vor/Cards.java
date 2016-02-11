@@ -2,10 +2,12 @@ package com.futurice.vor;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 
 import com.futurice.vor.card.ITopic;
 import com.futurice.vor.card.ImageCard;
 import com.futurice.vor.card.Topic;
+import com.futurice.vor.card.VideoCard;
 import com.futurice.vor.utils.VorUtils;
 
 import java.util.Date;
@@ -85,6 +87,24 @@ public class Cards {
     }
 
     /**
+     * Pool video card
+     * @param url the url of the video
+     * @return the pool video card
+     */
+    public static ITopic poolVideo(String url, Context context) {
+        final Topic topic = new Topic("Pool Video", 340, context, VIDEO_KEY);
+        topic.setText("Great shot!");
+        topic.setIsPrebuiltTopic(true);
+        topic.setColor(ContextCompat.getColor(context, R.color.futu_red));
+
+        VideoCard card = new VideoCard("__", 640, context);
+        card.setCardType(VIDEO_KEY);
+
+        topic.addCard(card);
+        return topic;
+    }
+
+    /**
      * Sauna card
      * @param status status of the sauna, ON or OFF
      * @return the topic
@@ -119,27 +139,6 @@ public class Cards {
         card.setText("You're tracking the item " + item);
         card.setAuthor("Vör", "V001");
         card.setDate(new Date());
-
-        topic.addCard(card);
-        return topic;
-    }
-
-
-    /**
-     * Workspace card
-     * @param message the message (?)
-     * @return the workspace topic
-     */
-    public static ITopic workspace(String message, Context context) {
-        final Topic topic = new Topic("Workspace", 280, context, WORKSPACE_KEY);
-        topic.setText("One of your workspaces is now free");
-        topic.setIsPrebuiltTopic(true);
-
-        ImageCard card = new ImageCard("__", 580, context);
-        card.setText("One of your workspaces is now free");
-        card.setAuthor("Futu2", "Futu2");
-        card.setDate(new Date());
-        card.setImageUri(VorUtils.getResourceUri(R.raw.card_workspace));
 
         topic.addCard(card);
         return topic;

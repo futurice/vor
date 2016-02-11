@@ -27,10 +27,13 @@ public class Constants {
     public static final String TOILET_KEY = "toilet";
     public static final String SAUNA_KEY = "sauna";
     public static final String FOOD_KEY = "food";
+    public static final String VIDEO_KEY = "video";
     public static final String IMAGE_KEY = "image";
     public static final String ITEM_KEY = "item";
     public static final String STATUS_KEY = "status";
     public static final String POOL_KEY = "pool";
+    public static final String URL_KEY = "url";
+    public static final String POOL_CAMERA_ID = "poolcam";
     public static final String PRINTER_3D_KEY = "3D";
     public static final String TRACK_ITEM_KEY = "track";
     public static final String RESERVED_KEY = "reserved";
