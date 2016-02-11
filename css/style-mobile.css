@@ -119,6 +119,10 @@
 			padding: 1.5em 1.5em 3em 1.5em;
 		}
 
+	#main > :last-child {
+	    margin-bottom: 1em;
+	}
+
 /* Banner */
 
 	#banner {
@@ -178,7 +182,15 @@
 			border: 0;
 		}
 
+		#footer p {
+			text-align: center;
+		}
+
 .larger {
 	display: inline-block;
 	text-align: center;
+}
+
+#first-header {
+    padding-top: 0;
 }

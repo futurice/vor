@@ -12,7 +12,7 @@
 
 	header.special {
 		margin-bottom: 4em;
-		padding-top: 5em;
+		padding-top: 2em;
 	}
 
 		header.special:before, header.special:after {
@@ -26,12 +26,21 @@
 /* Section/Article */
 
 	section {
-		margin: 1em 0 1em 0;
+		margin: 0;
 	}
 
 		section:first-child {
 			margin-top: 0;
 		}
+
+	section.style5 span.larger {
+		text-align: center;
+		display:block;
+	}
+
+	section.style5 p {
+		text-align: justify;
+	}
 
 /* Button */
 
