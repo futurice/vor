@@ -59,7 +59,7 @@ module left_half() {
         union() {
             translate([-2*cube_side, -4*cube_side, -1])
                 cube([cube_side*4, cube_side*4, cube_side*2]);        
-            yun_hole();
+//triggers openscad error            yun_hole();
         }
     }
     color("pink") spikes();
