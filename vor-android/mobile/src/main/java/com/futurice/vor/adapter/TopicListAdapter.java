@@ -8,10 +8,10 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-import com.futurice.cascade.functional.ImmutableValue;
-import com.futurice.cascade.i.IAsyncOrigin;
-import com.futurice.cascade.i.INamed;
-import com.futurice.cascade.util.RCLog;
+import com.reactivecascade.functional.ImmutableValue;
+import com.reactivecascade.i.IAsyncOrigin;
+import com.reactivecascade.i.INamed;
+import com.reactivecascade.util.RCLog;
 import com.futurice.vor.card.ICard;
 import com.futurice.vor.card.ITopic;
 import com.futurice.vor.card.Topic;

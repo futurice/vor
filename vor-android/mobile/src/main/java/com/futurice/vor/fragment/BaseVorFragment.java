@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ExpandableListView;
 
-import com.futurice.cascade.functional.ImmutableValue;
-import com.futurice.cascade.i.IAsyncOrigin;
-import com.futurice.cascade.util.AssertUtil;
-import com.futurice.cascade.util.RCLog;
+import com.reactivecascade.functional.ImmutableValue;
+import com.reactivecascade.i.IAsyncOrigin;
+import com.reactivecascade.util.AssertUtil;
+import com.reactivecascade.util.RCLog;
 import com.futurice.vor.adapter.TopicListAdapter;
 import com.futurice.vor.card.ITopic;
 

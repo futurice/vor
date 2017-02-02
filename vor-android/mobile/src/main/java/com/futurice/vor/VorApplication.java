@@ -10,7 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.futurice.cascade.AsyncBuilder;
+import com.reactivecascade.AsyncBuilder;
 import com.futurice.vor.activity.SettingsActivity;
 import com.futurice.vor.services.LocationService;
 import com.futurice.vor.utils.SharedPreferencesManager;

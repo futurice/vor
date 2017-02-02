@@ -22,7 +22,7 @@ import com.futurice.vor.utils.PeopleManager;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static com.futurice.cascade.Async.UI;
+import static com.reactivecascade.Async.UI;
 
 public class PeopleFragment extends BaseVorFragment implements FragmentLifecycle {
 

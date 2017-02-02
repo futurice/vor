@@ -29,10 +29,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.futurice.cascade.functional.ImmutableValue;
-import com.futurice.cascade.i.IAsyncOrigin;
-import com.futurice.cascade.reactive.ReactiveValue;
-import com.futurice.cascade.util.RCLog;
+import com.reactivecascade.functional.ImmutableValue;
+import com.reactivecascade.i.IAsyncOrigin;
+import com.reactivecascade.reactive.ReactiveValue;
+import com.reactivecascade.util.RCLog;
 import static com.futurice.vor.Constants.*;
 
 import com.futurice.vor.R;

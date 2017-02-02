@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.futurice.cascade.i.INamed;
+import com.reactivecascade.i.INamed;
 
 /**
  * Interface for cards.

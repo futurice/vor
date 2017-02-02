@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.futurice.cascade.util.Origin;
-import com.futurice.cascade.util.RCLog;
+import com.reactivecascade.util.Origin;
+import com.reactivecascade.util.RCLog;
 import com.futurice.vor.R;
 
 import java.util.Date;

@@ -3,7 +3,7 @@ package com.futurice.vor.card;
 import android.support.annotation.NonNull;
 import android.view.*;
 
-import com.futurice.cascade.i.*;
+import com.reactivecascade.i.*;
 
 import java.util.*;
 

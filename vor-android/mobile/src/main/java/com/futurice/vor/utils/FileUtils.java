@@ -35,9 +35,9 @@ import android.util.Base64;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
-import com.futurice.cascade.functional.ImmutableValue;
-import com.futurice.cascade.util.Origin;
-import com.futurice.cascade.util.RCLog;
+import com.reactivecascade.functional.ImmutableValue;
+import com.reactivecascade.util.Origin;
+import com.reactivecascade.util.RCLog;
 
 import java.io.File;
 import java.text.DecimalFormat;

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 
-import com.futurice.cascade.i.CallOrigin;
+import com.reactivecascade.i.CallOrigin;
 import static com.futurice.vor.Constants.*;
 import com.futurice.vor.R;
 import com.futurice.vor.adapter.TopicListAdapter;

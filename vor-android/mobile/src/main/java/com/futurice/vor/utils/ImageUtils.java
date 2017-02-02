@@ -34,9 +34,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.futurice.cascade.Async;
-import com.futurice.cascade.i.IAltFuture;
-import com.futurice.cascade.util.RCLog;
+import com.reactivecascade.Async;
+import com.reactivecascade.i.IAltFuture;
+import com.reactivecascade.util.RCLog;
 import com.futurice.vor.R;
 
 import java.io.File;

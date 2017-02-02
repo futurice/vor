@@ -12,7 +12,7 @@ import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.futurice.cascade.i.CallOrigin;
+import com.reactivecascade.i.CallOrigin;
 import com.futurice.vor.Cards;
 import com.futurice.vor.Config;
 import com.futurice.vor.R;
@@ -32,7 +32,7 @@ import java.util.List;
 
 import io.socket.client.Socket;
 
-import static com.futurice.cascade.Async.UI;
+import static com.reactivecascade.Async.UI;
 import static com.futurice.vor.Constants.*;
 import static com.google.android.youtube.player.YouTubeStandalonePlayer.createVideoIntent;
 

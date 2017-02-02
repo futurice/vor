@@ -33,7 +33,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-import static com.futurice.cascade.Async.UI;
+import static com.reactivecascade.Async.UI;
 
 public class MapActivityFragment extends Fragment implements FragmentLifecycle {
     // Real life dimensions for the map in meters.
